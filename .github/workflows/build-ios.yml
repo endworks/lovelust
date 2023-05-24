@@ -1,4 +1,4 @@
-name: Flutter iOS
+name: Build iOS
 
 on:
   push:
@@ -12,7 +12,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Flutter build
+
+      - name: Flutter setup
         uses: subosito/flutter-action@v2
         with:
           channel: "stable"

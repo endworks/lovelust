@@ -1,0 +1,49 @@
+name: Flutter Android
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Java setup
+        uses: actions/setup-java@v3
+        with:
+          distribution: semeru
+          java-version: 17
+
+      - name: Flutter setup
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Test
+        run: flutter test
+
+      - name: Build apk
+        run: flutter build apk
+
+      - name: Build app bundle
+        run: flutter build appbundle
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: lovelust.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: lovelust.aab
+          path: build/app/outputs/bundle/release/app-release.aab

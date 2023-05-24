@@ -53,7 +53,8 @@ jobs:
           architecture: x64
       - run: flutter pub get
           flutter test
-          flutter build ios --release --no-codesign
+          flutter build ios
+          flutter build ipa
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v3

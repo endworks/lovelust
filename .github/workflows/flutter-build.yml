@@ -28,13 +28,17 @@ jobs:
       - run: flutter build apk
       - run: flutter build appbundle
 
-      - name: Generate artifacts
+      - name: Generate apk
         uses: actions/upload-artifact@v3
         with:
-          name: lovelust-android
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
+          name: lovelust.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Generate bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: lovelust.aab
+          path: build/app/outputs/bundle/release/app-release.aab
 
   ios:
     runs-on: macos-latest
@@ -48,11 +52,9 @@ jobs:
       - run: flutter pub get
       - run: flutter test
       - run: flutter build ios --release --no-codesign
-      - run: flutter build ipa
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: lovelust-ios
-          path: |
-            build/ios/iphoneos/Runner.app
+          name: lovelust.app
+          path: build/ios/iphoneos/Runner.app

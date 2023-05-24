@@ -30,23 +30,23 @@ jobs:
       - name: Test
         run: flutter test
 
-      - name: Build apk
-        run: flutter build apk
-
       - name: Build app bundle
         run: flutter build appbundle
 
-      - name: Upload apk
-        uses: actions/upload-artifact@v3
-        with:
-          name: lovelust.apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Build apk
+        run: flutter build apk
 
       - name: Upload app bundle
         uses: actions/upload-artifact@v3
         with:
           name: lovelust.aab
           path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Upload apk
+        uses: actions/upload-artifact@v3
+        with:
+          name: lovelust.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Load secret
         id: op-load-secret

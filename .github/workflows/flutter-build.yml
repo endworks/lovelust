@@ -24,18 +24,18 @@ jobs:
         with:
           channel: "stable"
       - run: |
-          - flutter pub get
-          - flutter test
-          - flutter build apk
-          - flutter build appbundle
+          flutter pub get
+          flutter test
+          flutter build apk
+          flutter build appbundle
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v3
         with:
           name: lovelust
           path: |
-            - build/app/outputs/flutter-apk/app-release.apk
-            - build/app/outputs/bundle/release/app-release.aab
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
 
       - name: Generate appbundle
         uses: actions/upload-artifact@v3
@@ -53,14 +53,14 @@ jobs:
           channel: "stable"
           architecture: x64
       - run: |
-          - flutter pub get
-          - flutter test
-          - flutter build ios --release --no-codesign
-          - flutter build ipa
+          flutter pub get
+          flutter test
+          flutter build ios --release --no-codesign
+          flutter build ipa
 
       - name: Generate artifacts
         uses: actions/upload-artifact@v3
         with:
           name: lovelust-ios
           path: |
-            - build/ios/iphoneos/Runner.app
+            build/ios/iphoneos/Runner.app

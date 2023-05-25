@@ -1,6 +1,10 @@
-# lovelust
+# LoveLust
 
-A new Flutter project.
+LoveLust lets you have track of your sexual encounters and the birth control methods, to ensure you have a healthy sexual life.
+
+[![Android](https://github.com/endworks/lovelust/actions/workflows/android.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/android.yml)
+[![iOS](https://github.com/endworks/lovelust/actions/workflows/ios.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/ios.yml)
+[![Web](https://github.com/endworks/lovelust/actions/workflows/web.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/web.yml)
 
 ## Getting Started
 

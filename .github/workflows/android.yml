@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Java setup
         uses: actions/setup-java@v3
@@ -65,6 +67,8 @@ jobs:
 
       - name: Build app bundle
         run: flutter build appbundle --build-number=${{ env.BUILD_NUMBER }}
+
+      - run: tree
 
       - name: Release build to internal track
         uses: r0adkll/upload-google-play@v1

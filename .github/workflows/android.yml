@@ -77,5 +77,5 @@ jobs:
           releaseFiles: ./build/app/outputs/bundle/release/app-release.aab
           mappingFile: ./build/app/outputs/mapping/release/mapping.txt
           debugSymbols: ./build/app/intermediates/merged_native_libs/release/out/lib
-          track: alpha
-          status: completed
+          track: internal
+          status: draft

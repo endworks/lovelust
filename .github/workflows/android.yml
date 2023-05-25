@@ -56,22 +56,15 @@ jobs:
         run: |
           op read -o ./android/key.properties "op://end.works/Play Store keystore/key.properties"
           op read -o ./android/app/upload-keystore.jks "op://end.works/Play Store keystore/upload-keystore.jks"
+          export SERVICE_ACCOUNT_JSON=op://end.works/Google Play Console Service account/credential
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Build app bundle
         run: flutter build appbundle
 
-      - name: Build apk
-        run: flutter build apk
-
-      - name: Set output
-        id: output
-        run: |
-          echo "apk=build/app/outputs/flutter-apk/app-release.apk" >> $GITHUB_OUTPUT
-          echo "app-bundle=build/app/outputs/bundle/release/app-release.aab" >> $GITHUB_OUTPUT
-          echo "mapping=build/app/outputs/mapping/release/mapping.txt" >> $GITHUB_OUTPUT
-          echo "debug-symbols=build/app/intermediates/merged_native_libs/release/out/lib" >> $GITHUB_OUTPUT
+      # - name: Build apk
+      #   run: flutter build apk
 
       # - name: Upload apk
       #   uses: actions/upload-artifact@v3
@@ -97,27 +90,6 @@ jobs:
       #     name: debug-symbols
       #     path: build/app/intermediates/merged_native_libs/release/out/lib
 
-  deploy:
-    name: Deploy to Play Store
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Load secret
-        id: op-load-secret
-        uses: 1password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          SERVICE_ACCOUNT_JSON: op://end.works/Google Play Console Service account/credential
-
-      # - name: Download all workflow run artifacts
-      #   uses: actions/download-artifact@v3
-
       - run: tree
 
       - name: Release build to internal track
@@ -125,8 +97,8 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: works.end.LoveLust
-          releaseFiles: ${{needs.build.outputs.app-bundle}}
-          mappingFile: ${{needs.build.outputs.mapping}}
-          debugSymbols: ${{needs.build.outputs.debug-symbols}}
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          mappingFile: build/app/outputs/mapping/release/mapping.txt
+          debugSymbols: build/app/intermediates/merged_native_libs/release/out/lib
           track: alpha
           status: completed

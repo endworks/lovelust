@@ -59,13 +59,17 @@ jobs:
       - name: Build apk
         run: flutter build apk
 
-      - name: Upload release
+      - name: Upload apk
         uses: actions/upload-artifact@v3
         with:
-          name: release
-          path: |
-            build/app/outputs/flutter-apk/app-release.apk
-            build/app/outputs/bundle/release/app-release.aab
+          name: apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Upload app bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-bundle
+          path: build/app/outputs/bundle/release/app-release.aab
 
       - name: Upload mapping
         uses: actions/upload-artifact@v3
@@ -105,7 +109,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: works.end.LoveLust
-          releaseFiles: release/app-release.aab
+          releaseFiles: app-bundle/app-release.aab
           mappingFile: mapping/mapping.txt
           debugSymbols: debug-symbols
           track: alpha

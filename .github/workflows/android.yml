@@ -56,41 +56,15 @@ jobs:
         run: |
           op read -o ./android/key.properties "op://end.works/Play Store keystore/key.properties"
           op read -o ./android/app/upload-keystore.jks "op://end.works/Play Store keystore/upload-keystore.jks"
-          export SERVICE_ACCOUNT_JSON=op://end.works/Google Play Console Service account/credential
+          echo "SERVICE_ACCOUNT_JSON=$("op://end.works/Google Play Console Service account/credential")" >> $GITHUB_ENV
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
+      - name: Get build number
+        run: echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
+
       - name: Build app bundle
-        run: flutter build appbundle
-
-      # - name: Build apk
-      #   run: flutter build apk
-
-      # - name: Upload apk
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: apk
-      #     path: build/app/outputs/flutter-apk/app-release.apk
-
-      # - name: Upload app bundle
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: app-bundle
-      #     path: build/app/outputs/bundle/release/app-release.aab
-
-      # - name: Upload mapping
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: mapping
-      #     path: build/app/outputs/mapping/release/mapping.txt
-
-      # - name: Upload debug symbols
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: debug-symbols
-      #     path: build/app/intermediates/merged_native_libs/release/out/lib
-
-      - run: tree
+        run: flutter build appbundle --build-number=${{ env.BUILD_NUMBER }}
 
       - name: Release build to internal track
         uses: r0adkll/upload-google-play@v1

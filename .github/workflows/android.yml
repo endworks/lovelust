@@ -12,6 +12,12 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
+    outputs:
+      apk: ${{ steps.output.outputs.apk }}
+      app-bundle: ${{ steps.output.outputs.app-bundle }}
+      mapping: ${{ steps.output.outputs.mapping }}
+      debug-symbols: ${{ steps.output.outputs.debug-symbols }}
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -59,29 +65,37 @@ jobs:
       - name: Build apk
         run: flutter build apk
 
-      - name: Upload apk
-        uses: actions/upload-artifact@v3
-        with:
-          name: apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+      - name: Set output
+        id: output
+        run: |
+          echo "apk=build/app/outputs/flutter-apk/app-release.apk" >> $GITHUB_OUTPUT
+          echo "app-bundle=build/app/outputs/bundle/release/app-release.aab" >> $GITHUB_OUTPUT
+          echo "mapping=build/app/outputs/mapping/release/mapping.txt" >> $GITHUB_OUTPUT
+          echo "debug-symbols=build/app/intermediates/merged_native_libs/release/out/lib" >> $GITHUB_OUTPUT
 
-      - name: Upload app bundle
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-bundle
-          path: build/app/outputs/bundle/release/app-release.aab
+      # - name: Upload apk
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: apk
+      #     path: build/app/outputs/flutter-apk/app-release.apk
 
-      - name: Upload mapping
-        uses: actions/upload-artifact@v3
-        with:
-          name: mapping
-          path: build/app/outputs/mapping/release/mapping.txt
+      # - name: Upload app bundle
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: app-bundle
+      #     path: build/app/outputs/bundle/release/app-release.aab
 
-      - name: Upload debug symbols
-        uses: actions/upload-artifact@v3
-        with:
-          name: debug-symbols
-          path: build/app/intermediates/merged_native_libs/release/out/lib
+      # - name: Upload mapping
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: mapping
+      #     path: build/app/outputs/mapping/release/mapping.txt
+
+      # - name: Upload debug symbols
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: debug-symbols
+      #     path: build/app/intermediates/merged_native_libs/release/out/lib
 
   deploy:
     name: Deploy to Play Store
@@ -101,16 +115,16 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           SERVICE_ACCOUNT_JSON: op://end.works/Google Play Console Service account/credential
 
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
+      # - name: Download all workflow run artifacts
+      #   uses: actions/download-artifact@v3
 
       - name: Release build to internal track
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: works.end.LoveLust
-          releaseFiles: app-bundle/app-release.aab
-          mappingFile: mapping/mapping.txt
-          debugSymbols: debug-symbols
+          releaseFiles: ${{needs.build.outputs.app-bundle}}
+          mappingFile: ${{needs.build.outputs.mapping}}
+          debugSymbols: ${{needs.build.outputs.debug-symbols}}
           track: alpha
           status: completed

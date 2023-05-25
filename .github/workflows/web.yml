@@ -28,11 +28,11 @@ jobs:
       - name: Test
         run: flutter test
 
-      - name: Build iOS app
+      - name: Build web app
         run: flutter build web
 
-      - name: Upload iOS app
-        uses: actions/upload-artifact@v3
-        with:
-          name: web
-          path: build/web/
+      # - name: Upload web app
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: web
+      #     path: build/web/

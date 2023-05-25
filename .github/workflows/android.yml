@@ -1,4 +1,4 @@
-name: Build Android
+name: Android
 
 on:
   push:
@@ -9,7 +9,9 @@ permissions:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -82,7 +84,7 @@ jobs:
           path: build/app/intermediates/merged_native_libs/release/out/lib
 
   deploy:
-    name: Deploy Android build
+    name: Deploy to Play Store
     needs: build
     runs-on: ubuntu-latest
 
@@ -101,6 +103,10 @@ jobs:
 
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
+
+      - run: |
+          ls
+          tree
 
       - name: Release build to internal track
         uses: r0adkll/upload-google-play@v1

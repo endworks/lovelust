@@ -13,22 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Load secret
-        id: op-load-secret
-        uses: 1password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          SERVICE_ACCOUNT_JSON: op://end.works/Google Play Console Service account/credential
-          KEY_PROPERTIES: op://end.works/Play Store keystore/key.properties
-          KEYSTORE: op://end.works/Play Store keystore/upload-keystore.jks
-
-      - name: Add keystore
-        run: |
-          echo "$KEY_PROPERTIES" > android/key.properties'
-          echo "$KEYSTORE" > android/upload-keystore.jks'
-
       - name: Java setup
         uses: actions/setup-java@v3
         with:
@@ -45,6 +29,24 @@ jobs:
 
       - name: Test
         run: flutter test
+
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          SERVICE_ACCOUNT_JSON: op://end.works/Google Play Console Service account/credential
+          KEY_PROPERTIES: op://end.works/Play Store keystore/key.properties
+          KEYSTORE: op://end.works/Play Store keystore/upload-keystore.jks
+
+      - name: Add keystore
+        run: |
+          touch android/key.properties
+          touch android/upload-keystore.jks
+          echo "${{ env.KEY_PROPERTIES }}" > android/key.properties
+          echo "${{ env.KEYSTORE }}" > android/upload-keystore.jks
 
       - name: Build app bundle
         run: flutter build appbundle

@@ -58,7 +58,8 @@ jobs:
         run: |
           op read -o ./android/key.properties "op://end.works/Play Store keystore/key.properties"
           op read -o ./android/app/upload-keystore.jks "op://end.works/Play Store keystore/upload-keystore.jks"
-          echo "SERVICE_ACCOUNT_JSON=$("op://end.works/Google Play Console Service account/credential")" >> $GITHUB_ENV
+          SERVICE_ACCOUNT_JSON="op://end.works/Google Play Console Service account/credential"
+          echo "SERVICE_ACCOUNT_JSON=$SERVICE_ACCOUNT_JSON" >> $GITHUB_ENV
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
@@ -68,15 +69,13 @@ jobs:
       - name: Build app bundle
         run: flutter build appbundle --build-number=${{ env.BUILD_NUMBER }}
 
-      - run: tree
-
       - name: Release build to internal track
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ env.SERVICE_ACCOUNT_JSON }}
           packageName: works.end.LoveLust
-          releaseFiles: build/app/outputs/bundle/release/app-release.aab
-          mappingFile: build/app/outputs/mapping/release/mapping.txt
-          debugSymbols: build/app/intermediates/merged_native_libs/release/out/lib
+          releaseFiles: ./build/app/outputs/bundle/release/app-release.aab
+          mappingFile: ./build/app/outputs/mapping/release/mapping.txt
+          debugSymbols: ./build/app/intermediates/merged_native_libs/release/out/lib
           track: alpha
           status: completed

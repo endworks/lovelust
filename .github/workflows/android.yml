@@ -58,7 +58,7 @@ jobs:
         run: |
           op read -o ./android/key.properties "op://end.works/Play Store keystore/key.properties"
           op read -o ./android/app/upload-keystore.jks "op://end.works/Play Store keystore/upload-keystore.jks"
-          SERVICE_ACCOUNT_JSON="op://end.works/Google Play Console Service account/credential"
+          export SERVICE_ACCOUNT_JSON=$(op read "op://end.works/Google Play Console Service account/credential")
           echo "SERVICE_ACCOUNT_JSON=$SERVICE_ACCOUNT_JSON" >> $GITHUB_ENV
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}

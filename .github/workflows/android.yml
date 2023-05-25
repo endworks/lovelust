@@ -82,4 +82,4 @@ jobs:
           debugSymbols: ./build/app/intermediates/merged_native_libs/release/out/lib
           track: internal
           status: draft
-          releaseName: ${{ env.BUILD_BRANCH }} #${{ env.BUILD_NUMBER }} (${{ env.BUILD_HASH }})
+          releaseName: "${{ env.BUILD_BRANCH }} #${{ env.BUILD_NUMBER }} (${{ env.BUILD_HASH }})"

@@ -83,6 +83,7 @@ jobs:
           track: internal
           status: completed
           releaseName: "${{ env.BUILD_BRANCH }} #${{ env.BUILD_NUMBER }} (${{ env.BUILD_HASH }})"
+          changesNotSentForReview: true
 
       - name: Release build to alpha track
         uses: r0adkll/upload-google-play@v1

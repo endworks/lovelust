@@ -38,9 +38,11 @@ jobs:
       - name: Upload iOS app
         uses: actions/upload-artifact@v3
         with:
+          name: ios
           path: build/ios/iphoneos/Runner.app
 
       - name: Upload macOS app
         uses: actions/upload-artifact@v3
         with:
+          name: macos
           path: build/macos/Build/Products/Release/LoveLust.app

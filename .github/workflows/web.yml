@@ -34,4 +34,5 @@ jobs:
       - name: Upload iOS app
         uses: actions/upload-artifact@v3
         with:
+          name: web
           path: build/web/

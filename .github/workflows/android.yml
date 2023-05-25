@@ -118,6 +118,8 @@ jobs:
       # - name: Download all workflow run artifacts
       #   uses: actions/download-artifact@v3
 
+      - run: tree
+
       - name: Release build to internal track
         uses: r0adkll/upload-google-play@v1
         with:

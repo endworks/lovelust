@@ -43,8 +43,8 @@ jobs:
 
       - name: Get keystore
         run: |
-          op read op://end.works/Play Store keystore/key.properties > key.properties
-          op read op://end.works/Play Store keystore/upload-keystore.jks > upload-keystore.jks
+          op read -o ./key.properties "op://end.works/Play Store keystore/key.properties"
+          op read -o ./upload-keystore.jks "op://end.works/Play Store keystore/upload-keystore.jks"
         working-directory: ./android
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}

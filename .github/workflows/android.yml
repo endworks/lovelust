@@ -63,10 +63,11 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-      - name: Get build number and hash
+      - name: Get release name
         run: |
-          echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
+          echo "BUILD_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
           echo "BUILD_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
 
       - name: Build app bundle
         run: flutter build appbundle --build-number=${{ env.BUILD_NUMBER }}
@@ -81,4 +82,4 @@ jobs:
           debugSymbols: ./build/app/intermediates/merged_native_libs/release/out/lib
           track: internal
           status: draft
-          releaseName: ${{ env.BUILD_NUMBER }}-${{ env.BUILD_HASH }}
+          releaseName: ${{ env.BUILD_BRANCH }} #${{ env.BUILD_NUMBER }} (${{ env.BUILD_HASH }})

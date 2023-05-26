@@ -80,6 +80,6 @@ jobs:
           releaseFiles: ./build/app/outputs/bundle/release/app-release.aab
           mappingFile: ./build/app/outputs/mapping/release/mapping.txt
           debugSymbols: ./build/app/intermediates/merged_native_libs/release/out/lib
-          track: internal
+          track: alpha
           status: completed
           releaseName: "${{ env.BUILD_BRANCH }} #${{ env.BUILD_NUMBER }} (${{ env.BUILD_HASH }})"

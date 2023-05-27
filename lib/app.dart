@@ -11,14 +11,9 @@ class App extends StatelessWidget {
       title: 'LoveLust',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        brightness: Brightness.light,
         useMaterial3: true,
       ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        /* dark theme settings */
-      ),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.system,
       home: const HomePage(title: 'LoveLust'),
     );

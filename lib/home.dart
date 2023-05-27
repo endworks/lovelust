@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
         destinations: const <Widget>[
           NavigationDestination(
             selectedIcon: Icon(Icons.favorite),
-            icon: Icon(Icons.favorite_outlined),
+            icon: Icon(Icons.favorite_border_outlined),
             label: 'Activity',
           ),
           NavigationDestination(

@@ -31,27 +31,17 @@ class DestinationView extends StatefulWidget {
 class _DestinationViewState extends State<DestinationView> {
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      key: widget.navigatorKey,
-      onGenerateRoute: (RouteSettings settings) {
-        return MaterialPageRoute<void>(
-          settings: settings,
-          builder: (BuildContext context) {
-            switch (settings.name) {
-              case '/':
-                return ActivityPage(destination: widget.destination);
-              case '/partners':
-                return PartnersPage(destination: widget.destination);
-              case '/stats':
-                return StatsPage(destination: widget.destination);
-              case '/learn':
-                return LearnPage(destination: widget.destination);
-            }
-            assert(false);
-            return const SizedBox();
-          },
-        );
-      },
-    );
+    switch (widget.destination.index) {
+      case 0:
+        return ActivityPage(destination: widget.destination);
+      case 1:
+        return PartnersPage(destination: widget.destination);
+      case 2:
+        return StatsPage(destination: widget.destination);
+      case 3:
+        return LearnPage(destination: widget.destination);
+      default:
+        return const Text('');
+    }
   }
 }

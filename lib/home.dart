@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/models/destination.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -18,122 +19,113 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin<HomePage> {
+  static const List<Destination> allDestinations = <Destination>[
+    Destination(0, 'Activity', Icons.favorite_border_outlined, Icons.favorite,
+        Colors.red),
+    Destination(
+        1, 'Partners', Icons.group_outlined, Icons.group, Colors.deepPurple),
+    Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
+        Colors.cyan),
+    Destination(3, 'Learn', Icons.book_outlined, Icons.book, Colors.orange),
+  ];
+
+  late final List<GlobalKey<NavigatorState>> navigatorKeys;
+  late final List<GlobalKey> destinationKeys;
+  late final List<AnimationController> destinationFaders;
+  late final List<Widget> destinationViews;
   int _selectedIndex = 0;
 
-  List<Widget> _widgetOptions(BuildContext context) {
-    return [
-      Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'Index 0: Activity:',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      )),
-      Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'Index 1: Partners:',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      )),
-      Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'Index 2: Stats:',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      )),
-      Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Text(
-            'Index 3: Learn:',
-          ),
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ],
-      )),
-    ];
+  AnimationController buildFaderController() {
+    final AnimationController controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 200));
+    controller.addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.dismissed) {
+        setState(() {}); // Rebuild unselected destinations offstage.
+      }
+    });
+    return controller;
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    navigatorKeys = List<GlobalKey<NavigatorState>>.generate(
+        allDestinations.length, (int index) => GlobalKey()).toList();
+    destinationFaders = List<AnimationController>.generate(
+        allDestinations.length, (int index) => buildFaderController()).toList();
+    destinationFaders[_selectedIndex].value = 1.0;
+    destinationViews = allDestinations.map((Destination destination) {
+      return FadeTransition(
+        opacity: destinationFaders[destination.index]
+            .drive(CurveTween(curve: Curves.fastOutSlowIn)),
+        child: DestinationView(
+          destination: destination,
+          navigatorKey: navigatorKeys[destination.index],
+        ),
+      );
+    }).toList();
+  }
+
+  @override
+  void dispose() {
+    for (final AnimationController controller in destinationFaders) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: _widgetOptions(context)[_selectedIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: NavigationBar(
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        selectedIndex: _selectedIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.favorite),
-            icon: Icon(Icons.favorite_border_outlined),
-            label: 'Activity',
+    return WillPopScope(
+      onWillPop: () async {
+        final NavigatorState navigator =
+            navigatorKeys[_selectedIndex].currentState!;
+        if (!navigator.canPop()) {
+          return true;
+        }
+        navigator.pop();
+        return false;
+      },
+      child: Scaffold(
+        body: SafeArea(
+          top: false,
+          child: Stack(
+            fit: StackFit.expand,
+            children: allDestinations.map((Destination destination) {
+              final int index = destination.index;
+              final Widget view = destinationViews[index];
+              if (index == _selectedIndex) {
+                destinationFaders[index].forward();
+                return Offstage(offstage: false, child: view);
+              } else {
+                destinationFaders[index].reverse();
+                if (destinationFaders[index].isAnimating) {
+                  return IgnorePointer(child: view);
+                }
+                return Offstage(child: view);
+              }
+            }).toList(),
           ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.group),
-            icon: Icon(Icons.group_outlined),
-            label: 'Partners',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.monitor_heart),
-            icon: Icon(Icons.monitor_heart_outlined),
-            label: 'Stats',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.book),
-            icon: Icon(Icons.book_outlined),
-            label: 'Learn',
-          ),
-        ],
+        ),
+        bottomNavigationBar: NavigationBar(
+          selectedIndex: _selectedIndex,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          onDestinationSelected: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          destinations: allDestinations.map((Destination destination) {
+            return NavigationDestination(
+              selectedIcon:
+                  Icon(destination.selectedIcon, color: destination.color),
+              icon: Icon(destination.icon, color: destination.color),
+              label: destination.title,
+            );
+          }).toList(),
+        ),
       ),
     );
   }

@@ -13,10 +13,15 @@ class StatsPage extends StatefulWidget {
 class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.destination.title),
-        backgroundColor: widget.destination.color,
+        backgroundColor: isDarkMode
+            ? Theme.of(context).colorScheme.background
+            : widget.destination.color[100],
       ),
       body: const Center(
         child: Column(

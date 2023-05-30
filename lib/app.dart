@@ -10,12 +10,12 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: 'LoveLust',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          brightness: Brightness.light),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      themeMode: ThemeMode.system,
-      home: const HomePage(title: 'LoveLust'),
+      themeMode: ThemeMode.light,
+      home: const HomePage(),
       debugShowCheckedModeBanner: false,
     );
   }

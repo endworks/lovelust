@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lovelust/models/destination.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.title});
-
-  final String title;
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,9 +12,9 @@ class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin<HomePage> {
   static const List<Destination> allDestinations = <Destination>[
     Destination(0, 'Activity', Icons.favorite_border_outlined, Icons.favorite,
-        Colors.red),
+        Colors.deepPurple),
     Destination(
-        1, 'Partners', Icons.group_outlined, Icons.group, Colors.deepPurple),
+        1, 'Partners', Icons.group_outlined, Icons.group, Colors.purple),
     Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
         Colors.cyan),
     Destination(3, 'Learn', Icons.book_outlined, Icons.book, Colors.orange),

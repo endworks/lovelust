@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/sections/activity.dart';
-import 'package:lovelust/sections/learn.dart';
-import 'package:lovelust/sections/partners.dart';
-import 'package:lovelust/sections/stats.dart';
+import 'package:lovelust/screens/activity.dart';
+import 'package:lovelust/screens/learn.dart';
+import 'package:lovelust/screens/partners.dart';
+import 'package:lovelust/screens/stats.dart';
 
 class Destination {
   const Destination(

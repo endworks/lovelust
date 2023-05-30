@@ -13,16 +13,10 @@ class LearnPage extends StatefulWidget {
 class _LearnPageState extends State<LearnPage> {
   @override
   Widget build(BuildContext context) {
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.destination.title),
-        /*backgroundColor: isDarkMode
-            ? Theme.of(context).colorScheme.background
-            : widget.destination.color[100],*/
-      ),
+          title: Text(widget.destination.title),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -16,6 +16,7 @@ class App extends StatelessWidget {
       darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.system,
       home: const HomePage(title: 'LoveLust'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

@@ -19,9 +19,9 @@ class _PartnersPageState extends State<PartnersPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.destination.title),
-        backgroundColor: isDarkMode
+        /*backgroundColor: isDarkMode
             ? Theme.of(context).colorScheme.background
-            : widget.destination.color[100],
+            : widget.destination.color[100],*/
       ),
       body: const Center(
         child: Column(

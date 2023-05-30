@@ -83,4 +83,4 @@ jobs:
           track: internal
           status: completed
           releaseName: "${{ env.BUILD_BRANCH }} #${{ env.BUILD_NUMBER }} (${{ env.BUILD_HASH }})"
-          changesNotSentForReview: true
+          # changesNotSentForReview: true

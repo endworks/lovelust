@@ -15,8 +15,9 @@ class _LearnPageState extends State<LearnPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.destination.title),
-          backgroundColor: Theme.of(context).colorScheme.surfaceVariant),
+        title: Text(widget.destination.title),
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary
+      ),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

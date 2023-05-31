@@ -11,9 +11,11 @@ class ActivityCard extends StatefulWidget {
 class _ActivityCardState extends State<ActivityCard> {
   @override
   Widget build(BuildContext context) {
-    return const Card(
+    return Card(
       clipBehavior: Clip.antiAlias,
-      child: ActivityItem(),
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
+      child: const ActivityItem(),
     );
   }
 }

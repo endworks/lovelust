@@ -133,12 +133,9 @@ class _HomePageState extends State<HomePage>
           },
           destinations: allDestinations.map((Destination destination) {
             return NavigationDestination(
-              selectedIcon: Icon(
-                destination.selectedIcon, //color: destination.color
-              ),
-              icon: Icon(
-                destination.icon, //color: destination.color
-              ),
+              selectedIcon:
+                  Icon(destination.selectedIcon, color: destination.color),
+              icon: Icon(destination.icon, color: destination.color),
               label: destination.title,
             );
           }).toList(),

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class ActivityCard extends StatefulWidget {
-  const ActivityCard({super.key});
+  const ActivityCard({super.key, required this.activity});
+
+  final Activity activity;
 
   @override
   State<ActivityCard> createState() => _ActivityCardState();
@@ -15,7 +18,7 @@ class _ActivityCardState extends State<ActivityCard> {
       clipBehavior: Clip.antiAlias,
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant,
-      child: const ActivityItem(),
+      child: ActivityItem(activity: widget.activity),
     );
   }
 }

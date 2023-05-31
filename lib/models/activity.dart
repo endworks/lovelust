@@ -1,22 +1,20 @@
-import 'package:lovelust/models/id_name.dart';
-
 class Activity {
   final String id;
-  final String partner;
-  final String birthControl;
-  final String partnerBirthControl;
-  final String date;
-  final String location;
-  final String notes;
+  final String? partner;
+  final String? birthControl;
+  final String? partnerBirthControl;
+  final DateTime date;
+  final String? location;
+  final String? notes;
   final int duration;
   final int orgasms;
   final int partnerOrgasms;
-  final String place;
-  final String initiator;
+  final String? place;
+  final String? initiator;
   final int rating;
-  final String type;
-  final List<IdName> practices;
-  final String safety;
+  final String? type;
+  // final List<IdName> practices;
+  final String? safety;
   final int encounters;
 
   const Activity({
@@ -34,7 +32,7 @@ class Activity {
     required this.initiator,
     required this.rating,
     required this.type,
-    required this.practices,
+    // required this.practices,
     required this.safety,
     required this.encounters,
   });
@@ -45,7 +43,7 @@ class Activity {
       partner: json['partner'],
       birthControl: json['birth_control'],
       partnerBirthControl: json['partner_birth_control'],
-      date: json['date'],
+      date: DateTime.parse(json['date']),
       location: json['location'],
       notes: json['notes'],
       duration: json['duration'],
@@ -55,9 +53,29 @@ class Activity {
       initiator: json['initiator'],
       rating: json['rating'],
       type: json['type'],
-      practices: json['practices'],
+      // practices: json['practices'] as List<IdName>,
       safety: json['safety'],
       encounters: json['encounters'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'partner': partner,
+        'birth_control': birthControl,
+        'partner_birth_control': partnerBirthControl,
+        'date': date.toIso8601String(),
+        'location': location,
+        'notes': notes,
+        'duration': duration,
+        'orgasms': orgasms,
+        'partner_orgasms': partnerOrgasms,
+        'place': place,
+        'initiator': initiator,
+        'rating': rating,
+        'type': type,
+        // 'practices': practices,
+        'safety': safety,
+        'encounters': encounters,
+      };
 }

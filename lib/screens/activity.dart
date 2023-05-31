@@ -21,7 +21,8 @@ class ActivityPage extends StatefulWidget {
 class _ActivityPageState extends State<ActivityPage> {
   final storage = const FlutterSecureStorage();
   String? accessToken;
-  // List<Activity> activity = [];
+  List<Activity> activity = [];
+  List<Widget> list = [];
 
   void _addActivity() {
     debugPrint('tap activity');
@@ -31,11 +32,17 @@ class _ActivityPageState extends State<ActivityPage> {
     }));
   }
 
-  Future<void> readAuthentication() async {
+  Future<void> _readData() async {
     accessToken = await storage.read(key: 'access_token');
+    final persistedActivity = await storage.read(key: 'activity');
+    if (persistedActivity != null) {
+      activity = jsonDecode(persistedActivity)
+          .map<Activity>((map) => Activity.fromJson(map))
+          .toList();
+    }
   }
 
-  Future<Activity> getActivity() async {
+  Future<List<Activity>> _getActivity() async {
     final response = await http.get(
       Uri.parse('https://lovelust-api.end.works/activity'),
       headers: {
@@ -44,28 +51,32 @@ class _ActivityPageState extends State<ActivityPage> {
     );
 
     if (response.statusCode == 200) {
-      return Activity.fromJson(jsonDecode(response.body));
+      List json = jsonDecode(response.body);
+      return json.map<Activity>((map) => Activity.fromJson(map)).toList();
     } else {
       throw Exception('Failed to load activity');
     }
   }
 
   List<Widget> _activityList() {
-    List<Widget> list = [];
-    for (var i = 0; i < 10; i++) {
-      list.add(
-        const Padding(
-            padding: EdgeInsets.only(bottom: 6, top: 6, left: 12, right: 12),
-            child: ActivityCard()),
-      );
-    }
-    return list;
+    return activity.map((entry) {
+      return ActivityCard(activity: entry);
+    }).toList();
   }
 
   @override
   void initState() {
-    super.initState();
-    // readAuthentication().then((value) async => activity = await getActivity());
+    if (mounted) {
+      super.initState();
+      _readData().then((value) async {
+        activity = await _getActivity();
+        await storage.write(key: 'activity', value: jsonEncode(activity));
+
+        setState(() {
+          list = _activityList();
+        });
+      });
+    }
   }
 
   @override
@@ -76,7 +87,7 @@ class _ActivityPageState extends State<ActivityPage> {
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: ListView(
-        children: _activityList(),
+        children: list,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addActivity,

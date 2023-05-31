@@ -31,6 +31,7 @@ class DestinationView extends StatefulWidget {
 class _DestinationViewState extends State<DestinationView> {
   @override
   Widget build(BuildContext context) {
+    debugPrint("widget.destination.index: ${widget.destination.index}");
     switch (widget.destination.index) {
       case 0:
         return ActivityPage(destination: widget.destination);

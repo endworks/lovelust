@@ -30,6 +30,13 @@ jobs:
 
       - name: Build web app
         run: flutter build web
+
+      - name: Upload web app
+        uses: actions/upload-artifact@v3
+        with:
+          name: github-pages
+          path: build/web/
+
   deploy:
     name: Deploy to GitHub Pages
     needs: build

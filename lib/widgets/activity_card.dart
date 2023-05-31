@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/widgets/activity_item.dart';
 
 class ActivityCard extends StatefulWidget {
   const ActivityCard({super.key});
@@ -11,10 +12,8 @@ class _ActivityCardState extends State<ActivityCard> {
   @override
   Widget build(BuildContext context) {
     return const Card(
-      child: ListTile(
-        leading: FlutterLogo(),
-        title: Text('One-line with leading widget'),
-      ),
+      clipBehavior: Clip.antiAlias,
+      child: ActivityItem(),
     );
   }
 }

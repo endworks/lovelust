@@ -16,7 +16,7 @@ class _StatsPageState extends State<StatsPage> {
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.destination.title),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary),
+          backgroundColor: Theme.of(context).colorScheme.surfaceVariant),
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

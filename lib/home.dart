@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage>
 
   static const List<Destination> allDestinations = <Destination>[
     Destination(0, 'Activity', Icons.favorite_border_outlined, Icons.favorite,
-        Colors.deepPurple),
+        Colors.red),
     Destination(
         1, 'Partners', Icons.group_outlined, Icons.group, Colors.purple),
     Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
@@ -133,9 +133,12 @@ class _HomePageState extends State<HomePage>
           },
           destinations: allDestinations.map((Destination destination) {
             return NavigationDestination(
-              selectedIcon:
-                  Icon(destination.selectedIcon, color: destination.color),
-              icon: Icon(destination.icon, color: destination.color),
+              selectedIcon: Icon(
+                destination.selectedIcon, //color: destination.color
+              ),
+              icon: Icon(
+                destination.icon, //color: destination.color
+              ),
               label: destination.title,
             );
           }).toList(),

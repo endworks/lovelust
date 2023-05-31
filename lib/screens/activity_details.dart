@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/models/destination.dart';
 
-class PartnersPage extends StatefulWidget {
-  const PartnersPage({super.key, required this.destination});
-
-  final Destination destination;
+class ActivityDetailsPage extends StatefulWidget {
+  const ActivityDetailsPage({super.key});
 
   @override
-  State<PartnersPage> createState() => _PartnersPageState();
+  State<ActivityDetailsPage> createState() => _ActivityDetailsPageState();
 }
 
-class _PartnersPageState extends State<PartnersPage> {
+class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.destination.title),
+          title: const Text('Activity details'),
           backgroundColor: Theme.of(context).colorScheme.surfaceVariant),
       body: const Center(
         child: Column(

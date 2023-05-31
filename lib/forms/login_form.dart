@@ -23,7 +23,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void signIn() {
-    print('signIn');
+    debugPrint('signIn');
     Navigator.pop(context);
   }
 

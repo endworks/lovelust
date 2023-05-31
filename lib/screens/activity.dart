@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/destination.dart';
-import 'package:lovelust/widgets/activity_item.dart';
+import 'package:lovelust/widgets/activity_card.dart';
 
 class ActivityPage extends StatefulWidget {
   const ActivityPage({super.key, required this.destination});
@@ -12,12 +12,19 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  int _counter = 0;
+  void _addActivity() {
+    setState(() {});
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  List<Widget> _activityList() {
+    List<Widget> list = [];
+    for (var i = 0; i < 10; i++) {
+      list.add(
+        const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8), child: ActivityCard()),
+      );
+    }
+    return list;
   }
 
   @override
@@ -25,24 +32,15 @@ class _ActivityPageState extends State<ActivityPage> {
     return Scaffold(
       appBar: AppBar(
           title: Text(widget.destination.title),
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary),
+          backgroundColor: Theme.of(context).colorScheme.surfaceVariant),
       body: ListView(
-        children: const <Widget>[
-          ActivityItem(),
-          ActivityItem(),
-          ActivityItem(),
-          ActivityItem(),
-          ActivityItem(),
-          ActivityItem(),
-          ActivityItem(),
-        ],
+        children: _activityList(),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+      floatingActionButton: FloatingActionButton(
+        onPressed: _addActivity,
+        tooltip: 'Add activity',
         isExtended: true,
-        label: const Text('Add activity'),
-        icon: const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

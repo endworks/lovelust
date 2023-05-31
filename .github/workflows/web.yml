@@ -37,26 +37,26 @@ jobs:
           name: github-pages
           path: build/web/
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
+  # deploy:
+  #   name: Deploy to GitHub Pages
+  #   needs: build
 
-    permissions:
-      pages: write
-      id-token: write
+  #   permissions:
+  #     pages: write
+  #     id-token: write
 
-    concurrency:
-      group: "pages"
-      cancel-in-progress: false
+  #   concurrency:
+  #     group: "pages"
+  #     cancel-in-progress: false
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.outputs.page_url }}
 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Setup Pages
+  #       uses: actions/configure-pages@v3
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v2

@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/destination.dart';
 import 'package:lovelust/screens/activity_details.dart';
 import 'package:lovelust/widgets/activity_card.dart';
@@ -13,12 +19,35 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
+  final storage = const FlutterSecureStorage();
+  String? accessToken;
+  // List<Activity> activity = [];
+
   void _addActivity() {
     debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
       return const ActivityDetailsPage();
     }));
+  }
+
+  Future<void> readAuthentication() async {
+    accessToken = await storage.read(key: 'access_token');
+  }
+
+  Future<Activity> getActivity() async {
+    final response = await http.get(
+      Uri.parse('https://lovelust-api.end.works/activity'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return Activity.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load activity');
+    }
   }
 
   List<Widget> _activityList() {
@@ -31,6 +60,12 @@ class _ActivityPageState extends State<ActivityPage> {
       );
     }
     return list;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // readAuthentication().then((value) async => activity = await getActivity());
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/models/destination.dart';
+import 'package:lovelust/screens/login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,6 +12,28 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin<HomePage> {
+  final storage = const FlutterSecureStorage();
+  bool authenticated = false;
+  String? accessToken;
+
+  Future<void> readAuthentication() async {
+    accessToken = await storage.read(key: 'access_token');
+    if (accessToken == null) {
+      redirectToLogin();
+    }
+  }
+
+  redirectToLogin() {
+    showModalBottomSheet<void>(
+        context: context,
+        enableDrag: false,
+        isDismissible: false,
+        useRootNavigator: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) =>
+            const SizedBox(height: 320, child: LoginPage()));
+  }
+
   static const List<Destination> allDestinations = <Destination>[
     Destination(0, 'Activity', Icons.favorite_border_outlined, Icons.favorite,
         Colors.deepPurple),
@@ -40,6 +64,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    readAuthentication();
     navigatorKeys = List<GlobalKey<NavigatorState>>.generate(
         allDestinations.length, (int index) => GlobalKey()).toList();
     destinationFaders = List<AnimationController>.generate(

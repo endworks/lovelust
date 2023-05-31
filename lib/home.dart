@@ -24,14 +24,11 @@ class _HomePageState extends State<HomePage>
   }
 
   redirectToLogin() {
-    showModalBottomSheet<void>(
+    showDialog<void>(
         context: context,
-        enableDrag: false,
-        isDismissible: false,
-        useRootNavigator: true,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) =>
-            const SizedBox(height: 320, child: LoginPage()));
+        barrierDismissible: false,
+        useSafeArea: true,
+        builder: (BuildContext context) => const LoginPage());
   }
 
   static const List<Destination> allDestinations = <Destination>[

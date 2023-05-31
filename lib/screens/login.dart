@@ -12,7 +12,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const AlertDialog(
+      title: Text('Sign in'),
+      content: LoginForm(),
+    );
+    /*return Scaffold(
       appBar: AppBar(
         title: const Text('Sign in'),
         automaticallyImplyLeading: false,
@@ -22,6 +26,6 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: LoginForm(),
       ),
-    );
+    );*/
   }
 }

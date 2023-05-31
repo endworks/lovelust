@@ -18,13 +18,15 @@ class _LoginFormState extends State<LoginForm> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
+  bool valid() =>
+      usernameController.value.text.isNotEmpty &&
+      passwordController.value.text.isNotEmpty;
+
   void submit() async {
     const storage = FlutterSecureStorage();
     AuthTokens tokens;
     if (formKey.currentState!.validate()) {
-      bool valid = usernameController.value.text.isNotEmpty &&
-          passwordController.value.text.isNotEmpty;
-      if (valid) {
+      if (valid()) {
         try {
           tokens = await signIn(
               usernameController.value.text, passwordController.value.text);
@@ -34,19 +36,25 @@ class _LoginFormState extends State<LoginForm> {
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('No Internet connection 😑'),
+              content: Text('No Internet connection!'),
             ),
           );
         } on HttpException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text("Couldn't find the post 😱"),
+              content: Text("Couldn't sign in!"),
             ),
           );
         } on FormatException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Bad response format 👎'),
+              content: Text('Bad response format!'),
+            ),
+          );
+        } on Exception {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to sign in!'),
             ),
           );
         }
@@ -78,16 +86,18 @@ class _LoginFormState extends State<LoginForm> {
     return Form(
       key: formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: TextField(
               controller: usernameController,
-              obscureText: true,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.person),
+                filled: true,
+                border: UnderlineInputBorder(),
                 labelText: 'Username',
+                hintText: 'Enter username...',
               ),
             ),
           ),
@@ -97,8 +107,11 @@ class _LoginFormState extends State<LoginForm> {
               controller: passwordController,
               obscureText: true,
               decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.key),
+                filled: true,
+                border: UnderlineInputBorder(),
                 labelText: 'Password',
+                hintText: 'Enter passsword...',
               ),
             ),
           ),

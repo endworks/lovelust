@@ -69,12 +69,14 @@ class _ActivityPageState extends State<ActivityPage> {
     if (mounted) {
       super.initState();
       _readData().then((value) async {
-        activity = await _getActivity();
-        await storage.write(key: 'activity', value: jsonEncode(activity));
+        if (accessToken != null) {
+          activity = await _getActivity();
+          await storage.write(key: 'activity', value: jsonEncode(activity));
 
-        setState(() {
-          list = _activityList();
-        });
+          setState(() {
+            list = _activityList();
+          });
+        }
       });
     }
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/screens/activity_details.dart';
 
@@ -22,17 +24,27 @@ class _ActivityItemState extends State<ActivityItem> {
 
   CircleAvatar avatar() {
     if (widget.activity.type != 'MASTURBATION') {
-      return const CircleAvatar(
-        backgroundColor: Colors.red,
-        child: Icon(
-          Icons.female,
-          color: Colors.white,
-        ),
-      );
+      if (widget.activity.partner != null) {
+        return CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          child: Icon(
+            Icons.person,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      } else {
+        return CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          child: Icon(
+            Icons.person_off,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        );
+      }
     } else {
-      return const CircleAvatar(
-        backgroundColor: Colors.pink,
-        child: Icon(
+      return CircleAvatar(
+        backgroundColor: Colors.pink[300],
+        child: const Icon(
           Icons.front_hand,
           color: Colors.white,
         ),
@@ -42,9 +54,15 @@ class _ActivityItemState extends State<ActivityItem> {
 
   Text title() {
     if (widget.activity.type == 'MASTURBATION') {
-      return const Text('Solo');
+      return Text('Solo',
+          style:
+              TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[300]));
     }
-    return Text(widget.activity.partner ?? 'Unknown');
+    return Text(
+        widget.activity.partner != null ? 'Partner name' : 'Unknown partner',
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.primary));
   }
 
   Icon? safetyIcon() {
@@ -60,6 +78,18 @@ class _ActivityItemState extends State<ActivityItem> {
     return null;
   }
 
+  String date() {
+    return DateFormat('dd MMMM yyyy').format(widget.activity.date);
+  }
+
+  String place() {
+    if (widget.activity.place != null) {
+      return widget.activity.place!.capitalize();
+    }
+
+    return 'Unknown place';
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -68,14 +98,30 @@ class _ActivityItemState extends State<ActivityItem> {
         subtitle:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            const Icon(Icons.calendar_today, size: 16),
-            Text(widget.activity.date.toLocal().toString())
-          ]),
-          Row(children: [
-            const Icon(Icons.location_on, size: 16),
-            Text(widget.activity.place ?? 'test'),
-            const Icon(Icons.timer, size: 16),
-            Text(widget.activity.duration.toString())
+            Icon(
+              Icons.calendar_today_outlined,
+              size: 16,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            Padding(
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+                child: Text(date())),
+            Icon(
+              Icons.timer_outlined,
+              size: 16,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            Padding(
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+                child: Text("${widget.activity.duration} min.")),
+            Icon(
+              Icons.location_on_outlined,
+              size: 16,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            Padding(
+                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+                child: Text(place())),
           ]),
         ]),
         trailing: safetyIcon(),

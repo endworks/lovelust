@@ -22,7 +22,6 @@ class _ActivityPageState extends State<ActivityPage> {
   final storage = const FlutterSecureStorage();
   String? accessToken;
   List<Activity> activity = [];
-  List<Widget> list = [];
 
   void _addActivity() {
     debugPrint('tap activity');
@@ -58,10 +57,28 @@ class _ActivityPageState extends State<ActivityPage> {
     }
   }
 
-  List<Widget> _activityList() {
-    return activity.map((entry) {
-      return ActivityCard(activity: entry);
-    }).toList();
+  Widget _separator(int index) {
+    final date = activity[index].date;
+    final date2 = activity[index + 1].date;
+    final difference = date.difference(date2).inDays;
+    if (difference > 0) {
+      return Padding(
+          padding: const EdgeInsetsDirectional.symmetric(vertical: 4),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(difference > 1 ? '$difference days' : '$difference day',
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.surfaceVariant)),
+              ]));
+    }
+    return const Divider(
+      indent: 16,
+      endIndent: 16,
+      height: 0,
+      thickness: 0,
+      color: Colors.transparent,
+    );
   }
 
   @override
@@ -71,11 +88,10 @@ class _ActivityPageState extends State<ActivityPage> {
       _readData().then((value) async {
         if (accessToken != null) {
           activity = await _getActivity();
-          await storage.write(key: 'activity', value: jsonEncode(activity));
-
           setState(() {
-            list = _activityList();
+            activity = activity;
           });
+          await storage.write(key: 'activity', value: jsonEncode(activity));
         }
       });
     }
@@ -88,9 +104,12 @@ class _ActivityPageState extends State<ActivityPage> {
         title: Text(widget.destination.title),
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
-      body: ListView(
-        children: list,
-      ),
+      body: ListView.separated(
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+          separatorBuilder: (context, index) => _separator(index),
+          itemCount: activity.length,
+          itemBuilder: (context, index) =>
+              ActivityCard(activity: activity[index])),
       floatingActionButton: FloatingActionButton(
         onPressed: _addActivity,
         tooltip: 'Add activity',

@@ -32,11 +32,11 @@ class _HomePageState extends State<HomePage>
   }
 
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Activity', Icons.favorite_border_outlined, Icons.favorite,
-        Colors.red),
+    Destination(
+        0, 'Activity', Icons.favorite_outlined, Icons.favorite, Colors.red),
     Destination(
         1, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
-    Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
+    Destination(2, 'Stats', Icons.monitor_heart, Icons.monitor_heart_outlined,
         Colors.cyan),
     Destination(3, 'Learn', Icons.book_outlined, Icons.book, Colors.orange),
     Destination(
@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage>
         ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _selectedIndex,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           onDestinationSelected: (int index) {
             setState(() {
               _selectedIndex = index;
@@ -132,8 +132,8 @@ class _HomePageState extends State<HomePage>
           },
           destinations: allDestinations.map((Destination destination) {
             return NavigationDestination(
-              selectedIcon:
-                  Icon(destination.selectedIcon, color: destination.color),
+              selectedIcon: Icon(destination.selectedIcon,
+                  color: destination.color.shade400),
               icon: Icon(destination.icon),
               label: destination.title,
             );

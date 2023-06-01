@@ -16,7 +16,8 @@ class _ActivityCardState extends State<ActivityCard> {
   Widget build(BuildContext context) {
     return Card(
       clipBehavior: Clip.antiAlias,
-      // elevation: 0,
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
       child: ActivityItem(activity: widget.activity),
     );
   }

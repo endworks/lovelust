@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage>
         0, 'Activity', Icons.favorite_outlined, Icons.favorite, Colors.red),
     Destination(
         1, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
-    Destination(2, 'Stats', Icons.monitor_heart, Icons.monitor_heart_outlined,
+    Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
         Colors.cyan),
     Destination(3, 'Learn', Icons.book_outlined, Icons.book, Colors.orange),
     Destination(

@@ -8,6 +8,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/destination.dart';
 import 'package:lovelust/screens/activity_details.dart';
 import 'package:lovelust/widgets/activity_card.dart';
+import 'package:lovelust/widgets/activity_item.dart';
 
 class ActivityPage extends StatefulWidget {
   const ActivityPage({super.key, required this.destination});
@@ -21,6 +22,7 @@ class ActivityPage extends StatefulWidget {
 class _ActivityPageState extends State<ActivityPage> {
   final storage = const FlutterSecureStorage();
   String? accessToken;
+  bool calendarView = false;
   List<Activity> activity = [];
 
   void _addActivity() {
@@ -103,17 +105,26 @@ class _ActivityPageState extends State<ActivityPage> {
       appBar: AppBar(
         title: Text(widget.destination.title),
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
+        actions: [
+          IconButton(
+            icon: Icon(calendarView ? Icons.view_stream : Icons.calendar_today),
+            onPressed: () {
+              debugPrint(calendarView ? 'list' : 'calendar');
+              setState(() => calendarView = !calendarView);
+            },
+          )
+        ],
       ),
       body: ListView.separated(
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
           separatorBuilder: (context, index) => _separator(index),
           itemCount: activity.length,
-          itemBuilder: (context, index) =>
-              ActivityCard(activity: activity[index])),
+          itemBuilder: (context, index) => !calendarView
+              ? ActivityCard(activity: activity[index])
+              : ActivityItem(activity: activity[index])),
       floatingActionButton: FloatingActionButton(
         onPressed: _addActivity,
         tooltip: 'Add activity',
-        isExtended: true,
         child: const Icon(Icons.add),
       ),
     );

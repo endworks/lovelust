@@ -37,9 +37,12 @@ class _ActivityPageState extends State<ActivityPage> {
     accessToken = await storage.read(key: 'access_token');
     final persistedActivity = await storage.read(key: 'activity');
     if (persistedActivity != null) {
-      activity = jsonDecode(persistedActivity)
-          .map<Activity>((map) => Activity.fromJson(map))
-          .toList();
+      setState(() {
+        activity = jsonDecode(persistedActivity)
+            .map<Activity>((map) => Activity.fromJson(map))
+            .toList();
+        ;
+      });
     }
   }
 
@@ -57,6 +60,13 @@ class _ActivityPageState extends State<ActivityPage> {
     } else {
       throw Exception('Failed to load activity');
     }
+  }
+
+  Future<void> _pullRefresh() async {
+    activity = await _getActivity();
+    setState(() {
+      activity = activity;
+    });
   }
 
   Widget _separator(int index) {
@@ -88,7 +98,7 @@ class _ActivityPageState extends State<ActivityPage> {
     if (mounted) {
       super.initState();
       _readData().then((value) async {
-        if (accessToken != null) {
+        if (accessToken != null && activity.isEmpty) {
           activity = await _getActivity();
           setState(() {
             activity = activity;
@@ -115,13 +125,16 @@ class _ActivityPageState extends State<ActivityPage> {
           )
         ],
       ),
-      body: ListView.separated(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-          separatorBuilder: (context, index) => _separator(index),
-          itemCount: activity.length,
-          itemBuilder: (context, index) => !calendarView
-              ? ActivityCard(activity: activity[index])
-              : ActivityItem(activity: activity[index])),
+      body: RefreshIndicator(
+          onRefresh: _pullRefresh,
+          child: ListView.separated(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+              separatorBuilder: (context, index) => _separator(index),
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: activity.length,
+              itemBuilder: (context, index) => !calendarView
+                  ? ActivityCard(activity: activity[index])
+                  : ActivityItem(activity: activity[index]))),
       floatingActionButton: FloatingActionButton(
         onPressed: _addActivity,
         tooltip: 'Add activity',

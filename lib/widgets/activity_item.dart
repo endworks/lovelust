@@ -114,14 +114,6 @@ class _ActivityItemState extends State<ActivityItem> {
             Padding(
                 padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
                 child: Text("${widget.activity.duration} min.")),
-            Icon(
-              Icons.location_on_outlined,
-              size: 16,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                child: Text(place())),
           ]),
         ]),
         trailing: safetyIcon(),

@@ -35,10 +35,12 @@ class _HomePageState extends State<HomePage>
     Destination(0, 'Activity', Icons.favorite_border_outlined, Icons.favorite,
         Colors.red),
     Destination(
-        1, 'Partners', Icons.group_outlined, Icons.group, Colors.purple),
+        1, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
     Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
         Colors.cyan),
     Destination(3, 'Learn', Icons.book_outlined, Icons.book, Colors.orange),
+    Destination(
+        4, 'Settings', Icons.settings_outlined, Icons.settings, Colors.blue),
   ];
 
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
@@ -122,7 +124,7 @@ class _HomePageState extends State<HomePage>
         ),
         bottomNavigationBar: NavigationBar(
           selectedIndex: _selectedIndex,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
           onDestinationSelected: (int index) {
             setState(() {
               _selectedIndex = index;
@@ -132,7 +134,7 @@ class _HomePageState extends State<HomePage>
             return NavigationDestination(
               selectedIcon:
                   Icon(destination.selectedIcon, color: destination.color),
-              icon: Icon(destination.icon, color: destination.color),
+              icon: Icon(destination.icon),
               label: destination.title,
             );
           }).toList(),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/screens/activity.dart';
 import 'package:lovelust/screens/learn.dart';
+import 'package:lovelust/screens/login.dart';
 import 'package:lovelust/screens/partners.dart';
+import 'package:lovelust/screens/settings.dart';
 import 'package:lovelust/screens/stats.dart';
 
 class Destination {
@@ -41,8 +43,10 @@ class _DestinationViewState extends State<DestinationView> {
         return StatsPage(destination: widget.destination);
       case 3:
         return LearnPage(destination: widget.destination);
+      case 4:
+        return SettingsPage(destination: widget.destination);
       default:
-        return const Text('');
+        return const LoginPage();
     }
   }
 }

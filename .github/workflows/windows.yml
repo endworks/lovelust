@@ -31,6 +31,28 @@ jobs:
       - name: Test
         run: flutter test
 
+      - name: Install 1Password CLI
+        run: |
+          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_linux_amd64_v2.18.0.zip" -O op.zip
+          unzip -d op op.zip
+          sudo mv op/op /usr/local/bin
+          rm -r op.zip op
+
+          op user get --me
+
+      - name: Get secrets
+        run: |
+          export AZURE_AD_TENANT_ID=$(op read "op://end.works/Windows Store/azure ad tennant id")
+          export AZURE_AD_CLIENT_ID=$(op read "op://end.works/Windows Store/azure ad client id")
+          export AZURE_AD_CLIENT_SECRET=$(op read "op://end.works/Windows Store/azure ad client secret")
+          export SELLER_ID=$(op read "op://end.works/Windows Store/seller id")
+          echo "AZURE_AD_TENANT_ID=$AZURE_AD_TENANT_ID" >> $GITHUB_ENV
+          echo "AZURE_AD_CLIENT_ID=$AZURE_AD_CLIENT_ID" >> $GITHUB_ENV
+          echo "AZURE_AD_CLIENT_SECRET=$AZURE_AD_CLIENT_SECRET" >> $GITHUB_ENV
+          echo "SELLER_ID=$SELLER_ID" >> $GITHUB_ENV
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
       - name: Get release name
         run: |
           echo "BUILD_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
@@ -39,18 +61,6 @@ jobs:
 
       - name: Build windows app
         run: flutter build windows --release --build-number=${{ env.BUILD_NUMBER }}
-
-      - name: Load secret
-        id: op-load-secret
-        uses: 1password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          AZURE_AD_TENANT_ID: op://end.works/Windows Store/azure ad tennant id
-          AZURE_AD_CLIENT_ID: op://end.works/Windows Store/azure ad client id
-          AZURE_AD_CLIENT_SECRET: op://end.works/Windows Store/azure ad client secret
-          SELLER_ID: op://end.works/Windows Store/seller id
 
       - uses: microsoft/setup-msstore-cli@v1
 

@@ -54,7 +54,7 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-      - name: Get keystore
+      - name: Get secrets
         run: |
           op read -o ./android/key.properties "op://end.works/Play Store keystore/key.properties"
           op read -o ./android/app/upload-keystore.jks "op://end.works/Play Store keystore/upload-keystore.jks"

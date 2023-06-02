@@ -49,8 +49,6 @@ jobs:
           Remove-Item -Path op.zip
           echo "$installDir" >> $GITHUB_PATH
 
-          op user get --me
-
       - name: Get secrets
         run: |
           export AZURE_AD_TENANT_ID=$(op read "op://end.works/Windows Store/azure ad tennant id")

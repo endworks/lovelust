@@ -50,10 +50,10 @@ jobs:
           ls
           ./op.exe user get --me
 
-          export AZURE_AD_TENANT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad tennant id")
-          export AZURE_AD_CLIENT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad client id")
-          export AZURE_AD_CLIENT_SECRET=$(./op.exe read "op://end.works/Windows Store/azure ad client secret")
-          export SELLER_ID=$(./op.exe read "op://end.works/Windows Store/seller id")
+          $Env:AZURE_AD_TENANT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad tennant id")
+          $Env:AZURE_AD_CLIENT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad client id")
+          $Env:AZURE_AD_CLIENT_SECRET = $(./op.exe read "op://end.works/Windows Store/azure ad client secret")
+          $Env:SELLER_ID=$(./op.exe read "op://end.works/Windows Store/seller id")
           echo "AZURE_AD_TENANT_ID=$AZURE_AD_TENANT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_ID=$AZURE_AD_CLIENT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_SECRET=$AZURE_AD_CLIENT_SECRET" >> $GITHUB_ENV

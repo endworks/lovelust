@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Flutter setup
         uses: subosito/flutter-action@v2
@@ -64,13 +66,6 @@ jobs:
         run: |
           Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
           refreshenv
-          echo "$env:BUILD_BRANCH"
-          echo "$env:BUILD_HASH"
-          echo "$env:BUILD_NUMBER"
-          echo "$env:AZURE_AD_TENANT_ID"
-          echo "$env:AZURE_AD_CLIENT_ID"
-          echo "$env:AZURE_AD_CLIENT_SECRET"
-          echo "$env:SELLER_ID"
 
       - name: Build windows app
         run: flutter build windows --release --build-number=$env:BUILD_NUMBER
@@ -78,7 +73,7 @@ jobs:
       - uses: microsoft/setup-msstore-cli@v1
 
       - name: Configure the Microsoft Store CLI
-        run: msstore reconfigure --tenantId $env:AZURE_AD_TENANT_ID --clientId $env:AZURE_AD_CLIENT_ID --clientSecret $env:AZURE_AD_CLIENT_SECRET --sellerId $env:SELLER_ID
+        run: msstore reconfigure --tenantId "$env:AZURE_AD_TENANT_ID" --clientId "$env:AZURE_AD_CLIENT_ID" --clientSecret "$env:AZURE_AD_CLIENT_SECRET" --sellerId "$env:SELLER_ID"
 
       - name: Create MSIX
         run: msstore package .

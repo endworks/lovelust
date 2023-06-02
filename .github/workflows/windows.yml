@@ -39,9 +39,8 @@ jobs:
               '32-bit' { $opArch = '386'; break }
               Default { Write-Error "Sorry, your operating system architecture '$arch' is unsupported" -ErrorAction Stop }
           }
-          $installDir = Join-Path -Path $GITHUB_WORKSPACE -ChildPath 'op'
           Invoke-WebRequest -Uri "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_windows_$($opArch)_v2.18.0.zip" -OutFile op.zip
-          Expand-Archive -Path op.zip -DestinationPath $installDir -Force
+          Expand-Archive -Path op.zip -DestinationPath op -Force
           Remove-Item -Path op.zip
           echo "$GITHUB_WORKSPACE/op" >> $GITHUB_PATH
 

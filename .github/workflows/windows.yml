@@ -49,11 +49,13 @@ jobs:
           Remove-Item -Path op.zip
           echo "OP_INSTALL_DIR=$installDir" >> $GITHUB_ENV
           echo "$installDir" >> $GITHUB_PATH
+          tree
 
       - name: Get secrets
         run: |
           $workdir = $pwd
           cd $OP_INSTALL_DIR
+          ls
 
           op.exe user get --me
 

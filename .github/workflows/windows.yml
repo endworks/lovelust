@@ -48,7 +48,7 @@ jobs:
           }
           Remove-Item -Path op.zip
 
-          op.exe user get --me
+          op user get --me
 
       - name: Get secrets
         run: |

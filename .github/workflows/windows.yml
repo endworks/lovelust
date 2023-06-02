@@ -47,28 +47,30 @@ jobs:
 
       - name: Get secrets
         run: |
-          setx AZURE_AD_TENANT_ID $(./op.exe read "op://end.works/Windows Store/azure ad tennant id") /M
-          setx AZURE_AD_CLIENT_ID $(./op.exe read "op://end.works/Windows Store/azure ad client id") /M
-          setx AZURE_AD_CLIENT_SECRET $(./op.exe read "op://end.works/Windows Store/azure ad client secret") /M
-          setx SELLER_ID $(./op.exe read "op://end.works/Windows Store/seller id") /M
+          "AZURE_AD_TENANT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad tennant id")" >> $env:GITHUB_ENV
+          "AZURE_AD_CLIENT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad client id")" >> $env:GITHUB_ENV
+          "AZURE_AD_CLIENT_SECRET=$(./op.exe read "op://end.works/Windows Store/azure ad client secret")" >> $env:GITHUB_ENV
+          "SELLER_ID=$(./op.exe read "op://end.works/Windows Store/seller id")" >> $env:GITHUB_ENV
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Get release name
         run: |
-          setx BUILD_BRANCH $(git rev-parse --abbrev-ref HEAD) /M
-          setx BUILD_HASH $(git rev-parse --short HEAD) /M
-          setx BUILD_NUMBER $(git rev-list --count main) /M
+          "BUILD_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $env:GITHUB_ENV
+          "BUILD_HASH=$(git rev-parse --short HEAD)" >> $env:GITHUB_ENV
+          "BUILD_NUMBER=$(git rev-list --count main)" >> $env:GITHUB_ENV
 
-      - name: Variables
+      - name: Refresh environment
         run: |
-          echo "$BUILD_BRANCH"
-          echo "$BUILD_HASH"
-          echo "$BUILD_NUMBER"
-          echo "$AZURE_AD_TENANT_ID"
-          echo "$AZURE_AD_CLIENT_ID"
-          echo "$AZURE_AD_CLIENT_SECRET"
-          echo "$SELLER_ID"
+          Import-Module "$env:ChocolateyInstall/helpers/chocolateyInstaller.psm1"
+          refreshenv
+          echo "$env:BUILD_BRANCH"
+          echo "$env:BUILD_HASH"
+          echo "$env:BUILD_NUMBER"
+          echo "$env:AZURE_AD_TENANT_ID"
+          echo "$env:AZURE_AD_CLIENT_ID"
+          echo "$env:AZURE_AD_CLIENT_SECRET"
+          echo "$env:SELLER_ID"
 
       - name: Build windows app
         run: flutter build windows --release --build-number=$env:BUILD_NUMBER
@@ -76,7 +78,7 @@ jobs:
       - uses: microsoft/setup-msstore-cli@v1
 
       - name: Configure the Microsoft Store CLI
-        run: msstore reconfigure --tenantId $AZURE_AD_TENANT_ID --clientId $AZURE_AD_CLIENT_ID --clientSecret $AZURE_AD_CLIENT_SECRET --sellerId $SELLER_ID
+        run: msstore reconfigure --tenantId $env:AZURE_AD_TENANT_ID --clientId $env:AZURE_AD_CLIENT_ID --clientSecret $env:AZURE_AD_CLIENT_SECRET --sellerId $env:SELLER_ID
 
       - name: Create MSIX
         run: msstore package .

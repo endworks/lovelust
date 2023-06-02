@@ -33,19 +33,19 @@ jobs:
 
       - name: Install 1Password CLI
         run: |
-          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_linux_amd64_v2.18.0.zip" -O op.zip
-          unzip -d op op.zip
-          sudo mv op/op /usr/local/bin
+          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_windows_amd64_v2.18.0.zip" -O op.zip
+          tar -xf op.zip op
+          mv "./op/op.exe"
           rm -r op.zip op
 
-          op user get --me
+          op.exe user get --me
 
       - name: Get secrets
         run: |
-          export AZURE_AD_TENANT_ID=$(op read "op://end.works/Windows Store/azure ad tennant id")
-          export AZURE_AD_CLIENT_ID=$(op read "op://end.works/Windows Store/azure ad client id")
-          export AZURE_AD_CLIENT_SECRET=$(op read "op://end.works/Windows Store/azure ad client secret")
-          export SELLER_ID=$(op read "op://end.works/Windows Store/seller id")
+          export AZURE_AD_TENANT_ID=$(op.exe read "op://end.works/Windows Store/azure ad tennant id")
+          export AZURE_AD_CLIENT_ID=$(op.exe read "op://end.works/Windows Store/azure ad client id")
+          export AZURE_AD_CLIENT_SECRET=$(op.exe read "op://end.works/Windows Store/azure ad client secret")
+          export SELLER_ID=$(op.exe read "op://end.works/Windows Store/seller id")
           echo "AZURE_AD_TENANT_ID=$AZURE_AD_TENANT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_ID=$AZURE_AD_CLIENT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_SECRET=$AZURE_AD_CLIENT_SECRET" >> $GITHUB_ENV

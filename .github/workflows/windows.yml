@@ -39,29 +39,21 @@ jobs:
               '32-bit' { $opArch = '386'; break }
               Default { Write-Error "Sorry, your operating system architecture '$arch' is unsupported" -ErrorAction Stop }
           }
-          $installDir = Join-Path -Path $pwd -ChildPath '1Password CLI'
+          $installDir = Join-Path -Path $pwd -ChildPath 'op'
           Invoke-WebRequest -Uri "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_windows_$($opArch)_v2.18.0.zip" -OutFile op.zip
           Expand-Archive -Path op.zip -DestinationPath $installDir -Force
-          $envMachinePath = [System.Environment]::GetEnvironmentVariable('PATH','machine')
-          if ($envMachinePath -split ';' -notcontains $installDir){
-              [Environment]::SetEnvironmentVariable('PATH', "$envMachinePath;$installDir", 'Machine')
-          }
           Remove-Item -Path op.zip
           Copy-Item "$installDir/op.exe" -Destination "./"
-          echo "OP_INSTALL_DIR=$installDir" >> $GITHUB_ENV
-          echo "$installDir" >> $GITHUB_PATH
-          cd $installDir
-          tree
 
       - name: Get secrets
         run: |
           ls
-          op.exe user get --me
+          ./op.exe user get --me
 
-          export AZURE_AD_TENANT_ID=$(op read "op://end.works/Windows Store/azure ad tennant id")
-          export AZURE_AD_CLIENT_ID=$(op read "op://end.works/Windows Store/azure ad client id")
-          export AZURE_AD_CLIENT_SECRET=$(op read "op://end.works/Windows Store/azure ad client secret")
-          export SELLER_ID=$(op read "op://end.works/Windows Store/seller id")
+          export AZURE_AD_TENANT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad tennant id")
+          export AZURE_AD_CLIENT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad client id")
+          export AZURE_AD_CLIENT_SECRET=$(./op.exe read "op://end.works/Windows Store/azure ad client secret")
+          export SELLER_ID=$(./op.exe read "op://end.works/Windows Store/seller id")
           echo "AZURE_AD_TENANT_ID=$AZURE_AD_TENANT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_ID=$AZURE_AD_CLIENT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_SECRET=$AZURE_AD_CLIENT_SECRET" >> $GITHUB_ENV

@@ -49,11 +49,15 @@ jobs:
           Remove-Item -Path op.zip
           echo "OP_INSTALL_DIR=$installDir" >> $GITHUB_ENV
           echo "$installDir" >> $GITHUB_PATH
+          echo ${{ env.OP_INSTALL_DIR }}
 
       - name: Get secrets
         run: |
           $workdir = $pwd
           cd $OP_INSTALL_DIR
+
+          op.exe user get --me
+
           export AZURE_AD_TENANT_ID=$(op read "op://end.works/Windows Store/azure ad tennant id")
           export AZURE_AD_CLIENT_ID=$(op read "op://end.works/Windows Store/azure ad client id")
           export AZURE_AD_CLIENT_SECRET=$(op read "op://end.works/Windows Store/azure ad client secret")

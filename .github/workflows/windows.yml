@@ -47,6 +47,7 @@ jobs:
               [Environment]::SetEnvironmentVariable('PATH', "$envMachinePath;$installDir", 'Machine')
           }
           Remove-Item -Path op.zip
+          Copy-Item "$installDir/op.exe" -Destination "./"
           echo "OP_INSTALL_DIR=$installDir" >> $GITHUB_ENV
           echo "$installDir" >> $GITHUB_PATH
           cd $installDir

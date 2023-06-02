@@ -47,12 +47,13 @@ jobs:
               [Environment]::SetEnvironmentVariable('PATH', "$envMachinePath;$installDir", 'Machine')
           }
           Remove-Item -Path op.zip
+          echo "OP_INSTALL_DIR=$installDir" >> $GITHUB_ENV
           echo "$installDir" >> $GITHUB_PATH
-          echo $GITHUB_PATH
-          echo ${{ github.path }}
 
       - name: Get secrets
         run: |
+          $workdir = $pwd
+          cd $OP_INSTALL_DIR
           export AZURE_AD_TENANT_ID=$(op read "op://end.works/Windows Store/azure ad tennant id")
           export AZURE_AD_CLIENT_ID=$(op read "op://end.works/Windows Store/azure ad client id")
           export AZURE_AD_CLIENT_SECRET=$(op read "op://end.works/Windows Store/azure ad client secret")
@@ -61,6 +62,7 @@ jobs:
           echo "AZURE_AD_CLIENT_ID=$AZURE_AD_CLIENT_ID" >> $GITHUB_ENV
           echo "AZURE_AD_CLIENT_SECRET=$AZURE_AD_CLIENT_SECRET" >> $GITHUB_ENV
           echo "SELLER_ID=$SELLER_ID" >> $GITHUB_ENV
+          cd $workdir
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 

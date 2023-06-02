@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
 
 class Partner {
@@ -21,7 +20,6 @@ class Partner {
   });
 
   factory Partner.fromJson(Map<String, dynamic> json) {
-    debugPrint(json.keys.toString());
     return Partner(
       id: json['id'],
       sex: json['sex'],

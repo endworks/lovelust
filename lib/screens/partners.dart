@@ -83,8 +83,7 @@ class _PartnersPageState extends State<PartnersPage> {
       body: RefreshIndicator(
           onRefresh: _pullRefresh,
           child: ListView.separated(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-              separatorBuilder: (context, index) => const Divider(),
+              separatorBuilder: (context, index) => const Divider(height: 0),
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: partners.length,
               itemBuilder: (context, index) =>

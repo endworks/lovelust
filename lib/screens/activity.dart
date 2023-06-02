@@ -36,11 +36,17 @@ class _ActivityPageState extends State<ActivityPage> {
   Future<void> _readData() async {
     accessToken = await storage.read(key: 'access_token');
     final persistedActivity = await storage.read(key: 'activity');
+    final persistedCalendarView = await storage.read(key: 'calendar_view');
     if (persistedActivity != null) {
       setState(() {
         activity = jsonDecode(persistedActivity)
             .map<Activity>((map) => Activity.fromJson(map))
             .toList();
+      });
+    }
+    if (persistedCalendarView != null) {
+      setState(() {
+        calendarView = jsonDecode(persistedCalendarView);
       });
     }
   }
@@ -66,6 +72,12 @@ class _ActivityPageState extends State<ActivityPage> {
     setState(() {
       activity = activity;
     });
+  }
+
+  void _onCalendarToggle() async {
+    debugPrint(calendarView ? 'list' : 'calendar');
+    setState(() => calendarView = !calendarView);
+    await storage.write(key: 'calendar_view', value: jsonEncode(calendarView));
   }
 
   Widget _separator(int index) {
@@ -117,18 +129,19 @@ class _ActivityPageState extends State<ActivityPage> {
         actions: [
           IconButton(
             icon: Icon(calendarView ? Icons.view_stream : Icons.calendar_today),
-            onPressed: () {
-              debugPrint(calendarView ? 'list' : 'calendar');
-              setState(() => calendarView = !calendarView);
-            },
+            onPressed: _onCalendarToggle,
           )
         ],
       ),
       body: RefreshIndicator(
           onRefresh: _pullRefresh,
           child: ListView.separated(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-              separatorBuilder: (context, index) => _separator(index),
+              padding: !calendarView
+                  ? const EdgeInsetsDirectional.symmetric(horizontal: 8)
+                  : null,
+              // separatorBuilder: (context, index) => _separator(index),
+              separatorBuilder: (context, index) =>
+                  !calendarView ? _separator(index) : const Divider(height: 0),
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: activity.length,
               itemBuilder: (context, index) => !calendarView

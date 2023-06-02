@@ -47,28 +47,35 @@ jobs:
 
       - name: Get secrets
         run: |
-          echo "AZURE_AD_TENANT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad tennant id")" >> $GITHUB_ENV
-          echo "AZURE_AD_CLIENT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad client id")" >> $GITHUB_ENV
-          echo "AZURE_AD_CLIENT_SECRET=$(./op.exe read "op://end.works/Windows Store/azure ad client secret")" >> $GITHUB_ENV
-          echo "SELLER_ID=$(./op.exe read "op://end.works/Windows Store/seller id")" >> $GITHUB_ENV
+          $env:AZURE_AD_TENANT_ID = $(./op.exe read "op://end.works/Windows Store/azure ad tennant id")
+          $env:AZURE_AD_CLIENT_ID = $(./op.exe read "op://end.works/Windows Store/azure ad client id")
+          $env:AZURE_AD_CLIENT_SECRET = $(./op.exe read "op://end.works/Windows Store/azure ad client secret")
+          $env:SELLER_ID = $(./op.exe read "op://end.works/Windows Store/seller id")
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Get release name
         run: |
-          echo "BUILD_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-          echo "BUILD_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
+          $env:BUILD_BRANCH = $(git rev-parse --abbrev-ref HEAD)
+          $env:BUILD_HASH = $(git rev-parse --short HEAD)
+          $env:BUILD_NUMBER = $(git rev-list --count main)
 
       - name: Variables
         run: |
-          echo "${{ env.BUILD_BRANCH }}"
-          echo "${{ env.BUILD_HASH }}"
-          echo "${{ env.BUILD_NUMBER }}"
-          echo "${{ env.AZURE_AD_TENANT_ID }}"
-          echo "${{ env.AZURE_AD_CLIENT_ID }}"
-          echo "${{ env.AZURE_AD_CLIENT_SECRET }}"
-          echo "${{ env.SELLER_ID }}"
+          $BUILD_BRANCH = [Environment]::GetEnvironmentVariable('BUILD_BRANCH', [System.EnvironmentVariableTarget]::Machine)
+          $BUILD_HASH = [Environment]::GetEnvironmentVariable('BUILD_HASH', [System.EnvironmentVariableTarget]::Machine)
+          $BUILD_NUMBER = [Environment]::GetEnvironmentVariable('BUILD_NUMBER', [System.EnvironmentVariableTarget]::Machine)
+          $AZURE_AD_TENANT_ID = [Environment]::GetEnvironmentVariable('AZURE_AD_TENANT_ID', [System.EnvironmentVariableTarget]::Machine)
+          $AZURE_AD_CLIENT_ID = [Environment]::GetEnvironmentVariable('AZURE_AD_CLIENT_ID', [System.EnvironmentVariableTarget]::Machine)
+          $AZURE_AD_CLIENT_SECRET = [Environment]::GetEnvironmentVariable('AZURE_AD_CLIENT_SECRET', [System.EnvironmentVariableTarget]::Machine)
+          $SELLER_ID = [Environment]::GetEnvironmentVariable('SELLER_ID', [System.EnvironmentVariableTarget]::Machine)
+          echo "$BUILD_BRANCH"
+          echo "$BUILD_HASH"
+          echo "$BUILD_NUMBER"
+          echo "$AZURE_AD_TENANT_ID"
+          echo "$AZURE_AD_CLIENT_ID"
+          echo "$AZURE_AD_CLIENT_SECRET"
+          echo "$SELLER_ID"
 
       - name: Build windows app
         run: flutter build windows --release --build-number=$BUILD_NUMBER

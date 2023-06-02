@@ -61,12 +61,12 @@ jobs:
           echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
 
       - name: Build windows app
-        run: flutter build windows --release --build-number=${{ env.BUILD_NUMBER }}
+        run: flutter build windows --release --build-number=$BUILD_NUMBER
 
       - uses: microsoft/setup-msstore-cli@v1
 
       - name: Configure the Microsoft Store CLI
-        run: msstore reconfigure --tenantId ${{ env.AZURE_AD_TENANT_ID }} --clientId ${{ env.AZURE_AD_CLIENT_ID }} --clientSecret ${{ env.AZURE_AD_CLIENT_SECRET }} --sellerId ${{ env.SELLER_ID }}
+        run: msstore reconfigure --tenantId $AZURE_AD_TENANT_ID --clientId $AZURE_AD_CLIENT_ID --clientSecret $AZURE_AD_CLIENT_SECRET --sellerId $SELLER_ID
 
       - name: Create MSIX
         run: msstore package .

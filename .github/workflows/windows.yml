@@ -1,0 +1,64 @@
+name: Web
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Flutter setup
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Enable windows build
+        run: flutter config --enable-windows-desktop
+
+      - name: Test
+        run: flutter test
+
+      - name: Get release name
+        run: |
+          echo "BUILD_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          echo "BUILD_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
+
+      - name: Build windows app
+        run: flutter build windows --release --build-number=${{ env.BUILD_NUMBER }}
+
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          AZURE_AD_TENANT_ID: op://end.works/Windows Store/azure ad tennant id
+          AZURE_AD_CLIENT_ID: op://end.works/Windows Store/azure ad client id
+          AZURE_AD_CLIENT_SECRET: op://end.works/Windows Store/azure ad client secret
+          SELLER_ID: op://end.works/Windows Store/seller id
+
+      - uses: microsoft/setup-msstore-cli@v1
+
+      - name: Configure the Microsoft Store CLI
+        run: msstore reconfigure --tenantId ${{ env.AZURE_AD_TENANT_ID }} --clientId ${{ env.AZURE_AD_CLIENT_ID }} --clientSecret ${{ env.AZURE_AD_CLIENT_SECRET }} --sellerId ${{ env.SELLER_ID }}
+
+      - name: Create MSIX
+        run: msstore package .
+
+      - name: Publish MSIX to the Microsoft Store
+        run: msstore publish -v

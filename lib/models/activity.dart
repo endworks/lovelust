@@ -1,3 +1,5 @@
+import 'package:lovelust/models/id_name.dart';
+
 class Activity {
   final String id;
   final String? partner;
@@ -13,7 +15,7 @@ class Activity {
   final String? initiator;
   final int rating;
   final String? type;
-  // final List<IdName> practices;
+  final List<IdName>? practices;
   final String? safety;
   final int encounters;
 
@@ -32,7 +34,7 @@ class Activity {
     required this.initiator,
     required this.rating,
     required this.type,
-    // required this.practices,
+    required this.practices,
     required this.safety,
     required this.encounters,
   });
@@ -53,7 +55,11 @@ class Activity {
       initiator: json['initiator'],
       rating: json['rating'],
       type: json['type'],
-      // practices: json['practices'] as List<IdName>,
+      practices: json['practices'] == null
+          ? null
+          : json['practices']
+              .map<IdName>((map) => IdName.fromJson(map))
+              .toList() as List<IdName>,
       safety: json['safety'],
       encounters: json['encounters'],
     );
@@ -74,7 +80,7 @@ class Activity {
         'initiator': initiator,
         'rating': rating,
         'type': type,
-        // 'practices': practices,
+        'practices': practices?.map((e) => e.toJson()).toList(),
         'safety': safety,
         'encounters': encounters,
       };

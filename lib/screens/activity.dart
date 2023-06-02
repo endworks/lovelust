@@ -41,7 +41,6 @@ class _ActivityPageState extends State<ActivityPage> {
         activity = jsonDecode(persistedActivity)
             .map<Activity>((map) => Activity.fromJson(map))
             .toList();
-        ;
       });
     }
   }

@@ -48,6 +48,8 @@ jobs:
           }
           Remove-Item -Path op.zip
           echo "$installDir" >> $GITHUB_PATH
+          echo $GITHUB_PATH
+          echo ${{ github.path }}
 
       - name: Get secrets
         run: |

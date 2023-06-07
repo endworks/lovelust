@@ -49,10 +49,10 @@ jobs:
 
       - name: Get secrets
         run: |
-          "PARTNER_CENTER_TENANT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad tennant id")" >> $env:GITHUB_ENV
-          "PARTNER_CENTER_CLIENT_ID=$(./op.exe read "op://end.works/Windows Store/azure ad client id")" >> $env:GITHUB_ENV
-          "PARTNER_CENTER_CLIENT_SECRET=$(./op.exe read "op://end.works/Windows Store/azure ad client secret")" >> $env:GITHUB_ENV
-          "PARTNER_CENTER_SELLER_ID=$(./op.exe read "op://end.works/Windows Store/seller id")" >> $env:GITHUB_ENV
+          "PARTNER_CENTER_TENANT_ID=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/tennant id")" >> $env:GITHUB_ENV
+          "PARTNER_CENTER_SELLER_ID=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/seller id")" >> $env:GITHUB_ENV
+          "PARTNER_CENTER_CLIENT_ID=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/client id")" >> $env:GITHUB_ENV
+          "PARTNER_CENTER_CLIENT_SECRET=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/client secret")" >> $env:GITHUB_ENV
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 

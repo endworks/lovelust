@@ -94,7 +94,7 @@ flutter:
 msix_config:
   display_name: LoveLust
   publisher_display_name: end.works
-  identity_name: works.end.LoveLust
+  identity_name: 15896end.works.LoveLust
   logo_path: windows/runner/resources/app_icon.ico
   capabilities: internetClient, location
   languages: en-us

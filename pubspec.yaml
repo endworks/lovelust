@@ -91,3 +91,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+msix_config:
+  display_name: LoveLust
+  publisher_display_name: end.works
+  identity_name: works.end.LoveLust
+  logo_path: windows/runner/resources/app_icon.ico
+  capabilities: internetClient, location
+  languages: en-us
+  execution_alias: lovelust
+  store: true

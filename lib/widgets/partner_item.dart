@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
-import 'package:lovelust/screens/activity_details.dart';
+import 'package:lovelust/screens/partner_details.dart';
 
 class PartnerItem extends StatefulWidget {
   const PartnerItem({super.key, required this.partner});
@@ -17,7 +17,9 @@ class _PartnerItemState extends State<PartnerItem> {
     debugPrint('tap partner');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return const ActivityDetailsPage();
+      return PartnerDetailsPage(
+        partner: widget.partner,
+      );
     }));
   }
 

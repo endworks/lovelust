@@ -18,7 +18,9 @@ class _ActivityItemState extends State<ActivityItem> {
     debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return const ActivityDetailsPage();
+      return ActivityDetailsPage(
+        activity: widget.activity,
+      );
     }));
   }
 

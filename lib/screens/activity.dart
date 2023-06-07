@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/destination.dart';
-import 'package:lovelust/screens/activity_details.dart';
+import 'package:lovelust/screens/activity_edit.dart';
 import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
@@ -29,7 +29,7 @@ class _ActivityPageState extends State<ActivityPage> {
     debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return const ActivityDetailsPage();
+      return const ActivityEditPage();
     }));
   }
 

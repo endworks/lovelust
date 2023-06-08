@@ -4,6 +4,7 @@ LoveLust lets you have track of your sexual encounters and the birth control met
 
 [![Android](https://github.com/endworks/lovelust/actions/workflows/android.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/android.yml)
 [![iOS](https://github.com/endworks/lovelust/actions/workflows/ios.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/ios.yml)
+[![Windows](https://github.com/endworks/lovelust/actions/workflows/windows.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/windows.yml)
 [![Web](https://github.com/endworks/lovelust/actions/workflows/web.yml/badge.svg)](https://github.com/endworks/lovelust/actions/workflows/web.yml)
 
 ## Getting Started

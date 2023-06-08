@@ -51,7 +51,7 @@ jobs:
           echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
 
       - name: Build iOS app
-        run: flutter build ipa --release --build-number=${{ env.BUILD_NUMBER }} --obfuscate --split-debug-info=out/ios/ --no-codesign --export-method ad-hoc
+        run: flutter build ipa --release --build-number=${{ env.BUILD_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-method ad-hoc
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

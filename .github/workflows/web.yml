@@ -29,7 +29,7 @@ jobs:
         run: flutter test
 
       - name: Build web app
-        run: flutter build web
+        run: flutter build web --base-href=/lovelust/
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v1

@@ -73,10 +73,10 @@ jobs:
       - uses: microsoft/setup-msstore-cli@v1
 
       - name: Configure the Microsoft Store CLI
-        run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
+        run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET -v
 
       - name: Create MSIX
-        run: msstore package --version 1.0.0.$env:BUILD_NUMBER
+        run: msstore package --version 1.0.0.$env:BUILD_NUMBER -v
 
       - name: Publish MSIX to the Microsoft Store
-        run: msstore publish build/windows/runner/Release -v
+        run: msstore publish -v

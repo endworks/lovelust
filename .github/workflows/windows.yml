@@ -53,7 +53,7 @@ jobs:
           "PARTNER_CENTER_SELLER_ID=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/seller id")" >> $env:GITHUB_ENV
           "PARTNER_CENTER_CLIENT_ID=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/client id")" >> $env:GITHUB_ENV
           "PARTNER_CENTER_CLIENT_SECRET=$(./op.exe read "op://end.works/Microsoft Store Dev CLI/client secret")" >> $env:GITHUB_ENV
-          op read -o ./winstore.pfx "op://end.works/Microsoft Store Dev CLI/winstore.pfx"
+          op.exe read -o ./winstore.pfx "op://end.works/Microsoft Store Dev CLI/winstore.pfx"
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 

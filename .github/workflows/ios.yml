@@ -29,35 +29,20 @@ jobs:
       - name: Test
         run: flutter test
 
-      - name: Install 1Password CLI
-        run: |
-          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_linux_amd64_v2.18.0.zip" -O op.zip
-          unzip -d op op.zip
-          sudo mv op/op /usr/local/bin
-          rm -r op.zip op
-
-          op user get --me
+      - name: Load secret
+        id: op-load-secret
+        uses: 1password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
-      - name: Get secrets
-        run: |
-          export APPSTORE_API_KEY_ID=$(op read "op://end.works/App Store Connect API/app store api key")
-          export APPSTORE_API_PRIVATE_KEY=$(op read "op://end.works/App Store Connect API/app store private key")
-          export APPSTORE_ISSUER_ID=$(op read "op://end.works/App Store Connect API/app store issuer id")
-          export IOS_EXPORT_PRODUCTION=$(op read "op://end.works/App Store Connect API/ios export production")
-          export IOS_PROD_CERTIFICATE=$(op read "op://end.works/App Store Connect API/ios prod certificate")
-          export IOS_PROD_CERTIFICATE_PASSWORD=$(op read "op://end.works/App Store Connect API/ios prod certificate password")
-          export IOS_PROVISION_PRODUCTION=$(op read "op://end.works/App Store Connect API/ios provision production")
-          echo "APPSTORE_API_KEY_ID=$APPSTORE_API_KEY_ID" >> $GITHUB_ENV
-          echo "APPSTORE_API_PRIVATE_KEY=$APPSTORE_API_PRIVATE_KEY" >> $GITHUB_ENV
-          echo "APPSTORE_ISSUER_ID=$APPSTORE_ISSUER_ID" >> $GITHUB_ENV
-          echo "IOS_EXPORT_PRODUCTION=$IOS_EXPORT_PRODUCTION" >> $GITHUB_ENV
-          echo "IOS_PROD_CERTIFICATE=$IOS_PROD_CERTIFICATE" >> $GITHUB_ENV
-          echo "IOS_PROD_CERTIFICATE_PASSWORD=$IOS_PROD_CERTIFICATE_PASSWORD" >> $GITHUB_ENV
-          echo "IOS_PROVISION_PRODUCTION=$IOS_PROVISION_PRODUCTION" >> $GITHUB_ENV
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          APPSTORE_API_KEY_ID: op://end.works/App Store Connect API/app store api key
+          APPSTORE_API_PRIVATE_KEY: op://end.works/App Store Connect API/app store private key
+          APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
+          IOS_EXPORT_PRODUCTION: op://end.works/App Store Connect API/ios export production
+          IOS_PROD_CERTIFICATE: op://end.works/App Store Connect API/ios prod certificate
+          IOS_PROD_CERTIFICATE_PASSWORD: op://end.works/App Store Connect API/ios prod certificate password
+          IOS_PROVISION_PRODUCTION: op://end.works/App Store Connect API/ios provision production
 
       - name: Get release name
         run: |

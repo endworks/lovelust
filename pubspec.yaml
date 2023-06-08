@@ -93,11 +93,14 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 msix_config:
   display_name: LoveLust
-  publisher_display_name: end.works
+  publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
   identity_name: 15896end.works.LoveLust
+  publisher_display_name: end.works
   logo_path: windows/runner/resources/app_icon.ico
-  capabilities: internetClient, location
+  start_menu_icon_path: windows/runner/resources/app_icon.ico
+  tile_icon_path: windows/runner/resources/app_icon.ico
+  capabilities: internetClient
   languages: en-us
+  add_execution_alias: true
   execution_alias: lovelust
   store: true
-  publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617

@@ -94,7 +94,6 @@ flutter:
 msix_config:
   display_name: LoveLust
   # publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
-  publisher: CN=end.works, O=end.works, C=ES
   identity_name: 15896end.works.LoveLust
   publisher_display_name: end.works
   logo_path: windows/runner/resources/app_icon.ico
@@ -103,9 +102,10 @@ msix_config:
   trim_logo: false
   capabilities: internetClient
   languages: en-us
+  app_uri_handler_hosts: lovelust.end.works
   add_execution_alias: true
   execution_alias: lovelust
+  store: true
   #certificate_path: winstore.pfx
   #certificate_password: make me feel again
   #sign_msix: true
-  store: true

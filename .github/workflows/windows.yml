@@ -71,6 +71,12 @@ jobs:
       - name: Build windows app
         run: flutter build windows --release --build-number=$env:BUILD_NUMBER --obfuscate --split-debug-info=out/windows/
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/windows/runner/Release
+
       - uses: microsoft/setup-msstore-cli@v1
 
       - name: Configure the Microsoft Store CLI
@@ -79,10 +85,11 @@ jobs:
       - name: Create MSIX
         run: msstore package --version 1.0.0.$env:BUILD_NUMBER -v
 
-      - name: Upload artifact
+      - name: Upload msix artifact
         uses: actions/upload-artifact@v3
         with:
+          name: msix
           path: build/windows/runner/Release/*.msix
 
-      - name: Publish MSIX to the Microsoft Store
-        run: msstore publish -v
+      # - name: Publish MSIX to the Microsoft Store
+      #   run: msstore publish -v

@@ -93,7 +93,8 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 msix_config:
   display_name: LoveLust
-  publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
+  # publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
+  publisher: CN=end.works, O=end.works, C=ES
   identity_name: 15896end.works.LoveLust
   publisher_display_name: end.works
   logo_path: windows/runner/resources/app_icon.ico
@@ -104,7 +105,7 @@ msix_config:
   languages: en-us
   add_execution_alias: true
   execution_alias: lovelust
-  certificate_path: winstore.pfx
-  certificate_password: make me feel again
-  sign_msix: true
-  store: false
+  #certificate_path: winstore.pfx
+  #certificate_password: make me feel again
+  #sign_msix: true
+  store: true

@@ -105,7 +105,9 @@ msix_config:
   app_uri_handler_hosts: lovelust.end.works
   add_execution_alias: true
   execution_alias: lovelust
-  store: false
-  #certificate_path: winstore.pfx
-  #certificate_password: make me feel again
-  #sign_msix: true
+  msix_version: 1.0.0.0
+  store: true
+  sign_msix: true
+  certificate_path: winstore.pfx
+  certificate_password: make me feel again
+  signtool_options: /fd SHA256 /f winstore.pfx /p 'make me feel again'

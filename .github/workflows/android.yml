@@ -73,8 +73,8 @@ jobs:
       - name: Generate release notes
         run: |
           mkdir whatsnew
-          echo "[$COMMIT_HASH] $COMMIT_MESSAGE" > whatsnew/whatsnew-en-US
-          echo "[$COMMIT_HASH] $COMMIT_MESSAGE" > whatsnew/whatsnew-es-ES
+          echo "<b>$COMMIT_HASH</b>: <i>$COMMIT_MESSAGE</i>" > whatsnew/whatsnew-en-US
+          echo "<b>$COMMIT_HASH</b>: <i>$COMMIT_MESSAGE</i>" > whatsnew/whatsnew-es-ES
 
       - name: Build app bundle
         run: flutter build appbundle --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/android/

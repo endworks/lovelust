@@ -46,9 +46,10 @@ jobs:
 
       - name: Get release name
         run: |
-          echo "BUILD_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
-          echo "BUILD_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "BUILD_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
+          echo "COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Build iOS app
         run: flutter build ipa --release --build-number=${{ env.BUILD_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-method ad-hoc

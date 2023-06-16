@@ -69,9 +69,12 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Generate release notes
+        run: |
           mkdir whatsnew
-          echo "$COMMIT_MESSAGE" > whatsnew/whatsnew-en-US
-        # echo "$COMMIT_MESSAGE" > whatsnew/whatsnew-es-ES
+          echo "[$COMMIT_HASH] $COMMIT_MESSAGE" > whatsnew/whatsnew-en-US
+          echo "[$COMMIT_HASH] $COMMIT_MESSAGE" > whatsnew/whatsnew-es-ES
 
       - name: Build app bundle
         run: flutter build appbundle --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/android/

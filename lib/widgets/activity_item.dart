@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/screens/activity_details.dart';
+import 'package:lovelust/screens/journal/activity_details.dart';
 
 class ActivityItem extends StatefulWidget {
   const ActivityItem({super.key, required this.activity});

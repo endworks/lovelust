@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
-import 'package:lovelust/screens/partner_details.dart';
+import 'package:lovelust/screens/partners/partner_details.dart';
 
 class PartnerItem extends StatefulWidget {
   const PartnerItem({super.key, required this.partner});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/screens/activity.dart';
-import 'package:lovelust/screens/learn.dart';
-import 'package:lovelust/screens/login.dart';
-import 'package:lovelust/screens/partners.dart';
-import 'package:lovelust/screens/settings.dart';
-import 'package:lovelust/screens/stats.dart';
+import 'package:lovelust/screens/home/home.dart';
+import 'package:lovelust/screens/home/learn.dart';
+import 'package:lovelust/screens/journal/journal.dart';
+import 'package:lovelust/screens/login/login.dart';
+import 'package:lovelust/screens/partners/partners.dart';
+import 'package:lovelust/screens/settings/settings.dart';
 
 class Destination {
   const Destination(
@@ -36,11 +36,11 @@ class _DestinationViewState extends State<DestinationView> {
     debugPrint("widget.destination.index: ${widget.destination.index}");
     switch (widget.destination.index) {
       case 0:
-        return ActivityPage(destination: widget.destination);
+        return JournalPage(destination: widget.destination);
       case 1:
         return PartnersPage(destination: widget.destination);
       case 2:
-        return StatsPage(destination: widget.destination);
+        return HomePage(destination: widget.destination);
       case 3:
         return LearnPage(destination: widget.destination);
       case 4:

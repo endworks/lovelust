@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/models/destination.dart';
-import 'package:lovelust/screens/login.dart';
+import 'package:lovelust/screens/login/login.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,15 +32,12 @@ class _HomePageState extends State<HomePage>
   }
 
   static const List<Destination> allDestinations = <Destination>[
+    Destination(0, 'Home', Icons.home_outlined, Icons.home, Colors.indigo),
+    Destination(1, 'Journal', Icons.event_outlined, Icons.event, Colors.red),
     Destination(
-        0, 'Activity', Icons.favorite_outlined, Icons.favorite, Colors.red),
+        2, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
     Destination(
-        1, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
-    Destination(2, 'Stats', Icons.monitor_heart_outlined, Icons.monitor_heart,
-        Colors.cyan),
-    Destination(3, 'Learn', Icons.book_outlined, Icons.book, Colors.orange),
-    Destination(
-        4, 'Settings', Icons.settings_outlined, Icons.settings, Colors.blue),
+        3, 'Settings', Icons.settings_outlined, Icons.settings, Colors.blue),
   ];
 
   late final List<GlobalKey<NavigatorState>> navigatorKeys;

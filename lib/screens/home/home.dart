@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/destination.dart';
 
-class StatsPage extends StatefulWidget {
-  const StatsPage({super.key, required this.destination});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key, required this.destination});
 
   final Destination destination;
 
   @override
-  State<StatsPage> createState() => _StatsPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _StatsPageState extends State<StatsPage> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

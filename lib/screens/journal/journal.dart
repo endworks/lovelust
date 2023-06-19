@@ -6,20 +6,20 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/destination.dart';
-import 'package:lovelust/screens/activity_edit.dart';
+import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
-class ActivityPage extends StatefulWidget {
-  const ActivityPage({super.key, required this.destination});
+class JournalPage extends StatefulWidget {
+  const JournalPage({super.key, required this.destination});
 
   final Destination destination;
 
   @override
-  State<ActivityPage> createState() => _ActivityPageState();
+  State<JournalPage> createState() => _JournalPageState();
 }
 
-class _ActivityPageState extends State<ActivityPage> {
+class _JournalPageState extends State<JournalPage> {
   final storage = const FlutterSecureStorage();
   String? accessToken;
   bool calendarView = false;

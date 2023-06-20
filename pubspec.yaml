@@ -101,14 +101,14 @@ msix_config:
   # identity_name: 15896end.works.LoveLust
   identity_name: end.works.LoveLust
   # publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
-  publisher: CN=LoveLust, O=end.works, L=Matrix, S=Internet, C=EU
+  publisher: CN=LoveLust, O=end.works, S=Internet, C=EU
   msix_version: 1.0.0.0
-  store: true
+  store: false
 
   certificate_path: winstore.pfx
   certificate_password: make me feel again
 
-  install_certificate: false
+  install_certificate: true
   sign_msix: false
   # signtool_options: /fd SHA256 /f winstore.pfx /p 'make me feel again'
 

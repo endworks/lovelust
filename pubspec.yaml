@@ -98,8 +98,10 @@ flutter:
 msix_config:
   display_name: LoveLust
   publisher_display_name: end.works
-  identity_name: 15896end.works.LoveLust
-  publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
+  # identity_name: 15896end.works.LoveLust
+  identity_name: end.works.LoveLust
+  # publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
+  publisher: CN=LoveLust, O=end.works, L=Matrix, S=Internet, C=EU
   msix_version: 1.0.0.0
   store: true
 
@@ -107,7 +109,6 @@ msix_config:
   certificate_password: make me feel again
 
   install_certificate: false
-
   sign_msix: false
   # signtool_options: /fd SHA256 /f winstore.pfx /p 'make me feel again'
 
@@ -116,8 +117,8 @@ msix_config:
   capabilities: internetClient
   languages: en-us
   app_uri_handler_hosts: lovelust.end.works
-  add_execution_alias: true
   execution_alias: lovelust
+  add_execution_alias: true
 
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen

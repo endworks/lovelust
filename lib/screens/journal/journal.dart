@@ -5,15 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/models/destination.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class JournalPage extends StatefulWidget {
-  const JournalPage({super.key, required this.destination});
-
-  final Destination destination;
+  const JournalPage({super.key});
 
   @override
   State<JournalPage> createState() => _JournalPageState();
@@ -124,7 +121,7 @@ class _JournalPageState extends State<JournalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.destination.title),
+        title: const Text('Journal'),
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
         actions: [
           IconButton(

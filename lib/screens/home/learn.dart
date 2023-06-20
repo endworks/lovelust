@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/models/destination.dart';
 
 class LearnPage extends StatefulWidget {
-  const LearnPage({super.key, required this.destination});
-
-  final Destination destination;
+  const LearnPage({super.key});
 
   @override
   State<LearnPage> createState() => _LearnPageState();
@@ -15,7 +12,7 @@ class _LearnPageState extends State<LearnPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.destination.title),
+        title: const Text('Learn'),
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: const Center(

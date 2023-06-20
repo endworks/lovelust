@@ -4,14 +4,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:lovelust/models/destination.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/widgets/partner_item.dart';
 
 class PartnersPage extends StatefulWidget {
-  const PartnersPage({super.key, required this.destination});
-
-  final Destination destination;
+  const PartnersPage({super.key});
 
   @override
   State<PartnersPage> createState() => _PartnersPageState();
@@ -77,7 +74,7 @@ class _PartnersPageState extends State<PartnersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.destination.title),
+        title: const Text('Partners'),
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: RefreshIndicator(

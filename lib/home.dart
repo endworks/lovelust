@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lovelust/models/destination.dart';
+import 'package:lovelust/screens/home/home.dart';
+import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/login/login.dart';
+import 'package:lovelust/screens/partners/partners.dart';
+import 'package:lovelust/screens/settings/settings.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin<HomePage> {
+class _HomeState extends State<Home> {
   final storage = const FlutterSecureStorage();
   bool authenticated = false;
   String? accessToken;
@@ -31,112 +33,53 @@ class _HomePageState extends State<HomePage>
         builder: (BuildContext context) => const LoginPage());
   }
 
-  static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Home', Icons.home_outlined, Icons.home, Colors.blue),
-    Destination(
-        1, 'Journal', Icons.assignment_outlined, Icons.assignment, Colors.red),
-    Destination(
-        2, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
-    Destination(3, 'Settings', Icons.settings_outlined, Icons.settings,
-        Colors.blueGrey),
-  ];
-
-  late final List<GlobalKey<NavigatorState>> navigatorKeys;
-  late final List<GlobalKey> destinationKeys;
-  late final List<AnimationController> destinationFaders;
-  late final List<Widget> destinationViews;
   int _selectedIndex = 0;
-
-  AnimationController buildFaderController() {
-    final AnimationController controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
-    controller.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.dismissed) {
-        setState(() {});
-      }
-    });
-    return controller;
-  }
 
   @override
   void initState() {
     super.initState();
     readAuthentication();
-    navigatorKeys = List<GlobalKey<NavigatorState>>.generate(
-        allDestinations.length, (int index) => GlobalKey()).toList();
-    destinationFaders = List<AnimationController>.generate(
-        allDestinations.length, (int index) => buildFaderController()).toList();
-    destinationFaders[_selectedIndex].value = 1.0;
-    destinationViews = allDestinations.map((Destination destination) {
-      return FadeTransition(
-        opacity: destinationFaders[destination.index]
-            .drive(CurveTween(curve: Curves.fastOutSlowIn)),
-        child: DestinationView(
-          destination: destination,
-          navigatorKey: navigatorKeys[destination.index],
-        ),
-      );
-    }).toList();
-  }
-
-  @override
-  void dispose() {
-    for (final AnimationController controller in destinationFaders) {
-      controller.dispose();
-    }
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final NavigatorState navigator =
-            navigatorKeys[_selectedIndex].currentState!;
-        if (!navigator.canPop()) {
-          return true;
-        }
-        navigator.pop();
-        return false;
-      },
-      child: Scaffold(
-        body: SafeArea(
-          top: false,
-          child: Stack(
-            fit: StackFit.expand,
-            children: allDestinations.map((Destination destination) {
-              final int index = destination.index;
-              final Widget view = destinationViews[index];
-              if (index == _selectedIndex) {
-                destinationFaders[index].forward();
-                return Offstage(offstage: false, child: view);
-              } else {
-                destinationFaders[index].reverse();
-                if (destinationFaders[index].isAnimating) {
-                  return IgnorePointer(child: view);
-                }
-                return Offstage(child: view);
-              }
-            }).toList(),
+    return Scaffold(
+      body: <Widget>[
+        const HomePage(),
+        const JournalPage(),
+        const PartnersPage(),
+        const SettingsPage()
+      ][_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        onDestinationSelected: (int index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        destinations: const <Widget>[
+          NavigationDestination(
+            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
           ),
-        ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectedIndex,
-          labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          onDestinationSelected: (int index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          destinations: allDestinations.map((Destination destination) {
-            return NavigationDestination(
-              selectedIcon: Icon(destination.selectedIcon,
-                  color: destination.color.shade400),
-              icon: Icon(destination.icon),
-              label: destination.title,
-            );
-          }).toList(),
-        ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.assignment),
+            icon: Icon(Icons.assignment_outlined),
+            label: 'Journal',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outlined),
+            label: 'Partners',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(Icons.settings),
+            icon: Icon(Icons.settings_outlined),
+            label: 'Settings',
+          )
+        ],
       ),
     );
   }

@@ -32,12 +32,13 @@ class _HomePageState extends State<HomePage>
   }
 
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Home', Icons.home_outlined, Icons.home, Colors.indigo),
-    Destination(1, 'Journal', Icons.event_outlined, Icons.event, Colors.red),
+    Destination(0, 'Home', Icons.home_outlined, Icons.home, Colors.blue),
+    Destination(
+        1, 'Journal', Icons.assignment_outlined, Icons.assignment, Colors.red),
     Destination(
         2, 'Partners', Icons.group_outlined, Icons.group, Colors.indigo),
-    Destination(
-        3, 'Settings', Icons.settings_outlined, Icons.settings, Colors.blue),
+    Destination(3, 'Settings', Icons.settings_outlined, Icons.settings,
+        Colors.blueGrey),
   ];
 
   late final List<GlobalKey<NavigatorState>> navigatorKeys;

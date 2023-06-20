@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/screens/home/home.dart';
-import 'package:lovelust/screens/home/learn.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/login/login.dart';
 import 'package:lovelust/screens/partners/partners.dart';
@@ -36,14 +35,12 @@ class _DestinationViewState extends State<DestinationView> {
     debugPrint("widget.destination.index: ${widget.destination.index}");
     switch (widget.destination.index) {
       case 0:
-        return JournalPage(destination: widget.destination);
-      case 1:
-        return PartnersPage(destination: widget.destination);
-      case 2:
         return HomePage(destination: widget.destination);
+      case 1:
+        return JournalPage(destination: widget.destination);
+      case 2:
+        return PartnersPage(destination: widget.destination);
       case 3:
-        return LearnPage(destination: widget.destination);
-      case 4:
         return SettingsPage(destination: widget.destination);
       default:
         return const LoginPage();

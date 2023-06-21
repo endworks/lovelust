@@ -18,8 +18,7 @@ class _HomePageState extends State<HomePage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                return Container(
-                  color: index.isOdd ? Colors.white : Colors.black12,
+                return SizedBox(
                   height: 100.0,
                   child: Center(
                     child: Text('$index', textScaleFactor: 5),

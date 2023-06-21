@@ -110,7 +110,7 @@ msix_config:
 
   install_certificate: true
   sign_msix: false
-  # signtool_options: /fd SHA256 /f winstore.pfx /p 'make me feel again'
+  signtool_options: /fd SHA256 /f winstore.pfx /p 'make me feel again'
 
   logo_path: windows/runner/resources/app_icon.ico
   trim_logo: false

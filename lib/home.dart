@@ -58,9 +58,9 @@ class _HomeState extends State<Home> {
         },
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.medical_information),
-            icon: Icon(Icons.medical_information_outlined),
-            label: 'Home',
+            selectedIcon: Icon(Icons.analytics),
+            icon: Icon(Icons.analytics_outlined),
+            label: 'Status',
           ),
           NavigationDestination(
             selectedIcon: Icon(Icons.assignment),

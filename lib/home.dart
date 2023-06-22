@@ -58,8 +58,8 @@ class _HomeState extends State<Home> {
         },
         destinations: const <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.bar_chart),
-            icon: Icon(Icons.bar_chart_outlined),
+            selectedIcon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite_outlined),
             label: 'Status',
           ),
           NavigationDestination(

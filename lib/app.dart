@@ -16,6 +16,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       home: const Home(),
       debugShowCheckedModeBanner: false,
+      supportedLocales: const [Locale('en', 'US'), Locale('es', 'ES')],
     );
   }
 }

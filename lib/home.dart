@@ -56,20 +56,29 @@ class _HomeState extends State<Home> {
             _selectedIndex = index;
           });
         },
-        destinations: const <Widget>[
+        destinations: <Widget>[
           NavigationDestination(
-            selectedIcon: Icon(Icons.favorite),
-            icon: Icon(Icons.favorite_outlined),
-            label: 'Status',
+            selectedIcon: Icon(
+              Icons.favorite,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            icon: const Icon(Icons.favorite_border),
+            label: 'Home',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.assignment),
-            icon: Icon(Icons.assignment_outlined),
+            selectedIcon: Icon(
+              Icons.assignment,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            icon: const Icon(Icons.assignment_outlined),
             label: 'Journal',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.person),
-            icon: Icon(Icons.person_outlined),
+            selectedIcon: Icon(
+              Icons.person,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            icon: const Icon(Icons.person_outlined),
             label: 'Partners',
           ),
         ],

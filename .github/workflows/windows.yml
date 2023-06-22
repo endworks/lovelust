@@ -84,7 +84,8 @@ jobs:
         run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET -v
 
       - name: Create MSIX
-        run: msstore package --version 1.0.0.$env:COMMIT_NUMBER -v
+        run: msstore package --version 1.0.0.0 -v
+        # run: msstore package --version 1.0.0.$env:COMMIT_NUMBER -v
 
       - name: Upload msix artifact
         uses: actions/upload-artifact@v3

@@ -101,18 +101,16 @@ flutter:
 msix_config:
   display_name: LoveLust
   publisher_display_name: end.works
-  # identity_name: 15896end.works.LoveLust
-  identity_name: end.works.LoveLust
-  # publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
-  publisher: CN=LoveLust, O=end.works, S=Internet, C=EU
+  identity_name: 15896end.works.LoveLust
+  publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
   msix_version: 1.0.0.0
-  store: false
+  store: true
 
   certificate_path: winstore.pfx
   certificate_password: make me feel again
 
   install_certificate: true
-  sign_msix: false
+  sign_msix: true
   signtool_options: /fd SHA256 /f winstore.pfx /p 'make me feel again'
 
   logo_path: windows/runner/resources/app_icon.ico

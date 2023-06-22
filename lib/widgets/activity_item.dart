@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 
 class ActivityItem extends StatefulWidget {
   const ActivityItem({super.key, required this.activity});
@@ -14,6 +17,25 @@ class ActivityItem extends StatefulWidget {
 }
 
 class _ActivityItemState extends State<ActivityItem> {
+  final CommonService _commonService = getIt<CommonService>();
+  Partner? partner;
+
+  @override
+  void initState() {
+    super.initState();
+    if (mounted) {
+      if (widget.activity.partner != null) {
+        _commonService
+            .getPartnerById(widget.activity.partner!)
+            .then((value) async {
+          setState(() {
+            partner = value;
+          });
+        });
+      }
+    }
+  }
+
   void _openActivity() {
     debugPrint('tap activity');
     Navigator.push(context,
@@ -26,12 +48,12 @@ class _ActivityItemState extends State<ActivityItem> {
 
   CircleAvatar avatar() {
     if (widget.activity.type != 'MASTURBATION') {
-      if (widget.activity.partner != null) {
+      if (partner != null) {
         return CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor: partner!.gender == 'M' ? Colors.blue : Colors.red,
           child: Icon(
-            Icons.person,
-            color: Theme.of(context).colorScheme.primary,
+            partner!.sex == 'M' ? Icons.male : Icons.female,
+            color: Colors.white,
           ),
         );
       } else {
@@ -60,8 +82,7 @@ class _ActivityItemState extends State<ActivityItem> {
           style:
               TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[300]));
     }
-    return Text(
-        widget.activity.partner != null ? 'Partner name' : 'Unknown partner',
+    return Text(partner != null ? partner!.name : 'Unknown partner',
         style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.primary));

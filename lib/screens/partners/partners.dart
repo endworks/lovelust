@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/partner_item.dart';
 
 class PartnersPage extends StatefulWidget {
@@ -15,27 +16,22 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  final storage = const FlutterSecureStorage();
-  String? accessToken;
+  final StorageService _storageService = getIt<StorageService>();
   List<Partner> partners = [];
 
   Future<void> _readData() async {
-    accessToken = await storage.read(key: 'access_token');
-    final persistedPartners = await storage.read(key: 'partners');
-    if (persistedPartners != null) {
-      setState(() {
-        partners = jsonDecode(persistedPartners)
-            .map<Partner>((map) => Partner.fromJson(map))
-            .toList();
-      });
-    }
+    final persistedPartners = await _storageService.getPartners();
+    setState(() {
+      partners = persistedPartners;
+    });
   }
 
   Future<List<Partner>> _getPartners() async {
     final response = await http.get(
       Uri.parse('https://lovelust-api.end.works/partner'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        HttpHeaders.authorizationHeader:
+            'Bearer ${await _storageService.getAccessToken()}',
       },
     );
 
@@ -59,12 +55,13 @@ class _PartnersPageState extends State<PartnersPage> {
     if (mounted) {
       super.initState();
       _readData().then((value) async {
-        if (accessToken != null && partners.isEmpty) {
+        if (await _storageService.getAccessToken() != null &&
+            partners.isEmpty) {
           partners = await _getPartners();
           setState(() {
             partners = partners;
           });
-          await storage.write(key: 'partners', value: jsonEncode(partners));
+          await _storageService.setPartners(partners);
         }
       });
     }

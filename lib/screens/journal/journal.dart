@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
@@ -17,8 +18,7 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  final storage = const FlutterSecureStorage();
-  String? accessToken;
+  final StorageService _storageService = getIt<StorageService>();
   bool calendarView = false;
   List<Activity> activity = [];
 
@@ -31,28 +31,20 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> _readData() async {
-    accessToken = await storage.read(key: 'access_token');
-    final persistedActivity = await storage.read(key: 'activity');
-    final persistedCalendarView = await storage.read(key: 'calendar_view');
-    if (persistedActivity != null) {
-      setState(() {
-        activity = jsonDecode(persistedActivity)
-            .map<Activity>((map) => Activity.fromJson(map))
-            .toList();
-      });
-    }
-    if (persistedCalendarView != null) {
-      setState(() {
-        calendarView = jsonDecode(persistedCalendarView);
-      });
-    }
+    final persistedActivity = await _storageService.getActivity();
+    final persistedCalendarView = await _storageService.getCalendarView();
+    setState(() {
+      activity = persistedActivity;
+      calendarView = persistedCalendarView;
+    });
   }
 
   Future<List<Activity>> _getActivity() async {
     final response = await http.get(
       Uri.parse('https://lovelust-api.end.works/activity'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer $accessToken',
+        HttpHeaders.authorizationHeader:
+            'Bearer ${await _storageService.getAccessToken()}',
       },
     );
 
@@ -74,7 +66,7 @@ class _JournalPageState extends State<JournalPage> {
   void _onCalendarToggle() async {
     debugPrint(calendarView ? 'list' : 'calendar');
     setState(() => calendarView = !calendarView);
-    await storage.write(key: 'calendar_view', value: jsonEncode(calendarView));
+    await _storageService.setCalendarView(calendarView);
   }
 
   Widget _separator(int index) {
@@ -106,12 +98,13 @@ class _JournalPageState extends State<JournalPage> {
     if (mounted) {
       super.initState();
       _readData().then((value) async {
-        if (accessToken != null && activity.isEmpty) {
+        if (await _storageService.getAccessToken() != null &&
+            activity.isEmpty) {
           activity = await _getActivity();
           setState(() {
             activity = activity;
           });
-          await storage.write(key: 'activity', value: jsonEncode(activity));
+          await _storageService.setActivity(activity);
         }
       });
     }

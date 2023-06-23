@@ -21,13 +21,22 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      _commonService
-          .getPartnerById(widget.activity.partner!)
-          .then((value) async {
-        setState(() {
-          partner = value;
-        });
+      partner = _commonService.getPartnerById(widget.activity.partner!);
+      setState(() {
+        partner = partner;
       });
+    }
+  }
+
+  Text title() {
+    if (widget.activity.type != 'MASTURBATION') {
+      if (partner != null) {
+        return Text(partner!.name);
+      } else {
+        return const Text('Unknown partner');
+      }
+    } else {
+      return const Text('Solo');
     }
   }
 
@@ -35,7 +44,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(partner != null ? partner!.name : 'Unknown partner'),
+        title: title(),
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: const Center(

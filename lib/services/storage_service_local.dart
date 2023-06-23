@@ -10,21 +10,25 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<String?> getAccessToken() async {
-    return storage.read(key: 'access_token');
+    accessToken = await storage.read(key: 'access_token');
+    return accessToken;
   }
 
   @override
   Future<void> setAccessToken(String value) async {
+    accessToken = value;
     await storage.write(key: 'access_token', value: value);
   }
 
   @override
-  Future<String?> getRefreshToken() {
-    return storage.read(key: 'refresh_token');
+  Future<String?> getRefreshToken() async {
+    refreshToken = await storage.read(key: 'refresh_token');
+    return refreshToken;
   }
 
   @override
   Future<void> setRefreshToken(String value) async {
+    refreshToken = value;
     await storage.write(key: 'refresh_token', value: value);
   }
 
@@ -32,15 +36,17 @@ class StorageServiceLocal extends StorageService {
   Future<List<Activity>> getActivity() async {
     final persistedActivity = await storage.read(key: 'activity');
     if (persistedActivity != null) {
-      return jsonDecode(persistedActivity)
+      activity = jsonDecode(persistedActivity)
           .map<Activity>((map) => Activity.fromJson(map))
           .toList();
+      return activity;
     }
     return [];
   }
 
   @override
   Future<void> setActivity(List<Activity> value) async {
+    activity = value;
     await storage.write(key: 'activity', value: jsonEncode(value));
   }
 
@@ -48,15 +54,17 @@ class StorageServiceLocal extends StorageService {
   Future<List<Partner>> getPartners() async {
     final persistedPartners = await storage.read(key: 'partners');
     if (persistedPartners != null) {
-      return jsonDecode(persistedPartners)
+      partners = jsonDecode(persistedPartners)
           .map<Partner>((map) => Partner.fromJson(map))
           .toList();
+      return partners;
     }
     return [];
   }
 
   @override
   Future<void> setPartners(List<Partner> value) async {
+    partners = value;
     await storage.write(key: 'partners', value: jsonEncode(value));
   }
 
@@ -64,13 +72,15 @@ class StorageServiceLocal extends StorageService {
   Future<bool> getCalendarView() async {
     final persistedCalendarView = await storage.read(key: 'calendar_view');
     if (persistedCalendarView != null) {
-      return jsonDecode(persistedCalendarView);
+      calendarView = jsonDecode(persistedCalendarView);
+      return calendarView;
     }
     return false;
   }
 
   @override
   Future<void> setCalendarView(bool value) async {
+    calendarView = value;
     await storage.write(key: 'calendar_view', value: jsonEncode(value));
   }
 }

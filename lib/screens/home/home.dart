@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         ]),
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: const CircleAvatar(child: Icon(Icons.person)),
             onPressed: _onSettingsClick,
           )
         ],

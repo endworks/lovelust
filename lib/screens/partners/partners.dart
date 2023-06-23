@@ -54,16 +54,15 @@ class _PartnersPageState extends State<PartnersPage> {
   void initState() {
     if (mounted) {
       super.initState();
-      _readData().then((value) async {
-        if (await _storageService.getAccessToken() != null &&
-            partners.isEmpty) {
-          partners = await _getPartners();
+
+      if (_storageService.accessToken != null && partners.isEmpty) {
+        _getPartners().then((value) async {
           setState(() {
-            partners = partners;
+            partners = value;
           });
           await _storageService.setPartners(partners);
-        }
-      });
+        });
+      }
     }
   }
 

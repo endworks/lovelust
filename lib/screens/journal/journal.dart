@@ -18,11 +18,11 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  final StorageService _storageService = getIt<StorageService>();
+  final StorageService storageService = getIt<StorageService>();
   bool calendarView = false;
   List<Activity> activity = [];
 
-  void _addActivity() {
+  void addActivity() {
     debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
@@ -30,21 +30,12 @@ class _JournalPageState extends State<JournalPage> {
     }));
   }
 
-  Future<void> _readData() async {
-    final persistedActivity = await _storageService.getActivity();
-    final persistedCalendarView = await _storageService.getCalendarView();
-    setState(() {
-      activity = persistedActivity;
-      calendarView = persistedCalendarView;
-    });
-  }
-
-  Future<List<Activity>> _getActivity() async {
+  Future<List<Activity>> getActivity() async {
     final response = await http.get(
       Uri.parse('https://lovelust-api.end.works/activity'),
       headers: {
         HttpHeaders.authorizationHeader:
-            'Bearer ${await _storageService.getAccessToken()}',
+            'Bearer ${await storageService.getAccessToken()}',
       },
     );
 
@@ -56,20 +47,20 @@ class _JournalPageState extends State<JournalPage> {
     }
   }
 
-  Future<void> _pullRefresh() async {
-    activity = await _getActivity();
+  Future<void> pullRefresh() async {
+    activity = await getActivity();
     setState(() {
       activity = activity;
     });
   }
 
-  void _onCalendarToggle() async {
+  void onCalendarToggle() async {
     debugPrint(calendarView ? 'list' : 'calendar');
     setState(() => calendarView = !calendarView);
-    await _storageService.setCalendarView(calendarView);
+    await storageService.setCalendarView(calendarView);
   }
 
-  Widget _separator(int index) {
+  Widget separator(int index) {
     final date = activity[index].date;
     final date2 = activity[index + 1].date;
     final difference = date.difference(date2).inDays;
@@ -95,17 +86,14 @@ class _JournalPageState extends State<JournalPage> {
 
   @override
   void initState() {
-    if (mounted) {
-      super.initState();
-      _readData().then((value) async {
-        if (await _storageService.getAccessToken() != null &&
-            activity.isEmpty) {
-          activity = await _getActivity();
-          setState(() {
-            activity = activity;
-          });
-          await _storageService.setActivity(activity);
-        }
+    super.initState();
+
+    if (storageService.accessToken != null && activity.isEmpty) {
+      getActivity().then((value) async {
+        setState(() {
+          activity = value;
+        });
+        await storageService.setActivity(activity);
       });
     }
   }
@@ -118,26 +106,26 @@ class _JournalPageState extends State<JournalPage> {
         actions: [
           IconButton(
             icon: Icon(calendarView ? Icons.view_stream : Icons.calendar_today),
-            onPressed: _onCalendarToggle,
+            onPressed: onCalendarToggle,
           )
         ],
       ),
       body: RefreshIndicator(
-          onRefresh: _pullRefresh,
+          onRefresh: pullRefresh,
           child: ListView.separated(
               padding: !calendarView
                   ? const EdgeInsetsDirectional.symmetric(horizontal: 8)
                   : null,
               // separatorBuilder: (context, index) => _separator(index),
               separatorBuilder: (context, index) =>
-                  !calendarView ? _separator(index) : const Divider(height: 0),
+                  !calendarView ? separator(index) : const Divider(height: 0),
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: activity.length,
               itemBuilder: (context, index) => !calendarView
                   ? ActivityCard(activity: activity[index])
                   : ActivityItem(activity: activity[index]))),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addActivity,
+        onPressed: addActivity,
         tooltip: 'Add activity',
         child: const Icon(Icons.add),
       ),

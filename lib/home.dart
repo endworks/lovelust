@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/storage_service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,8 +13,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final storage = const FlutterSecureStorage();
-  int _selectedIndex = 0;
+  final StorageService storageService = getIt<StorageService>();
+  int selectedIndex = 0;
+
+  Future<void> readData() async {
+    await storageService.getAccessToken();
+    await storageService.getRefreshToken();
+    await storageService.getActivity();
+    await storageService.getPartners();
+    await storageService.getCalendarView();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    readData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +37,13 @@ class _HomeState extends State<Home> {
         const HomePage(),
         const JournalPage(),
         const PartnersPage(),
-      ][_selectedIndex],
+      ][selectedIndex],
       bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
+        selectedIndex: selectedIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) {
           setState(() {
-            _selectedIndex = index;
+            selectedIndex = index;
           });
         },
         destinations: <Widget>[

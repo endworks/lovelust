@@ -6,6 +6,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/widgets/activity_avatar.dart';
 
 class ActivityItem extends StatefulWidget {
   const ActivityItem({super.key, required this.activity});
@@ -26,12 +27,9 @@ class _ActivityItemState extends State<ActivityItem> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      _commonService
-          .getPartnerById(widget.activity.partner!)
-          .then((value) async {
-        setState(() {
-          partner = value;
-        });
+      partner = _commonService.getPartnerById(widget.activity.partner!);
+      setState(() {
+        partner = partner;
       });
     }
   }
@@ -44,42 +42,6 @@ class _ActivityItemState extends State<ActivityItem> {
         activity: widget.activity,
       );
     }));
-  }
-
-  CircleAvatar avatar() {
-    bool darkMode = Theme.of(context).brightness == Brightness.dark;
-
-    if (widget.activity.type != 'MASTURBATION') {
-      if (partner != null) {
-        return CircleAvatar(
-          backgroundColor: partner!.sex == 'M'
-              ? Colors.blue[darkMode ? fgValue : bgValue]
-              : Colors.red[darkMode ? fgValue : bgValue],
-          child: Icon(
-            partner!.gender == 'M' ? Icons.male : Icons.female,
-            color: partner!.sex == 'M'
-                ? Colors.blue[darkMode ? bgValue : fgValue]
-                : Colors.red[darkMode ? bgValue : fgValue],
-          ),
-        );
-      } else {
-        return CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          child: Icon(
-            Icons.person_off,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        );
-      }
-    } else {
-      return CircleAvatar(
-        backgroundColor: Colors.pink[darkMode ? fgValue : bgValue],
-        child: Icon(
-          Icons.front_hand,
-          color: Colors.pink[darkMode ? bgValue : fgValue],
-        ),
-      );
-    }
   }
 
   Text title() {
@@ -129,7 +91,10 @@ class _ActivityItemState extends State<ActivityItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: avatar(),
+        leading: ActivityAvatar(
+          partnerId: widget.activity.partner,
+          masturbation: widget.activity.type == 'MASTURBATION',
+        ),
         title: title(),
         subtitle:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

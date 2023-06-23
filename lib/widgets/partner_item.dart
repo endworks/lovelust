@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
+import 'package:lovelust/widgets/activity_avatar.dart';
 
 class PartnerItem extends StatefulWidget {
   const PartnerItem({super.key, required this.partner});
@@ -21,17 +22,6 @@ class _PartnerItemState extends State<PartnerItem> {
         partner: widget.partner,
       );
     }));
-  }
-
-  CircleAvatar avatar() {
-    return CircleAvatar(
-      backgroundColor:
-          widget.partner.sex == 'M' ? Colors.blue[400] : Colors.red[400],
-      child: Icon(
-        widget.partner.gender == 'M' ? Icons.male : Icons.female,
-        color: Colors.white,
-      ),
-    );
   }
 
   Text title() {
@@ -67,7 +57,7 @@ class _PartnerItemState extends State<PartnerItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: avatar(),
+        leading: ActivityAvatar(partnerId: widget.partner.id),
         title: title(),
         subtitle:
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

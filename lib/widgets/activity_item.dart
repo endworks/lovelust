@@ -73,10 +73,10 @@ class _ActivityItemState extends State<ActivityItem> {
       }
     } else {
       return CircleAvatar(
-        backgroundColor: Colors.pink[bgValue],
+        backgroundColor: Colors.pink[darkMode ? fgValue : bgValue],
         child: Icon(
           Icons.front_hand,
-          color: Colors.pink[fgValue],
+          color: Colors.pink[darkMode ? bgValue : fgValue],
         ),
       );
     }

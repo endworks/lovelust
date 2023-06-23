@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  cloud_kit:
-    dependency: "direct main"
-    description:
-      name: cloud_kit
-      sha256: "05786cd41cfee2e82246801b3cd2bde94894ae6b1326159c2c300ad8c570a609"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.2.0"
   collection:
     dependency: transitive
     description:
@@ -114,7 +106,7 @@ packages:
     source: hosted
     version: "1.0.5"
   device_info_plus:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: device_info_plus
       sha256: f52ab3b76b36ede4d135aab80194df8925b553686f0fa12226b4e2d658e45903
@@ -240,14 +232,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_widgetkit:
-    dependency: "direct main"
-    description:
-      name: flutter_widgetkit
-      sha256: "63844c74c642d5c950d34b17b40038a1ef21d4d0a65abd59a04e860f0981956d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.3"
   get_it:
     dependency: "direct main"
     description:
@@ -368,22 +352,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
-  package_info_plus:
-    dependency: "direct main"
-    description:
-      name: package_info_plus
-      sha256: ceb027f6bc6a60674a233b4a90a7658af1aebdea833da0b5b53c1e9821a78c7b
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.2"
-  package_info_plus_platform_interface:
-    dependency: transitive
-    description:
-      name: package_info_plus_platform_interface
-      sha256: "9bc8ba46813a4cc42c66ab781470711781940780fd8beddd0c3da62506d3a6c6"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.1"
   path:
     dependency: transitive
     description:

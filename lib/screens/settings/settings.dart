@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/forms/login_form.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -17,8 +18,8 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: const Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          //mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[LoginForm()],
         ),
       ),
     );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
-import 'package:lovelust/screens/login/login.dart';
 import 'package:lovelust/screens/partners/partners.dart';
+import 'package:lovelust/screens/settings/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -14,31 +14,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final storage = const FlutterSecureStorage();
-  bool authenticated = false;
-  String? accessToken;
-
-  Future<void> readAuthentication() async {
-    accessToken = await storage.read(key: 'access_token');
-    if (accessToken == null) {
-      redirectToLogin();
-    }
-  }
-
-  redirectToLogin() {
-    showDialog<void>(
-        context: context,
-        barrierDismissible: false,
-        useSafeArea: true,
-        builder: (BuildContext context) => const LoginPage());
-  }
-
   int _selectedIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    readAuthentication();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +23,7 @@ class _HomeState extends State<Home> {
         const HomePage(),
         const JournalPage(),
         const PartnersPage(),
+        const SettingsPage(),
       ][_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
@@ -80,6 +57,14 @@ class _HomeState extends State<Home> {
             ),
             icon: const Icon(Icons.person_outlined),
             label: 'Partners',
+          ),
+          NavigationDestination(
+            selectedIcon: Icon(
+              Icons.settings,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            icon: const Icon(Icons.settings_outlined),
+            label: 'Settings',
           ),
         ],
       ),

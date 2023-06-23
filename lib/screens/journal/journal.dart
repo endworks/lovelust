@@ -115,7 +115,6 @@ class _JournalPageState extends State<JournalPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Journal'),
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary
         actions: [
           IconButton(
             icon: Icon(calendarView ? Icons.view_stream : Icons.calendar_today),

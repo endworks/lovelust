@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/auth_tokens.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/storage_service.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -14,6 +15,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final StorageService _storageService = getIt<StorageService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -23,16 +25,14 @@ class _LoginFormState extends State<LoginForm> {
       passwordController.value.text.isNotEmpty;
 
   void submit() async {
-    const storage = FlutterSecureStorage();
     AuthTokens tokens;
     if (formKey.currentState!.validate()) {
       if (valid()) {
         try {
           tokens = await signIn(
               usernameController.value.text, passwordController.value.text);
-          await storage.write(key: 'access_token', value: tokens.accessToken);
-          await storage.write(key: 'refresh_token', value: tokens.refreshToken);
-          Navigator.pop(context);
+          await _storageService.setAccessToken(tokens.accessToken);
+          await _storageService.setRefreshToken(tokens.refreshToken);
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

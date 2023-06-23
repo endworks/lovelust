@@ -19,20 +19,20 @@ class ActivityItem extends StatefulWidget {
 class _ActivityItemState extends State<ActivityItem> {
   final CommonService _commonService = getIt<CommonService>();
   Partner? partner;
+  int fgValue = 400;
+  int bgValue = 100;
 
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      if (widget.activity.partner != null) {
-        _commonService
-            .getPartnerById(widget.activity.partner!)
-            .then((value) async {
-          setState(() {
-            partner = value;
-          });
+    if (widget.activity.partner != null) {
+      _commonService
+          .getPartnerById(widget.activity.partner!)
+          .then((value) async {
+        setState(() {
+          partner = value;
         });
-      }
+      });
     }
   }
 
@@ -47,13 +47,19 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   CircleAvatar avatar() {
+    bool darkMode = Theme.of(context).brightness == Brightness.dark;
+
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
         return CircleAvatar(
-          backgroundColor: partner!.gender == 'M' ? Colors.blue : Colors.red,
+          backgroundColor: partner!.sex == 'M'
+              ? Colors.blue[darkMode ? fgValue : bgValue]
+              : Colors.red[darkMode ? fgValue : bgValue],
           child: Icon(
-            partner!.sex == 'M' ? Icons.male : Icons.female,
-            color: Colors.white,
+            partner!.gender == 'M' ? Icons.male : Icons.female,
+            color: partner!.sex == 'M'
+                ? Colors.blue[darkMode ? bgValue : fgValue]
+                : Colors.red[darkMode ? bgValue : fgValue],
           ),
         );
       } else {
@@ -67,25 +73,32 @@ class _ActivityItemState extends State<ActivityItem> {
       }
     } else {
       return CircleAvatar(
-        backgroundColor: Colors.pink[300],
-        child: const Icon(
+        backgroundColor: Colors.pink[bgValue],
+        child: Icon(
           Icons.front_hand,
-          color: Colors.white,
+          color: Colors.pink[fgValue],
         ),
       );
     }
   }
 
   Text title() {
-    if (widget.activity.type == 'MASTURBATION') {
-      return Text('Solo',
-          style:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.pink[300]));
+    if (widget.activity.type != 'MASTURBATION') {
+      if (partner != null) {
+        return Text(partner!.name,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: partner!.sex == 'M' ? Colors.blue : Colors.red));
+      } else {
+        return Text('Unknown partner',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary));
+      }
+    } else {
+      return const Text('Solo',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink));
     }
-    return Text(partner != null ? partner!.name : 'Unknown partner',
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary));
   }
 
   Icon? safetyIcon() {

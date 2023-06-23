@@ -15,9 +15,13 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
-  Future<void> setAccessToken(String value) async {
+  Future<void> setAccessToken(String? value) async {
     accessToken = value;
-    await storage.write(key: 'access_token', value: value);
+    if (value != null) {
+      await storage.write(key: 'access_token', value: value);
+    } else {
+      await storage.delete(key: 'access_token');
+    }
   }
 
   @override
@@ -27,9 +31,13 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
-  Future<void> setRefreshToken(String value) async {
+  Future<void> setRefreshToken(String? value) async {
     refreshToken = value;
-    await storage.write(key: 'refresh_token', value: value);
+    if (value != null) {
+      await storage.write(key: 'refresh_token', value: value);
+    } else {
+      await storage.delete(key: 'refresh_token');
+    }
   }
 
   @override

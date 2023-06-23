@@ -9,9 +9,9 @@ abstract class StorageService {
   bool calendarView = false;
 
   Future<String?> getAccessToken();
-  Future<void> setAccessToken(String value);
+  Future<void> setAccessToken(String? value);
   Future<String?> getRefreshToken();
-  Future<void> setRefreshToken(String value);
+  Future<void> setRefreshToken(String? value);
   Future<List<Activity>> getActivity();
   Future<void> setActivity(List<Activity> value);
   Future<List<Partner>> getPartners();

@@ -88,14 +88,10 @@ class _JournalPageState extends State<JournalPage> {
   void initState() {
     super.initState();
 
-    if (storageService.accessToken != null && activity.isEmpty) {
-      getActivity().then((value) async {
-        setState(() {
-          activity = value;
-        });
-        await storageService.setActivity(activity);
-      });
-    }
+    setState(() {
+      activity = storageService.activity;
+      calendarView = storageService.calendarView;
+    });
   }
 
   @override

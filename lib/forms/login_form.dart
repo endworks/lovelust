@@ -33,6 +33,7 @@ class _LoginFormState extends State<LoginForm> {
               usernameController.value.text, passwordController.value.text);
           await _storageService.setAccessToken(tokens.accessToken);
           await _storageService.setRefreshToken(tokens.refreshToken);
+          Navigator.pop(context);
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

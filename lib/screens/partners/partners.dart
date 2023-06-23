@@ -16,22 +16,15 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  final StorageService _storageService = getIt<StorageService>();
+  final StorageService storageService = getIt<StorageService>();
   List<Partner> partners = [];
 
-  Future<void> _readData() async {
-    final persistedPartners = await _storageService.getPartners();
-    setState(() {
-      partners = persistedPartners;
-    });
-  }
-
-  Future<List<Partner>> _getPartners() async {
+  Future<List<Partner>> getPartners() async {
     final response = await http.get(
       Uri.parse('https://lovelust-api.end.works/partner'),
       headers: {
         HttpHeaders.authorizationHeader:
-            'Bearer ${await _storageService.getAccessToken()}',
+            'Bearer ${await storageService.getAccessToken()}',
       },
     );
 
@@ -43,8 +36,8 @@ class _PartnersPageState extends State<PartnersPage> {
     }
   }
 
-  Future<void> _pullRefresh() async {
-    partners = await _getPartners();
+  Future<void> pullRefresh() async {
+    partners = await getPartners();
     setState(() {
       partners = partners;
     });
@@ -52,18 +45,11 @@ class _PartnersPageState extends State<PartnersPage> {
 
   @override
   void initState() {
-    if (mounted) {
-      super.initState();
+    super.initState();
 
-      if (_storageService.accessToken != null && partners.isEmpty) {
-        _getPartners().then((value) async {
-          setState(() {
-            partners = value;
-          });
-          await _storageService.setPartners(partners);
-        });
-      }
-    }
+    setState(() {
+      partners = storageService.partners;
+    });
   }
 
   @override
@@ -74,7 +60,7 @@ class _PartnersPageState extends State<PartnersPage> {
         //backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: RefreshIndicator(
-          onRefresh: _pullRefresh,
+          onRefresh: pullRefresh,
           child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(height: 0),
               physics: const AlwaysScrollableScrollPhysics(),

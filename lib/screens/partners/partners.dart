@@ -38,6 +38,7 @@ class _PartnersPageState extends State<PartnersPage> {
 
   Future<void> pullRefresh() async {
     partners = await getPartners();
+    await storageService.setPartners(partners);
     setState(() {
       partners = partners;
     });

@@ -49,6 +49,7 @@ class _JournalPageState extends State<JournalPage> {
 
   Future<void> pullRefresh() async {
     activity = await getActivity();
+    await storageService.setActivity(activity);
     setState(() {
       activity = activity;
     });

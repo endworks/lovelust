@@ -45,6 +45,8 @@ dependencies:
   permission_handler: ^10.3.0
   get_it: ^7.6.0
   dynamic_color: ^1.6.5
+  flutter_widgetkit: ^1.0.3
+  cloud_kit: ^1.2.0
 
 dev_dependencies:
   flutter_test:

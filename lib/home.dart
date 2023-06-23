@@ -3,7 +3,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
-import 'package:lovelust/screens/settings/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,7 +22,6 @@ class _HomeState extends State<Home> {
         const HomePage(),
         const JournalPage(),
         const PartnersPage(),
-        const SettingsPage(),
       ][_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
@@ -57,14 +55,6 @@ class _HomeState extends State<Home> {
             ),
             icon: const Icon(Icons.person_outlined),
             label: 'Partners',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.settings,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.settings_outlined),
-            label: 'Settings',
           ),
         ],
       ),

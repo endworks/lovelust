@@ -18,7 +18,7 @@ class App extends StatelessWidget {
         darkColorScheme = darkDynamic.harmonized();
       } else {
         lightColorScheme = ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 93, 89, 217),
+          seedColor: const Color.fromARGB(255, 252, 85, 147),
         );
         darkColorScheme = ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 93, 89, 217),

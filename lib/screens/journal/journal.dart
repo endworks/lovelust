@@ -1,11 +1,8 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/activity_item.dart';
@@ -19,6 +16,7 @@ class JournalPage extends StatefulWidget {
 
 class _JournalPageState extends State<JournalPage> {
   final StorageService storageService = getIt<StorageService>();
+  final ApiService api = getIt<ApiService>();
   bool calendarView = false;
   List<Activity> activity = [];
 
@@ -30,25 +28,8 @@ class _JournalPageState extends State<JournalPage> {
     }));
   }
 
-  Future<List<Activity>> getActivity() async {
-    final response = await http.get(
-      Uri.parse('https://lovelust-api.end.works/activity'),
-      headers: {
-        HttpHeaders.authorizationHeader:
-            'Bearer ${await storageService.getAccessToken()}',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<Activity>((map) => Activity.fromJson(map)).toList();
-    } else {
-      throw Exception('Failed to load activity');
-    }
-  }
-
-  Future<void> pullRefresh() async {
-    activity = await getActivity();
+  Future<void> refresh() async {
+    activity = await api.getActivity();
     await storageService.setActivity(activity);
     setState(() {
       activity = activity;
@@ -104,11 +85,15 @@ class _JournalPageState extends State<JournalPage> {
           IconButton(
             icon: Icon(calendarView ? Icons.view_stream : Icons.calendar_today),
             onPressed: onCalendarToggle,
+          ),
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: refresh,
           )
         ],
       ),
       body: RefreshIndicator(
-          onRefresh: pullRefresh,
+          onRefresh: refresh,
           child: ListView.separated(
               padding: !calendarView
                   ? const EdgeInsetsDirectional.symmetric(horizontal: 8)

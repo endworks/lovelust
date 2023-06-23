@@ -1,10 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/partner_item.dart';
 
@@ -17,27 +14,11 @@ class PartnersPage extends StatefulWidget {
 
 class _PartnersPageState extends State<PartnersPage> {
   final StorageService storageService = getIt<StorageService>();
+  final ApiService api = getIt<ApiService>();
   List<Partner> partners = [];
 
-  Future<List<Partner>> getPartners() async {
-    final response = await http.get(
-      Uri.parse('https://lovelust-api.end.works/partner'),
-      headers: {
-        HttpHeaders.authorizationHeader:
-            'Bearer ${await storageService.getAccessToken()}',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<Partner>((map) => Partner.fromJson(map)).toList();
-    } else {
-      throw Exception('Failed to load partners');
-    }
-  }
-
-  Future<void> pullRefresh() async {
-    partners = await getPartners();
+  Future<void> refresh() async {
+    partners = await api.getPartners();
     await storageService.setPartners(partners);
     setState(() {
       partners = partners;
@@ -58,10 +39,15 @@ class _PartnersPageState extends State<PartnersPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Partners'),
-        //backgroundColor: Theme.of(context).colorScheme.inversePrimary
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: refresh,
+          )
+        ],
       ),
       body: RefreshIndicator(
-          onRefresh: pullRefresh,
+          onRefresh: refresh,
           child: ListView.separated(
               separatorBuilder: (context, index) => const Divider(height: 0),
               physics: const AlwaysScrollableScrollPhysics(),

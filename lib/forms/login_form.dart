@@ -1,10 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class LoginForm extends StatefulWidget {
@@ -16,6 +15,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final StorageService _storageService = getIt<StorageService>();
+  final ApiService api = getIt<ApiService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -29,7 +29,7 @@ class _LoginFormState extends State<LoginForm> {
     if (formKey.currentState!.validate()) {
       if (valid()) {
         try {
-          tokens = await signIn(
+          tokens = await api.login(
               usernameController.value.text, passwordController.value.text);
           await _storageService.setAccessToken(tokens.accessToken);
           await _storageService.setRefreshToken(tokens.refreshToken);
@@ -60,18 +60,6 @@ class _LoginFormState extends State<LoginForm> {
           );
         }
       }
-    }
-  }
-
-  Future<AuthTokens> signIn(String username, String password) async {
-    final response = await http.post(
-        Uri.parse('https://lovelust-api.end.works/auth/login'),
-        body: {'username': username, 'password': password});
-
-    if (response.statusCode == 201) {
-      return AuthTokens.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to login');
     }
   }
 

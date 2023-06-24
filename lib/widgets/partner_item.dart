@@ -26,7 +26,7 @@ class _PartnerItemState extends State<PartnerItem> {
 
   Text title() {
     return Text(widget.partner.name,
-        style: TextStyle(fontWeight: FontWeight.bold));
+        style: const TextStyle(fontWeight: FontWeight.w500));
   }
 
   Text gender() {

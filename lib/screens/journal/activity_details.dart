@@ -16,6 +16,7 @@ class ActivityDetailsPage extends StatefulWidget {
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final CommonService _commonService = getIt<CommonService>();
   Partner? partner;
+  bool solo = false;
 
   @override
   void initState() {
@@ -26,18 +27,30 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
         partner = partner;
       });
     }
+    setState(() {
+      solo = widget.activity.type == 'MASTURBATION';
+    });
   }
 
-  Text title() {
-    if (widget.activity.type != 'MASTURBATION') {
-      if (partner != null) {
-        return Text(partner!.name);
-      } else {
-        return const Text('Unknown partner');
-      }
+  Widget title() {
+    String title;
+    if (solo) {
+      title = 'Solo';
     } else {
-      return const Text('Solo');
+      switch (widget.activity.safety) {
+        case 'safe':
+          title = 'Safe sex';
+
+          break;
+        case 'unsafe':
+          title = 'Unsafe sex';
+
+          break;
+        default:
+          title = 'Partly unsafe sex';
+      }
     }
+    return Text(title);
   }
 
   @override

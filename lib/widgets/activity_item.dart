@@ -180,7 +180,7 @@ class _ActivityItemState extends State<ActivityItem> {
     return Text(
       title,
       style: TextStyle(
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         color: color,
       ),
     );

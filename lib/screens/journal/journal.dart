@@ -4,7 +4,6 @@ import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
-import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class JournalPage extends StatefulWidget {
@@ -17,7 +16,6 @@ class JournalPage extends StatefulWidget {
 class _JournalPageState extends State<JournalPage> {
   final StorageService storageService = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
-  bool calendarView = false;
   List<Activity> activity = [];
 
   void addActivity() {
@@ -34,12 +32,6 @@ class _JournalPageState extends State<JournalPage> {
     setState(() {
       activity = activity;
     });
-  }
-
-  void onCalendarToggle() async {
-    debugPrint(calendarView ? 'list' : 'calendar');
-    setState(() => calendarView = !calendarView);
-    await storageService.setCalendarView(calendarView);
   }
 
   Widget separator(int index) {
@@ -72,7 +64,6 @@ class _JournalPageState extends State<JournalPage> {
 
     setState(() {
       activity = storageService.activity;
-      calendarView = storageService.calendarView;
     });
   }
 
@@ -83,29 +74,21 @@ class _JournalPageState extends State<JournalPage> {
         title: const Text('Journal'),
         actions: [
           IconButton(
-            icon: Icon(calendarView ? Icons.view_stream : Icons.calendar_today),
-            onPressed: onCalendarToggle,
-          ),
-          IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: refresh,
           )
         ],
       ),
       body: RefreshIndicator(
-          onRefresh: refresh,
-          child: ListView.separated(
-              padding: !calendarView
-                  ? const EdgeInsetsDirectional.symmetric(horizontal: 8)
-                  : null,
-              // separatorBuilder: (context, index) => _separator(index),
-              separatorBuilder: (context, index) =>
-                  !calendarView ? separator(index) : const Divider(height: 0),
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: activity.length,
-              itemBuilder: (context, index) => !calendarView
-                  ? ActivityCard(activity: activity[index])
-                  : ActivityItem(activity: activity[index]))),
+        onRefresh: refresh,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => const Divider(height: 0),
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: activity.length,
+          itemBuilder: (context, index) =>
+              ActivityItem(activity: activity[index]),
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: addActivity,
         tooltip: 'Add activity',

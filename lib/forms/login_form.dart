@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class LoginForm extends StatefulWidget {
@@ -15,6 +16,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final StorageService _storageService = getIt<StorageService>();
+  final CommonService common = getIt<CommonService>();
   final ApiService api = getIt<ApiService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
@@ -33,6 +35,7 @@ class _LoginFormState extends State<LoginForm> {
               usernameController.value.text, passwordController.value.text);
           await _storageService.setAccessToken(tokens.accessToken);
           await _storageService.setRefreshToken(tokens.refreshToken);
+          common.initialLoad();
           Navigator.pop(context);
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(

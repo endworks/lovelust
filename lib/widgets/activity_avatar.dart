@@ -17,8 +17,8 @@ class ActivityAvatar extends StatefulWidget {
 class _ActivityAvatarState extends State<ActivityAvatar> {
   final CommonService _commonService = getIt<CommonService>();
   Partner? partner;
-  int fgValue = 400;
-  int bgValue = 50;
+  int fgValue = 500;
+  int bgValue = 100;
 
   @override
   void initState() {

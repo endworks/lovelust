@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/screens/settings/settings.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,6 +11,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final CommonService common = getIt<CommonService>();
+
   void _onSettingsClick() {
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
@@ -28,7 +32,9 @@ class _HomePageState extends State<HomePage> {
         ]),
         actions: [
           IconButton(
-            icon: const CircleAvatar(child: Icon(Icons.person)),
+            icon: CircleAvatar(
+                child: Icon(
+                    common.isLoggedIn() ? Icons.person : Icons.person_off)),
             onPressed: _onSettingsClick,
           )
         ],

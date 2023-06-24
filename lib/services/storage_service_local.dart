@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/services/storage_service.dart';
 
@@ -42,9 +43,9 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<List<Activity>> getActivity() async {
-    final persistedActivity = await storage.read(key: 'activity');
-    if (persistedActivity != null) {
-      activity = jsonDecode(persistedActivity)
+    final persisted = await storage.read(key: 'activity');
+    if (persisted != null) {
+      activity = jsonDecode(persisted)
           .map<Activity>((map) => Activity.fromJson(map))
           .toList();
       return activity;
@@ -60,9 +61,9 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<List<Partner>> getPartners() async {
-    final persistedPartners = await storage.read(key: 'partners');
-    if (persistedPartners != null) {
-      partners = jsonDecode(persistedPartners)
+    final persisted = await storage.read(key: 'partners');
+    if (persisted != null) {
+      partners = jsonDecode(persisted)
           .map<Partner>((map) => Partner.fromJson(map))
           .toList();
       return partners;
@@ -74,6 +75,114 @@ class StorageServiceLocal extends StorageService {
   Future<void> setPartners(List<Partner> value) async {
     partners = value;
     await storage.write(key: 'partners', value: jsonEncode(value));
+  }
+
+  @override
+  Future<List<IdName>> getBirthControls() async {
+    final persisted = await storage.read(key: 'birth_controls');
+    if (persisted != null) {
+      birthControls = jsonDecode(persisted)
+          .map<IdName>((map) => IdName.fromJson(map))
+          .toList();
+      return birthControls;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> setBirthControls(List<IdName> value) async {
+    birthControls = value;
+    await storage.write(key: 'birth_controls', value: jsonEncode(value));
+  }
+
+  @override
+  Future<List<IdName>> getPractices() async {
+    final persisted = await storage.read(key: 'practices');
+    if (persisted != null) {
+      practices = jsonDecode(persisted)
+          .map<IdName>((map) => IdName.fromJson(map))
+          .toList();
+      return practices;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> setPractices(List<IdName> value) async {
+    practices = value;
+    await storage.write(key: 'practices', value: jsonEncode(value));
+  }
+
+  @override
+  Future<List<IdName>> getPlaces() async {
+    final persisted = await storage.read(key: 'places');
+    if (persisted != null) {
+      places = jsonDecode(persisted)
+          .map<IdName>((map) => IdName.fromJson(map))
+          .toList();
+      return places;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> setPlaces(List<IdName> value) async {
+    places = value;
+    await storage.write(key: 'places', value: jsonEncode(value));
+  }
+
+  @override
+  Future<List<IdName>> getInitiators() async {
+    final persisted = await storage.read(key: 'initiators');
+    if (persisted != null) {
+      initiators = jsonDecode(persisted)
+          .map<IdName>((map) => IdName.fromJson(map))
+          .toList();
+      return initiators;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> setInitiators(List<IdName> value) async {
+    initiators = value;
+    await storage.write(key: 'initiators', value: jsonEncode(value));
+  }
+
+  @override
+  Future<List<IdName>> getGenders() async {
+    final persisted = await storage.read(key: 'genders');
+    if (persisted != null) {
+      genders = jsonDecode(persisted)
+          .map<IdName>((map) => IdName.fromJson(map))
+          .toList();
+      return genders;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> setGenders(List<IdName> value) async {
+    genders = value;
+    await storage.write(key: 'genders', value: jsonEncode(value));
+  }
+
+  @override
+  Future<List<IdName>> getActivityTypes() async {
+    final persisted = await storage.read(key: 'activity_types');
+    if (persisted != null) {
+      activityTypes = jsonDecode(persisted)
+          .map<IdName>((map) => IdName.fromJson(map))
+          .toList();
+      return activityTypes;
+    }
+    return [];
+  }
+
+  @override
+  Future<void> setActivityTypes(List<IdName> value) async {
+    activityTypes = value;
+    await storage.write(key: 'activity_types', value: jsonEncode(value));
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/forms/login_form.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -11,13 +12,19 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final StorageService storageService = getIt<StorageService>();
+  final StorageService storage = getIt<StorageService>();
+  final CommonService common = getIt<CommonService>();
 
   signOut() {
-    setState(() {
-      storageService.setAccessToken(null);
-      storageService.setRefreshToken(null);
-    });
+    common.signOut();
+  }
+
+  initialLoad() {
+    common.initialLoad();
+  }
+
+  getStaticData() {
+    common.getStaticData();
   }
 
   @override
@@ -31,12 +38,22 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            storageService.accessToken == null
-                ? const LoginForm()
-                : FilledButton.tonal(
-                    onPressed: signOut,
-                    child: const Text('Sign out'),
-                  )
+            Column(children: [
+              common.isLoggedIn()
+                  ? FilledButton.tonal(
+                      onPressed: signOut,
+                      child: const Text('Sign out'),
+                    )
+                  : const LoginForm(),
+              FilledButton.tonal(
+                onPressed: initialLoad,
+                child: const Text('Refresh initial data'),
+              ),
+              FilledButton.tonal(
+                onPressed: getStaticData,
+                child: const Text('Refresh static data'),
+              )
+            ])
           ],
         ),
       ),

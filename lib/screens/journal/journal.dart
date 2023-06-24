@@ -72,12 +72,6 @@ class _JournalPageState extends State<JournalPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Journal'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: refresh,
-          )
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: refresh,

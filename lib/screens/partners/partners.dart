@@ -39,12 +39,6 @@ class _PartnersPageState extends State<PartnersPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Partners'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: refresh,
-          )
-        ],
       ),
       body: RefreshIndicator(
           onRefresh: refresh,

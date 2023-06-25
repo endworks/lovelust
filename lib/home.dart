@@ -3,6 +3,7 @@ import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class Home extends StatefulWidget {
@@ -13,21 +14,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final StorageService storageService = getIt<StorageService>();
+  final StorageService storage = getIt<StorageService>();
+  final CommonService common = getIt<CommonService>();
   int selectedIndex = 0;
-
-  Future<void> readData() async {
-    await storageService.getAccessToken();
-    await storageService.getRefreshToken();
-    await storageService.getActivity();
-    await storageService.getPartners();
-    await storageService.getCalendarView();
-  }
 
   @override
   void initState() {
     super.initState();
-    readData();
+    common.initialLoad();
   }
 
   @override

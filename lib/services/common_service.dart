@@ -11,6 +11,19 @@ class CommonService {
 
   initialLoad() async {
     var futures = <Future>[
+      storage.getAccessToken(),
+      storage.getRefreshToken(),
+      storage.getActivity(),
+      storage.getPartners(),
+      storage.getCalendarView()
+    ];
+
+    await Future.wait(futures);
+    loadStaticData();
+  }
+
+  initialFetch() async {
+    var futures = <Future>[
       api.getActivity(),
       api.getPartners(),
     ];
@@ -18,11 +31,23 @@ class CommonService {
     List result = await Future.wait(futures);
     storage.setActivity(result[0]);
     storage.setPartners(result[1]);
-
-    getStaticData();
+    fetchStaticData();
   }
 
-  getStaticData() async {
+  loadStaticData() async {
+    var futures = <Future>[
+      storage.getGenders(),
+      storage.getInitiators(),
+      storage.getPractices(),
+      storage.getPlaces(),
+      storage.getBirthControls(),
+      storage.getActivityTypes(),
+    ];
+
+    await Future.wait(futures);
+  }
+
+  fetchStaticData() async {
     var futures = <Future>[
       api.getGenders(),
       api.getInitiators(),
@@ -46,10 +71,13 @@ class CommonService {
   }
 
   signOut() {
-    storage.setAccessToken(null);
-    storage.setRefreshToken(null);
-    storage.setActivity([]);
-    storage.setPartners([]);
+    var futures = <Future>[
+      storage.setAccessToken(null),
+      storage.setRefreshToken(null),
+      storage.setActivity([]),
+      storage.setPartners([])
+    ];
+    Future.wait(futures);
   }
 
   Activity? getActivityById(String id) {

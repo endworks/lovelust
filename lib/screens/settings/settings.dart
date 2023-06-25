@@ -19,12 +19,12 @@ class _SettingsPageState extends State<SettingsPage> {
     common.signOut();
   }
 
-  initialLoad() {
-    common.initialLoad();
+  initialFetch() {
+    common.initialFetch();
   }
 
-  getStaticData() {
-    common.getStaticData();
+  fetchStaticData() {
+    common.fetchStaticData();
   }
 
   @override
@@ -46,11 +46,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     )
                   : const LoginForm(),
               FilledButton.tonal(
-                onPressed: initialLoad,
+                onPressed: initialFetch,
                 child: const Text('Refresh initial data'),
               ),
               FilledButton.tonal(
-                onPressed: getStaticData,
+                onPressed: fetchStaticData,
                 child: const Text('Refresh static data'),
               )
             ])

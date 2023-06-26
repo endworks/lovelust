@@ -29,8 +29,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<MenuEntryItem>>[
               const PopupMenuItem(
-                value: MenuEntryItem.info,
-                child: Text('Info'),
+                value: MenuEntryItem.help,
+                child: Text('Help'),
               ),
             ],
           ),

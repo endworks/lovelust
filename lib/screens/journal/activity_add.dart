@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/forms/activity_form.dart';
+import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 
 class ActivityAddPage extends StatefulWidget {
@@ -9,6 +11,26 @@ class ActivityAddPage extends StatefulWidget {
 }
 
 class _ActivityAddPageState extends State<ActivityAddPage> {
+  Activity activity = Activity(
+    id: '',
+    partner: null,
+    birthControl: null,
+    partnerBirthControl: null,
+    date: DateTime.now(),
+    location: null,
+    notes: null,
+    duration: 0,
+    orgasms: 0,
+    partnerOrgasms: 0,
+    place: null,
+    initiator: null,
+    rating: 0,
+    type: null,
+    practices: null,
+    safety: null,
+    encounters: 0,
+  );
+
   void save() {
     Navigator.pop(context);
   }
@@ -25,19 +47,14 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<MenuEntryItem>>[
               const PopupMenuItem(
-                value: MenuEntryItem.info,
-                child: Text('Info'),
+                value: MenuEntryItem.help,
+                child: Text('Help'),
               ),
             ],
           ),
         ],
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
-        ),
-      ),
+      body: ActivityForm(activity: activity),
     );
   }
 }

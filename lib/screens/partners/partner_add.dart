@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/forms/partner_form.dart';
 import 'package:lovelust/models/model_entry_item.dart';
+import 'package:lovelust/models/partner.dart';
 
 class PartnerAddPage extends StatefulWidget {
   const PartnerAddPage({super.key});
@@ -9,6 +11,16 @@ class PartnerAddPage extends StatefulWidget {
 }
 
 class _PartnerAddPageState extends State<PartnerAddPage> {
+  Partner partner = Partner(
+    id: '',
+    sex: 'M',
+    gender: 'M',
+    name: '',
+    meetingDate: DateTime.now(),
+    notes: null,
+    activity: null,
+  );
+
   void save() {
     Navigator.pop(context);
   }
@@ -25,19 +37,14 @@ class _PartnerAddPageState extends State<PartnerAddPage> {
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<MenuEntryItem>>[
               const PopupMenuItem(
-                value: MenuEntryItem.info,
-                child: Text('Info'),
+                value: MenuEntryItem.help,
+                child: Text('Help'),
               ),
             ],
           ),
         ],
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
-        ),
-      ),
+      body: PartnerForm(partner: partner),
     );
   }
 }

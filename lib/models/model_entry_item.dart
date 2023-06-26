@@ -1,1 +1,1 @@
-enum MenuEntryItem { info, delete }
+enum MenuEntryItem { help, delete }

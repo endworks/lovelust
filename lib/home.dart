@@ -20,8 +20,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    super.initState();
     common.initialLoad();
+    super.initState();
   }
 
   @override

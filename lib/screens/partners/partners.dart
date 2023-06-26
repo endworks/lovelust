@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
@@ -16,6 +17,18 @@ class _PartnersPageState extends State<PartnersPage> {
   final StorageService storageService = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
   List<Partner> partners = [];
+  ScrollController scrollController = ScrollController();
+  bool isExtended = true;
+
+  void addPartner() {
+    debugPrint('tap activity');
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(builder: (BuildContext context) {
+        return const PartnerAddPage();
+      }),
+    );
+  }
 
   Future<void> refresh() async {
     partners = await api.getPartners();
@@ -27,11 +40,17 @@ class _PartnersPageState extends State<PartnersPage> {
 
   @override
   void initState() {
-    super.initState();
+    scrollController.addListener(() {
+      setState(() {
+        isExtended = scrollController.offset == 0.0;
+      });
+    });
 
     setState(() {
       partners = storageService.partners;
     });
+
+    super.initState();
   }
 
   @override
@@ -41,13 +60,23 @@ class _PartnersPageState extends State<PartnersPage> {
         title: const Text('Partners'),
       ),
       body: RefreshIndicator(
-          onRefresh: refresh,
-          child: ListView.separated(
-              separatorBuilder: (context, index) => const Divider(height: 0),
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: partners.length,
-              itemBuilder: (context, index) =>
-                  PartnerItem(partner: partners[index]))),
+        onRefresh: refresh,
+        child: ListView.separated(
+          controller: scrollController,
+          separatorBuilder: (context, index) => const Divider(height: 0),
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: partners.length,
+          itemBuilder: (context, index) =>
+              PartnerItem(partner: partners[index]),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: addPartner,
+        tooltip: !isExtended ? 'Add partner' : null,
+        label: const Text('Add partner'),
+        isExtended: isExtended,
+        icon: const Icon(Icons.add),
+      ),
     );
   }
 }

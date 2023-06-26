@@ -151,8 +151,18 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   Widget duration() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+      child: Text(
+        '${widget.activity.duration} min.',
+        style: secondaryTextStyle(),
+      ),
+    );
+  }
+
+  Widget partnerName() {
     return Text(
-      '${widget.activity.duration} min.',
+      partner != null ? partner!.name : '',
       style: secondaryTextStyle(),
     );
   }
@@ -209,7 +219,10 @@ class _ActivityItemState extends State<ActivityItem> {
                 children: [place(), time(), protection()],
               ),
               activity(),
-              duration()
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [partnerName(), duration()],
+              )
             ],
           ),
           ActivityAvatar(

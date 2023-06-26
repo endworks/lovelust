@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/screens/journal/activity_edit.dart';
+import 'package:lovelust/screens/journal/activity_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
@@ -17,13 +17,17 @@ class _JournalPageState extends State<JournalPage> {
   final StorageService storageService = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
   List<Activity> activity = [];
+  ScrollController scrollController = ScrollController();
+  bool isExtended = true;
 
   void addActivity() {
     debugPrint('tap activity');
-    Navigator.push(context,
-        MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return const ActivityEditPage();
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(builder: (BuildContext context) {
+        return const ActivityAddPage();
+      }),
+    );
   }
 
   Future<void> refresh() async {
@@ -60,11 +64,17 @@ class _JournalPageState extends State<JournalPage> {
 
   @override
   void initState() {
-    super.initState();
+    scrollController.addListener(() {
+      setState(() {
+        isExtended = scrollController.offset == 0.0;
+      });
+    });
 
     setState(() {
       activity = storageService.activity;
     });
+
+    super.initState();
   }
 
   @override
@@ -76,6 +86,7 @@ class _JournalPageState extends State<JournalPage> {
       body: RefreshIndicator(
         onRefresh: refresh,
         child: ListView.separated(
+          controller: scrollController,
           separatorBuilder: (context, index) => const Divider(height: 0),
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: activity.length,
@@ -83,10 +94,12 @@ class _JournalPageState extends State<JournalPage> {
               ActivityItem(activity: activity[index]),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: addActivity,
-        tooltip: 'Add activity',
-        child: const Icon(Icons.add),
+        tooltip: !isExtended ? 'Add activity' : null,
+        label: const Text('Add activity'),
+        isExtended: isExtended,
+        icon: const Icon(Icons.add),
       ),
     );
   }

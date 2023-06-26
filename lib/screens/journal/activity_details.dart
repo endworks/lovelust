@@ -4,6 +4,8 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
 
+import 'activity_edit.dart';
+
 class ActivityDetailsPage extends StatefulWidget {
   const ActivityDetailsPage({super.key, required this.activity});
 
@@ -17,6 +19,15 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final CommonService _commonService = getIt<CommonService>();
   Partner? partner;
   bool solo = false;
+
+  void editActivity() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(builder: (BuildContext context) {
+        return ActivityEditPage(activity: widget.activity);
+      }),
+    );
+  }
 
   @override
   void initState() {
@@ -58,6 +69,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         title: title(),
+        actions: [
+          IconButton(onPressed: editActivity, icon: const Icon(Icons.edit))
+        ],
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: const Center(

@@ -1,0 +1,1 @@
+enum MenuEntryItem { info, delete }

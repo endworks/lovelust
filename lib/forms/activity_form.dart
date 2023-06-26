@@ -1,41 +1,40 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:lovelust/models/auth_tokens.dart';
+import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+class ActivityForm extends StatefulWidget {
+  const ActivityForm({super.key, required this.activity});
+
+  final Activity activity;
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<ActivityForm> createState() => _ActivityFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
-  final StorageService _storageService = getIt<StorageService>();
+class _ActivityFormState extends State<ActivityForm> {
+  final StorageService storage = getIt<StorageService>();
   final CommonService common = getIt<CommonService>();
   final ApiService api = getIt<ApiService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final usernameController = TextEditingController();
+  final notesController = TextEditingController();
   final passwordController = TextEditingController();
 
   bool valid() =>
-      usernameController.value.text.isNotEmpty &&
+      notesController.value.text.isNotEmpty &&
       passwordController.value.text.isNotEmpty;
 
   void submit() async {
-    AuthTokens tokens;
     if (formKey.currentState!.validate()) {
       if (valid()) {
         try {
-          tokens = await api.login(
-              usernameController.value.text, passwordController.value.text);
-          await _storageService.setAccessToken(tokens.accessToken);
-          await _storageService.setRefreshToken(tokens.refreshToken);
-          common.initialFetch();
+          await api.postActivity(widget.activity);
+          List<Activity> result = await api.getActivity();
+          storage.setActivity(result);
           Navigator.pop(context);
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -67,8 +66,13 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    usernameController.dispose();
+    notesController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -83,35 +87,14 @@ class _LoginFormState extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              controller: usernameController,
+              controller: notesController,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.person),
+                prefixIcon: Icon(Icons.note),
                 filled: true,
                 border: UnderlineInputBorder(),
-                labelText: 'Username',
-                hintText: 'Enter username...',
+                labelText: 'Notes',
+                hintText: 'Enter notes...',
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.key),
-                filled: true,
-                border: UnderlineInputBorder(),
-                labelText: 'Password',
-                hintText: 'Enter passsword...',
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: FilledButton.tonal(
-              onPressed: submit,
-              child: const Text('Sign in'),
             ),
           ),
         ],

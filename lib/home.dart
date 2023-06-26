@@ -33,6 +33,7 @@ class _HomeState extends State<Home> {
         const PartnersPage(),
       ][selectedIndex],
       bottomNavigationBar: NavigationBar(
+        elevation: null,
         selectedIndex: selectedIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/models/model_entry_item.dart';
 
 class ActivityAddPage extends StatefulWidget {
   const ActivityAddPage({super.key});
@@ -8,11 +9,28 @@ class ActivityAddPage extends StatefulWidget {
 }
 
 class _ActivityAddPageState extends State<ActivityAddPage> {
+  void save() {
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add activity'),
+        title: const Text('Create activity'),
+        actions: [
+          FilledButton(onPressed: save, child: const Text('Save')),
+          PopupMenuButton(
+            onSelected: (MenuEntryItem item) {},
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<MenuEntryItem>>[
+              const PopupMenuItem(
+                value: MenuEntryItem.info,
+                child: Text('Info'),
+              ),
+            ],
+          ),
+        ],
       ),
       body: const Center(
         child: Column(

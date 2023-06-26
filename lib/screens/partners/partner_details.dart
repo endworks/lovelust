@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
 
@@ -15,9 +16,11 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   void editPartner() {
     Navigator.push(
       context,
-      MaterialPageRoute<Widget>(builder: (BuildContext context) {
-        return PartnerEditPage(partner: widget.partner);
-      }),
+      MaterialPageRoute<Widget>(
+          fullscreenDialog: true,
+          builder: (BuildContext context) {
+            return PartnerEditPage(partner: widget.partner);
+          }),
     );
   }
 
@@ -27,9 +30,18 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       appBar: AppBar(
         title: Text(widget.partner.name),
         actions: [
-          IconButton(onPressed: editPartner, icon: const Icon(Icons.edit))
+          IconButton(onPressed: editPartner, icon: const Icon(Icons.edit)),
+          PopupMenuButton(
+            onSelected: (MenuEntryItem item) {},
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<MenuEntryItem>>[
+              const PopupMenuItem(
+                value: MenuEntryItem.delete,
+                child: Text('Delete'),
+              ),
+            ],
+          ),
         ],
-        // backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),
       body: const Center(
         child: Column(

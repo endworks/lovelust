@@ -38,7 +38,6 @@ class App extends StatelessWidget {
         ),
         themeMode: ThemeMode.system,
         home: const Home(),
-        supportedLocales: const [Locale('en', 'US'), Locale('es', 'ES')],
         debugShowCheckedModeBanner: false,
       );
     });

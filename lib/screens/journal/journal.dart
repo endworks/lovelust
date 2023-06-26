@@ -21,12 +21,13 @@ class _JournalPageState extends State<JournalPage> {
   bool isExtended = true;
 
   void addActivity() {
-    debugPrint('tap activity');
     Navigator.push(
       context,
-      MaterialPageRoute<Widget>(builder: (BuildContext context) {
-        return const ActivityAddPage();
-      }),
+      MaterialPageRoute<Widget>(
+          fullscreenDialog: true,
+          builder: (BuildContext context) {
+            return const ActivityAddPage();
+          }),
     );
   }
 

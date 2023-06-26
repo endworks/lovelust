@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -23,9 +24,11 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   void editActivity() {
     Navigator.push(
       context,
-      MaterialPageRoute<Widget>(builder: (BuildContext context) {
-        return ActivityEditPage(activity: widget.activity);
-      }),
+      MaterialPageRoute<Widget>(
+          fullscreenDialog: true,
+          builder: (BuildContext context) {
+            return ActivityEditPage(activity: widget.activity);
+          }),
     );
   }
 
@@ -70,7 +73,17 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       appBar: AppBar(
         title: title(),
         actions: [
-          IconButton(onPressed: editActivity, icon: const Icon(Icons.edit))
+          IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
+          PopupMenuButton(
+            onSelected: (MenuEntryItem item) {},
+            itemBuilder: (BuildContext context) =>
+                <PopupMenuEntry<MenuEntryItem>>[
+              const PopupMenuItem(
+                value: MenuEntryItem.delete,
+                child: Text('Delete'),
+              ),
+            ],
+          ),
         ],
         // backgroundColor: Theme.of(context).colorScheme.inversePrimary
       ),

@@ -94,13 +94,17 @@ class _JournalPageState extends State<JournalPage> {
               ActivityItem(activity: activity[index]),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: addActivity,
-        tooltip: !isExtended ? 'Add activity' : null,
-        label: const Text('Add activity'),
-        isExtended: isExtended,
-        icon: const Icon(Icons.add),
-      ),
+      floatingActionButton: isExtended
+          ? FloatingActionButton.extended(
+              onPressed: addActivity,
+              label: const Text('Add activity'),
+              icon: const Icon(Icons.add),
+            )
+          : FloatingActionButton(
+              onPressed: addActivity,
+              tooltip: 'Add activity',
+              child: const Icon(Icons.add),
+            ),
     );
   }
 }

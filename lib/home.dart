@@ -59,10 +59,10 @@ class _HomeState extends State<Home> {
           ),
           NavigationDestination(
             selectedIcon: Icon(
-              Icons.person,
+              Icons.group,
               color: Theme.of(context).colorScheme.primary,
             ),
-            icon: const Icon(Icons.person_outlined),
+            icon: const Icon(Icons.group_outlined),
             label: 'Partners',
           ),
         ],

@@ -61,22 +61,25 @@ class _PartnersPageState extends State<PartnersPage> {
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
-        child: ListView.separated(
+        child: ListView.builder(
           controller: scrollController,
-          separatorBuilder: (context, index) => const Divider(height: 0),
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: partners.length,
           itemBuilder: (context, index) =>
               PartnerItem(partner: partners[index]),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: addPartner,
-        tooltip: !isExtended ? 'Add partner' : null,
-        label: const Text('Add partner'),
-        isExtended: isExtended,
-        icon: const Icon(Icons.add),
-      ),
+      floatingActionButton: isExtended
+          ? FloatingActionButton.extended(
+              onPressed: addPartner,
+              label: const Text('Add partner'),
+              icon: const Icon(Icons.add),
+            )
+          : FloatingActionButton(
+              onPressed: addPartner,
+              tooltip: 'Add partner',
+              child: const Icon(Icons.add),
+            ),
     );
   }
 }

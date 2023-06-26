@@ -42,7 +42,7 @@ class _PartnersPageState extends State<PartnersPage> {
   void initState() {
     scrollController.addListener(() {
       setState(() {
-        isExtended = scrollController.offset == 0.0;
+        isExtended = scrollController.offset <= 0.0;
       });
     });
 

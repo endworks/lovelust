@@ -9,32 +9,32 @@ class CommonService {
   final StorageService storage = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
 
-  initialLoad() async {
+  Future<void> initialLoad() {
     var futures = <Future>[
       storage.getAccessToken(),
       storage.getRefreshToken(),
       storage.getActivity(),
       storage.getPartners(),
-      storage.getCalendarView()
+      storage.getCalendarView(),
+      loadStaticData()
     ];
 
-    await Future.wait(futures);
-    await loadStaticData();
+    return Future.wait(futures);
   }
 
-  initialFetch() async {
+  Future<void> initialFetch() async {
     var futures = <Future>[
       api.getActivity(),
       api.getPartners(),
+      fetchStaticData()
     ];
 
     List result = await Future.wait(futures);
     storage.setActivity(result[0]);
     storage.setPartners(result[1]);
-    await fetchStaticData();
   }
 
-  loadStaticData() async {
+  Future<void> loadStaticData() {
     var futures = <Future>[
       storage.getGenders(),
       storage.getInitiators(),
@@ -44,7 +44,7 @@ class CommonService {
       storage.getActivityTypes(),
     ];
 
-    await Future.wait(futures);
+    return Future.wait(futures);
   }
 
   fetchStaticData() async {
@@ -70,7 +70,7 @@ class CommonService {
     return storage.accessToken != null;
   }
 
-  signOut() {
+  Future<void> signOut() {
     var futures = <Future>[
       storage.setAccessToken(null),
       storage.setRefreshToken(null),

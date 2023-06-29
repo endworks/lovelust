@@ -19,7 +19,7 @@ class CommonService {
     ];
 
     await Future.wait(futures);
-    loadStaticData();
+    await loadStaticData();
   }
 
   initialFetch() async {
@@ -31,7 +31,7 @@ class CommonService {
     List result = await Future.wait(futures);
     storage.setActivity(result[0]);
     storage.setPartners(result[1]);
-    fetchStaticData();
+    await fetchStaticData();
   }
 
   loadStaticData() async {

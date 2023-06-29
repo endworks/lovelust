@@ -77,7 +77,7 @@ class CommonService {
       storage.setActivity([]),
       storage.setPartners([])
     ];
-    Future.wait(futures);
+    return Future.wait(futures);
   }
 
   Activity? getActivityById(String id) {

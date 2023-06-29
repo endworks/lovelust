@@ -21,6 +21,9 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     common.initialLoad();
+    if (common.isLoggedIn()) {
+      common.initialFetch();
+    }
     super.initState();
   }
 

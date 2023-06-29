@@ -24,10 +24,10 @@ class _HomeState extends State<Home> {
     common.initialLoad().whenComplete(() {
       if (common.isLoggedIn()) {
         common.initialFetch().whenComplete(() {
-           ScaffoldMessenger.of(context).showSnackBar(Snackbar(content: const Text('Initial fetch successful'));
-        })
+           ScaffoldMessenger.of(context).showSnackBar(const Snackbar(content: Text('Initial fetch successful')));
+        });
       }
-    })
+    });
   }
 
   @override

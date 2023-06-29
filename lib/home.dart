@@ -34,9 +34,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<void>(
       future: common.initialLoad,
-      builder: (BuildContext context) {
+      builder: (BuildContext context) => 
         Scaffold(
       body: <Widget>[
         const HomePage(),
@@ -79,6 +79,6 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-    );
-  }}
+    )
+  );}
 }

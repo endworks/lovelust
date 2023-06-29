@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final StorageService storage = getIt<StorageService>();
   final CommonService common = getIt<CommonService>();
 
   void _onSettingsClick() {
@@ -39,14 +40,16 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              '#TODO',
-              textScaleFactor: 3,
-            )
+              'activity: ${storage.activity.length}',
+            ),
+            Text(
+              'partners: ${storage.partners.length}',
+            ),
           ],
         ),
       ),

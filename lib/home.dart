@@ -35,8 +35,8 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: common.initialLoad,
-      builder: (BuildContext context) => 
+      future: common.initialLoad(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) => 
         Scaffold(
       body: <Widget>[
         const HomePage(),

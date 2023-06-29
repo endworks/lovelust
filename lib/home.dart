@@ -21,15 +21,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    /* common.initialLoad().whenComplete(() {
-      setState(() {});
-      if (common.isLoggedIn()) {
-        common.initialFetch().whenComplete(() {
-          setState(() {});          
-          // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Initial fetch successful')));
-        });
-      }
-    });*/
   }
 
   @override

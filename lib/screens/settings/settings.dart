@@ -17,6 +17,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   signOut() {
     common.signOut();
+    setState(() {});    
   }
 
   initialFetch() {

@@ -198,7 +198,7 @@ class _ActivityItemState extends State<ActivityItem> {
 
   TextStyle secondaryTextStyle() {
     return TextStyle(
-      color: Theme.of(context).colorScheme.outline,
+      // color: Theme.of(context).colorScheme.outline,
       fontSize: 13,
     );
   }

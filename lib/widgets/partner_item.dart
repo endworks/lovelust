@@ -70,7 +70,7 @@ class _PartnerItemState extends State<PartnerItem> {
 
   TextStyle secondaryTextStyle() {
     return TextStyle(
-      color: Theme.of(context).colorScheme.outline,
+      // color: Theme.of(context).colorScheme.outline,
       fontSize: 13,
     );
   }

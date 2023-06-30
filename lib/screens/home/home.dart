@@ -14,6 +14,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final StorageService storage = getIt<StorageService>();
   final CommonService common = getIt<CommonService>();
+  bool _isLoggedIn = false;
+  int _activityCount = 0;
+  int _partnersCount = 0;
 
   void _onSettingsClick() {
     Navigator.push(context,
@@ -21,6 +24,16 @@ class _HomePageState extends State<HomePage> {
       return const SettingsPage();
     }));
   }
+
+  @override 
+   void initState() {
+     super.initState(); 
+     setState(() { 
+       _isLoggedIn = common.isLoggedIn();
+       _activityCount = storage.activity.length;
+       _partnersCount = storage.partners.length;
+     });
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: CircleAvatar(
                 child: Icon(
-                    common.isLoggedIn() ? Icons.person : Icons.person_off)),
+                    _isLoggedIn ? Icons.person : Icons.person_off)),
             onPressed: _onSettingsClick,
           )
         ],
@@ -46,10 +59,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'activity: ${storage.activity.length}',
+              'activity: ${_activityCount}',
             ),
             Text(
-              'partners: ${storage.partners.length}',
+              'partners: ${_partnersCount}',
             ),
           ],
         ),

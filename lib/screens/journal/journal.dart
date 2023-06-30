@@ -86,9 +86,9 @@ class _JournalPageState extends State<JournalPage> {
       ),
       body: RefreshIndicator(
         onRefresh: refresh,
-        child: ListView.builder(
+        child: ListView.separated(
           controller: scrollController,
-          // separatorBuilder: (context, index) => const Divider(height: 0),
+          separatorBuilder: (context, index) => const Divider(height: 0),
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: activity.length,
           itemBuilder: (context, index) =>

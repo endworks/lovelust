@@ -26,14 +26,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override 
-   void initState() {
-     super.initState(); 
-     setState(() { 
-       _isLoggedIn = common.isLoggedIn();
-       _activityCount = storage.activity.length;
-       _partnersCount = storage.partners.length;
-     });
-   }
+  void initState() {
+    setState(() { 
+      _isLoggedIn = common.isLoggedIn();
+      _activityCount = storage.activity.length;
+      _partnersCount = storage.partners.length;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

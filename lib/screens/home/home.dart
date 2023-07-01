@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Row(children: [
           Text('Love',
-              style: TextStyle(color: Color.fromARGB(255, 252, 85, 147))),
+              style: TextStyle(color: Color.fromARGB(255, 251, 35, 186))),
           Text('Lust',
-              style: TextStyle(color: Color.fromARGB(255, 93, 89, 217))),
+              style: TextStyle(color: Color.fromARGB(255, 106, 47, 208))),
         ]),
         actions: [
           IconButton(

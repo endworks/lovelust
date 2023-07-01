@@ -13,18 +13,18 @@ class App extends StatelessWidget {
       ColorScheme lightColorScheme;
       ColorScheme darkColorScheme;
 
-      if (lightDynamic != null && darkDynamic != null) {
+      /*if (lightDynamic != null && darkDynamic != null) {
         lightColorScheme = lightDynamic.harmonized();
         darkColorScheme = darkDynamic.harmonized();
-      } else {
+      } else {*/
         lightColorScheme = ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 93, 89, 217),
+          seedColor: const Color.fromARGB(255, 251, 35, 186),
         );
         darkColorScheme = ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 93, 89, 217),
+          seedColor: const Color.fromARGB(255, 106, 47, 208),
           brightness: Brightness.dark,
         );
-      }
+      // }
 
       return MaterialApp(
         title: 'LoveLust',

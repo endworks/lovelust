@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       ColorScheme lightColorScheme;
       ColorScheme darkColorScheme;
 
-      /*if (lightDynamic != null && darkDynamic != null) {
+      if (lightDynamic != null && darkDynamic != null) {
         lightColorScheme = lightDynamic.harmonized();
         darkColorScheme = darkDynamic.harmonized();
       } else {*/
@@ -24,7 +24,7 @@ class App extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 106, 47, 208),
           brightness: Brightness.dark,
         );
-      // }
+      }
 
       return MaterialApp(
         title: 'LoveLust',

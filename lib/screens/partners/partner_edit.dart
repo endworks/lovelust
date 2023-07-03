@@ -35,6 +35,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
             ],
           ),
         ],
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: PartnerForm(partner: widget.partner),
     );

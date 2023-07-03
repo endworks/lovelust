@@ -25,9 +25,9 @@ class _HomePageState extends State<HomePage> {
     }));
   }
 
-  @override 
+  @override
   void initState() {
-    setState(() { 
+    setState(() {
       _isLoggedIn = common.isLoggedIn();
       _activityCount = storage.activity.length;
       _partnersCount = storage.partners.length;
@@ -48,11 +48,11 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: CircleAvatar(
-                child: Icon(
-                    _isLoggedIn ? Icons.person : Icons.person_off)),
+                child: Icon(_isLoggedIn ? Icons.person : Icons.person_off)),
             onPressed: _onSettingsClick,
           )
         ],
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: Center(
         child: Column(

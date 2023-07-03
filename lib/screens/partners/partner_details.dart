@@ -42,6 +42,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
             ],
           ),
         ],
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: const Center(
         child: Column(

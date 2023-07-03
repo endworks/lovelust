@@ -59,6 +59,7 @@ class _PartnersPageState extends State<PartnersPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Partners'),
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: RefreshIndicator(
         onRefresh: refresh,

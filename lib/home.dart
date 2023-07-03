@@ -26,50 +26,52 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
-      future: common.initialLoad(),
-      builder: (BuildContext context, AsyncSnapshot<void> snapshot) => 
-        Scaffold(
-      body: <Widget>[
-        const HomePage(),
-        const JournalPage(),
-        const PartnersPage(),
-      ][selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        elevation: null,
-        selectedIndex: selectedIndex,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        onDestinationSelected: (int index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        },
-        destinations: <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.favorite,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.favorite_border),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.assignment,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.assignment_outlined),
-            label: 'Journal',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.group,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.group_outlined),
-            label: 'Partners',
-          ),
-        ],
-      ),
-    )
-  );}
+        future: common.initialLoad(),
+        builder: (BuildContext context, AsyncSnapshot<void> snapshot) =>
+            Scaffold(
+              body: <Widget>[
+                const HomePage(),
+                const JournalPage(),
+                const PartnersPage(),
+              ][selectedIndex],
+              bottomNavigationBar: NavigationBar(
+                backgroundColor: Theme.of(context).colorScheme.background,
+                // surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
+                elevation: 1,
+                selectedIndex: selectedIndex,
+                labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    selectedIndex = index;
+                  });
+                },
+                destinations: <Widget>[
+                  NavigationDestination(
+                    selectedIcon: Icon(
+                      Icons.monitor_heart,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    icon: const Icon(Icons.monitor_heart_outlined),
+                    label: 'Home',
+                  ),
+                  NavigationDestination(
+                    selectedIcon: Icon(
+                      Icons.assignment,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    icon: const Icon(Icons.assignment_outlined),
+                    label: 'Journal',
+                  ),
+                  NavigationDestination(
+                    selectedIcon: Icon(
+                      Icons.group,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    icon: const Icon(Icons.group_outlined),
+                    label: 'Partners',
+                  ),
+                ],
+              ),
+            ));
+  }
 }

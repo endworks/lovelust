@@ -66,6 +66,7 @@ class _JournalPageState extends State<JournalPage> {
         _activity = _common.activity;
       }
     });
+    setState(() {});
     scrollController.jumpTo(0);
     debugPrint('toggleFilter: ${_common.activityFilter}');
   }

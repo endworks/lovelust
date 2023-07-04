@@ -80,6 +80,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     )
                   : const LoginForm(),
               FilledButton.tonal(
+                onPressed: common.clearData,
+                child: const Text('Clear data'),
+              ),
+              FilledButton.tonal(
                 onPressed: common.initialFetch,
                 child: const Text('Initial fetch'),
               ),

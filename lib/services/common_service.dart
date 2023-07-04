@@ -115,6 +115,12 @@ class CommonService {
     debugPrint('signOut');
     accessToken = null;
     refreshToken = null;
+  }
+
+  void clearData() {
+    debugPrint('clearData');
+    accessToken = null;
+    refreshToken = null;
     activity = [];
     partners = [];
   }

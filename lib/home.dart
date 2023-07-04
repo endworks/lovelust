@@ -30,26 +30,26 @@ class _HomeState extends State<Home> {
 
   List<Widget> get destinations {
     return [
-      NavigationDestination(
+      const NavigationDestination(
         selectedIcon: Icon(
           Icons.monitor_heart,
-          color: Theme.of(context).colorScheme.primary,
+          // color: Theme.of(context).colorScheme.primary,
         ),
         icon: const Icon(Icons.monitor_heart_outlined),
         label: 'Home',
       ),
-      NavigationDestination(
+      const NavigationDestination(
         selectedIcon: Icon(
           Icons.assignment,
-          color: Theme.of(context).colorScheme.primary,
+          // color: Theme.of(context).colorScheme.primary,
         ),
         icon: const Icon(Icons.assignment_outlined),
         label: 'Journal',
       ),
-      NavigationDestination(
+      const NavigationDestination(
         selectedIcon: Icon(
           Icons.group,
-          color: Theme.of(context).colorScheme.primary,
+          // color: Theme.of(context).colorScheme.primary,
         ),
         icon: const Icon(Icons.group_outlined),
         label: 'Partners',

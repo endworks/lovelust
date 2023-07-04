@@ -22,62 +22,159 @@ class _AppState extends State<App> {
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) =>
           DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        ColorScheme lightColorScheme = ColorScheme.fromSeed(
-          seedColor: defaultColor,
+        ThemeData theme = ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: defaultColor,
+          ),
+          useMaterial3: true,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         );
-        ColorScheme darkColorScheme = ColorScheme.fromSeed(
-          seedColor: defaultColor,
+        ThemeData darkTheme = ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: defaultColor,
+            brightness: Brightness.dark,
+          ),
+          useMaterial3: true,
           brightness: Brightness.dark,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         );
         ThemeMode themeMode = ThemeMode.system;
+
         if (snapshot.connectionState.name == 'done') {
           debugPrint('theme: ${_common.theme}');
           debugPrint('colorScheme: ${_common.colorScheme}');
 
           if (_common.colorScheme == 'dynamic') {
             if (lightDynamic != null && darkDynamic != null) {
-              lightColorScheme = lightDynamic.harmonized();
-              darkColorScheme = darkDynamic.harmonized();
+              theme = ThemeData(
+                colorScheme: lightDynamic.harmonized(),
+                useMaterial3: true,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              );
+              darkTheme = ThemeData(
+                colorScheme: darkDynamic.harmonized(),
+                brightness: Brightness.dark,
+                useMaterial3: true,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              );
             }
-          } else if (_common.colorScheme == 'love') {
-            lightColorScheme = ColorScheme.fromSeed(
-              seedColor: loveColor,
-            );
-            darkColorScheme = ColorScheme.fromSeed(
-              seedColor: loveColor,
-              brightness: Brightness.dark,
-            );
           } else if (_common.colorScheme == 'lovelust') {
-            lightColorScheme = ColorScheme.fromSeed(
-              seedColor: lustColor,
+            theme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: lustColor,
+              ),
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
-            darkColorScheme = ColorScheme.fromSeed(
-              seedColor: loveColor,
+            darkTheme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: loveColor,
+                brightness: Brightness.dark,
+              ),
               brightness: Brightness.dark,
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
           } else if (_common.colorScheme == 'lovelust2') {
-            lightColorScheme = ColorScheme.fromSeed(
-              seedColor: loveColor,
+            theme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: loveColor,
+              ),
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
-            darkColorScheme = ColorScheme.fromSeed(
-              seedColor: lustColor,
+            darkTheme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: lustColor,
+                brightness: Brightness.dark,
+              ),
               brightness: Brightness.dark,
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            );
+          } else if (_common.colorScheme == 'love') {
+            theme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: loveColor,
+              ),
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            );
+            darkTheme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: loveColor,
+                brightness: Brightness.dark,
+              ),
+              brightness: Brightness.dark,
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
           } else if (_common.colorScheme == 'lust') {
-            lightColorScheme = ColorScheme.fromSeed(
-              seedColor: lustColor,
+            theme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: lustColor,
+              ),
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
-            darkColorScheme = ColorScheme.fromSeed(
-              seedColor: lustColor,
+            darkTheme = ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: lustColor,
+                brightness: Brightness.dark,
+              ),
               brightness: Brightness.dark,
+              useMaterial3: true,
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
           } else if (_common.colorScheme == 'monochrome') {
-            lightColorScheme = ColorScheme.fromSeed(
-              seedColor: Colors.black,
+            final Map<int, Color> color = {
+              50: const Color.fromRGBO(0, 0, 0, .1),
+              100: const Color.fromRGBO(0, 0, 0, .2),
+              200: const Color.fromRGBO(0, 0, 0, .3),
+              300: const Color.fromRGBO(0, 0, 0, .4),
+              400: const Color.fromRGBO(0, 0, 0, .5),
+              500: const Color.fromRGBO(0, 0, 0, .6),
+              600: const Color.fromRGBO(0, 0, 0, .7),
+              700: const Color.fromRGBO(0, 0, 0, .8),
+              800: const Color.fromRGBO(0, 0, 0, .9),
+              900: const Color.fromRGBO(0, 0, 0, 1),
+            };
+
+            final Map<int, Color> colorWhite = {
+              50: const Color.fromRGBO(255, 255, 255, .1),
+              100: const Color.fromRGBO(255, 255, 255, .2),
+              200: const Color.fromRGBO(255, 255, 255, .3),
+              300: const Color.fromRGBO(255, 255, 255, .4),
+              400: const Color.fromRGBO(255, 255, 255, .5),
+              500: const Color.fromRGBO(255, 255, 255, .6),
+              600: const Color.fromRGBO(255, 255, 255, .7),
+              700: const Color.fromRGBO(255, 255, 255, .8),
+              800: const Color.fromRGBO(255, 255, 255, .9),
+              900: const Color.fromRGBO(255, 255, 255, 1),
+            };
+            theme = ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.light,
+              colorScheme: ColorScheme.light(
+                primary: MaterialColor(0xFF000000, color),
+                onPrimary: MaterialColor(0xFFFFFFFF, colorWhite),
+                secondary: MaterialColor(0xFF000000, color),
+                onSecondary: MaterialColor(0xFFFFFFFF, colorWhite),
+                outlineVariant: Colors.grey[200],
+              ),
             );
-            darkColorScheme = ColorScheme.fromSeed(
-              seedColor: Colors.black,
+            darkTheme = ThemeData(
+              useMaterial3: true,
               brightness: Brightness.dark,
+              colorScheme: ColorScheme.dark(
+                primary: MaterialColor(0xFFFFFFFF, colorWhite),
+                onPrimary: MaterialColor(0xFF000000, color),
+                secondary: MaterialColor(0xFFFFFFFF, colorWhite),
+                onSecondary: MaterialColor(0xFF000000, color),
+                outlineVariant: Colors.grey[800],
+                brightness: Brightness.dark,
+              ),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
             );
           }
 
@@ -90,14 +187,8 @@ class _AppState extends State<App> {
 
         return MaterialApp(
           title: 'LoveLust',
-          theme: ThemeData(
-            colorScheme: lightColorScheme,
-            useMaterial3: true,
-          ),
-          darkTheme: ThemeData(
-            colorScheme: darkColorScheme,
-            useMaterial3: true,
-          ),
+          theme: theme,
+          darkTheme: darkTheme,
           themeMode: themeMode,
           home: snapshot.connectionState.name == 'done'
               ? const Home()

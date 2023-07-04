@@ -23,10 +23,10 @@ class _AppState extends State<App> {
           DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         ColorScheme lightColorScheme = ColorScheme.fromSeed(
-          seedColor: loveColor,
+          seedColor: defaultColor,
         );
         ColorScheme darkColorScheme = ColorScheme.fromSeed(
-          seedColor: lustColor,
+          seedColor: defaultColor,
           brightness: Brightness.dark,
         );
         ThemeMode themeMode = ThemeMode.system;
@@ -40,11 +40,19 @@ class _AppState extends State<App> {
               darkColorScheme = darkDynamic.harmonized();
             }
           } else if (_common.colorScheme == 'love') {
+            lightColorScheme = ColorScheme.fromSeed(
+              seedColor: loveColor,
+              brightness: Brightness.dark,
+            );
             darkColorScheme = ColorScheme.fromSeed(
               seedColor: loveColor,
               brightness: Brightness.dark,
             );
           } else if (_common.colorScheme == 'lust') {
+            lightColorScheme = ColorScheme.fromSeed(
+              seedColor: lustColor,
+              brightness: Brightness.dark,
+            );
             lightColorScheme = ColorScheme.fromSeed(
               seedColor: lustColor,
             );

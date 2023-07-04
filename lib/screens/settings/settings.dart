@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/forms/login_form.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -15,17 +16,32 @@ class _SettingsPageState extends State<SettingsPage> {
   final StorageService storage = getIt<StorageService>();
   final CommonService common = getIt<CommonService>();
 
+  reload() {
+    Phoenix.rebirth(context);
+  }
+
   signOut() {
     common.signOut();
     setState(() {});
   }
 
-  initialFetch() {
-    common.initialFetch();
+  List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(value: "dynamic", child: Text("Dynamic")),
+      const DropdownMenuItem(value: "lovelust", child: Text("LoveLust")),
+      const DropdownMenuItem(value: "love", child: Text("Love")),
+      const DropdownMenuItem(value: "lust", child: Text("Lust")),
+    ];
+    return menuItems;
   }
 
-  fetchStaticData() {
-    common.fetchStaticData();
+  List<DropdownMenuItem<String>> get dropdownThemeItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(value: "system", child: Text("System")),
+      const DropdownMenuItem(value: "light", child: Text("Light")),
+      const DropdownMenuItem(value: "dark", child: Text("Dark")),
+    ];
+    return menuItems;
   }
 
   @override
@@ -47,12 +63,34 @@ class _SettingsPageState extends State<SettingsPage> {
                     )
                   : const LoginForm(),
               FilledButton.tonal(
-                onPressed: initialFetch,
+                onPressed: common.initialFetch,
                 child: const Text('Refresh initial data'),
               ),
               FilledButton.tonal(
-                onPressed: fetchStaticData,
+                onPressed: common.fetchStaticData,
                 child: const Text('Refresh static data'),
+              ),
+              DropdownButton(
+                value: storage.theme,
+                items: dropdownThemeItems,
+                onChanged: (String? value) {
+                  storage.setTheme(value ?? 'system');
+                  setState(() {
+                    storage.theme = storage.theme;
+                  });
+                  reload();
+                },
+              ),
+              DropdownButton(
+                value: storage.colorScheme,
+                items: dropdownColorSchemeItems,
+                onChanged: (String? value) {
+                  storage.setColorScheme(value ?? 'dynamic');
+                  setState(() {
+                    storage.colorScheme = storage.colorScheme;
+                  });
+                  reload();
+                },
               )
             ])
           ],

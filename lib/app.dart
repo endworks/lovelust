@@ -24,20 +24,39 @@ class _AppState extends State<App> {
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
           DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
-        ColorScheme lightColorScheme;
-        ColorScheme darkColorScheme;
+        ColorScheme lightColorScheme = ColorScheme.fromSeed(
+          seedColor: loveColor,
+        );
+        ;
+        ColorScheme darkColorScheme = ColorScheme.fromSeed(
+          seedColor: lustColor,
+          brightness: Brightness.dark,
+        );
+        ThemeMode themeMode = ThemeMode.system;
 
-        if (lightDynamic != null && darkDynamic != null) {
-          lightColorScheme = lightDynamic.harmonized();
-          darkColorScheme = darkDynamic.harmonized();
-        } else {
-          lightColorScheme = ColorScheme.fromSeed(
-            seedColor: loveColor,
-          );
+        debugPrint('theme: ${storage.theme}');
+        debugPrint('colorScheme: ${storage.colorScheme}');
+
+        if (storage.colorScheme == 'dynamic') {
+          if (lightDynamic != null && darkDynamic != null) {
+            lightColorScheme = lightDynamic.harmonized();
+            darkColorScheme = darkDynamic.harmonized();
+          }
+        } else if (storage.colorScheme == 'love') {
           darkColorScheme = ColorScheme.fromSeed(
-            seedColor: lustColor,
+            seedColor: loveColor,
             brightness: Brightness.dark,
           );
+        } else if (storage.colorScheme == 'lust') {
+          lightColorScheme = ColorScheme.fromSeed(
+            seedColor: lustColor,
+          );
+        }
+
+        if (storage.theme == 'light') {
+          themeMode = ThemeMode.light;
+        } else if (storage.theme == 'dark') {
+          themeMode = ThemeMode.dark;
         }
 
         return MaterialApp(
@@ -50,7 +69,7 @@ class _AppState extends State<App> {
             colorScheme: darkColorScheme,
             useMaterial3: true,
           ),
-          themeMode: ThemeMode.system,
+          themeMode: themeMode,
           home: const Home(),
           debugShowCheckedModeBanner: false,
         );

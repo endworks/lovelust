@@ -14,6 +14,7 @@ class CommonService {
     debugPrint('initialLoad');
     var futures = <Future>[
       storage.getTheme(),
+      storage.getColorScheme(),
       storage.getAccessToken(),
       storage.getRefreshToken(),
       storage.getActivity(),

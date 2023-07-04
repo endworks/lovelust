@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:lovelust/app.dart';
 import 'package:lovelust/service_locator.dart';
-
-import 'app.dart';
 
 void main() {
   setupServiceLocator();
-  runApp(const App());
+  runApp(
+    Phoenix(
+      child: const App(),
+    ),
+  );
 }

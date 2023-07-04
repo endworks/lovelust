@@ -11,7 +11,7 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<String> getTheme() async {
-    theme = await storage.read(key: 'theme') ?? 'dynamic';
+    theme = await storage.read(key: 'theme') ?? 'system';
     return theme;
   }
 
@@ -19,6 +19,18 @@ class StorageServiceLocal extends StorageService {
   Future<void> setTheme(String value) async {
     theme = value;
     await storage.write(key: 'theme', value: value);
+  }
+
+  @override
+  Future<String> getColorScheme() async {
+    colorScheme = await storage.read(key: 'color_scheme') ?? 'dynamic';
+    return colorScheme;
+  }
+
+  @override
+  Future<void> setColorScheme(String value) async {
+    colorScheme = value;
+    await storage.write(key: 'color_scheme', value: value);
   }
 
   @override

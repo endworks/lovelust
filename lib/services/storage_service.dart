@@ -4,7 +4,8 @@ import '../models/activity.dart';
 import '../models/partner.dart';
 
 abstract class StorageService {
-  String theme = 'dynamic';
+  String theme = 'system';
+  String colorScheme = 'dynamic';
   String? accessToken;
   String? refreshToken;
   List<Activity> activity = [];
@@ -19,6 +20,8 @@ abstract class StorageService {
 
   Future<String> getTheme();
   Future<void> setTheme(String value);
+  Future<String> getColorScheme();
+  Future<void> setColorScheme(String value);
   Future<String?> getAccessToken();
   Future<void> setAccessToken(String? value);
   Future<String?> getRefreshToken();

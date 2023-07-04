@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
       ][selectedIndex],
       bottomNavigationBar: NavigationBar(
         backgroundColor: Theme.of(context).colorScheme.background,
-        // surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
         elevation: 1,
         selectedIndex: selectedIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,

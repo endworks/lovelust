@@ -23,6 +23,7 @@ class CommonService {
   List<IdName> _genders = [];
   List<IdName> _activityTypes = [];
   bool _calendarView = false;
+  String _activityFilter = 'all';
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -34,6 +35,7 @@ class CommonService {
       _storage.getActivity(),
       _storage.getPartners(),
       _storage.getCalendarView(),
+      _storage.getActivityFilter(),
       loadStaticData()
     ];
 
@@ -45,6 +47,7 @@ class CommonService {
     activity = result[4];
     partners = result[5];
     calendarView = result[6];
+    activityFilter = result[7];
     return Future.value(null);
   }
 
@@ -197,6 +200,15 @@ class CommonService {
   set calendarView(bool value) {
     _calendarView = value;
     _storage.setCalendarView(value);
+  }
+
+  String get activityFilter {
+    return _activityFilter;
+  }
+
+  set activityFilter(String value) {
+    _activityFilter = value;
+    _storage.setActivityFilter(value);
   }
 
   List<IdName> get birthControls {

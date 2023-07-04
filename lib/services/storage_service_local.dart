@@ -335,4 +335,24 @@ class StorageServiceLocal extends StorageService {
       iOptions: _iosOptions,
     );
   }
+
+  @override
+  Future<String> getActivityFilter() async {
+    return await _storage.read(
+          key: 'activity_filter',
+          aOptions: _androidOptions,
+          iOptions: _iosOptions,
+        ) ??
+        'all';
+  }
+
+  @override
+  Future<void> setActivityFilter(String value) async {
+    return await _storage.write(
+      key: 'activity_filter',
+      value: value,
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
+  }
 }

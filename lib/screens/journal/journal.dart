@@ -45,6 +45,40 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
+  void toggleFilter() {
+    setState(() {
+      if (_common.activityFilter == 'all') {
+        _common.activityFilter = 'activity';
+        _activity = _common.activity
+            .where(
+              (i) => i.type != 'MASTURBATION',
+            )
+            .toList();
+      } else if (_common.activityFilter == 'activity') {
+        _common.activityFilter = 'solo';
+        _activity = _common.activity
+            .where(
+              (i) => i.type == 'MASTURBATION',
+            )
+            .toList();
+      } else if (_common.activityFilter == 'solo') {
+        _common.activityFilter = 'all';
+        _activity = _common.activity;
+      }
+    });
+    debugPrint('toggleFilter: ${_common.activityFilter}');
+  }
+
+  Icon get toggleIcon {
+    if (_common.activityFilter == 'activity') {
+      return const Icon(Icons.groups);
+    } else if (_common.activityFilter == 'solo') {
+      return const Icon(Icons.front_hand);
+    } else {
+      return const Icon(Icons.all_inclusive);
+    }
+  }
+
   Future<void> refresh() async {
     _activity = await _api.getActivity();
     _common.activity = _activity;
@@ -83,6 +117,12 @@ class _JournalPageState extends State<JournalPage> {
       appBar: AppBar(
         title: const Text('Journal'),
         surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
+        actions: [
+          IconButton(
+            onPressed: toggleFilter,
+            icon: toggleIcon,
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: refresh,

@@ -30,4 +30,6 @@ abstract class StorageService {
   Future<void> setActivityTypes(List<IdName> value);
   Future<bool> getCalendarView();
   Future<void> setCalendarView(bool value);
+  Future<String> getActivityFilter();
+  Future<void> setActivityFilter(String value);
 }

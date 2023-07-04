@@ -39,6 +39,7 @@ class _LoginFormState extends State<LoginForm> {
           _common.accessToken = tokens.accessToken;
           _common.refreshToken = tokens.refreshToken;
           debugPrint('successful login');
+          await _common.initialFetch();
           reload();
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(

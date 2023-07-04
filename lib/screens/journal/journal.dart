@@ -66,12 +66,13 @@ class _JournalPageState extends State<JournalPage> {
         _activity = _common.activity;
       }
     });
+    scrollController.jumpTo(0);
     debugPrint('toggleFilter: ${_common.activityFilter}');
   }
 
   Icon get toggleIcon {
     if (_common.activityFilter == 'activity') {
-      return const Icon(Icons.groups);
+      return const Icon(Icons.favorite);
     } else if (_common.activityFilter == 'solo') {
       return const Icon(Icons.front_hand);
     } else {

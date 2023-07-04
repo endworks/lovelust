@@ -4,6 +4,7 @@ import '../models/activity.dart';
 import '../models/partner.dart';
 
 abstract class StorageService {
+  String theme = 'dynamic';
   String? accessToken;
   String? refreshToken;
   List<Activity> activity = [];
@@ -16,6 +17,8 @@ abstract class StorageService {
   List<IdName> activityTypes = [];
   bool calendarView = false;
 
+  Future<String> getTheme();
+  Future<void> setTheme(String value);
   Future<String?> getAccessToken();
   Future<void> setAccessToken(String? value);
   Future<String?> getRefreshToken();

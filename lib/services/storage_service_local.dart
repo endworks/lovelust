@@ -10,6 +10,18 @@ class StorageServiceLocal extends StorageService {
   final storage = const FlutterSecureStorage();
 
   @override
+  Future<String> getTheme() async {
+    theme = await storage.read(key: 'theme') ?? 'dynamic';
+    return theme;
+  }
+
+  @override
+  Future<void> setTheme(String value) async {
+    theme = value;
+    await storage.write(key: 'theme', value: value);
+  }
+
+  @override
   Future<String?> getAccessToken() async {
     accessToken = await storage.read(key: 'access_token');
     return accessToken;

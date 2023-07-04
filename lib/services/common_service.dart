@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
@@ -9,8 +10,10 @@ class CommonService {
   final StorageService storage = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
 
-  Future<void> initialLoad() {
+  Future<List<dynamic>> initialLoad() {
+    debugPrint('initialLoad');
     var futures = <Future>[
+      storage.getTheme(),
       storage.getAccessToken(),
       storage.getRefreshToken(),
       storage.getActivity(),
@@ -23,6 +26,7 @@ class CommonService {
   }
 
   Future<void> initialFetch() async {
+    debugPrint('initialFetch');
     var futures = <Future>[
       api.getActivity(),
       api.getPartners(),
@@ -35,6 +39,7 @@ class CommonService {
   }
 
   Future<void> loadStaticData() {
+    debugPrint('loadStaticData');
     var futures = <Future>[
       storage.getGenders(),
       storage.getInitiators(),
@@ -48,6 +53,7 @@ class CommonService {
   }
 
   fetchStaticData() async {
+    debugPrint('fetchStaticData');
     var futures = <Future>[
       api.getGenders(),
       api.getInitiators(),
@@ -71,6 +77,7 @@ class CommonService {
   }
 
   Future<void> signOut() {
+    debugPrint('signOut');
     var futures = <Future>[
       storage.setAccessToken(null),
       storage.setRefreshToken(null),

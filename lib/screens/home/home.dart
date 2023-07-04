@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/colors.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -27,12 +28,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
     setState(() {
       _isLoggedIn = common.isLoggedIn();
       _activityCount = storage.activity.length;
       _partnersCount = storage.partners.length;
     });
-    super.initState();
+    debugPrint('${common.isLoggedIn()}');
+    debugPrint('${storage.activity.length}');
+    debugPrint('${storage.partners.length}');
   }
 
   @override
@@ -40,10 +44,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Row(children: [
-          Text('Love',
-              style: TextStyle(color: Color.fromARGB(255, 251, 35, 186))),
-          Text('Lust',
-              style: TextStyle(color: Color.fromARGB(255, 106, 47, 208))),
+          Text('Love', style: TextStyle(color: loveColor)),
+          Text('Lust', style: TextStyle(color: lustColor)),
         ]),
         actions: [
           IconButton(
@@ -59,10 +61,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'activity: ${_activityCount}',
+              'activity: $_activityCount',
             ),
             Text(
-              'partners: ${_partnersCount}',
+              'partners: $_partnersCount',
             ),
           ],
         ),

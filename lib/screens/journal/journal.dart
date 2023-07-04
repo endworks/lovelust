@@ -65,6 +65,7 @@ class _JournalPageState extends State<JournalPage> {
 
   @override
   void initState() {
+    super.initState();
     scrollController.addListener(() {
       setState(() {
         isExtended = scrollController.offset <= 0.0;
@@ -74,8 +75,6 @@ class _JournalPageState extends State<JournalPage> {
     setState(() {
       activity = storageService.activity;
     });
-
-    super.initState();
   }
 
   @override

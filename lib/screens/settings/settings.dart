@@ -22,7 +22,21 @@ class _SettingsPageState extends State<SettingsPage> {
 
   signOut() {
     common.signOut();
-    setState(() {});
+    reload();
+  }
+
+  void changeTheme(String? value) {
+    setState(() {
+      common.theme = value ?? 'system';
+    });
+    reload();
+  }
+
+  changeColorScheme(String? value) {
+    setState(() {
+      common.colorScheme = value ?? 'dynamic';
+    });
+    reload();
   }
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
@@ -64,31 +78,21 @@ class _SettingsPageState extends State<SettingsPage> {
                   : const LoginForm(),
               FilledButton.tonal(
                 onPressed: common.initialFetch,
-                child: const Text('Refresh initial data'),
+                child: const Text('Initial fetch'),
               ),
               FilledButton.tonal(
                 onPressed: common.fetchStaticData,
-                child: const Text('Refresh static data'),
+                child: const Text('Fetch static data'),
               ),
               DropdownButton(
                 value: common.theme,
                 items: dropdownThemeItems,
-                onChanged: (String? value) {
-                  setState(() {
-                    common.theme = (value ?? 'system');
-                  });
-                  reload();
-                },
+                onChanged: changeTheme,
               ),
               DropdownButton(
                 value: common.colorScheme,
                 items: dropdownColorSchemeItems,
-                onChanged: (String? value) {
-                  setState(() {
-                    common.colorScheme = (value ?? 'dynamic');
-                  });
-                  reload();
-                },
+                onChanged: changeColorScheme,
               )
             ])
           ],

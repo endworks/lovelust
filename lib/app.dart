@@ -30,30 +30,31 @@ class _AppState extends State<App> {
           brightness: Brightness.dark,
         );
         ThemeMode themeMode = ThemeMode.system;
+        if (snapshot.connectionState.name == 'done') {
+          debugPrint('theme: ${_common.theme}');
+          debugPrint('colorScheme: ${_common.colorScheme}');
 
-        debugPrint('theme: ${_common.theme}');
-        debugPrint('colorScheme: ${_common.colorScheme}');
-
-        if (_common.colorScheme == 'dynamic') {
-          if (lightDynamic != null && darkDynamic != null) {
-            lightColorScheme = lightDynamic.harmonized();
-            darkColorScheme = darkDynamic.harmonized();
+          if (_common.colorScheme == 'dynamic') {
+            if (lightDynamic != null && darkDynamic != null) {
+              lightColorScheme = lightDynamic.harmonized();
+              darkColorScheme = darkDynamic.harmonized();
+            }
+          } else if (_common.colorScheme == 'love') {
+            darkColorScheme = ColorScheme.fromSeed(
+              seedColor: loveColor,
+              brightness: Brightness.dark,
+            );
+          } else if (_common.colorScheme == 'lust') {
+            lightColorScheme = ColorScheme.fromSeed(
+              seedColor: lustColor,
+            );
           }
-        } else if (_common.colorScheme == 'love') {
-          darkColorScheme = ColorScheme.fromSeed(
-            seedColor: loveColor,
-            brightness: Brightness.dark,
-          );
-        } else if (_common.colorScheme == 'lust') {
-          lightColorScheme = ColorScheme.fromSeed(
-            seedColor: lustColor,
-          );
-        }
 
-        if (_common.theme == 'light') {
-          themeMode = ThemeMode.light;
-        } else if (_common.theme == 'dark') {
-          themeMode = ThemeMode.dark;
+          if (_common.theme == 'light') {
+            themeMode = ThemeMode.light;
+          } else if (_common.theme == 'dark') {
+            themeMode = ThemeMode.dark;
+          }
         }
 
         return MaterialApp(
@@ -67,7 +68,9 @@ class _AppState extends State<App> {
             useMaterial3: true,
           ),
           themeMode: themeMode,
-          home: const Home(),
+          home: snapshot.connectionState.name == 'done'
+              ? const Home()
+              : const SizedBox.shrink(),
           debugShowCheckedModeBanner: false,
         );
       }),

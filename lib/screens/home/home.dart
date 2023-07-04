@@ -3,7 +3,6 @@ import 'package:lovelust/colors.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
-import 'package:lovelust/services/storage_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,30 +12,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final StorageService storage = getIt<StorageService>();
-  final CommonService common = getIt<CommonService>();
-  bool _isLoggedIn = false;
-  int _activityCount = 0;
-  int _partnersCount = 0;
+  final CommonService _common = getIt<CommonService>();
 
   void _onSettingsClick() {
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
       return const SettingsPage();
     }));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      _isLoggedIn = common.isLoggedIn;
-      _activityCount = common.activity.length;
-      _partnersCount = common.partners.length;
-    });
-    debugPrint('${common.isLoggedIn}');
-    debugPrint('${common.activity.length}');
-    debugPrint('${common.partners.length}');
   }
 
   @override
@@ -50,7 +32,8 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: CircleAvatar(
-                child: Icon(_isLoggedIn ? Icons.person : Icons.person_off)),
+                child:
+                    Icon(_common.isLoggedIn ? Icons.person : Icons.person_off)),
             onPressed: _onSettingsClick,
           )
         ],
@@ -61,10 +44,10 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'activity: $_activityCount',
+              'activity: ${_common.activity.length}',
             ),
             Text(
-              'partners: $_partnersCount',
+              'partners: ${_common.partners.length}',
             ),
           ],
         ),

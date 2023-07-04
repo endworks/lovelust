@@ -20,6 +20,20 @@ class _JournalPageState extends State<JournalPage> {
   ScrollController scrollController = ScrollController();
   bool isExtended = true;
 
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      setState(() {
+        isExtended = scrollController.offset <= 0.0;
+      });
+    });
+
+    setState(() {
+      _activity = _common.activity;
+    });
+  }
+
   void addActivity() {
     Navigator.push(
       context,
@@ -64,20 +78,6 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    scrollController.addListener(() {
-      setState(() {
-        isExtended = scrollController.offset <= 0.0;
-      });
-    });
-
-    setState(() {
-      _activity = _common.activity;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -98,13 +98,13 @@ class _JournalPageState extends State<JournalPage> {
       floatingActionButton: isExtended
           ? FloatingActionButton.extended(
               onPressed: addActivity,
-              label: const Text('Add activity'),
-              icon: const Icon(Icons.add),
+              label: const Text('Log activity'),
+              icon: const Icon(Icons.post_add),
             )
           : FloatingActionButton(
               onPressed: addActivity,
-              tooltip: 'Add activity',
-              child: const Icon(Icons.add),
+              tooltip: 'Log activity',
+              child: const Icon(Icons.post_add),
             ),
     );
   }

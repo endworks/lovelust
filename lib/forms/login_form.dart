@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
-import 'package:lovelust/services/storage_service.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -15,28 +15,31 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final StorageService _storageService = getIt<StorageService>();
-  final CommonService common = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
   final ApiService api = getIt<ApiService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  bool valid() =>
+  reload() {
+    Phoenix.rebirth(context);
+  }
+
+  bool get valid =>
       usernameController.value.text.isNotEmpty &&
       passwordController.value.text.isNotEmpty;
 
   void submit() async {
     AuthTokens tokens;
     if (formKey.currentState!.validate()) {
-      if (valid()) {
+      if (valid) {
         try {
           tokens = await api.login(
               usernameController.value.text, passwordController.value.text);
-          await _storageService.setAccessToken(tokens.accessToken);
-          await _storageService.setRefreshToken(tokens.refreshToken);
-          common.initialFetch();
-          Navigator.pop(context);
+          _common.accessToken = tokens.accessToken;
+          _common.refreshToken = tokens.refreshToken;
+          debugPrint('successful login');
+          reload();
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

@@ -17,11 +17,11 @@ class StorageServiceLocal extends StorageService {
         // sharedPreferencesName: 'Test2',
         // preferencesKeyPrefix: 'Test'
       );
-  final storage = const FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
 
   @override
   Future<String> getTheme() async {
-    return await storage.read(
+    return await _storage.read(
           key: 'theme',
           aOptions: _androidOptions,
           iOptions: _iosOptions,
@@ -31,7 +31,7 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setTheme(String value) async {
-    return await storage.write(
+    return await _storage.write(
       key: 'theme',
       value: value,
       aOptions: _androidOptions,
@@ -41,7 +41,7 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<String> getColorScheme() async {
-    return await storage.read(
+    return await _storage.read(
           key: 'color_scheme',
           aOptions: _androidOptions,
           iOptions: _iosOptions,
@@ -51,40 +51,75 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setColorScheme(String value) async {
-    return await storage.write(key: 'color_scheme', value: value);
+    return await _storage.write(
+      key: 'color_scheme',
+      value: value,
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<String?> getAccessToken() async {
-    return await storage.read(key: 'access_token');
+    return await _storage.read(
+      key: 'access_token',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<void> setAccessToken(String? value) async {
     if (value != null) {
-      return await storage.write(key: 'access_token', value: value);
+      return await _storage.write(
+        key: 'access_token',
+        value: value,
+        aOptions: _androidOptions,
+        iOptions: _iosOptions,
+      );
     } else {
-      return await storage.delete(key: 'access_token');
+      return await _storage.delete(
+        key: 'access_token',
+        aOptions: _androidOptions,
+        iOptions: _iosOptions,
+      );
     }
   }
 
   @override
   Future<String?> getRefreshToken() async {
-    return await storage.read(key: 'refresh_token');
+    return await _storage.read(
+      key: 'refresh_token',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<void> setRefreshToken(String? value) async {
     if (value != null) {
-      return await storage.write(key: 'refresh_token', value: value);
+      return await _storage.write(
+        key: 'refresh_token',
+        value: value,
+        aOptions: _androidOptions,
+        iOptions: _iosOptions,
+      );
     } else {
-      return await storage.delete(key: 'refresh_token');
+      return await _storage.delete(
+        key: 'refresh_token',
+        aOptions: _androidOptions,
+        iOptions: _iosOptions,
+      );
     }
   }
 
   @override
   Future<List<Activity>> getActivity() async {
-    final persisted = await storage.read(key: 'activity');
+    final persisted = await _storage.read(
+      key: 'activity',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<Activity>((map) => Activity.fromJson(map))
@@ -95,12 +130,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setActivity(List<Activity> value) async {
-    return await storage.write(key: 'activity', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'activity',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<Partner>> getPartners() async {
-    final persisted = await storage.read(key: 'partners');
+    final persisted = await _storage.read(
+      key: 'partners',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<Partner>((map) => Partner.fromJson(map))
@@ -111,12 +155,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setPartners(List<Partner> value) async {
-    return await storage.write(key: 'partners', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'partners',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<IdName>> getBirthControls() async {
-    final persisted = await storage.read(key: 'birth_controls');
+    final persisted = await _storage.read(
+      key: 'birth_controls',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<IdName>((map) => IdName.fromJson(map))
@@ -127,12 +180,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setBirthControls(List<IdName> value) async {
-    return await storage.write(key: 'birth_controls', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'birth_controls',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<IdName>> getPractices() async {
-    final persisted = await storage.read(key: 'practices');
+    final persisted = await _storage.read(
+      key: 'practices',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<IdName>((map) => IdName.fromJson(map))
@@ -143,12 +205,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setPractices(List<IdName> value) async {
-    return await storage.write(key: 'practices', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'practices',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<IdName>> getPlaces() async {
-    final persisted = await storage.read(key: 'places');
+    final persisted = await _storage.read(
+      key: 'places',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<IdName>((map) => IdName.fromJson(map))
@@ -159,12 +230,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setPlaces(List<IdName> value) async {
-    return await storage.write(key: 'places', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'places',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<IdName>> getInitiators() async {
-    final persisted = await storage.read(key: 'initiators');
+    final persisted = await _storage.read(
+      key: 'initiators',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<IdName>((map) => IdName.fromJson(map))
@@ -175,12 +255,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setInitiators(List<IdName> value) async {
-    return await storage.write(key: 'initiators', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'initiators',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<IdName>> getGenders() async {
-    final persisted = await storage.read(key: 'genders');
+    final persisted = await _storage.read(
+      key: 'genders',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<IdName>((map) => IdName.fromJson(map))
@@ -191,12 +280,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setGenders(List<IdName> value) async {
-    return await storage.write(key: 'genders', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'genders',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<List<IdName>> getActivityTypes() async {
-    final persisted = await storage.read(key: 'activity_types');
+    final persisted = await _storage.read(
+      key: 'activity_types',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persisted != null) {
       return jsonDecode(persisted)
           .map<IdName>((map) => IdName.fromJson(map))
@@ -207,12 +305,21 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setActivityTypes(List<IdName> value) async {
-    return await storage.write(key: 'activity_types', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'activity_types',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 
   @override
   Future<bool> getCalendarView() async {
-    final persistedCalendarView = await storage.read(key: 'calendar_view');
+    final persistedCalendarView = await _storage.read(
+      key: 'calendar_view',
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
     if (persistedCalendarView != null) {
       return jsonDecode(persistedCalendarView);
     }
@@ -221,6 +328,11 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setCalendarView(bool value) async {
-    return await storage.write(key: 'calendar_view', value: jsonEncode(value));
+    return await _storage.write(
+      key: 'calendar_view',
+      value: jsonEncode(value),
+      aOptions: _androidOptions,
+      iOptions: _iosOptions,
+    );
   }
 }

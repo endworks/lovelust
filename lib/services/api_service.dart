@@ -7,15 +7,24 @@ import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/storage_service.dart';
 
 class ApiService {
-  final CommonService common = getIt<CommonService>();
-  String apiUrl = 'lovelust-api.end.works';
+  final StorageService _storage = getIt<StorageService>();
+  final String _apiUrl = 'lovelust-api.end.works';
+  String? _accessToken;
+
+  Future<String?> getAccessToken() async {
+    if (_accessToken == null) {
+      return _accessToken = await _storage.getAccessToken();
+    } else {
+      return _accessToken;
+    }
+  }
 
   Future<AuthTokens> login(String username, String password) async {
     final response = await http.post(
-      Uri.https(apiUrl, 'auth/login'),
+      Uri.https(_apiUrl, 'auth/login'),
       body: {
         'username': username,
         'password': password,
@@ -32,7 +41,7 @@ class ApiService {
   Future<AuthTokens> signup(String username, String password, String sex,
       String gender, String birthDate) async {
     final response = await http.post(
-      Uri.https(apiUrl, 'user/signup'),
+      Uri.https(_apiUrl, 'user/signup'),
       body: {
         'username': username,
         'password': password,
@@ -51,9 +60,9 @@ class ApiService {
 
   Future<List<Activity>> getActivity() async {
     final response = await http.get(
-      Uri.https(apiUrl, 'activity'),
+      Uri.https(_apiUrl, 'activity'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
     );
 
@@ -67,9 +76,9 @@ class ApiService {
 
   Future<Activity> postActivity(Activity activity) async {
     final response = await http.post(
-      Uri.https(apiUrl, 'activity/${activity.id}'),
+      Uri.https(_apiUrl, 'activity/${activity.id}'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
       body: activity.toJson(),
     );
@@ -83,9 +92,9 @@ class ApiService {
 
   Future<void> deleteActivity(Activity activity) async {
     await http.delete(
-      Uri.https(apiUrl, 'activity/${activity.id}'),
+      Uri.https(_apiUrl, 'activity/${activity.id}'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
       body: activity.toJson(),
     );
@@ -93,9 +102,9 @@ class ApiService {
 
   Future<List<Activity>> patchActivity(Activity activity) async {
     final response = await http.patch(
-      Uri.https(apiUrl, 'activity'),
+      Uri.https(_apiUrl, 'activity'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
       body: activity.toJson(),
     );
@@ -110,9 +119,9 @@ class ApiService {
 
   Future<List<Partner>> getPartners() async {
     final response = await http.get(
-      Uri.https(apiUrl, 'partner'),
+      Uri.https(_apiUrl, 'partner'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
     );
 
@@ -125,7 +134,7 @@ class ApiService {
   }
 
   Future<List<IdName>> getBirthControls() async {
-    final response = await http.get(Uri.https(apiUrl, 'data/birth-controls'));
+    final response = await http.get(Uri.https(_apiUrl, 'data/birth-controls'));
 
     if (response.statusCode == 200) {
       List json = jsonDecode(response.body);
@@ -136,7 +145,7 @@ class ApiService {
   }
 
   Future<List<IdName>> getActivityTypes() async {
-    final response = await http.get(Uri.https(apiUrl, 'data/activity-types'));
+    final response = await http.get(Uri.https(_apiUrl, 'data/activity-types'));
 
     if (response.statusCode == 200) {
       List json = jsonDecode(response.body);
@@ -147,7 +156,7 @@ class ApiService {
   }
 
   Future<List<IdName>> getGenders() async {
-    final response = await http.get(Uri.https(apiUrl, 'data/genders'));
+    final response = await http.get(Uri.https(_apiUrl, 'data/genders'));
 
     if (response.statusCode == 200) {
       List json = jsonDecode(response.body);
@@ -158,7 +167,7 @@ class ApiService {
   }
 
   Future<List<IdName>> getPlaces() async {
-    final response = await http.get(Uri.https(apiUrl, 'data/places'));
+    final response = await http.get(Uri.https(_apiUrl, 'data/places'));
 
     if (response.statusCode == 200) {
       List json = jsonDecode(response.body);
@@ -169,7 +178,7 @@ class ApiService {
   }
 
   Future<List<IdName>> getPractices() async {
-    final response = await http.get(Uri.https(apiUrl, 'data/practices'));
+    final response = await http.get(Uri.https(_apiUrl, 'data/practices'));
 
     if (response.statusCode == 200) {
       List json = jsonDecode(response.body);
@@ -180,7 +189,7 @@ class ApiService {
   }
 
   Future<List<IdName>> getInitiators() async {
-    final response = await http.get(Uri.https(apiUrl, 'data/initiators'));
+    final response = await http.get(Uri.https(_apiUrl, 'data/initiators'));
 
     if (response.statusCode == 200) {
       List json = jsonDecode(response.body);

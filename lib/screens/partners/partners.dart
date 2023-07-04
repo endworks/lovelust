@@ -20,6 +20,20 @@ class _PartnersPageState extends State<PartnersPage> {
   ScrollController _scrollController = ScrollController();
   bool _isExtended = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      setState(() {
+        _isExtended = _scrollController.offset <= 0.0;
+      });
+    });
+
+    setState(() {
+      _partners = _common.partners;
+    });
+  }
+
   void _addPartner() {
     Navigator.push(
       context,
@@ -37,16 +51,6 @@ class _PartnersPageState extends State<PartnersPage> {
     setState(() {
       _partners = _partners;
     });
-  }
-
-  @override
-  void initState() {
-    _scrollController.addListener(() {
-      setState(() {
-        _isExtended = _scrollController.offset <= 0.0;
-      });
-    });
-    super.initState();
   }
 
   @override

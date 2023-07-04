@@ -7,8 +7,8 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class CommonService {
-  final StorageService storage = getIt<StorageService>();
-  final ApiService api = getIt<ApiService>();
+  final StorageService _storage = getIt<StorageService>();
+  final ApiService _api = getIt<ApiService>();
 
   String _theme = 'system';
   String _colorScheme = 'dynamic';
@@ -27,13 +27,13 @@ class CommonService {
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
     var futures = <Future>[
-      storage.getTheme(),
-      storage.getColorScheme(),
-      storage.getAccessToken(),
-      storage.getRefreshToken(),
-      storage.getActivity(),
-      storage.getPartners(),
-      storage.getCalendarView(),
+      _storage.getTheme(),
+      _storage.getColorScheme(),
+      _storage.getAccessToken(),
+      _storage.getRefreshToken(),
+      _storage.getActivity(),
+      _storage.getPartners(),
+      _storage.getCalendarView(),
       loadStaticData()
     ];
 
@@ -51,8 +51,8 @@ class CommonService {
   Future<void> initialFetch() async {
     debugPrint('initialFetch');
     var futures = <Future>[
-      api.getActivity(),
-      api.getPartners(),
+      _api.getActivity(),
+      _api.getPartners(),
       fetchStaticData()
     ];
 
@@ -65,12 +65,12 @@ class CommonService {
   Future<void> loadStaticData() async {
     debugPrint('loadStaticData');
     var futures = <Future>[
-      storage.getGenders(),
-      storage.getInitiators(),
-      storage.getPractices(),
-      storage.getPlaces(),
-      storage.getBirthControls(),
-      storage.getActivityTypes(),
+      _storage.getGenders(),
+      _storage.getInitiators(),
+      _storage.getPractices(),
+      _storage.getPlaces(),
+      _storage.getBirthControls(),
+      _storage.getActivityTypes(),
     ];
 
     List result = await Future.wait(futures);
@@ -86,12 +86,12 @@ class CommonService {
   fetchStaticData() async {
     debugPrint('fetchStaticData');
     var futures = <Future>[
-      api.getGenders(),
-      api.getInitiators(),
-      api.getPractices(),
-      api.getPlaces(),
-      api.getBirthControls(),
-      api.getActivityTypes(),
+      _api.getGenders(),
+      _api.getInitiators(),
+      _api.getPractices(),
+      _api.getPlaces(),
+      _api.getBirthControls(),
+      _api.getActivityTypes(),
     ];
 
     List result = await Future.wait(futures);
@@ -108,15 +108,12 @@ class CommonService {
     return accessToken != null;
   }
 
-  Future<void> signOut() {
+  void signOut() {
     debugPrint('signOut');
-    var futures = <Future>[
-      storage.setAccessToken(null),
-      storage.setRefreshToken(null),
-      storage.setActivity([]),
-      storage.setPartners([])
-    ];
-    return Future.wait(futures);
+    accessToken = null;
+    refreshToken = null;
+    activity = [];
+    partners = [];
   }
 
   Activity? getActivityById(String id) {
@@ -145,7 +142,7 @@ class CommonService {
 
   set theme(String value) {
     _theme = value;
-    storage.setTheme(value);
+    _storage.setTheme(value);
   }
 
   String get colorScheme {
@@ -154,7 +151,7 @@ class CommonService {
 
   set colorScheme(String value) {
     _colorScheme = value;
-    storage.setColorScheme(value);
+    _storage.setColorScheme(value);
   }
 
   String? get accessToken {
@@ -163,7 +160,7 @@ class CommonService {
 
   set accessToken(String? value) {
     _accessToken = value;
-    storage.setAccessToken(value);
+    _storage.setAccessToken(value);
   }
 
   String? get refreshToken {
@@ -172,7 +169,7 @@ class CommonService {
 
   set refreshToken(String? value) {
     _refreshToken = value;
-    storage.setRefreshToken(value);
+    _storage.setRefreshToken(value);
   }
 
   List<Activity> get activity {
@@ -181,7 +178,7 @@ class CommonService {
 
   set activity(List<Activity> value) {
     _activity = value;
-    storage.setActivity(value);
+    _storage.setActivity(value);
   }
 
   List<Partner> get partners {
@@ -190,7 +187,7 @@ class CommonService {
 
   set partners(List<Partner> value) {
     _partners = value;
-    storage.setPartners(value);
+    _storage.setPartners(value);
   }
 
   bool get calendarView {
@@ -199,7 +196,7 @@ class CommonService {
 
   set calendarView(bool value) {
     _calendarView = value;
-    storage.setCalendarView(value);
+    _storage.setCalendarView(value);
   }
 
   List<IdName> get birthControls {
@@ -208,7 +205,7 @@ class CommonService {
 
   set birthControls(List<IdName> value) {
     _birthControls = value;
-    storage.setBirthControls(value);
+    _storage.setBirthControls(value);
   }
 
   List<IdName> get practices {
@@ -217,7 +214,7 @@ class CommonService {
 
   set practices(List<IdName> value) {
     _practices = value;
-    storage.setPractices(value);
+    _storage.setPractices(value);
   }
 
   List<IdName> get places {
@@ -226,7 +223,7 @@ class CommonService {
 
   set places(List<IdName> value) {
     _places = value;
-    storage.setPlaces(value);
+    _storage.setPlaces(value);
   }
 
   List<IdName> get initiators {
@@ -235,7 +232,7 @@ class CommonService {
 
   set initiators(List<IdName> value) {
     _initiators = value;
-    storage.setInitiators(value);
+    _storage.setInitiators(value);
   }
 
   List<IdName> get genders {
@@ -244,7 +241,7 @@ class CommonService {
 
   set genders(List<IdName> value) {
     _genders = value;
-    storage.setGenders(value);
+    _storage.setGenders(value);
   }
 
   List<IdName> get activityTypes {
@@ -253,6 +250,6 @@ class CommonService {
 
   set activityTypes(List<IdName> value) {
     _activityTypes = value;
-    storage.setActivityTypes(value);
+    _storage.setActivityTypes(value);
   }
 }

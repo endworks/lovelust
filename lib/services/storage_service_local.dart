@@ -8,14 +8,14 @@ import 'package:lovelust/services/storage_service.dart';
 
 class StorageServiceLocal extends StorageService {
   IOSOptions get _iosOptions => const IOSOptions(
-        accountName: 'lovelust',
+        // accountName: 'lovelust',
         accessibility: KeychainAccessibility.first_unlock,
       );
 
   AndroidOptions get _androidOptions => const AndroidOptions(
-        encryptedSharedPreferences: true,
-        // sharedPreferencesName: 'Test2',
-        // preferencesKeyPrefix: 'Test'
+      // encryptedSharedPreferences: true,
+      // sharedPreferencesName: 'Test2',
+      // preferencesKeyPrefix: 'Test'
       );
   final _storage = const FlutterSecureStorage();
 

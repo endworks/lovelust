@@ -42,19 +42,42 @@ class _AppState extends State<App> {
           } else if (_common.colorScheme == 'love') {
             lightColorScheme = ColorScheme.fromSeed(
               seedColor: loveColor,
-              brightness: Brightness.dark,
             );
             darkColorScheme = ColorScheme.fromSeed(
               seedColor: loveColor,
               brightness: Brightness.dark,
             );
-          } else if (_common.colorScheme == 'lust') {
+          } else if (_common.colorScheme == 'lovelust') {
             lightColorScheme = ColorScheme.fromSeed(
+              seedColor: lustColor,
+            );
+            darkColorScheme = ColorScheme.fromSeed(
+              seedColor: loveColor,
+              brightness: Brightness.dark,
+            );
+          } else if (_common.colorScheme == 'lovelust2') {
+            lightColorScheme = ColorScheme.fromSeed(
+              seedColor: loveColor,
+            );
+            darkColorScheme = ColorScheme.fromSeed(
               seedColor: lustColor,
               brightness: Brightness.dark,
             );
+          } else if (_common.colorScheme == 'lust') {
             lightColorScheme = ColorScheme.fromSeed(
               seedColor: lustColor,
+            );
+            darkColorScheme = ColorScheme.fromSeed(
+              seedColor: lustColor,
+              brightness: Brightness.dark,
+            );
+          } else if (_common.colorScheme == 'monochrome') {
+            lightColorScheme = ColorScheme.fromSeed(
+              seedColor: Colors.black,
+            );
+            darkColorScheme = ColorScheme.fromSeed(
+              seedColor: Colors.black,
+              brightness: Brightness.dark,
             );
           }
 

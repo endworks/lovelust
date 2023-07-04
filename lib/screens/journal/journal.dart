@@ -3,7 +3,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/screens/journal/activity_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/storage_service.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class JournalPage extends StatefulWidget {
@@ -14,19 +14,11 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  final StorageService storage = getIt<StorageService>();
-  final ApiService api = getIt<ApiService>();
-  List<Activity> activity = [];
+  final CommonService _common = getIt<CommonService>();
+  final ApiService _api = getIt<ApiService>();
+  List<Activity> _activity = [];
   ScrollController scrollController = ScrollController();
   bool isExtended = true;
-
-  Future<List<dynamic>> loadData() {
-    debugPrint('loadData journal');
-    var futures = <Future>[
-      storage.getActivity(),
-    ];
-    return Future.wait(futures);
-  }
 
   void addActivity() {
     Navigator.push(
@@ -40,16 +32,16 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> refresh() async {
-    activity = await api.getActivity();
-    await storage.setActivity(activity);
+    _activity = await _api.getActivity();
+    _common.activity = _activity;
     setState(() {
-      activity = activity;
+      _activity = _activity;
     });
   }
 
   Widget separator(int index) {
-    final date = activity[index].date;
-    final date2 = activity[index + 1].date;
+    final date = _activity[index].date;
+    final date2 = _activity[index + 1].date;
     final difference = date.difference(date2).inDays;
     if (difference > 0) {
       return Padding(
@@ -81,43 +73,39 @@ class _JournalPageState extends State<JournalPage> {
     });
 
     setState(() {
-      activity = storage.activity;
+      _activity = _common.activity;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: loadData(),
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
-          Scaffold(
-        appBar: AppBar(
-          title: const Text('Journal'),
-          surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-        ),
-        body: RefreshIndicator(
-          onRefresh: refresh,
-          child: ListView.separated(
-            controller: scrollController,
-            separatorBuilder: (context, index) => const Divider(height: 0),
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: activity.length,
-            itemBuilder: (context, index) =>
-                ActivityItem(activity: activity[index]),
-          ),
-        ),
-        floatingActionButton: isExtended
-            ? FloatingActionButton.extended(
-                onPressed: addActivity,
-                label: const Text('Add activity'),
-                icon: const Icon(Icons.add),
-              )
-            : FloatingActionButton(
-                onPressed: addActivity,
-                tooltip: 'Add activity',
-                child: const Icon(Icons.add),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Journal'),
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: ListView.separated(
+          controller: scrollController,
+          separatorBuilder: (context, index) => const Divider(height: 0),
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: _activity.length,
+          itemBuilder: (context, index) =>
+              ActivityItem(activity: _activity[index]),
+        ),
+      ),
+      floatingActionButton: isExtended
+          ? FloatingActionButton.extended(
+              onPressed: addActivity,
+              label: const Text('Add activity'),
+              icon: const Icon(Icons.add),
+            )
+          : FloatingActionButton(
+              onPressed: addActivity,
+              tooltip: 'Add activity',
+              child: const Icon(Icons.add),
+            ),
     );
   }
 }

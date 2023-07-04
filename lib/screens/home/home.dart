@@ -19,16 +19,6 @@ class _HomePageState extends State<HomePage> {
   int _activityCount = 0;
   int _partnersCount = 0;
 
-  Future<List<dynamic>> loadData() {
-    debugPrint('loadData home');
-    var futures = <Future>[
-      storage.getAccessToken(),
-      storage.getActivity(),
-      storage.getPartners(),
-    ];
-    return Future.wait(futures);
-  }
-
   void _onSettingsClick() {
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
@@ -40,47 +30,43 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     setState(() {
-      _isLoggedIn = common.isLoggedIn();
-      _activityCount = storage.activity.length;
-      _partnersCount = storage.partners.length;
+      _isLoggedIn = common.isLoggedIn;
+      _activityCount = common.activity.length;
+      _partnersCount = common.partners.length;
     });
-    debugPrint('${common.isLoggedIn()}');
-    debugPrint('${storage.activity.length}');
-    debugPrint('${storage.partners.length}');
+    debugPrint('${common.isLoggedIn}');
+    debugPrint('${common.activity.length}');
+    debugPrint('${common.partners.length}');
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: loadData(),
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
-          Scaffold(
-        appBar: AppBar(
-          title: const Row(children: [
-            Text('Love', style: TextStyle(color: loveColor)),
-            Text('Lust', style: TextStyle(color: lustColor)),
-          ]),
-          actions: [
-            IconButton(
-              icon: CircleAvatar(
-                  child: Icon(_isLoggedIn ? Icons.person : Icons.person_off)),
-              onPressed: _onSettingsClick,
-            )
+    return Scaffold(
+      appBar: AppBar(
+        title: const Row(children: [
+          Text('Love', style: TextStyle(color: loveColor)),
+          Text('Lust', style: TextStyle(color: lustColor)),
+        ]),
+        actions: [
+          IconButton(
+            icon: CircleAvatar(
+                child: Icon(_isLoggedIn ? Icons.person : Icons.person_off)),
+            onPressed: _onSettingsClick,
+          )
+        ],
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'activity: $_activityCount',
+            ),
+            Text(
+              'partners: $_partnersCount',
+            ),
           ],
-          surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'activity: $_activityCount',
-              ),
-              Text(
-                'partners: $_partnersCount',
-              ),
-            ],
-          ),
         ),
       ),
     );

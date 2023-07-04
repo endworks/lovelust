@@ -7,10 +7,10 @@ import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/storage_service.dart';
+import 'package:lovelust/services/common_service.dart';
 
 class ApiService {
-  final StorageService storageService = getIt<StorageService>();
+  final CommonService common = getIt<CommonService>();
   String apiUrl = 'lovelust-api.end.works';
 
   Future<AuthTokens> login(String username, String password) async {
@@ -53,7 +53,7 @@ class ApiService {
     final response = await http.get(
       Uri.https(apiUrl, 'activity'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${storageService.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
       },
     );
 
@@ -69,7 +69,7 @@ class ApiService {
     final response = await http.post(
       Uri.https(apiUrl, 'activity/${activity.id}'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${storageService.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
       },
       body: activity.toJson(),
     );
@@ -85,7 +85,7 @@ class ApiService {
     await http.delete(
       Uri.https(apiUrl, 'activity/${activity.id}'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${storageService.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
       },
       body: activity.toJson(),
     );
@@ -95,7 +95,7 @@ class ApiService {
     final response = await http.patch(
       Uri.https(apiUrl, 'activity'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${storageService.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
       },
       body: activity.toJson(),
     );
@@ -112,7 +112,7 @@ class ApiService {
     final response = await http.get(
       Uri.https(apiUrl, 'partner'),
       headers: {
-        HttpHeaders.authorizationHeader: 'Bearer ${storageService.accessToken}',
+        HttpHeaders.authorizationHeader: 'Bearer ${common.accessToken}',
       },
     );
 

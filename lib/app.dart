@@ -4,7 +4,6 @@ import 'package:lovelust/colors.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
-import 'package:lovelust/services/storage_service.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -14,14 +13,13 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final StorageService storage = getIt<StorageService>();
-  final CommonService common = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: common.initialLoad(),
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
+    return FutureBuilder<void>(
+      future: _common.initialLoad(),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) =>
           DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         ColorScheme lightColorScheme = ColorScheme.fromSeed(
@@ -33,28 +31,28 @@ class _AppState extends State<App> {
         );
         ThemeMode themeMode = ThemeMode.system;
 
-        debugPrint('theme: ${storage.theme}');
-        debugPrint('colorScheme: ${storage.colorScheme}');
+        debugPrint('theme: ${_common.theme}');
+        debugPrint('colorScheme: ${_common.colorScheme}');
 
-        if (storage.colorScheme == 'dynamic') {
+        if (_common.colorScheme == 'dynamic') {
           if (lightDynamic != null && darkDynamic != null) {
             lightColorScheme = lightDynamic.harmonized();
             darkColorScheme = darkDynamic.harmonized();
           }
-        } else if (storage.colorScheme == 'love') {
+        } else if (_common.colorScheme == 'love') {
           darkColorScheme = ColorScheme.fromSeed(
             seedColor: loveColor,
             brightness: Brightness.dark,
           );
-        } else if (storage.colorScheme == 'lust') {
+        } else if (_common.colorScheme == 'lust') {
           lightColorScheme = ColorScheme.fromSeed(
             seedColor: lustColor,
           );
         }
 
-        if (storage.theme == 'light') {
+        if (_common.theme == 'light') {
           themeMode = ThemeMode.light;
-        } else if (storage.theme == 'dark') {
+        } else if (_common.theme == 'dark') {
           themeMode = ThemeMode.dark;
         }
 

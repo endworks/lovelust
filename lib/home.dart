@@ -13,14 +13,54 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   int selectedIndex = 0;
 
+  Widget get selectedPage {
+    if (selectedIndex > -1) {
+      return pages[selectedIndex];
+    }
+    return const Text('loading');
+  }
+
+  List<Widget> get pages {
+    return [
+      const HomePage(),
+      const JournalPage(),
+      const PartnersPage(),
+    ];
+  }
+
+  List<Widget> get destinations {
+    return [
+      NavigationDestination(
+        selectedIcon: Icon(
+          Icons.monitor_heart,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        icon: const Icon(Icons.monitor_heart_outlined),
+        label: 'Home',
+      ),
+      NavigationDestination(
+        selectedIcon: Icon(
+          Icons.assignment,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        icon: const Icon(Icons.assignment_outlined),
+        label: 'Journal',
+      ),
+      NavigationDestination(
+        selectedIcon: Icon(
+          Icons.group,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        icon: const Icon(Icons.group_outlined),
+        label: 'Partners',
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: <Widget>[
-        const HomePage(),
-        const JournalPage(),
-        const PartnersPage(),
-      ][selectedIndex],
+      body: selectedPage,
       bottomNavigationBar: NavigationBar(
         backgroundColor: Theme.of(context).colorScheme.background,
         surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
@@ -32,32 +72,7 @@ class _HomeState extends State<Home> {
             selectedIndex = index;
           });
         },
-        destinations: <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.monitor_heart,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.monitor_heart_outlined),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.assignment,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.assignment_outlined),
-            label: 'Journal',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(
-              Icons.group,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            icon: const Icon(Icons.group_outlined),
-            label: 'Partners',
-          ),
-        ],
+        destinations: destinations,
       ),
     );
   }

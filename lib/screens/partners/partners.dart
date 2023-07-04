@@ -3,7 +3,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/storage_service.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/widgets/partner_item.dart';
 
 class PartnersPage extends StatefulWidget {
@@ -14,21 +14,13 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  final StorageService storage = getIt<StorageService>();
-  final ApiService api = getIt<ApiService>();
-  List<Partner> partners = [];
-  ScrollController scrollController = ScrollController();
-  bool isExtended = true;
+  final CommonService _common = getIt<CommonService>();
+  final ApiService _api = getIt<ApiService>();
+  List<Partner> _partners = [];
+  ScrollController _scrollController = ScrollController();
+  bool _isExtended = true;
 
-  Future<List<dynamic>> loadData() {
-    debugPrint('loadData partners');
-    var futures = <Future>[
-      storage.getPartners(),
-    ];
-    return Future.wait(futures);
-  }
-
-  void addPartner() {
+  void _addPartner() {
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(
@@ -40,60 +32,51 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   Future<void> refresh() async {
-    partners = await api.getPartners();
-    await storage.setPartners(partners);
+    _partners = await _api.getPartners();
+    _common.partners = _partners;
     setState(() {
-      partners = partners;
+      _partners = _partners;
     });
   }
 
   @override
   void initState() {
-    scrollController.addListener(() {
+    _scrollController.addListener(() {
       setState(() {
-        isExtended = scrollController.offset <= 0.0;
+        _isExtended = _scrollController.offset <= 0.0;
       });
     });
-
-    setState(() {
-      partners = storage.partners;
-    });
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: loadData(),
-      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
-          Scaffold(
-        appBar: AppBar(
-          title: const Text('Partners'),
-          surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-        ),
-        body: RefreshIndicator(
-          onRefresh: refresh,
-          child: ListView.builder(
-            controller: scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: partners.length,
-            itemBuilder: (context, index) =>
-                PartnerItem(partner: partners[index]),
-          ),
-        ),
-        floatingActionButton: isExtended
-            ? FloatingActionButton.extended(
-                onPressed: addPartner,
-                label: const Text('Add partner'),
-                icon: const Icon(Icons.add),
-              )
-            : FloatingActionButton(
-                onPressed: addPartner,
-                tooltip: 'Add partner',
-                child: const Icon(Icons.add),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Partners'),
+        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        child: ListView.builder(
+          controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          itemCount: _partners.length,
+          itemBuilder: (context, index) =>
+              PartnerItem(partner: _partners[index]),
+        ),
+      ),
+      floatingActionButton: _isExtended
+          ? FloatingActionButton.extended(
+              onPressed: _addPartner,
+              label: const Text('Add partner'),
+              icon: const Icon(Icons.add),
+            )
+          : FloatingActionButton(
+              onPressed: _addPartner,
+              tooltip: 'Add partner',
+              child: const Icon(Icons.add),
+            ),
     );
   }
 }

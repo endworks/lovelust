@@ -4,20 +4,6 @@ import '../models/activity.dart';
 import '../models/partner.dart';
 
 abstract class StorageService {
-  String theme = 'system';
-  String colorScheme = 'dynamic';
-  String? accessToken;
-  String? refreshToken;
-  List<Activity> activity = [];
-  List<Partner> partners = [];
-  List<IdName> birthControls = [];
-  List<IdName> practices = [];
-  List<IdName> places = [];
-  List<IdName> initiators = [];
-  List<IdName> genders = [];
-  List<IdName> activityTypes = [];
-  bool calendarView = false;
-
   Future<String> getTheme();
   Future<void> setTheme(String value);
   Future<String> getColorScheme();

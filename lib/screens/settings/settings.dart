@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
       const DropdownMenuItem(value: "dynamic", child: Text("Dynamic")),
       const DropdownMenuItem(value: "default", child: Text("Default")),
       const DropdownMenuItem(value: "lovelust", child: Text("LoveLust")),
-      const DropdownMenuItem(value: "lovelust2", child: Text("LoveLust2")),
+      const DropdownMenuItem(value: "lovelust2", child: Text("LoveLust alter")),
       const DropdownMenuItem(value: "love", child: Text("Love")),
       const DropdownMenuItem(value: "lust", child: Text("Lust")),
       const DropdownMenuItem(value: "monochrome", child: Text("Monochrome")),

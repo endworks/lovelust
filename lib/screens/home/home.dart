@@ -19,6 +19,16 @@ class _HomePageState extends State<HomePage> {
   int _activityCount = 0;
   int _partnersCount = 0;
 
+  Future<List<dynamic>> loadData() {
+    debugPrint('loadData home');
+    var futures = <Future>[
+      storage.getAccessToken(),
+      storage.getActivity(),
+      storage.getPartners(),
+    ];
+    return Future.wait(futures);
+  }
+
   void _onSettingsClick() {
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
@@ -41,32 +51,36 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Row(children: [
-          Text('Love', style: TextStyle(color: loveColor)),
-          Text('Lust', style: TextStyle(color: lustColor)),
-        ]),
-        actions: [
-          IconButton(
-            icon: CircleAvatar(
-                child: Icon(_isLoggedIn ? Icons.person : Icons.person_off)),
-            onPressed: _onSettingsClick,
-          )
-        ],
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'activity: $_activityCount',
-            ),
-            Text(
-              'partners: $_partnersCount',
-            ),
+    return FutureBuilder<List<dynamic>>(
+      future: loadData(),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
+          Scaffold(
+        appBar: AppBar(
+          title: const Row(children: [
+            Text('Love', style: TextStyle(color: loveColor)),
+            Text('Lust', style: TextStyle(color: lustColor)),
+          ]),
+          actions: [
+            IconButton(
+              icon: CircleAvatar(
+                  child: Icon(_isLoggedIn ? Icons.person : Icons.person_off)),
+              onPressed: _onSettingsClick,
+            )
           ],
+          surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'activity: $_activityCount',
+              ),
+              Text(
+                'partners: $_partnersCount',
+              ),
+            ],
+          ),
         ),
       ),
     );

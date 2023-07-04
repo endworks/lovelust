@@ -14,11 +14,19 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  final StorageService storageService = getIt<StorageService>();
+  final StorageService storage = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
   List<Activity> activity = [];
   ScrollController scrollController = ScrollController();
   bool isExtended = true;
+
+  Future<List<dynamic>> loadData() {
+    debugPrint('loadData journal');
+    var futures = <Future>[
+      storage.getActivity(),
+    ];
+    return Future.wait(futures);
+  }
 
   void addActivity() {
     Navigator.push(
@@ -33,7 +41,7 @@ class _JournalPageState extends State<JournalPage> {
 
   Future<void> refresh() async {
     activity = await api.getActivity();
-    await storageService.setActivity(activity);
+    await storage.setActivity(activity);
     setState(() {
       activity = activity;
     });
@@ -73,39 +81,43 @@ class _JournalPageState extends State<JournalPage> {
     });
 
     setState(() {
-      activity = storageService.activity;
+      activity = storage.activity;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Journal'),
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-      ),
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: ListView.separated(
-          controller: scrollController,
-          separatorBuilder: (context, index) => const Divider(height: 0),
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: activity.length,
-          itemBuilder: (context, index) =>
-              ActivityItem(activity: activity[index]),
+    return FutureBuilder<List<dynamic>>(
+      future: loadData(),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
+          Scaffold(
+        appBar: AppBar(
+          title: const Text('Journal'),
+          surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
         ),
+        body: RefreshIndicator(
+          onRefresh: refresh,
+          child: ListView.separated(
+            controller: scrollController,
+            separatorBuilder: (context, index) => const Divider(height: 0),
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: activity.length,
+            itemBuilder: (context, index) =>
+                ActivityItem(activity: activity[index]),
+          ),
+        ),
+        floatingActionButton: isExtended
+            ? FloatingActionButton.extended(
+                onPressed: addActivity,
+                label: const Text('Add activity'),
+                icon: const Icon(Icons.add),
+              )
+            : FloatingActionButton(
+                onPressed: addActivity,
+                tooltip: 'Add activity',
+                child: const Icon(Icons.add),
+              ),
       ),
-      floatingActionButton: isExtended
-          ? FloatingActionButton.extended(
-              onPressed: addActivity,
-              label: const Text('Add activity'),
-              icon: const Icon(Icons.add),
-            )
-          : FloatingActionButton(
-              onPressed: addActivity,
-              tooltip: 'Add activity',
-              child: const Icon(Icons.add),
-            ),
     );
   }
 }

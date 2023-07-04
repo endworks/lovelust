@@ -27,7 +27,6 @@ class _AppState extends State<App> {
         ColorScheme lightColorScheme = ColorScheme.fromSeed(
           seedColor: loveColor,
         );
-        ;
         ColorScheme darkColorScheme = ColorScheme.fromSeed(
           seedColor: lustColor,
           brightness: Brightness.dark,

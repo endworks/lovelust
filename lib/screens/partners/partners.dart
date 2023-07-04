@@ -14,11 +14,19 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  final StorageService storageService = getIt<StorageService>();
+  final StorageService storage = getIt<StorageService>();
   final ApiService api = getIt<ApiService>();
   List<Partner> partners = [];
   ScrollController scrollController = ScrollController();
   bool isExtended = true;
+
+  Future<List<dynamic>> loadData() {
+    debugPrint('loadData partners');
+    var futures = <Future>[
+      storage.getPartners(),
+    ];
+    return Future.wait(futures);
+  }
 
   void addPartner() {
     Navigator.push(
@@ -33,7 +41,7 @@ class _PartnersPageState extends State<PartnersPage> {
 
   Future<void> refresh() async {
     partners = await api.getPartners();
-    await storageService.setPartners(partners);
+    await storage.setPartners(partners);
     setState(() {
       partners = partners;
     });
@@ -48,7 +56,7 @@ class _PartnersPageState extends State<PartnersPage> {
     });
 
     setState(() {
-      partners = storageService.partners;
+      partners = storage.partners;
     });
 
     super.initState();
@@ -56,32 +64,36 @@ class _PartnersPageState extends State<PartnersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Partners'),
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-      ),
-      body: RefreshIndicator(
-        onRefresh: refresh,
-        child: ListView.builder(
-          controller: scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: partners.length,
-          itemBuilder: (context, index) =>
-              PartnerItem(partner: partners[index]),
+    return FutureBuilder<List<dynamic>>(
+      future: loadData(),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) =>
+          Scaffold(
+        appBar: AppBar(
+          title: const Text('Partners'),
+          surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
         ),
+        body: RefreshIndicator(
+          onRefresh: refresh,
+          child: ListView.builder(
+            controller: scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            itemCount: partners.length,
+            itemBuilder: (context, index) =>
+                PartnerItem(partner: partners[index]),
+          ),
+        ),
+        floatingActionButton: isExtended
+            ? FloatingActionButton.extended(
+                onPressed: addPartner,
+                label: const Text('Add partner'),
+                icon: const Icon(Icons.add),
+              )
+            : FloatingActionButton(
+                onPressed: addPartner,
+                tooltip: 'Add partner',
+                child: const Icon(Icons.add),
+              ),
       ),
-      floatingActionButton: isExtended
-          ? FloatingActionButton.extended(
-              onPressed: addPartner,
-              label: const Text('Add partner'),
-              icon: const Icon(Icons.add),
-            )
-          : FloatingActionButton(
-              onPressed: addPartner,
-              tooltip: 'Add partner',
-              child: const Icon(Icons.add),
-            ),
     );
   }
 }

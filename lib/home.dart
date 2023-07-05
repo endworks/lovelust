@@ -60,7 +60,6 @@ class _HomeState extends State<Home> {
       body: selectedPage,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) {
           setState(() {
             selectedIndex = index;

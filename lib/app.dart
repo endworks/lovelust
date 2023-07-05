@@ -34,28 +34,40 @@ class _AppState extends State<App> {
             if (lightDynamic != null && darkDynamic != null) {
               theme = ThemeData(
                 colorScheme: lightDynamic.harmonized(),
-                useMaterial3: true,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+                useMaterial3: defaultTheme.useMaterial3,
+                visualDensity: defaultTheme.visualDensity,
+                navigationBarTheme: NavigationBarThemeData(
+                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+                ),
               );
               darkTheme = ThemeData(
                 colorScheme: darkDynamic.harmonized(),
+                useMaterial3: defaultTheme.useMaterial3,
+                visualDensity: defaultTheme.visualDensity,
                 brightness: Brightness.dark,
-                useMaterial3: true,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
+                navigationBarTheme: NavigationBarThemeData(
+                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+                ),
               );
             }
+          } else if (_common.colorScheme == 'unique') {
+            theme = uniqueTheme;
+            darkTheme = uniqueDarkTheme;
+          } else if (_common.colorScheme == 'lustlove') {
+            theme = lustLoveTheme;
+            darkTheme = lustLoveDarkTheme;
           } else if (_common.colorScheme == 'lovelust') {
             theme = loveLustTheme;
             darkTheme = loveLustDarkTheme;
-          } else if (_common.colorScheme == 'lovelust2') {
-            theme = loveLustAlterTheme;
-            darkTheme = loveLustAlterDarkTheme;
           } else if (_common.colorScheme == 'love') {
             theme = loveTheme;
             darkTheme = loveDarkTheme;
           } else if (_common.colorScheme == 'lust') {
             theme = lustTheme;
             darkTheme = lustDarkTheme;
+          } else if (_common.colorScheme == 'apple') {
+            theme = appleTheme;
+            darkTheme = appleDarkTheme;
           } else if (_common.colorScheme == 'monochrome') {
             theme = monochromeTheme;
             darkTheme = monochromeDarkTheme;

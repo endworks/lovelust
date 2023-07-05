@@ -1,15 +1,22 @@
-import 'dart:ui';
+import 'package:flutter/material.dart';
 
 const loveColor = Color.fromARGB(255, 251, 35, 186);
 const lustColor = Color.fromARGB(255, 106, 47, 208);
-get defaultColor {
+get lovelustColor {
   int red = ((loveColor.red + lustColor.red) / 2).floor();
   int green = ((loveColor.green + lustColor.green) / 2).floor();
   int blue = ((loveColor.blue + lustColor.blue) / 2).floor();
   return Color.fromARGB(255, red, green, blue);
 }
 
-final Map<int, Color> color = {
+get lovelustMonoColor {
+  return HSLColor.fromColor(lovelustColor).withSaturation(0).toColor();
+}
+
+const appleBlueColor = Color.fromARGB(255, 0, 122, 255);
+const appleBlueDarkColor = Color.fromARGB(255, 10, 132, 255);
+
+final Map<int, Color> blackColor = {
   50: const Color.fromRGBO(0, 0, 0, .1),
   100: const Color.fromRGBO(0, 0, 0, .2),
   200: const Color.fromRGBO(0, 0, 0, .3),
@@ -22,7 +29,7 @@ final Map<int, Color> color = {
   900: const Color.fromRGBO(0, 0, 0, 1),
 };
 
-final Map<int, Color> colorWhite = {
+final Map<int, Color> whiteColor = {
   50: const Color.fromRGBO(255, 255, 255, .1),
   100: const Color.fromRGBO(255, 255, 255, .2),
   200: const Color.fromRGBO(255, 255, 255, .3),

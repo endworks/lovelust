@@ -3,7 +3,10 @@ import 'package:lovelust/colors.dart';
 
 ThemeData defaultTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: defaultColor,
+    seedColor: lustColor,
+  ),
+  navigationBarTheme: const NavigationBarThemeData(
+    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
   ),
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -11,56 +14,98 @@ ThemeData defaultTheme = ThemeData(
 
 ThemeData defaultDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: defaultColor,
+    seedColor: loveColor,
     brightness: Brightness.dark,
   ),
-  useMaterial3: true,
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+);
+
+ThemeData uniqueTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: lovelustColor,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+);
+
+ThemeData uniqueDarkTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: lovelustColor,
+    brightness: Brightness.dark,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+  brightness: Brightness.dark,
+);
+
+ThemeData lustLoveTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: lustColor,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+);
+
+ThemeData lustLoveDarkTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: loveColor,
+    brightness: Brightness.dark,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+  brightness: Brightness.dark,
 );
 
 ThemeData loveLustTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: lustColor,
+    seedColor: loveColor,
   ),
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
 );
 
 ThemeData loveLustDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: loveColor,
-    brightness: Brightness.dark,
-  ),
-  brightness: Brightness.dark,
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-);
-
-ThemeData loveLustAlterTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: loveColor,
-  ),
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
-);
-
-ThemeData loveLustAlterDarkTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
     seedColor: lustColor,
     brightness: Brightness.dark,
   ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 
 ThemeData loveTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: loveColor,
   ),
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
 );
 
 ThemeData loveDarkTheme = ThemeData(
@@ -68,17 +113,23 @@ ThemeData loveDarkTheme = ThemeData(
     seedColor: loveColor,
     brightness: Brightness.dark,
   ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 
 ThemeData lustTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lustColor,
   ),
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
 );
 
 ThemeData lustDarkTheme = ThemeData(
@@ -86,50 +137,79 @@ ThemeData lustDarkTheme = ThemeData(
     seedColor: lustColor,
     brightness: Brightness.dark,
   ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+);
+
+ThemeData appleTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: appleBlueColor,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+);
+
+ThemeData appleDarkTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: appleBlueDarkColor,
+    brightness: Brightness.dark,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+  brightness: Brightness.dark,
 );
 
 ThemeData monochromeTheme = ThemeData(
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.light,
   colorScheme: ColorScheme.light(
-    primary: MaterialColor(0xFF000000, color),
-    onPrimary: MaterialColor(0xFFFFFFFF, colorWhite),
-    secondary: MaterialColor(0xFF000000, color),
-    onSecondary: MaterialColor(0xFFFFFFFF, colorWhite),
+    primary: MaterialColor(0xFF000000, blackColor),
+    onPrimary: MaterialColor(0xFFFFFFFF, whiteColor),
+    secondary: MaterialColor(0xFF000000, blackColor),
+    onSecondary: MaterialColor(0xFFFFFFFF, whiteColor),
     outlineVariant: Colors.grey[200],
   ),
   appBarTheme: AppBarTheme(
-    surfaceTintColor: MaterialColor(0xFFFFFFFF, colorWhite),
     elevation: 1,
+    surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
   ),
   navigationBarTheme: NavigationBarThemeData(
-    surfaceTintColor: MaterialColor(0xFFFFFFFF, colorWhite),
     elevation: 1,
+    surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
+    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
   ),
 );
 
 ThemeData monochromeDarkTheme = ThemeData(
-  useMaterial3: true,
-  visualDensity: VisualDensity.adaptivePlatformDensity,
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
   colorScheme: ColorScheme.dark(
-    primary: MaterialColor(0xFFFFFFFF, colorWhite),
-    onPrimary: MaterialColor(0xFF000000, color),
-    secondary: MaterialColor(0xFFFFFFFF, colorWhite),
-    onSecondary: MaterialColor(0xFF000000, color),
+    primary: MaterialColor(0xFFFFFFFF, whiteColor),
+    onPrimary: MaterialColor(0xFF000000, blackColor),
+    secondary: MaterialColor(0xFFFFFFFF, whiteColor),
+    onSecondary: MaterialColor(0xFF000000, blackColor),
     outlineVariant: Colors.grey[800],
     brightness: Brightness.dark,
   ),
   appBarTheme: AppBarTheme(
-    surfaceTintColor: MaterialColor(0xFF000000, color),
     elevation: 1,
+    surfaceTintColor: MaterialColor(0xFF000000, blackColor),
   ),
   navigationBarTheme: NavigationBarThemeData(
-    surfaceTintColor: MaterialColor(0xFF000000, color),
     elevation: 1,
+    surfaceTintColor: MaterialColor(0xFF000000, blackColor),
+    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
   ),
 );

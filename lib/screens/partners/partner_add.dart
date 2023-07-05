@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/forms/partner_form.dart';
-import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/screens/partners/partner_edit.dart';
 
 class PartnerAddPage extends StatefulWidget {
   const PartnerAddPage({super.key});
@@ -21,30 +20,8 @@ class _PartnerAddPageState extends State<PartnerAddPage> {
     activity: null,
   );
 
-  void save() {
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create partner'),
-        actions: [
-          FilledButton(onPressed: save, child: const Text('Save')),
-          PopupMenuButton(
-            onSelected: (MenuEntryItem item) {},
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MenuEntryItem>>[
-              const PopupMenuItem(
-                value: MenuEntryItem.help,
-                child: Text('Help'),
-              ),
-            ],
-          ),
-        ],
-      ),
-      body: PartnerForm(partner: partner),
-    );
+    return PartnerEditPage(partner: partner);
   }
 }

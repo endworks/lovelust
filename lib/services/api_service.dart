@@ -102,7 +102,7 @@ class ApiService {
 
   Future<List<Activity>> patchActivity(Activity activity) async {
     final response = await http.patch(
-      Uri.https(_apiUrl, 'activity'),
+      Uri.https(_apiUrl, 'activity/${activity.id}'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
@@ -130,6 +130,50 @@ class ApiService {
       return json.map<Partner>((map) => Partner.fromJson(map)).toList();
     } else {
       throw Exception('Failed to load partners');
+    }
+  }
+
+  Future<Partner> postPartner(Partner partner) async {
+    final response = await http.post(
+      Uri.https(_apiUrl, 'partner'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+      },
+      body: {
+        'name': partner.name,
+        'gender': partner.gender,
+        'sex': partner.sex,
+        'notes': partner.notes,
+        'meeting_date': partner.meetingDate.toIso8601String()
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return Partner.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load partner');
+    }
+  }
+
+  Future<Partner> patchPartner(Partner partner) async {
+    final response = await http.patch(
+      Uri.https(_apiUrl, 'partner/${partner.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+      },
+      body: {
+        'name': partner.name,
+        'gender': partner.gender,
+        'sex': partner.sex,
+        'notes': partner.notes,
+        'meeting_date': partner.meetingDate.toIso8601String()
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return Partner.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load partner');
     }
   }
 

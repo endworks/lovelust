@@ -48,6 +48,8 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
       ),
     );
     nameController.addListener(() => setState(() {}));
+    genderController.addListener(() => setState(() {}));
+    sexController.addListener(() => setState(() {}));
   }
 
   @override
@@ -125,9 +127,9 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   }
 
   Icon iconByGender(String gender) {
-    if (gender == 'M') {
+    if (gender == 'M' || gender == 'Male') {
       return const Icon(Icons.male);
-    } else if (gender == 'F') {
+    } else if (gender == 'F' || gender == 'Female') {
       return const Icon(Icons.female);
     } else {
       return const Icon(Icons.transgender);
@@ -185,7 +187,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 ),
                 label: const Text('Gender'),
                 hintText: 'Enter gender...',
-                leadingIcon: iconByGender(genderController.value.text),
+                leadingIcon: iconByGender(genderController.text),
                 dropdownMenuEntries: genderDropdownMenuEntries,
               ),
             ),
@@ -199,7 +201,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 ),
                 label: const Text('Sex'),
                 hintText: 'Enter sex...',
-                leadingIcon: iconByGender(sexController.value.text),
+                leadingIcon: iconByGender(sexController.text),
                 dropdownMenuEntries: genderDropdownMenuEntries,
               ),
             ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 
 class PartnerItem extends StatefulWidget {
@@ -14,6 +16,8 @@ class PartnerItem extends StatefulWidget {
 }
 
 class _PartnerItemState extends State<PartnerItem> {
+  final CommonService _common = getIt<CommonService>();
+
   void _openPartner() {
     debugPrint('tap partner');
     Navigator.push(context,
@@ -52,25 +56,25 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Widget? encounters() {
-    if (widget.partner.activity != null) {
-      Text(
-        widget.partner.activity!.length.toString(),
-        style: const TextStyle(color: Colors.red),
-      );
-      /*return Row(children: [
+    return Text(
+      _common.getActivityByPartner(widget.partner.id).length.toString(),
+      style: const TextStyle(
+        color: Colors.red,
+        fontSize: 21,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+    /*return Row(children: [
         const Icon(Icons.favorite, color: Colors.red),
         Text(
-          widget.partner.activity!.length.toString(),
+          _common.getActivityByPartner(widget.partner.id).length.toString(),
           style: const TextStyle(color: Colors.red),
         )
       ]);*/
-    }
-    return null;
   }
 
   TextStyle secondaryTextStyle() {
-    return TextStyle(
-      // color: Theme.of(context).colorScheme.outline,
+    return const TextStyle(
       fontSize: 13,
     );
   }

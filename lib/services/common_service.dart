@@ -129,6 +129,10 @@ class CommonService {
     return activity.firstWhere((element) => element.id == id);
   }
 
+  List<Activity> getActivityByPartner(String id) {
+    return activity.where((element) => element.partner == id).toList();
+  }
+
   Partner? getPartnerById(String id) {
     return partners.firstWhere((element) => element.id == id);
   }

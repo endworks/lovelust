@@ -85,11 +85,15 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
             Partner element = partners.firstWhere((e) => e.id == partner.id);
             int index = partners.indexOf(element);
             partners[index] = partner;
-            common.partners = partners;
+            setState(() {
+              common.partners = partners;
+            });
           } else {
             List<Partner> partners = [...common.partners];
             partners.add(partner);
-            common.partners = partners;
+            setState(() {
+              common.partners = partners;
+            });
           }
           Navigator.pop(context);
         } else {

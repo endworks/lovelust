@@ -69,46 +69,58 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   void save() {
     if (formKey.currentState!.validate()) {
       if (valid) {
-        try {
-          Partner partner = Partner(
-            id: widget.partner.id,
-            sex: sexController.value.text,
-            gender: genderController.value.text,
-            name: nameController.value.text,
-            meetingDate: widget.partner.meetingDate,
-            notes: notesController.value.text,
-            activity: [],
-          );
-          debugPrint('partner: ${partner.toJson().toString()}');
+        Partner partner = Partner(
+          id: widget.partner.id,
+          sex: sexController.value.text,
+          gender: genderController.value.text,
+          name: nameController.value.text,
+          meetingDate: widget.partner.meetingDate,
+          notes: notesController.value.text,
+          activity: [],
+        );
+        if (!common.isLoggedIn) {
           if (widget.partner.id.isNotEmpty) {
-            api.patchPartner(partner).then((value) => Navigator.pop(context));
+            Partner element =
+                common.partners.firstWhere((e) => e.id == partner.id);
+            int index = common.partners.indexOf(element);
+            common.partners[index] = partner;
           } else {
-            api.postPartner(partner).then((value) => Navigator.pop(context));
+            common.partners.add(partner);
           }
-        } on SocketException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No Internet connection!'),
-            ),
-          );
-        } on HttpException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Couldn't sign in!"),
-            ),
-          );
-        } on FormatException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bad response format!'),
-            ),
-          );
-        } on Exception {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to sign in!'),
-            ),
-          );
+          Navigator.pop(context);
+        } else {
+          try {
+            debugPrint('partner: ${partner.toJson().toString()}');
+            if (widget.partner.id.isNotEmpty) {
+              api.patchPartner(partner).then((value) => Navigator.pop(context));
+            } else {
+              api.postPartner(partner).then((value) => Navigator.pop(context));
+            }
+          } on SocketException {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('No Internet connection!'),
+              ),
+            );
+          } on HttpException {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Couldn't sign in!"),
+              ),
+            );
+          } on FormatException {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Bad response format!'),
+              ),
+            );
+          } on Exception {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Failed to sign in!'),
+              ),
+            );
+          }
         }
       }
     }

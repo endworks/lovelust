@@ -13,6 +13,9 @@ class PartnerDetailsPage extends StatefulWidget {
 }
 
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
+  int fgValue = 500;
+  int bgValue = 100;
+
   void editPartner() {
     Navigator.push(
       context,
@@ -24,29 +27,59 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
     );
   }
 
+  Color get headerForegroundColor {
+    return Theme.of(context).colorScheme.inverseSurface;
+  }
+
+  Color get headerBackgroundColor {
+    bool darkMode = Theme.of(context).brightness == Brightness.dark;
+    int bg = darkMode ? fgValue : bgValue;
+    if (widget.partner.gender == 'M') {
+      return Colors.blue[bg]!;
+    } else {
+      return Colors.red[bg]!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.partner.name),
-        actions: [
-          IconButton(onPressed: editPartner, icon: const Icon(Icons.edit)),
-          PopupMenuButton(
-            onSelected: (MenuEntryItem item) {},
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MenuEntryItem>>[
-              const PopupMenuItem(
-                value: MenuEntryItem.delete,
-                child: Text('Delete'),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 128.0,
+              floating: false,
+              pinned: true,
+              backgroundColor: headerBackgroundColor,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: false,
+                title: Text(
+                  widget.partner.name,
+                  style: TextStyle(
+                    color: headerForegroundColor,
+                  ),
+                ),
               ),
-            ],
-          ),
-        ],
-      ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+              actions: [
+                IconButton(
+                    onPressed: editPartner, icon: const Icon(Icons.edit)),
+                PopupMenuButton(
+                  onSelected: (MenuEntryItem item) {},
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<MenuEntryItem>>[
+                    const PopupMenuItem(
+                      value: MenuEntryItem.delete,
+                      child: Text('Delete'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ];
+        },
+        body: Center(
+          child: Text("Sample Text"),
         ),
       ),
     );

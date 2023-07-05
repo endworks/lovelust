@@ -43,7 +43,6 @@ class _PartnerAddPageState extends State<PartnerAddPage> {
             ],
           ),
         ],
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: PartnerForm(partner: partner),
     );

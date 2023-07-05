@@ -37,7 +37,6 @@ class _HomePageState extends State<HomePage> {
             onPressed: _onSettingsClick,
           )
         ],
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: Center(
         child: Column(

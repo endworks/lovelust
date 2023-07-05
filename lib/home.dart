@@ -33,25 +33,22 @@ class _HomeState extends State<Home> {
       const NavigationDestination(
         selectedIcon: Icon(
           Icons.monitor_heart,
-          // color: Theme.of(context).colorScheme.primary,
         ),
-        icon: const Icon(Icons.monitor_heart_outlined),
+        icon: Icon(Icons.monitor_heart_outlined),
         label: 'Home',
       ),
       const NavigationDestination(
         selectedIcon: Icon(
           Icons.assignment,
-          // color: Theme.of(context).colorScheme.primary,
         ),
-        icon: const Icon(Icons.assignment_outlined),
+        icon: Icon(Icons.assignment_outlined),
         label: 'Journal',
       ),
       const NavigationDestination(
         selectedIcon: Icon(
           Icons.group,
-          // color: Theme.of(context).colorScheme.primary,
         ),
-        icon: const Icon(Icons.group_outlined),
+        icon: Icon(Icons.group_outlined),
         label: 'Partners',
       ),
     ];
@@ -62,9 +59,6 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: selectedPage,
       bottomNavigationBar: NavigationBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
-        elevation: 1,
         selectedIndex: selectedIndex,
         labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
         onDestinationSelected: (int index) {

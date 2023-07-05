@@ -85,7 +85,6 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
             ],
           ),
         ],
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: const Center(
         child: Column(

@@ -118,7 +118,6 @@ class _JournalPageState extends State<JournalPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Journal'),
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
         actions: [
           IconButton(
             onPressed: toggleFilter,

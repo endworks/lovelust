@@ -35,7 +35,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             ],
           ),
         ],
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: ActivityForm(activity: widget.activity),
     );

@@ -53,7 +53,6 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
             ],
           ),
         ],
-        surfaceTintColor: Theme.of(context).colorScheme.surfaceVariant,
       ),
       body: ActivityForm(activity: activity),
     );

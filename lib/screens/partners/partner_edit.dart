@@ -6,6 +6,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:uuid/uuid.dart';
 
 class PartnerEditPage extends StatefulWidget {
   const PartnerEditPage({super.key, required this.partner});
@@ -70,7 +71,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     if (formKey.currentState!.validate()) {
       if (valid) {
         Partner partner = Partner(
-          id: widget.partner.id,
+          id: widget.partner.id.isEmpty ? const Uuid().v4() : widget.partner.id,
           sex: sexController.value.text,
           gender: genderController.value.text,
           name: nameController.value.text,
@@ -80,12 +81,15 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         );
         if (!common.isLoggedIn) {
           if (widget.partner.id.isNotEmpty) {
-            Partner element =
-                common.partners.firstWhere((e) => e.id == partner.id);
-            int index = common.partners.indexOf(element);
-            common.partners[index] = partner;
+            List<Partner> partners = [...common.partners];
+            Partner element = partners.firstWhere((e) => e.id == partner.id);
+            int index = partners.indexOf(element);
+            partners[index] = partner;
+            common.partners = partners;
           } else {
-            common.partners.add(partner);
+            List<Partner> partners = [...common.partners];
+            partners.add(partner);
+            common.partners = partners;
           }
           Navigator.pop(context);
         } else {

@@ -4,6 +4,7 @@ import 'package:lovelust/screens/journal/activity_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class JournalPage extends StatefulWidget {
@@ -15,17 +16,18 @@ class JournalPage extends StatefulWidget {
 
 class _JournalPageState extends State<JournalPage> {
   final CommonService _common = getIt<CommonService>();
+  final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
+  final ScrollController _scrollController = ScrollController();
   List<Activity> _activity = [];
-  ScrollController scrollController = ScrollController();
   bool isExtended = true;
 
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(() {
+    _scrollController.addListener(() {
       setState(() {
-        isExtended = scrollController.offset <= 0.0;
+        isExtended = _scrollController.offset <= 0.0;
       });
     });
 
@@ -67,7 +69,7 @@ class _JournalPageState extends State<JournalPage> {
       }
     });
     setState(() {});
-    scrollController.jumpTo(0);
+    _scrollController.jumpTo(0);
     debugPrint('toggleFilter: ${_common.activityFilter}');
   }
 
@@ -82,7 +84,11 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> refresh() async {
-    _activity = await _api.getActivity();
+    if (_common.isLoggedIn) {
+      _activity = await _api.getActivity();
+    } else {
+      _activity = await _storage.getActivity();
+    }
     _common.activity = _activity;
     setState(() {
       _activity = _activity;
@@ -128,12 +134,14 @@ class _JournalPageState extends State<JournalPage> {
       body: RefreshIndicator(
         onRefresh: refresh,
         child: ListView.separated(
-          controller: scrollController,
+          controller: _scrollController,
           separatorBuilder: (context, index) => const Divider(height: 0),
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: _activity.length,
-          itemBuilder: (context, index) =>
-              ActivityItem(activity: _activity[index]),
+          itemBuilder: (context, index) => ActivityItem(
+            key: Key(_activity[index].id),
+            activity: _activity[index],
+          ),
         ),
       ),
       floatingActionButton: isExtended

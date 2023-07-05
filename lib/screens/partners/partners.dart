@@ -4,6 +4,7 @@ import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/partner_item.dart';
 
 class PartnersPage extends StatefulWidget {
@@ -15,9 +16,10 @@ class PartnersPage extends StatefulWidget {
 
 class _PartnersPageState extends State<PartnersPage> {
   final CommonService _common = getIt<CommonService>();
+  final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
+  final ScrollController _scrollController = ScrollController();
   List<Partner> _partners = [];
-  ScrollController _scrollController = ScrollController();
   bool _isExtended = true;
 
   @override
@@ -46,7 +48,11 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   Future<void> refresh() async {
-    _partners = await _api.getPartners();
+    if (_common.isLoggedIn) {
+      _partners = await _api.getPartners();
+    } else {
+      _partners = await _storage.getPartners();
+    }
     _common.partners = _partners;
     setState(() {
       _partners = _partners;
@@ -65,8 +71,10 @@ class _PartnersPageState extends State<PartnersPage> {
           controller: _scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: _partners.length,
-          itemBuilder: (context, index) =>
-              PartnerItem(partner: _partners[index]),
+          itemBuilder: (context, index) => PartnerItem(
+            key: Key(_partners[index].id),
+            partner: _partners[index],
+          ),
         ),
       ),
       floatingActionButton: _isExtended

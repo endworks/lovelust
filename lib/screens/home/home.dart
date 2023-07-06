@@ -3,6 +3,7 @@ import 'package:lovelust/colors.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,28 +38,35 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: title,
-        actions: [
-          IconButton(
-            icon: CircleAvatar(
-                child:
-                    Icon(_common.isLoggedIn ? Icons.person : Icons.person_off)),
-            onPressed: _onSettingsClick,
-          )
-        ],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'activity: ${_common.activity.length}',
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            GenericHeader(
+              title: title,
+              actions: [
+                IconButton(
+                  icon: CircleAvatar(
+                      child: Icon(_common.isLoggedIn
+                          ? Icons.person
+                          : Icons.person_off)),
+                  onPressed: _onSettingsClick,
+                )
+              ],
             ),
-            Text(
-              'partners: ${_common.partners.length}',
-            ),
-          ],
+          ];
+        },
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'activity: ${_common.activity.length}',
+              ),
+              Text(
+                'partners: ${_common.partners.length}',
+              ),
+            ],
+          ),
         ),
       ),
     );

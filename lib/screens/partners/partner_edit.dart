@@ -25,10 +25,12 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   final _genderController = TextEditingController();
   final _sexController = TextEditingController();
   final _notesController = TextEditingController();
+  bool _new = true;
 
   @override
   void initState() {
     super.initState();
+    _new = widget.partner.id.isEmpty;
     _nameController.value = TextEditingValue(
       text: widget.partner.name,
       selection: TextSelection.fromPosition(
@@ -70,7 +72,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     if (_formKey.currentState!.validate()) {
       if (valid) {
         Partner partner = Partner(
-          id: widget.partner.id.isEmpty ? const Uuid().v4() : widget.partner.id,
+          id: _new ? const Uuid().v4() : widget.partner.id,
           sex: _sexController.value.text,
           gender: _genderController.value.text,
           name: _nameController.value.text,
@@ -98,12 +100,12 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         } else {
           try {
             debugPrint('partner: ${partner.toJson().toString()}');
-            if (widget.partner.id.isNotEmpty) {
+            if (_new) {
+              _api.postPartner(partner).then((value) => Navigator.pop(context));
+            } else {
               _api
                   .patchPartner(partner)
                   .then((value) => Navigator.pop(context));
-            } else {
-              _api.postPartner(partner).then((value) => Navigator.pop(context));
             }
           } on SocketException {
             ScaffoldMessenger.of(context).showSnackBar(

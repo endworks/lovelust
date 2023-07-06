@@ -73,7 +73,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   Color get headerBackgroundColor {
-    if (solo) {
+    return Theme.of(context).colorScheme.surfaceVariant.withAlpha(alpha);
+    /*if (solo) {
       return Colors.pink.withAlpha(alpha);
     }
 
@@ -86,7 +87,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
       default:
         return Colors.orange.withAlpha(alpha);
-    }
+    }*/
   }
 
   Icon? get safetyIcon {

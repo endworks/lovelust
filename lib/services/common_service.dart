@@ -111,6 +111,10 @@ class CommonService {
     return accessToken != null;
   }
 
+  bool get monochrome {
+    return colorScheme == 'monochrome';
+  }
+
   void signOut() {
     debugPrint('signOut');
     accessToken = null;

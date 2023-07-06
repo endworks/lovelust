@@ -17,7 +17,7 @@ class ActivityItem extends StatefulWidget {
 }
 
 class _ActivityItemState extends State<ActivityItem> {
-  final CommonService common = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
   Partner? partner;
   bool solo = false;
 
@@ -25,7 +25,7 @@ class _ActivityItemState extends State<ActivityItem> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = common.getPartnerById(widget.activity.partner!);
+      partner = _common.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
@@ -106,7 +106,7 @@ class _ActivityItemState extends State<ActivityItem> {
       ),
       widget.activity.place != null
           ? Text(
-              common.getPlaceById(widget.activity.place!)!.name,
+              _common.getPlaceById(widget.activity.place!)!.name,
               style: secondaryTextStyle(),
             )
           : Text(
@@ -125,7 +125,7 @@ class _ActivityItemState extends State<ActivityItem> {
         widget.activity.birthControl == 'NO_BIRTH_CONTROL') {
       if (widget.activity.partnerBirthControl != null &&
           widget.activity.partnerBirthControl != 'NO_BIRTH_CONTROL') {
-        text = common
+        text = _common
             .getBirthControlById(widget.activity.partnerBirthControl!)!
             .name;
       }
@@ -133,14 +133,14 @@ class _ActivityItemState extends State<ActivityItem> {
         widget.activity.partnerBirthControl == 'NO_BIRTH_CONTROL') {
       if (widget.activity.birthControl != null &&
           widget.activity.birthControl != 'NO_BIRTH_CONTROL') {
-        text = common.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
       }
     } else {
       if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
-        text = common.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
       } else {
         text =
-            '${common.getBirthControlById(widget.activity.birthControl!)!.name} + ${common.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
+            '${_common.getBirthControlById(widget.activity.birthControl!)!.name} + ${_common.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
       }
     }
 
@@ -176,15 +176,21 @@ class _ActivityItemState extends State<ActivityItem> {
       switch (widget.activity.safety) {
         case 'safe':
           title = 'Safe sex';
-          color = Colors.green;
+          if (!_common.monochrome) {
+            color = Colors.green;
+          }
           break;
         case 'unsafe':
           title = 'Unsafe sex';
-          color = Colors.red;
+          if (!_common.monochrome) {
+            color = Colors.red;
+          }
           break;
         default:
           title = 'Partly unsafe sex';
-          color = Colors.orange;
+          if (!_common.monochrome) {
+            color = Colors.orange;
+          }
       }
     }
     return Text(

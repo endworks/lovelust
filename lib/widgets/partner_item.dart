@@ -56,16 +56,20 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Widget get encounters {
+    Color color = Theme.of(context).colorScheme.onSurface;
+    if (!_common.monochrome) {
+      color = Colors.red;
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.favorite, color: Colors.red),
+        Icon(Icons.favorite, color: color),
         Text(
           _common.getActivityByPartner(widget.partner.id).length.toString(),
-          style: const TextStyle(
-            color: Colors.red,
+          style: TextStyle(
+            color: color,
             fontSize: 21,
             fontWeight: FontWeight.w600,
           ),

@@ -21,14 +21,24 @@ class _HomePageState extends State<HomePage> {
     }));
   }
 
+  Widget get title {
+    Color color1 = Theme.of(context).colorScheme.onSurface;
+    Color color2 = Theme.of(context).colorScheme.onSurface;
+    if (!_common.monochrome) {
+      color1 = loveColor;
+      color2 = lustColor;
+    }
+    return Row(children: [
+      Text('Love', style: TextStyle(color: color1)),
+      Text('Lust', style: TextStyle(color: color2)),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Row(children: [
-          Text('Love', style: TextStyle(color: loveColor)),
-          Text('Lust', style: TextStyle(color: lustColor)),
-        ]),
+        title: title,
         actions: [
           IconButton(
             icon: CircleAvatar(

@@ -15,7 +15,7 @@ class ActivityAvatar extends StatefulWidget {
 }
 
 class _ActivityAvatarState extends State<ActivityAvatar> {
-  final CommonService _commonService = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
   Partner? partner;
   int alpha = Colors.black26.alpha;
 
@@ -23,45 +23,64 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
   void initState() {
     super.initState();
     if (widget.partnerId != null) {
-      partner = _commonService.getPartnerById(widget.partnerId!);
+      partner = _common.getPartnerById(widget.partnerId!);
       setState(() {
         partner = partner;
       });
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Colors.blue.withAlpha(Colors.black26.alpha);
+  Icon get icon {
+    Color color = Theme.of(context).colorScheme.onPrimary;
     if (!widget.masturbation) {
       if (partner != null) {
-        return CircleAvatar(
-          backgroundColor: partner!.sex == 'M'
-              ? Colors.blue.withAlpha(alpha)
-              : Colors.red.withAlpha(alpha),
-          child: Icon(
-            partner!.gender == 'M' ? Icons.male : Icons.female,
-            color: partner!.sex == 'M' ? Colors.blue : Colors.red,
-          ),
-        );
-      } else {
-        return CircleAvatar(
-          backgroundColor:
-              Theme.of(context).colorScheme.primary.withAlpha(alpha),
-          child: Icon(
-            Icons.person_off,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+        if (!_common.monochrome) {
+          color = partner!.sex == 'M' ? Colors.blue : Colors.red;
+        }
+        return Icon(
+          partner!.gender == 'M' ? Icons.male : Icons.female,
+          color: color,
         );
       }
     } else {
-      return CircleAvatar(
-        backgroundColor: Colors.pink.withAlpha(alpha),
-        child: const Icon(
-          Icons.front_hand,
-          color: Colors.pink,
-        ),
+      if (!_common.monochrome) {
+        color = Colors.pink;
+      }
+      return Icon(
+        Icons.front_hand,
+        color: color,
       );
     }
+
+    return Icon(
+      Icons.person_off,
+      color: Theme.of(context).colorScheme.primary,
+    );
+  }
+
+  Color get backgroundColor {
+    if (!_common.monochrome) {
+      if (!widget.masturbation) {
+        if (partner != null) {
+          return partner!.sex == 'M'
+              ? Colors.blue.withAlpha(alpha)
+              : Colors.red.withAlpha(alpha);
+        }
+      } else {
+        return Colors.pink.withAlpha(alpha);
+      }
+
+      return Theme.of(context).colorScheme.primary.withAlpha(alpha);
+    } else {
+      return Theme.of(context).colorScheme.primary;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      backgroundColor: backgroundColor,
+      child: icon,
+    );
   }
 }

@@ -36,10 +36,14 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   Color get headerBackgroundColor {
-    if (widget.partner.sex == 'M') {
-      return Colors.blue.withAlpha(alpha);
+    if (!_common.monochrome) {
+      if (widget.partner.sex == 'M') {
+        return Colors.blue.withAlpha(alpha);
+      } else {
+        return Colors.red.withAlpha(alpha);
+      }
     } else {
-      return Colors.red.withAlpha(alpha);
+      return Theme.of(context).colorScheme.surfaceVariant;
     }
   }
 
@@ -51,10 +55,12 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
     } else if (widget.partner.gender == 'M') {
       icon = Icons.male;
     }
-    if (widget.partner.sex == 'F') {
-      color = Colors.red;
-    } else if (widget.partner.sex == 'M') {
-      color = Colors.blue;
+    if (!_common.monochrome) {
+      if (widget.partner.sex == 'F') {
+        color = Colors.red;
+      } else if (widget.partner.sex == 'M') {
+        color = Colors.blue;
+      }
     }
     return Icon(icon, color: color);
   }

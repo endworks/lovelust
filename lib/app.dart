@@ -36,18 +36,12 @@ class _AppState extends State<App> {
                 colorScheme: lightDynamic.harmonized(),
                 useMaterial3: defaultTheme.useMaterial3,
                 visualDensity: defaultTheme.visualDensity,
-                navigationBarTheme: NavigationBarThemeData(
-                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-                ),
               );
               darkTheme = ThemeData(
                 colorScheme: darkDynamic.harmonized(),
                 useMaterial3: defaultTheme.useMaterial3,
                 visualDensity: defaultTheme.visualDensity,
                 brightness: Brightness.dark,
-                navigationBarTheme: NavigationBarThemeData(
-                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-                ),
               );
             }
           } else if (_common.colorScheme == 'unique') {

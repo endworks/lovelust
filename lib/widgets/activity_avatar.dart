@@ -17,8 +17,7 @@ class ActivityAvatar extends StatefulWidget {
 class _ActivityAvatarState extends State<ActivityAvatar> {
   final CommonService _commonService = getIt<CommonService>();
   Partner? partner;
-  int fgValue = 500;
-  int bgValue = 100;
+  int alpha = Colors.black26.alpha;
 
   @override
   void initState() {
@@ -33,23 +32,22 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
 
   @override
   Widget build(BuildContext context) {
-    bool darkMode = Theme.of(context).brightness == Brightness.dark;
-    int fg = darkMode ? bgValue : fgValue;
-    int bg = darkMode ? fgValue : bgValue;
-
+    Colors.blue.withAlpha(Colors.black26.alpha);
     if (!widget.masturbation) {
       if (partner != null) {
         return CircleAvatar(
-          backgroundColor:
-              partner!.sex == 'M' ? Colors.blue[bg] : Colors.red[bg],
+          backgroundColor: partner!.sex == 'M'
+              ? Colors.blue.withAlpha(alpha)
+              : Colors.red.withAlpha(alpha),
           child: Icon(
             partner!.gender == 'M' ? Icons.male : Icons.female,
-            color: partner!.sex == 'M' ? Colors.blue[fg] : Colors.red[fg],
+            color: partner!.sex == 'M' ? Colors.blue : Colors.red,
           ),
         );
       } else {
         return CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          backgroundColor:
+              Theme.of(context).colorScheme.primary.withAlpha(alpha),
           child: Icon(
             Icons.person_off,
             color: Theme.of(context).colorScheme.primary,
@@ -58,10 +56,10 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
       }
     } else {
       return CircleAvatar(
-        backgroundColor: Colors.pink[bg],
-        child: Icon(
+        backgroundColor: Colors.pink.withAlpha(alpha),
+        child: const Icon(
           Icons.front_hand,
-          color: Colors.pink[fg],
+          color: Colors.pink,
         ),
       );
     }

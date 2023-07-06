@@ -18,81 +18,80 @@ class PartnerEditPage extends StatefulWidget {
 }
 
 class _PartnerEditPageState extends State<PartnerEditPage> {
-  final CommonService common = getIt<CommonService>();
-  final ApiService api = getIt<ApiService>();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final genderController = TextEditingController();
-  final sexController = TextEditingController();
-  final meetingDateController = TextEditingController();
-  final notesController = TextEditingController();
+  final CommonService _common = getIt<CommonService>();
+  final ApiService _api = getIt<ApiService>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _genderController = TextEditingController();
+  final _sexController = TextEditingController();
+  final _notesController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    nameController.value = TextEditingValue(
+    _nameController.value = TextEditingValue(
       text: widget.partner.name,
       selection: TextSelection.fromPosition(
         TextPosition(offset: widget.partner.name.length),
       ),
     );
-    genderController.value = TextEditingValue(
+    _genderController.value = TextEditingValue(
       text: widget.partner.gender,
     );
-    sexController.value = TextEditingValue(
+    _sexController.value = TextEditingValue(
       text: widget.partner.sex,
     );
-    notesController.value = TextEditingValue(
+    _notesController.value = TextEditingValue(
       text: widget.partner.notes ?? '',
       selection: TextSelection.fromPosition(
         TextPosition(offset: (widget.partner.notes ?? '').length),
       ),
     );
-    nameController.addListener(() => setState(() {}));
-    genderController.addListener(() => setState(() {}));
-    sexController.addListener(() => setState(() {}));
+    _nameController.addListener(() => setState(() {}));
+    _genderController.addListener(() => setState(() {}));
+    _sexController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
-    nameController.dispose();
-    genderController.dispose();
-    sexController.dispose();
-    notesController.dispose();
+    _nameController.dispose();
+    _genderController.dispose();
+    _sexController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
   bool get valid =>
-      nameController.value.text.isNotEmpty &&
-      genderController.value.text.isNotEmpty &&
-      sexController.value.text.isNotEmpty;
+      _nameController.value.text.isNotEmpty &&
+      _genderController.value.text.isNotEmpty &&
+      _sexController.value.text.isNotEmpty;
 
   void save() {
-    if (formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       if (valid) {
         Partner partner = Partner(
           id: widget.partner.id.isEmpty ? const Uuid().v4() : widget.partner.id,
-          sex: sexController.value.text,
-          gender: genderController.value.text,
-          name: nameController.value.text,
+          sex: _sexController.value.text,
+          gender: _genderController.value.text,
+          name: _nameController.value.text,
           meetingDate: widget.partner.meetingDate,
-          notes: notesController.value.text,
+          notes: _notesController.value.text,
           activity: [],
         );
-        if (!common.isLoggedIn) {
+        if (!_common.isLoggedIn) {
           if (widget.partner.id.isNotEmpty) {
-            List<Partner> partners = [...common.partners];
+            List<Partner> partners = [..._common.partners];
             Partner element = partners.firstWhere((e) => e.id == partner.id);
             int index = partners.indexOf(element);
             partners[index] = partner;
             setState(() {
-              common.partners = partners;
+              _common.partners = partners;
             });
           } else {
-            List<Partner> partners = [...common.partners];
+            List<Partner> partners = [..._common.partners];
             partners.add(partner);
             setState(() {
-              common.partners = partners;
+              _common.partners = partners;
             });
           }
           Navigator.pop(context);
@@ -100,9 +99,11 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           try {
             debugPrint('partner: ${partner.toJson().toString()}');
             if (widget.partner.id.isNotEmpty) {
-              api.patchPartner(partner).then((value) => Navigator.pop(context));
+              _api
+                  .patchPartner(partner)
+                  .then((value) => Navigator.pop(context));
             } else {
-              api.postPartner(partner).then((value) => Navigator.pop(context));
+              _api.postPartner(partner).then((value) => Navigator.pop(context));
             }
           } on SocketException {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -134,13 +135,12 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     }
   }
 
-  List<DropdownMenuEntry> get genderDropdownMenuEntries {
-    return common.genders
+  List<DropdownMenuItem> get genderDropdownMenuEntries {
+    return _common.genders
         .map(
-          (e) => DropdownMenuEntry(
+          (e) => DropdownMenuItem(
             value: e.id,
-            label: e.name,
-            leadingIcon: iconByGender(e.id),
+            child: Text(e.name),
           ),
         )
         .toList();
@@ -180,18 +180,17 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         ],
       ),
       body: Form(
-        key: formKey,
+        key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(
-                controller: nameController,
+                controller: _nameController,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.person),
                   filled: true,
-                  border: UnderlineInputBorder(),
                   labelText: 'Name',
                   hintText: 'Enter name...',
                 ),
@@ -199,41 +198,44 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: DropdownMenu(
-                controller: genderController,
-                inputDecorationTheme: const InputDecorationTheme(
+              child: DropdownButtonFormField(
+                value: _genderController.text,
+                decoration: InputDecoration(
+                  prefixIcon: iconByGender(_genderController.text),
                   filled: true,
-                  border: UnderlineInputBorder(),
+                  labelText: 'Gender',
+                  hintText: 'Enter gender...',
                 ),
-                label: const Text('Gender'),
-                hintText: 'Enter gender...',
-                leadingIcon: iconByGender(genderController.text),
-                dropdownMenuEntries: genderDropdownMenuEntries,
+                items: genderDropdownMenuEntries,
+                onChanged: (value) {
+                  _genderController.text = value;
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: DropdownMenu(
-                controller: sexController,
-                inputDecorationTheme: const InputDecorationTheme(
+              child: DropdownButtonFormField(
+                value: _sexController.text,
+                decoration: InputDecoration(
+                  prefixIcon: iconByGender(_sexController.text),
                   filled: true,
-                  border: UnderlineInputBorder(),
+                  labelText: 'Sex',
+                  hintText: 'Enter sex...',
                 ),
-                label: const Text('Sex'),
-                hintText: 'Enter sex...',
-                leadingIcon: iconByGender(sexController.text),
-                dropdownMenuEntries: genderDropdownMenuEntries,
+                items: genderDropdownMenuEntries,
+                onChanged: (value) {
+                  _sexController.text = value;
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(
-                controller: notesController,
-                maxLines: 4,
+                controller: _notesController,
+                maxLines: null,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.note_alt),
                   filled: true,
-                  border: UnderlineInputBorder(),
                   labelText: 'Notes',
                   hintText: 'Enter notes...',
                 ),

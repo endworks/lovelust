@@ -12,8 +12,8 @@ class PartnerAddPage extends StatefulWidget {
 class _PartnerAddPageState extends State<PartnerAddPage> {
   Partner partner = Partner(
     id: '',
-    sex: 'M',
-    gender: 'M',
+    sex: 'F',
+    gender: 'F',
     name: '',
     meetingDate: DateTime.now(),
     notes: null,

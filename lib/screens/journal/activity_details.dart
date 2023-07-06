@@ -3,6 +3,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
 
 import 'activity_edit.dart';
@@ -17,7 +18,9 @@ class ActivityDetailsPage extends StatefulWidget {
 }
 
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
-  final CommonService _commonService = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
+  final ApiService _api = getIt<ApiService>();
+  int alpha = Colors.black26.alpha;
   Partner? partner;
   bool solo = false;
 
@@ -36,7 +39,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = _commonService.getPartnerById(widget.activity.partner!);
+      partner = _common.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
@@ -46,7 +49,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     });
   }
 
-  Widget title() {
+  String get title {
     String title;
     if (solo) {
       title = 'Solo';
@@ -54,42 +57,123 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       switch (widget.activity.safety) {
         case 'safe':
           title = 'Safe sex';
-
           break;
         case 'unsafe':
           title = 'Unsafe sex';
-
           break;
         default:
           title = 'Partly unsafe sex';
       }
     }
-    return Text(title);
+    return title;
+  }
+
+  Color get headerForegroundColor {
+    return Theme.of(context).colorScheme.inverseSurface;
+  }
+
+  Color get headerBackgroundColor {
+    if (solo) {
+      return Colors.pink.withAlpha(alpha);
+    }
+
+    switch (widget.activity.safety) {
+      case 'safe':
+        return Colors.green.withAlpha(alpha);
+
+      case 'unsafe':
+        return Colors.red.withAlpha(alpha);
+
+      default:
+        return Colors.orange.withAlpha(alpha);
+    }
+  }
+
+  Icon? get safetyIcon {
+    if (widget.activity.type != 'MASTURBATION') {
+      if (widget.activity.safety == 'safe') {
+        return const Icon(Icons.check_circle, color: Colors.green);
+      } else if (widget.activity.safety == 'unsafe') {
+        return const Icon(Icons.error, color: Colors.red);
+      } else {
+        return const Icon(Icons.help, color: Colors.orange);
+      }
+    }
+    return null;
+  }
+
+  void menuEntryItemSelected(MenuEntryItem item) {
+    debugPrint(item.name);
+    if (item.name == 'delete') {
+      if (_common.isLoggedIn) {
+        _api.deleteActivity(widget.activity).then(
+              (value) => Navigator.pop(context),
+            );
+      } else {
+        List<Activity> activity = [..._common.activity];
+        activity.removeWhere((element) => element.id == widget.activity.id);
+        setState(() {
+          _common.activity = activity;
+        });
+        Navigator.pop(context);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: title(),
-        actions: [
-          IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
-          PopupMenuButton(
-            onSelected: (MenuEntryItem item) {},
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MenuEntryItem>>[
-              const PopupMenuItem(
-                value: MenuEntryItem.delete,
-                child: Text('Delete'),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 128,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding: const EdgeInsetsDirectional.only(
+                  start: 72,
+                  bottom: 16,
+                  end: 88,
+                ),
+                background: DecoratedBox(
+                  decoration: BoxDecoration(color: headerBackgroundColor),
+                ),
+                title: Row(children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    style: TextStyle(
+                      color: headerForegroundColor,
+                    ),
+                  ),
+                ]),
               ),
-            ],
-          ),
-        ],
-      ),
-      body: const Center(
-        child: Column(
+              actions: [
+                IconButton(
+                    onPressed: editActivity, icon: const Icon(Icons.edit)),
+                PopupMenuButton(
+                  onSelected: menuEntryItemSelected,
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<MenuEntryItem>>[
+                    const PopupMenuItem(
+                      value: MenuEntryItem.delete,
+                      child: Text('Delete'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ];
+        },
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[],
+          children: <Widget>[
+            Text(
+              widget.activity.notes ?? '',
+            )
+          ],
         ),
       ),
     );

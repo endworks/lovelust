@@ -155,6 +155,16 @@ class ApiService {
     }
   }
 
+  Future<void> deletePartner(Partner partner) async {
+    await http.delete(
+      Uri.https(_apiUrl, 'partner/${partner.id}'),
+      headers: {
+        HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+      },
+      body: {},
+    );
+  }
+
   Future<Partner> patchPartner(Partner partner) async {
     final response = await http.patch(
       Uri.https(_apiUrl, 'partner/${partner.id}'),

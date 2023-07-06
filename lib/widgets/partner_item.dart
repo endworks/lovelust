@@ -28,12 +28,12 @@ class _PartnerItemState extends State<PartnerItem> {
     }));
   }
 
-  Text title() {
+  Text get title {
     return Text(widget.partner.name,
         style: const TextStyle(fontWeight: FontWeight.w500));
   }
 
-  Text gender() {
+  Text get gender {
     String gender = 'Non binary';
     if (widget.partner.gender == 'M') {
       if (widget.partner.sex == 'M') {
@@ -55,22 +55,23 @@ class _PartnerItemState extends State<PartnerItem> {
     return DateFormat('dd MMMM yyyy').format(widget.partner.meetingDate);
   }
 
-  Widget? encounters() {
-    return Text(
-      _common.getActivityByPartner(widget.partner.id).length.toString(),
-      style: const TextStyle(
-        color: Colors.red,
-        fontSize: 21,
-        fontWeight: FontWeight.w600,
-      ),
-    );
-    /*return Row(children: [
+  Widget get encounters {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
         const Icon(Icons.favorite, color: Colors.red),
         Text(
           _common.getActivityByPartner(widget.partner.id).length.toString(),
-          style: const TextStyle(color: Colors.red),
-        )
-      ]);*/
+          style: const TextStyle(
+            color: Colors.red,
+            fontSize: 21,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
+    );
   }
 
   TextStyle secondaryTextStyle() {
@@ -83,9 +84,9 @@ class _PartnerItemState extends State<PartnerItem> {
   Widget build(BuildContext context) {
     return ListTile(
         leading: ActivityAvatar(partnerId: widget.partner.id),
-        title: title(),
-        subtitle: gender(),
-        trailing: encounters(),
+        title: title,
+        subtitle: gender,
+        trailing: encounters,
         onTap: _openPartner);
   }
 }

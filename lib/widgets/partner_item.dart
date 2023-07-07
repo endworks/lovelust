@@ -30,7 +30,7 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Text get title {
-    return Text(widget.partner.name,
+    return Text(!_common.privacyMode ? widget.partner.name : 'Hidden',
         style: const TextStyle(fontWeight: FontWeight.w500));
   }
 

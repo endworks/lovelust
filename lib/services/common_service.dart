@@ -22,6 +22,7 @@ class CommonService {
   List<IdName> _initiators = [];
   List<IdName> _genders = [];
   List<IdName> _activityTypes = [];
+  bool _privacyMode = false;
   bool _calendarView = false;
   String? _activityFilter;
 
@@ -34,6 +35,7 @@ class CommonService {
       _storage.getRefreshToken(),
       _storage.getActivity(),
       _storage.getPartners(),
+      _storage.getPrivacyMode(),
       _storage.getCalendarView(),
       _storage.getActivityFilter(),
       loadStaticData()
@@ -46,8 +48,9 @@ class CommonService {
     refreshToken = result[3];
     activity = result[4];
     partners = result[5];
-    calendarView = result[6];
-    activityFilter = result[7];
+    privacyMode = result[6];
+    calendarView = result[7];
+    activityFilter = result[8];
     return Future.value(null);
   }
 
@@ -213,6 +216,15 @@ class CommonService {
   set partners(List<Partner> value) {
     _partners = value;
     _storage.setPartners(value);
+  }
+
+  bool get privacyMode {
+    return _privacyMode;
+  }
+
+  set privacyMode(bool value) {
+    _privacyMode = value;
+    _storage.setPrivacyMode(value);
   }
 
   bool get calendarView {

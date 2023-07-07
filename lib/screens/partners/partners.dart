@@ -68,6 +68,7 @@ class _PartnersPageState extends State<PartnersPage> {
         edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
             const GenericHeader(
               title: Text('Partners'),

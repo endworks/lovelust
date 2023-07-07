@@ -3,7 +3,6 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/forms/login_form.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
-import 'package:lovelust/services/storage_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -13,30 +12,35 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final StorageService storage = getIt<StorageService>();
-  final CommonService common = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
 
   reload() {
     Phoenix.rebirth(context);
   }
 
   signOut() {
-    common.signOut();
+    _common.signOut();
     reload();
   }
 
-  void changeTheme(String? value) {
+  changeTheme(String? value) {
     setState(() {
-      common.theme = value ?? 'system';
+      _common.theme = value ?? 'system';
     });
     reload();
   }
 
   changeColorScheme(String? value) {
     setState(() {
-      common.colorScheme = value;
+      _common.colorScheme = value;
     });
     reload();
+  }
+
+  changePrivacyMode(bool? value) {
+    setState(() {
+      _common.privacyMode = value ?? false;
+    });
   }
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
@@ -62,6 +66,14 @@ class _SettingsPageState extends State<SettingsPage> {
     return menuItems;
   }
 
+  List<DropdownMenuItem<bool>> get dropdownPrivacyModeItems {
+    List<DropdownMenuItem<bool>> menuItems = [
+      const DropdownMenuItem(value: true, child: Text("Privacy mode ON")),
+      const DropdownMenuItem(value: false, child: Text("Privacy mode OFF")),
+    ];
+    return menuItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,33 +85,38 @@ class _SettingsPageState extends State<SettingsPage> {
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(children: [
-              common.isLoggedIn
+              _common.isLoggedIn
                   ? FilledButton.tonal(
                       onPressed: signOut,
                       child: const Text('Sign out'),
                     )
                   : const LoginForm(),
               FilledButton.tonal(
-                onPressed: common.clearData,
+                onPressed: _common.clearData,
                 child: const Text('Clear data'),
               ),
               FilledButton.tonal(
-                onPressed: common.initialFetch,
+                onPressed: _common.initialFetch,
                 child: const Text('Initial fetch'),
               ),
               FilledButton.tonal(
-                onPressed: common.fetchStaticData,
+                onPressed: _common.fetchStaticData,
                 child: const Text('Fetch static data'),
               ),
               DropdownButton(
-                value: common.theme,
+                value: _common.theme,
                 items: dropdownThemeItems,
                 onChanged: changeTheme,
               ),
               DropdownButton(
-                value: common.colorScheme,
+                value: _common.colorScheme,
                 items: dropdownColorSchemeItems,
                 onChanged: changeColorScheme,
+              ),
+              DropdownButton(
+                value: _common.privacyMode,
+                items: dropdownPrivacyModeItems,
+                onChanged: changePrivacyMode,
               )
             ])
           ],

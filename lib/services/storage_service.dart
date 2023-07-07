@@ -28,6 +28,8 @@ abstract class StorageService {
   Future<void> setGenders(List<IdName> value);
   Future<List<IdName>> getActivityTypes();
   Future<void> setActivityTypes(List<IdName> value);
+  Future<bool> getPrivacyMode();
+  Future<void> setPrivacyMode(bool value);
   Future<bool> getCalendarView();
   Future<void> setCalendarView(bool value);
   Future<String?> getActivityFilter();

@@ -204,10 +204,24 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
+  Future<bool> getPrivacyMode() async {
+    final persisted = await _storage.read(key: 'privacy_mode');
+    if (persisted != null) {
+      return jsonDecode(persisted);
+    }
+    return false;
+  }
+
+  @override
+  Future<void> setPrivacyMode(bool value) async {
+    return await _storage.write(key: 'privacy_mode', value: jsonEncode(value));
+  }
+
+  @override
   Future<bool> getCalendarView() async {
-    final persistedCalendarView = await _storage.read(key: 'calendar_view');
-    if (persistedCalendarView != null) {
-      return jsonDecode(persistedCalendarView);
+    final persisted = await _storage.read(key: 'calendar_view');
+    if (persisted != null) {
+      return jsonDecode(persisted);
     }
     return false;
   }

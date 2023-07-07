@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
@@ -17,7 +18,6 @@ class ActivityAvatar extends StatefulWidget {
 class _ActivityAvatarState extends State<ActivityAvatar> {
   final CommonService _common = getIt<CommonService>();
   Partner? partner;
-  int alpha = Colors.black26.alpha;
 
   @override
   void initState() {
@@ -32,10 +32,15 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
 
   Icon get icon {
     Color color = Theme.of(context).colorScheme.onPrimary;
+    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color blue =
+        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color pink =
+        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     if (!widget.masturbation) {
       if (partner != null) {
         if (!_common.monochrome) {
-          color = partner!.sex == 'M' ? Colors.blue : Colors.red;
+          color = partner!.sex == 'M' ? blue : red;
         }
         return Icon(
           partner!.gender == 'M' ? Icons.male : Icons.female,
@@ -44,7 +49,7 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
       }
     } else {
       if (!_common.monochrome) {
-        color = Colors.pink;
+        color = pink;
       }
       return Icon(
         Icons.front_hand,
@@ -59,18 +64,23 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
   }
 
   Color get backgroundColor {
+    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color blue =
+        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color pink =
+        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     if (!_common.monochrome) {
       if (!widget.masturbation) {
         if (partner != null) {
           return partner!.sex == 'M'
-              ? Colors.blue.withAlpha(alpha)
-              : Colors.red.withAlpha(alpha);
+              ? blue.withAlpha(_common.alpha)
+              : red.withAlpha(_common.alpha);
         }
       } else {
-        return Colors.pink.withAlpha(alpha);
+        return pink.withAlpha(_common.alpha);
       }
 
-      return Theme.of(context).colorScheme.primary.withAlpha(alpha);
+      return Theme.of(context).colorScheme.primary.withAlpha(_common.alpha);
     } else {
       return Theme.of(context).colorScheme.primary;
     }

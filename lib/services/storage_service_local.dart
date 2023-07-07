@@ -36,12 +36,12 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
-  Future<String> getColorScheme() async {
-    return await _storage.read(key: 'color_scheme') ?? 'dynamic';
+  Future<String?> getColorScheme() async {
+    return await _storage.read(key: 'color_scheme');
   }
 
   @override
-  Future<void> setColorScheme(String value) async {
+  Future<void> setColorScheme(String? value) async {
     return await _storage.write(key: 'color_scheme', value: value);
   }
 

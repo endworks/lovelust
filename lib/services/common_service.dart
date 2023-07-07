@@ -11,7 +11,7 @@ class CommonService {
   final ApiService _api = getIt<ApiService>();
 
   String _theme = 'system';
-  String _colorScheme = 'dynamic';
+  String? _colorScheme = 'dynamic';
   String? _accessToken;
   String? _refreshToken;
   List<Activity> _activity = [];
@@ -166,11 +166,11 @@ class CommonService {
     _storage.setTheme(value);
   }
 
-  String get colorScheme {
+  String? get colorScheme {
     return _colorScheme;
   }
 
-  set colorScheme(String value) {
+  set colorScheme(String? value) {
     _colorScheme = value;
     _storage.setColorScheme(value);
   }

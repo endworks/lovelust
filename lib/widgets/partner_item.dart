@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
@@ -58,7 +59,7 @@ class _PartnerItemState extends State<PartnerItem> {
   Widget get encounters {
     Color color = Theme.of(context).colorScheme.onSurface;
     if (!_common.monochrome) {
-      color = Colors.red;
+      color = Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     }
     return Row(
       mainAxisSize: MainAxisSize.min,

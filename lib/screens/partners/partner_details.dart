@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
@@ -18,7 +19,6 @@ class PartnerDetailsPage extends StatefulWidget {
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   final CommonService _common = getIt<CommonService>();
   final ApiService _api = getIt<ApiService>();
-  int alpha = Colors.black26.alpha;
 
   void editPartner() {
     Navigator.push(
@@ -38,9 +38,13 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   Color get headerBackgroundColor {
     if (!_common.monochrome) {
       if (widget.partner.sex == 'M') {
-        return Colors.blue.withAlpha(alpha);
+        return Colors.blue
+            .harmonizeWith(Theme.of(context).colorScheme.primary)
+            .withAlpha(_common.alpha);
       } else {
-        return Colors.red.withAlpha(alpha);
+        return Colors.red
+            .harmonizeWith(Theme.of(context).colorScheme.primary)
+            .withAlpha(_common.alpha);
       }
     } else {
       return Theme.of(context).colorScheme.surfaceVariant;
@@ -57,24 +61,30 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
     }
     if (!_common.monochrome) {
       if (widget.partner.sex == 'F') {
-        color = Colors.red;
+        color = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
       } else if (widget.partner.sex == 'M') {
-        color = Colors.blue;
+        color =
+            Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
       }
     }
     return Icon(icon, color: color);
   }
 
   Widget get encounters {
+    Color color = Theme.of(context).colorScheme.onSurface;
+    if (!_common.monochrome) {
+      color = Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
+    }
     return Row(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(Icons.favorite, color: Colors.red),
+        Icon(Icons.favorite, color: color),
         Text(
           _common.getActivityByPartner(widget.partner.id).length.toString(),
-          style: const TextStyle(
-            color: Colors.red,
+          style: TextStyle(
+            color: color,
             fontSize: 21,
             fontWeight: FontWeight.w600,
           ),

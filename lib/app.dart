@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/home.dart';
@@ -36,13 +38,22 @@ class _AppState extends State<App> {
                 colorScheme: lightDynamic.harmonized(),
                 useMaterial3: defaultTheme.useMaterial3,
                 visualDensity: defaultTheme.visualDensity,
+                navigationBarTheme: NavigationBarThemeData(
+                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+                ),
               );
               darkTheme = ThemeData(
                 colorScheme: darkDynamic.harmonized(),
                 useMaterial3: defaultTheme.useMaterial3,
                 visualDensity: defaultTheme.visualDensity,
+                navigationBarTheme: NavigationBarThemeData(
+                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+                ),
                 brightness: Brightness.dark,
               );
+            } else if (Platform.isIOS) {
+              theme = appleTheme;
+              darkTheme = appleDarkTheme;
             }
           } else if (_common.colorScheme == 'unique') {
             theme = uniqueTheme;
@@ -59,9 +70,6 @@ class _AppState extends State<App> {
           } else if (_common.colorScheme == 'lust') {
             theme = lustTheme;
             darkTheme = lustDarkTheme;
-          } else if (_common.colorScheme == 'apple') {
-            theme = appleTheme;
-            darkTheme = appleDarkTheme;
           } else if (_common.colorScheme == 'monochrome') {
             theme = monochromeTheme;
             darkTheme = monochromeDarkTheme;

@@ -41,14 +41,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
     List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(value: 'default', child: Text("Default")),
       const DropdownMenuItem(value: "dynamic", child: Text("Dynamic")),
-      const DropdownMenuItem(value: "default", child: Text("Default")),
-      const DropdownMenuItem(value: "unique", child: Text("Unique")),
-      const DropdownMenuItem(value: "lustlove", child: Text("Lust & Love")),
-      const DropdownMenuItem(value: "lovelust", child: Text("Love & Lust")),
       const DropdownMenuItem(value: "love", child: Text("Love")),
       const DropdownMenuItem(value: "lust", child: Text("Lust")),
-      const DropdownMenuItem(value: "apple", child: Text("Apple")),
+      const DropdownMenuItem(value: "lovelust", child: Text("LoveLust")),
+      const DropdownMenuItem(value: "lustfullove", child: Text("Lustful love")),
+      const DropdownMenuItem(value: "lovefullust", child: Text("Loveful lust")),
       const DropdownMenuItem(value: "monochrome", child: Text("Monochrome")),
     ];
     return menuItems;

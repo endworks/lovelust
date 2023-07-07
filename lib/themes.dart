@@ -6,7 +6,7 @@ ThemeData defaultTheme = ThemeData(
     seedColor: lustColor,
   ),
   navigationBarTheme: const NavigationBarThemeData(
-    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -14,7 +14,7 @@ ThemeData defaultTheme = ThemeData(
 
 ThemeData defaultDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: loveColor,
+    seedColor: lustColor,
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(

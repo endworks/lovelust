@@ -6,6 +6,7 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_item.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 
 class JournalPage extends StatefulWidget {
   const JournalPage({super.key});
@@ -122,26 +123,30 @@ class _JournalPageState extends State<JournalPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Journal'),
-        actions: [
-          IconButton(
-            onPressed: toggleFilter,
-            icon: toggleIcon,
-          ),
-        ],
-      ),
-      body: RefreshIndicator(
+      body: RefreshIndicator.adaptive(
         onRefresh: refresh,
-        child: ListView.separated(
+        child: CustomScrollView(
           controller: _scrollController,
-          separatorBuilder: (context, index) => const Divider(height: 0),
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: _activity.length,
-          itemBuilder: (context, index) => ActivityItem(
-            key: Key(_activity[index].id),
-            activity: _activity[index],
-          ),
+          slivers: <Widget>[
+            GenericHeader(
+              title: const Text('Journal'),
+              actions: [
+                IconButton(
+                  onPressed: toggleFilter,
+                  icon: toggleIcon,
+                ),
+              ],
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) => ActivityItem(
+                  key: Key(_activity[index].id),
+                  activity: _activity[index],
+                ),
+                childCount: _activity.length,
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: isExtended

@@ -74,27 +74,31 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   Color get headerBackgroundColor {
-    if (solo) {
-      return Colors.pink
-          .harmonizeWith(Theme.of(context).colorScheme.primary)
-          .withAlpha(alpha);
-    }
-
-    switch (widget.activity.safety) {
-      case 'safe':
-        return Colors.green
+    if (!_common.monochrome) {
+      if (solo) {
+        return Colors.pink
             .harmonizeWith(Theme.of(context).colorScheme.primary)
             .withAlpha(alpha);
+      }
 
-      case 'unsafe':
-        return Colors.red
-            .harmonizeWith(Theme.of(context).colorScheme.primary)
-            .withAlpha(alpha);
+      switch (widget.activity.safety) {
+        case 'safe':
+          return Colors.green
+              .harmonizeWith(Theme.of(context).colorScheme.primary)
+              .withAlpha(alpha);
 
-      default:
-        return Colors.orange
-            .harmonizeWith(Theme.of(context).colorScheme.primary)
-            .withAlpha(alpha);
+        case 'unsafe':
+          return Colors.red
+              .harmonizeWith(Theme.of(context).colorScheme.primary)
+              .withAlpha(alpha);
+
+        default:
+          return Colors.orange
+              .harmonizeWith(Theme.of(context).colorScheme.primary)
+              .withAlpha(alpha);
+      }
+    } else {
+      return Theme.of(context).colorScheme.surfaceVariant;
     }
   }
 

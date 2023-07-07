@@ -6,6 +6,8 @@ import 'package:lovelust/screens/partners/partner_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/widgets/activity_block.dart';
+import 'package:lovelust/widgets/notes_block.dart';
 
 class PartnerDetailsPage extends StatefulWidget {
   const PartnerDetailsPage({super.key, required this.partner});
@@ -75,21 +77,25 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
     if (!_common.monochrome) {
       color = Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.favorite, color: color),
-        Text(
-          _common.getActivityByPartner(widget.partner.id).length.toString(),
-          style: TextStyle(
-            color: color,
-            fontSize: 21,
-            fontWeight: FontWeight.w600,
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: _common
+                .getActivityByPartner(widget.partner.id)
+                .length
+                .toString(),
+            style: TextStyle(
+              color: color,
+              fontSize: 21,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-      ],
+          WidgetSpan(
+            child: Icon(Icons.favorite, color: color),
+          ),
+        ],
+      ),
     );
   }
 
@@ -109,6 +115,23 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
         Navigator.pop(context);
       }
     }
+  }
+
+  get cards {
+    List<Widget> list = [];
+    if (widget.partner.notes != null) {
+      list.add(
+        NotesBlock(
+          notes: widget.partner.notes!,
+        ),
+      );
+    }
+    List<Widget> activity = _common
+        .getActivityByPartner(widget.partner.id)
+        .map((e) => ActivityBlock(activity: e))
+        .toList();
+    list = [...list, ...activity];
+    return list;
   }
 
   @override
@@ -147,12 +170,9 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
           ];
         },
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              widget.partner.notes ?? '',
-            )
-          ],
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: cards,
         ),
       ),
     );

@@ -119,7 +119,7 @@ class CommonService {
   }
 
   int get alpha {
-    return Colors.black26.alpha;
+    return Colors.black38.alpha;
   }
 
   void signOut() {

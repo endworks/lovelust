@@ -15,7 +15,6 @@ class _ActivityCardState extends State<ActivityCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      clipBehavior: Clip.antiAlias,
       elevation: 1,
       margin:
           const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),

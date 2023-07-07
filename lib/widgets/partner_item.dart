@@ -61,21 +61,25 @@ class _PartnerItemState extends State<PartnerItem> {
     if (!_common.monochrome) {
       color = Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(Icons.favorite, color: color),
-        Text(
-          _common.getActivityByPartner(widget.partner.id).length.toString(),
-          style: TextStyle(
-            color: color,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
+    return Text.rich(
+      TextSpan(
+        children: [
+          WidgetSpan(
+            child: Icon(Icons.favorite, color: color),
           ),
-        ),
-      ],
+          TextSpan(
+            text: _common
+                .getActivityByPartner(widget.partner.id)
+                .length
+                .toString(),
+            style: TextStyle(
+              color: color,
+              fontSize: 21,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

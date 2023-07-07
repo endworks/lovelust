@@ -31,6 +31,10 @@ class _HomeState extends State<Home> {
           ),
         );
       },
+      minimumShakeCount: 1,
+      shakeSlopTimeMS: 500,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
     );
   }
 

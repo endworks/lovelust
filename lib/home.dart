@@ -4,7 +4,6 @@ import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
-import 'package:shake/shake.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,7 +19,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    ShakeDetector.autoStart(
+    /*ShakeDetector.autoStart(
       onPhoneShake: () {
         _common.privacyMode = !_common.privacyMode;
         debugPrint('privacy mode: ${_common.privacyMode}');
@@ -36,6 +35,7 @@ class _HomeState extends State<Home> {
       shakeCountResetTime: 3000,
       shakeThresholdGravity: 2.7,
     );
+    */
   }
 
   Widget get selectedPage {

@@ -127,8 +127,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar(
-              expandedHeight: 128,
+            SliverAppBar.medium(
               floating: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(

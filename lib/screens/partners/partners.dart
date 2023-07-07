@@ -5,6 +5,7 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/services/storage_service.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/partner_item.dart';
 
 class PartnersPage extends StatefulWidget {
@@ -62,19 +63,24 @@ class _PartnersPageState extends State<PartnersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Partners'),
-      ),
-      body: RefreshIndicator(
+      body: RefreshIndicator.adaptive(
         onRefresh: refresh,
-        child: ListView.builder(
+        child: CustomScrollView(
           controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: _partners.length,
-          itemBuilder: (context, index) => PartnerItem(
-            key: Key(_partners[index].id),
-            partner: _partners[index],
-          ),
+          slivers: <Widget>[
+            const GenericHeader(
+              title: Text('Partners'),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) => PartnerItem(
+                  key: Key(_partners[index].id),
+                  partner: _partners[index],
+                ),
+                childCount: _partners.length,
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: _isExtended

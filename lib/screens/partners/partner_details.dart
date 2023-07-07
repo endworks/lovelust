@@ -117,9 +117,9 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar(
-              expandedHeight: 128,
+            SliverAppBar.medium(
               floating: false,
+              snap: false,
               pinned: true,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding: const EdgeInsetsDirectional.only(

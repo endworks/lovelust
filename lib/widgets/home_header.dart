@@ -9,11 +9,10 @@ class HomeHeader extends StatelessWidget implements PreferredSizeWidget {
     bool snap = false;
     bool floating = false;
 
-    return SliverAppBar(
+    return SliverAppBar.medium(
       pinned: pinned,
       snap: snap,
       floating: floating,
-      expandedHeight: 100.0,
       flexibleSpace: const FlexibleSpaceBar(
         title: Text('SliverAppBar'),
       ),

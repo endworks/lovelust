@@ -23,7 +23,7 @@ class CommonService {
   List<IdName> _genders = [];
   List<IdName> _activityTypes = [];
   bool _calendarView = false;
-  String _activityFilter = 'all';
+  String? _activityFilter;
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -127,10 +127,14 @@ class CommonService {
 
   void clearData() {
     debugPrint('clearData');
+    theme = 'system';
+    colorScheme = null;
     accessToken = null;
     refreshToken = null;
     activity = [];
     partners = [];
+    calendarView = false;
+    activityFilter = null;
   }
 
   Activity? getActivityById(String id) {
@@ -220,11 +224,11 @@ class CommonService {
     _storage.setCalendarView(value);
   }
 
-  String get activityFilter {
+  String? get activityFilter {
     return _activityFilter;
   }
 
-  set activityFilter(String value) {
+  set activityFilter(String? value) {
     _activityFilter = value;
     _storage.setActivityFilter(value);
   }

@@ -218,12 +218,16 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
-  Future<String> getActivityFilter() async {
-    return await _storage.read(key: 'activity_filter') ?? 'all';
+  Future<String?> getActivityFilter() async {
+    return await _storage.read(key: 'activity_filter');
   }
 
   @override
-  Future<void> setActivityFilter(String value) async {
-    return await _storage.write(key: 'activity_filter', value: value);
+  Future<void> setActivityFilter(String? value) async {
+    if (value != null) {
+      return await _storage.write(key: 'activity_filter', value: value);
+    } else {
+      return await _storage.delete(key: 'activity_filter');
+    }
   }
 }

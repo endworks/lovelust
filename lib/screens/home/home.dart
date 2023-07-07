@@ -50,10 +50,7 @@ class _HomePageState extends State<HomePage> {
               title: title,
               actions: [
                 IconButton(
-                  icon: CircleAvatar(
-                      child: Icon(_common.isLoggedIn
-                          ? Icons.person
-                          : Icons.person_off)),
+                  icon: const Icon(Icons.menu),
                   onPressed: _onSettingsClick,
                 )
               ],

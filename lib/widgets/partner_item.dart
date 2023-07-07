@@ -71,7 +71,7 @@ class _PartnerItemState extends State<PartnerItem> {
           _common.getActivityByPartner(widget.partner.id).length.toString(),
           style: TextStyle(
             color: color,
-            fontSize: 21,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -88,10 +88,11 @@ class _PartnerItemState extends State<PartnerItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: ActivityAvatar(partnerId: widget.partner.id),
-        title: title,
-        subtitle: gender,
-        trailing: encounters,
-        onTap: _openPartner);
+      leading: ActivityAvatar(partnerId: widget.partner.id),
+      title: title,
+      subtitle: gender,
+      trailing: encounters,
+      onTap: _openPartner,
+    );
   }
 }

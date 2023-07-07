@@ -65,6 +65,7 @@ class _PartnersPageState extends State<PartnersPage> {
     return Scaffold(
       body: RefreshIndicator.adaptive(
         onRefresh: refresh,
+        edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
           slivers: <Widget>[

@@ -80,7 +80,7 @@ class _JournalPageState extends State<JournalPage> {
     } else if (_common.activityFilter == 'solo') {
       return const Icon(Icons.front_hand);
     } else {
-      return const Icon(Icons.all_inclusive);
+      return const Icon(Icons.filter_list_off);
     }
   }
 
@@ -125,6 +125,7 @@ class _JournalPageState extends State<JournalPage> {
     return Scaffold(
       body: RefreshIndicator.adaptive(
         onRefresh: refresh,
+        edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
           physics: const AlwaysScrollableScrollPhysics(),

@@ -34,14 +34,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   changeColorScheme(String? value) {
     setState(() {
-      common.colorScheme = value ?? 'dynamic';
+      common.colorScheme = value;
     });
     reload();
   }
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: 'default', child: Text("Default")),
+      const DropdownMenuItem(value: null, child: Text("Default")),
       const DropdownMenuItem(value: "dynamic", child: Text("Dynamic")),
       const DropdownMenuItem(value: "love", child: Text("Love")),
       const DropdownMenuItem(value: "lust", child: Text("Lust")),

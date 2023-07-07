@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
@@ -48,11 +49,17 @@ class _ActivityItemState extends State<ActivityItem> {
   Icon? safetyIcon() {
     if (widget.activity.type != 'MASTURBATION') {
       if (widget.activity.safety == 'safe') {
-        return const Icon(Icons.check_circle, color: Colors.green);
+        return Icon(Icons.check_circle,
+            color: Colors.green
+                .harmonizeWith(Theme.of(context).colorScheme.primary));
       } else if (widget.activity.safety == 'unsafe') {
-        return const Icon(Icons.error, color: Colors.red);
+        return Icon(Icons.error,
+            color: Colors.red
+                .harmonizeWith(Theme.of(context).colorScheme.primary));
       } else {
-        return const Icon(Icons.help, color: Colors.orange);
+        return Icon(Icons.help,
+            color: Colors.orange
+                .harmonizeWith(Theme.of(context).colorScheme.primary));
       }
     }
     return null;
@@ -177,19 +184,22 @@ class _ActivityItemState extends State<ActivityItem> {
         case 'safe':
           title = 'Safe sex';
           if (!_common.monochrome) {
-            color = Colors.green;
+            color = Colors.green
+                .harmonizeWith(Theme.of(context).colorScheme.primary);
           }
           break;
         case 'unsafe':
           title = 'Unsafe sex';
           if (!_common.monochrome) {
-            color = Colors.red;
+            color =
+                Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
           }
           break;
         default:
           title = 'Partly unsafe sex';
           if (!_common.monochrome) {
-            color = Colors.orange;
+            color = Colors.orange
+                .harmonizeWith(Theme.of(context).colorScheme.primary);
           }
       }
     }
@@ -203,7 +213,7 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   TextStyle secondaryTextStyle() {
-    return TextStyle(
+    return const TextStyle(
       // color: Theme.of(context).colorScheme.outline,
       fontSize: 13,
     );

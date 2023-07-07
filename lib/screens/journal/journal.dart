@@ -127,6 +127,7 @@ class _JournalPageState extends State<JournalPage> {
         onRefresh: refresh,
         child: CustomScrollView(
           controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
               title: const Text('Journal'),
@@ -137,13 +138,12 @@ class _JournalPageState extends State<JournalPage> {
                 ),
               ],
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) => ActivityItem(
-                  key: Key(_activity[index].id),
-                  activity: _activity[index],
-                ),
-                childCount: _activity.length,
+            SliverList.separated(
+              separatorBuilder: (context, index) => const Divider(height: 0),
+              itemCount: _activity.length,
+              itemBuilder: (context, index) => ActivityItem(
+                key: Key(_activity[index].id),
+                activity: _activity[index],
               ),
             ),
           ],

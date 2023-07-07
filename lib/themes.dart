@@ -6,7 +6,7 @@ ThemeData defaultTheme = ThemeData(
     seedColor: lustColor,
   ),
   navigationBarTheme: const NavigationBarThemeData(
-    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -183,6 +183,7 @@ ThemeData monochromeTheme = ThemeData(
   appBarTheme: AppBarTheme(
     elevation: 1,
     surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
+    foregroundColor: MaterialColor(0xFF000000, blackColor),
   ),
   navigationBarTheme: NavigationBarThemeData(
     elevation: 1,
@@ -206,6 +207,7 @@ ThemeData monochromeDarkTheme = ThemeData(
   appBarTheme: AppBarTheme(
     elevation: 1,
     surfaceTintColor: MaterialColor(0xFF000000, blackColor),
+    foregroundColor: MaterialColor(0xFFFFFFFF, whiteColor),
   ),
   navigationBarTheme: NavigationBarThemeData(
     elevation: 1,

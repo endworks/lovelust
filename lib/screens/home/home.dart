@@ -29,10 +29,15 @@ class _HomePageState extends State<HomePage> {
       color1 = loveColor;
       color2 = lustColor;
     }
-    return Row(children: [
-      Text('Love', style: TextStyle(color: color1)),
-      Text('Lust', style: TextStyle(color: color2)),
-    ]);
+
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: 'Love', style: TextStyle(color: color1)),
+          TextSpan(text: 'Lust', style: TextStyle(color: color2)),
+        ],
+      ),
+    );
   }
 
   @override

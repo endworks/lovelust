@@ -117,31 +117,18 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar.medium(
+            SliverAppBar.large(
               floating: false,
-              snap: false,
               pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: const EdgeInsetsDirectional.only(
-                  start: 72,
-                  bottom: 16,
-                  end: 88,
+              title: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: widget.partner.name),
+                    WidgetSpan(child: genderIcon),
+                  ],
                 ),
-                background: DecoratedBox(
-                  decoration: BoxDecoration(color: headerBackgroundColor),
-                ),
-                title: Row(children: [
-                  Text(
-                    widget.partner.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      color: headerForegroundColor,
-                    ),
-                  ),
-                  genderIcon,
-                ]),
               ),
+              backgroundColor: headerBackgroundColor,
               actions: [
                 IconButton(
                     onPressed: editPartner, icon: const Icon(Icons.edit)),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 
 class GenericHeader extends StatefulWidget {
-  const GenericHeader({super.key, required this.title, required, this.actions});
+  const GenericHeader({super.key, required this.title, this.actions});
 
   final Widget title;
   final List<Widget>? actions;
@@ -11,16 +13,15 @@ class GenericHeader extends StatefulWidget {
 }
 
 class _GenericHeaderState extends State<GenericHeader> {
+  final CommonService _common = getIt<CommonService>();
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar.medium(
       floating: false,
       pinned: true,
-      flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.all(16),
-        title: widget.title,
-      ),
       actions: widget.actions,
+      title: widget.title,
     );
   }
 }

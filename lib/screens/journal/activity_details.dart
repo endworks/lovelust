@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
@@ -73,21 +74,28 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   Color get headerBackgroundColor {
-    return Theme.of(context).colorScheme.surfaceVariant.withAlpha(alpha);
-    /*if (solo) {
-      return Colors.pink.withAlpha(alpha);
+    if (solo) {
+      return Colors.pink
+          .harmonizeWith(Theme.of(context).colorScheme.primary)
+          .withAlpha(alpha);
     }
 
     switch (widget.activity.safety) {
       case 'safe':
-        return Colors.green.withAlpha(alpha);
+        return Colors.green
+            .harmonizeWith(Theme.of(context).colorScheme.primary)
+            .withAlpha(alpha);
 
       case 'unsafe':
-        return Colors.red.withAlpha(alpha);
+        return Colors.red
+            .harmonizeWith(Theme.of(context).colorScheme.primary)
+            .withAlpha(alpha);
 
       default:
-        return Colors.orange.withAlpha(alpha);
-    }*/
+        return Colors.orange
+            .harmonizeWith(Theme.of(context).colorScheme.primary)
+            .withAlpha(alpha);
+    }
   }
 
   Icon? get safetyIcon {
@@ -127,29 +135,11 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar.medium(
+            SliverAppBar.large(
               floating: false,
               pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding: const EdgeInsetsDirectional.only(
-                  start: 72,
-                  bottom: 16,
-                  end: 88,
-                ),
-                background: DecoratedBox(
-                  decoration: BoxDecoration(color: headerBackgroundColor),
-                ),
-                title: Row(children: [
-                  Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    style: TextStyle(
-                      color: headerForegroundColor,
-                    ),
-                  ),
-                ]),
-              ),
+              title: Text(title),
+              backgroundColor: headerBackgroundColor,
               actions: [
                 IconButton(
                     onPressed: editActivity, icon: const Icon(Icons.edit)),

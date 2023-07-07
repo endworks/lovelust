@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/models/auth_tokens.dart';
@@ -41,28 +39,10 @@ class _LoginFormState extends State<LoginForm> {
           debugPrint('successful login');
           await _common.initialFetch();
           reload();
-        } on SocketException {
+        } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No Internet connection!'),
-            ),
-          );
-        } on HttpException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Couldn't sign in!"),
-            ),
-          );
-        } on FormatException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bad response format!'),
-            ),
-          );
-        } on Exception {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to sign in!'),
+            SnackBar(
+              content: Text('$e'),
             ),
           );
         }

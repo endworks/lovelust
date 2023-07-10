@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
@@ -51,7 +52,7 @@ class _AppState extends State<App> {
                 ),
                 brightness: Brightness.dark,
               );
-            } else if (Platform.isIOS) {
+            } else if (!kIsWeb && Platform.isIOS) {
               theme = appleTheme;
               darkTheme = appleDarkTheme;
             }

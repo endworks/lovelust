@@ -170,6 +170,10 @@ class CommonService {
     return places.firstWhere((element) => element.id == id);
   }
 
+  IdName? getInitiatorById(String id) {
+    return initiators.firstWhere((element) => element.id == id);
+  }
+
   String get theme {
     return _theme;
   }

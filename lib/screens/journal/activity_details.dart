@@ -5,6 +5,11 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/widgets/birth_control_block.dart';
+import 'package:lovelust/widgets/notes_block.dart';
+import 'package:lovelust/widgets/performance_block.dart';
+import 'package:lovelust/widgets/practices_block.dart';
+import 'package:lovelust/widgets/safety_block.dart';
 
 import 'activity_edit.dart';
 
@@ -49,7 +54,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     });
   }
 
-  String get title {
+  /*String get title {
     String title;
     if (solo) {
       title = 'Solo';
@@ -66,6 +71,18 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       }
     }
     return title;
+  }*/
+
+  String get title {
+    if (widget.activity.type != 'MASTURBATION') {
+      if (partner != null) {
+        return partner!.name;
+      } else {
+        return 'Unknown partner';
+      }
+    } else {
+      return 'Solo';
+    }
   }
 
   Color get headerForegroundColor {
@@ -133,6 +150,51 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     }
   }
 
+  get cards {
+    List<Widget> list = [];
+    if (!solo) {
+      list = [
+        SafetyBlock(
+          safety: widget.activity.safety!,
+        ),
+        BirthControlBlock(
+          birthControl: _common.getBirthControlById(
+            widget.activity.birthControl!,
+          ),
+          partnerBirthControl: _common.getBirthControlById(
+            widget.activity.partnerBirthControl!,
+          ),
+        ),
+        PerformanceBlock(
+          orgasms: widget.activity.orgasms,
+          partnerOrgasms: widget.activity.partnerOrgasms,
+          initiator: _common.getInitiatorById(
+            widget.activity.initiator!,
+          )!,
+        )
+      ];
+    }
+
+    if (widget.activity.practices != null &&
+        widget.activity.practices!.isNotEmpty) {
+      list.add(
+        PracticesBlock(
+          practices: widget.activity.practices!,
+        ),
+      );
+    }
+
+    if (widget.activity.notes != null) {
+      list.add(
+        NotesBlock(
+          notes: widget.activity.notes!,
+        ),
+      );
+    }
+
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,12 +224,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           ];
         },
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              widget.activity.notes ?? '',
-            )
-          ],
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: cards,
         ),
       ),
     );

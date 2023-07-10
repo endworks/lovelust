@@ -1,6 +1,6 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
@@ -18,23 +18,25 @@ class ActivityItemAlt extends StatefulWidget {
 }
 
 class _ActivityItemAltState extends State<ActivityItemAlt> {
-  final CommonService _commonService = getIt<CommonService>();
+  final CommonService _common = getIt<CommonService>();
   Partner? partner;
-  int fgValue = 400;
-  int bgValue = 100;
+  bool solo = false;
 
   @override
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = _commonService.getPartnerById(widget.activity.partner!);
+      partner = _common.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
     }
+    setState(() {
+      solo = widget.activity.type == 'MASTURBATION';
+    });
   }
 
-  void _openActivity() {
+  void openActivity() {
     debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
@@ -44,80 +46,207 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
     }));
   }
 
-  Text title() {
-    if (widget.activity.type != 'MASTURBATION') {
-      if (partner != null) {
-        return Text(partner!.name,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: partner!.sex == 'M' ? Colors.blue : Colors.red));
-      } else {
-        return Text('Unknown partner',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary));
-      }
-    } else {
-      return const Text('Solo',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink));
-    }
-  }
-
   Icon? safetyIcon() {
     if (widget.activity.type != 'MASTURBATION') {
       if (widget.activity.safety == 'safe') {
-        return const Icon(Icons.check_circle, color: Colors.green);
+        return Icon(Icons.check_circle,
+            color: Colors.green
+                .harmonizeWith(Theme.of(context).colorScheme.primary));
       } else if (widget.activity.safety == 'unsafe') {
-        return const Icon(Icons.error, color: Colors.red);
+        return Icon(Icons.error,
+            color: Colors.red
+                .harmonizeWith(Theme.of(context).colorScheme.primary));
       } else {
-        return const Icon(Icons.help, color: Colors.orange);
+        return Icon(Icons.help,
+            color: Colors.orange
+                .harmonizeWith(Theme.of(context).colorScheme.primary));
       }
     }
     return null;
   }
 
-  String date() {
-    return DateFormat('dd MMMM yyyy').format(widget.activity.date);
+  Widget date() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+      child: Text(
+        DateFormat('dd MMMM yyyy').format(widget.activity.date),
+        style: secondaryTextStyle(),
+      ),
+    );
   }
 
-  String place() {
-    if (widget.activity.place != null) {
-      return widget.activity.place!.capitalize();
+  Widget time() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+      child: Text(
+        DateFormat('hh:mm').format(widget.activity.date),
+        style: secondaryTextStyle(),
+      ),
+    );
+  }
+
+  Widget place() {
+    IconData icon = Icons.bed;
+
+    switch (widget.activity.place) {
+      case 'BEDROOM':
+        icon = Icons.bed;
+        break;
+      case 'PUBLIC':
+        icon = Icons.park;
+        break;
+      case 'SOFA':
+        icon = Icons.weekend;
+        break;
+      case 'TABLE':
+        icon = Icons.table_restaurant;
+        break;
+      default:
+        icon = Icons.bed;
     }
 
-    return 'Unknown place';
+    return Row(children: [
+      Icon(
+        icon,
+        color: Theme.of(context).colorScheme.outline,
+        size: 13,
+      ),
+      widget.activity.place != null
+          ? Text(
+              _common.getPlaceById(widget.activity.place!)!.name,
+              style: secondaryTextStyle(),
+            )
+          : Text(
+              'Unknown place',
+              style: secondaryTextStyle(),
+            )
+    ]);
+  }
+
+  Widget protection() {
+    if (solo) {
+      return const Text('');
+    }
+    String text = 'No protection';
+    if (widget.activity.birthControl == null ||
+        widget.activity.birthControl == 'NO_BIRTH_CONTROL') {
+      if (widget.activity.partnerBirthControl != null &&
+          widget.activity.partnerBirthControl != 'NO_BIRTH_CONTROL') {
+        text = _common
+            .getBirthControlById(widget.activity.partnerBirthControl!)!
+            .name;
+      }
+    } else if (widget.activity.partnerBirthControl == null ||
+        widget.activity.partnerBirthControl == 'NO_BIRTH_CONTROL') {
+      if (widget.activity.birthControl != null &&
+          widget.activity.birthControl != 'NO_BIRTH_CONTROL') {
+        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
+      }
+    } else {
+      if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
+        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
+      } else {
+        text =
+            '${_common.getBirthControlById(widget.activity.birthControl!)!.name} + ${_common.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
+      }
+    }
+
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+      child: Text(text, style: secondaryTextStyle()),
+    );
+  }
+
+  Widget duration() {
+    return Padding(
+      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+      child: Text(
+        '${widget.activity.duration} min.',
+        style: secondaryTextStyle(),
+      ),
+    );
+  }
+
+  Widget partnerName() {
+    return Text(
+      partner != null ? partner!.name : '',
+      style: secondaryTextStyle(),
+    );
+  }
+
+  Widget activity() {
+    String title;
+    Color color = Theme.of(context).colorScheme.onSurface;
+    if (solo) {
+      title = 'Solo';
+    } else {
+      switch (widget.activity.safety) {
+        case 'safe':
+          title = 'Safe sex';
+          if (!_common.monochrome) {
+            color = Colors.green
+                .harmonizeWith(Theme.of(context).colorScheme.primary);
+          }
+          break;
+        case 'unsafe':
+          title = 'Unsafe sex';
+          if (!_common.monochrome) {
+            color =
+                Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+          }
+          break;
+        default:
+          title = 'Partly unsafe sex';
+          if (!_common.monochrome) {
+            color = Colors.orange
+                .harmonizeWith(Theme.of(context).colorScheme.primary);
+          }
+      }
+    }
+    return Text(
+      title,
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        color: color,
+      ),
+    );
+  }
+
+  TextStyle secondaryTextStyle() {
+    return const TextStyle(
+      // color: Theme.of(context).colorScheme.outline,
+      fontSize: 13,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        leading: ActivityAvatar(
-          partnerId: widget.activity.partner,
-          masturbation: widget.activity.type == 'MASTURBATION',
-        ),
-        title: title(),
-        subtitle:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              size: 16,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                child: Text(date())),
-            Icon(
-              Icons.timer_outlined,
-              size: 16,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                child: Text("${widget.activity.duration} min.")),
-          ]),
-        ]),
-        trailing: safetyIcon(),
-        onTap: _openActivity);
+      onTap: openActivity,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [place(), time(), protection()],
+              ),
+              activity(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [partnerName(), duration()],
+              )
+            ],
+          ),
+          ActivityAvatar(
+            partnerId: widget.activity.partner,
+            masturbation: solo,
+          )
+        ],
+      ),
+    );
   }
 }

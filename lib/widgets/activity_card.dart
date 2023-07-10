@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class ActivityCard extends StatefulWidget {
@@ -12,10 +14,14 @@ class ActivityCard extends StatefulWidget {
 }
 
 class _ActivityCardState extends State<ActivityCard> {
+  final CommonService _common = getIt<CommonService>();
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: 0,
+      color:
+          Theme.of(context).colorScheme.surfaceVariant.withAlpha(_common.alpha),
       margin:
           const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
       //color: Theme.of(context).colorScheme.surfaceVariant,

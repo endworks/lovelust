@@ -139,8 +139,7 @@ class _JournalPageState extends State<JournalPage> {
                 ),
               ],
             ),
-            SliverList.separated(
-              separatorBuilder: (context, index) => const Divider(height: 0),
+            SliverList.builder(
               itemCount: _activity.length,
               itemBuilder: (context, index) => ActivityItem(
                 key: Key(_activity[index].id),

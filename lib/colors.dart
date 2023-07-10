@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const loveColor = Color.fromARGB(255, 251, 35, 186);
+const loveColor = Color.fromARGB(255, 251, 35, 115);
 const lustColor = Color.fromARGB(255, 106, 47, 208);
 get lovelustColor {
   int red = ((loveColor.red + lustColor.red) / 2).floor();

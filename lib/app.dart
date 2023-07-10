@@ -42,6 +42,7 @@ class _AppState extends State<App> {
                 navigationBarTheme: NavigationBarThemeData(
                   labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
                 ),
+                textTheme: defaultTheme.textTheme,
               );
               darkTheme = ThemeData(
                 colorScheme: darkDynamic.harmonized(),
@@ -50,6 +51,7 @@ class _AppState extends State<App> {
                 navigationBarTheme: NavigationBarThemeData(
                   labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
                 ),
+                textTheme: defaultDarkTheme.textTheme,
                 brightness: Brightness.dark,
               );
             } else if (!kIsWeb && Platform.isIOS) {
@@ -57,8 +59,8 @@ class _AppState extends State<App> {
               darkTheme = appleDarkTheme;
             }
           } else if (_common.colorScheme == 'unique') {
-            theme = uniqueTheme;
-            darkTheme = uniqueDarkTheme;
+            theme = singleTheme;
+            darkTheme = singleDarkTheme;
           } else if (_common.colorScheme == 'lustlove') {
             theme = lustLoveTheme;
             darkTheme = lustLoveDarkTheme;

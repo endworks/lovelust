@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
 ThemeData defaultTheme = ThemeData(
@@ -8,6 +9,7 @@ ThemeData defaultTheme = ThemeData(
   navigationBarTheme: const NavigationBarThemeData(
     labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
+  textTheme: GoogleFonts.dmSansTextTheme(),
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
@@ -20,23 +22,26 @@ ThemeData defaultDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: GoogleFonts.dmSansTextTheme(
+      ThemeData(brightness: Brightness.dark).textTheme),
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
-ThemeData uniqueTheme = ThemeData(
+ThemeData singleTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lovelustColor,
   ),
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
 );
 
-ThemeData uniqueDarkTheme = ThemeData(
+ThemeData singleDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lovelustColor,
     brightness: Brightness.dark,
@@ -44,6 +49,7 @@ ThemeData uniqueDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
@@ -56,6 +62,7 @@ ThemeData lustLoveTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
 );
@@ -68,6 +75,7 @@ ThemeData lustLoveDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
@@ -80,6 +88,7 @@ ThemeData loveLustTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
 );
@@ -92,6 +101,7 @@ ThemeData loveLustDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
@@ -104,6 +114,7 @@ ThemeData loveTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
 );
@@ -116,6 +127,7 @@ ThemeData loveDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
@@ -128,6 +140,7 @@ ThemeData lustTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
 );
@@ -140,6 +153,7 @@ ThemeData lustDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
@@ -152,6 +166,7 @@ ThemeData appleTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
 );
@@ -164,6 +179,7 @@ ThemeData appleDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   brightness: Brightness.dark,
@@ -190,6 +206,7 @@ ThemeData monochromeTheme = ThemeData(
     surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultTheme.textTheme,
 );
 
 ThemeData monochromeDarkTheme = ThemeData(
@@ -212,6 +229,7 @@ ThemeData monochromeDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     elevation: 1,
     surfaceTintColor: MaterialColor(0xFF000000, blackColor),
-    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  textTheme: defaultDarkTheme.textTheme,
 );

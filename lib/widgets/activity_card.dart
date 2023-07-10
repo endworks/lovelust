@@ -24,7 +24,7 @@ class _ActivityCardState extends State<ActivityCard> {
           Theme.of(context).colorScheme.surfaceVariant.withAlpha(_common.alpha),
       margin:
           const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
-      //color: Theme.of(context).colorScheme.surfaceVariant,
+      clipBehavior: Clip.antiAlias,
       child: ActivityItem(activity: widget.activity),
     );
   }

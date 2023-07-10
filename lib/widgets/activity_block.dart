@@ -85,6 +85,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
           Theme.of(context).colorScheme.surfaceVariant.withAlpha(_common.alpha),
       margin:
           const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+      clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: openActivity,
         title: Row(children: [

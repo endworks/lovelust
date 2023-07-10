@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
@@ -29,6 +30,7 @@ class CommonService {
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
     var futures = <Future>[
+      googleFontsPending,
       _storage.getTheme(),
       _storage.getColorScheme(),
       _storage.getAccessToken(),
@@ -109,6 +111,10 @@ class CommonService {
     activityTypes = result[5];
     return Future.value(null);
   }
+
+  Future googleFontsPending = GoogleFonts.pendingFonts([
+    GoogleFonts.dmSans(),
+  ]);
 
   bool get isLoggedIn {
     return accessToken != null;

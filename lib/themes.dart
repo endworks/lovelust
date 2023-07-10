@@ -188,7 +188,7 @@ ThemeData monochromeTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     elevation: 1,
     surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
-    labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
 );
 

@@ -38,7 +38,8 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   Color get headerBackgroundColor {
-    if (!_common.monochrome) {
+    return Theme.of(context).colorScheme.surface;
+    /*if (!_common.monochrome) {
       if (widget.partner.sex == 'M') {
         return Colors.blue
             .harmonizeWith(Theme.of(context).colorScheme.primary)
@@ -50,7 +51,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       }
     } else {
       return Theme.of(context).colorScheme.surfaceVariant;
-    }
+    }*/
   }
 
   Icon get genderIcon {
@@ -140,7 +141,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar.large(
+            SliverAppBar(
               floating: false,
               pinned: true,
               title: Text.rich(

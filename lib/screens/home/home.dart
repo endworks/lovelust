@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     Color color2 = Theme.of(context).colorScheme.onSurface;
     if (!_common.monochrome) {
       color1 = loveColor;
-      color2 = lustColor;
+      color2 = loveColor;
     }
 
     return Text.rich(

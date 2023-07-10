@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
@@ -74,7 +73,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   Color get headerBackgroundColor {
-    if (!_common.monochrome) {
+    return Theme.of(context).colorScheme.surface;
+    /*if (!_common.monochrome) {
       if (solo) {
         return Colors.pink
             .harmonizeWith(Theme.of(context).colorScheme.primary)
@@ -99,7 +99,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       }
     } else {
       return Theme.of(context).colorScheme.surfaceVariant;
-    }
+    }*/
   }
 
   Icon? get safetyIcon {
@@ -139,7 +139,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar.large(
+            SliverAppBar(
               floating: false,
               pinned: true,
               title: Text(title),

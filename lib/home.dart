@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
-import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,29 +11,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final CommonService _common = getIt<CommonService>();
   int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    /*ShakeDetector.autoStart(
-      onPhoneShake: () {
-        _common.privacyMode = !_common.privacyMode;
-        debugPrint('privacy mode: ${_common.privacyMode}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                _common.privacyMode ? 'Privacy mode on' : 'Privacy mode off'),
-          ),
-        );
-      },
-      minimumShakeCount: 1,
-      shakeSlopTimeMS: 500,
-      shakeCountResetTime: 3000,
-      shakeThresholdGravity: 2.7,
-    );
-    */
   }
 
   Widget get selectedPage {

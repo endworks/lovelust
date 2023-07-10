@@ -12,7 +12,7 @@ class CommonService {
   final ApiService _api = getIt<ApiService>();
 
   String _theme = 'system';
-  String? _colorScheme = 'dynamic';
+  String? _colorScheme;
   String? _accessToken;
   String? _refreshToken;
   List<Activity> _activity = [];
@@ -30,7 +30,6 @@ class CommonService {
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
     var futures = <Future>[
-      googleFontsPending,
       _storage.getTheme(),
       _storage.getColorScheme(),
       _storage.getAccessToken(),
@@ -40,7 +39,8 @@ class CommonService {
       _storage.getPrivacyMode(),
       _storage.getCalendarView(),
       _storage.getActivityFilter(),
-      loadStaticData()
+      loadStaticData(),
+      googleFontsPending,
     ];
 
     List result = await Future.wait(futures);

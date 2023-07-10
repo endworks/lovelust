@@ -46,26 +46,27 @@ class _ActivityItemState extends State<ActivityItem> {
   Text get title {
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
-        return Text(partner!.name,
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: partner!.sex == 'M'
-                    ? Colors.blue
-                        .harmonizeWith(Theme.of(context).colorScheme.primary)
-                    : Colors.red
-                        .harmonizeWith(Theme.of(context).colorScheme.primary)));
+        return Text(
+          partner!.name,
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        );
       } else {
-        return Text('Unknown partner',
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.primary));
+        return const Text(
+          'Unknown partner',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
+        );
       }
     } else {
-      return Text('Solo',
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Colors.pink
-                  .harmonizeWith(Theme.of(context).colorScheme.primary)));
+      return const Text(
+        'Solo',
+        style: TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      );
     }
   }
 

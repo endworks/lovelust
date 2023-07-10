@@ -3,7 +3,7 @@ import 'package:lovelust/colors.dart';
 
 ThemeData defaultTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: lustColor,
+    seedColor: loveColor,
   ),
   navigationBarTheme: const NavigationBarThemeData(
     labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
@@ -14,7 +14,7 @@ ThemeData defaultTheme = ThemeData(
 
 ThemeData defaultDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
-    seedColor: lustColor,
+    seedColor: loveColor,
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(

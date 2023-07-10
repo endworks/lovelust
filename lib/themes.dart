@@ -29,7 +29,7 @@ ThemeData defaultDarkTheme = ThemeData(
   brightness: Brightness.dark,
 );
 
-ThemeData singleTheme = ThemeData(
+ThemeData lovelustTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lovelustColor,
   ),
@@ -41,7 +41,7 @@ ThemeData singleTheme = ThemeData(
   visualDensity: defaultTheme.visualDensity,
 );
 
-ThemeData singleDarkTheme = ThemeData(
+ThemeData lovelustDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lovelustColor,
     brightness: Brightness.dark,
@@ -55,7 +55,7 @@ ThemeData singleDarkTheme = ThemeData(
   brightness: Brightness.dark,
 );
 
-ThemeData lustLoveTheme = ThemeData(
+ThemeData lustfulLoveTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lustColor,
   ),
@@ -67,7 +67,7 @@ ThemeData lustLoveTheme = ThemeData(
   visualDensity: defaultTheme.visualDensity,
 );
 
-ThemeData lustLoveDarkTheme = ThemeData(
+ThemeData lustfulLoveDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: loveColor,
     brightness: Brightness.dark,
@@ -81,7 +81,7 @@ ThemeData lustLoveDarkTheme = ThemeData(
   brightness: Brightness.dark,
 );
 
-ThemeData loveLustTheme = ThemeData(
+ThemeData lovefulLustTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: loveColor,
   ),
@@ -93,7 +93,7 @@ ThemeData loveLustTheme = ThemeData(
   visualDensity: defaultTheme.visualDensity,
 );
 
-ThemeData loveLustDarkTheme = ThemeData(
+ThemeData lovefulLustDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: lustColor,
     brightness: Brightness.dark,

@@ -58,15 +58,15 @@ class _AppState extends State<App> {
               theme = appleTheme;
               darkTheme = appleDarkTheme;
             }
-          } else if (_common.colorScheme == 'unique') {
-            theme = singleTheme;
-            darkTheme = singleDarkTheme;
-          } else if (_common.colorScheme == 'lustlove') {
-            theme = lustLoveTheme;
-            darkTheme = lustLoveDarkTheme;
           } else if (_common.colorScheme == 'lovelust') {
-            theme = loveLustTheme;
-            darkTheme = loveLustDarkTheme;
+            theme = lovelustTheme;
+            darkTheme = lovelustDarkTheme;
+          } else if (_common.colorScheme == 'lustfullove') {
+            theme = lustfulLoveTheme;
+            darkTheme = lustfulLoveDarkTheme;
+          } else if (_common.colorScheme == 'lovefullust') {
+            theme = lovefulLustTheme;
+            darkTheme = lovefulLustDarkTheme;
           } else if (_common.colorScheme == 'love') {
             theme = loveTheme;
             darkTheme = loveDarkTheme;

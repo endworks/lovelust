@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/screens/journal/activity_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
@@ -48,42 +49,6 @@ class _JournalPageState extends State<JournalPage> {
     );
   }
 
-  void toggleFilter() {
-    setState(() {
-      if (_common.activityFilter == 'all') {
-        _common.activityFilter = 'activity';
-        _activity = _common.activity
-            .where(
-              (i) => i.type != 'MASTURBATION',
-            )
-            .toList();
-      } else if (_common.activityFilter == 'activity') {
-        _common.activityFilter = 'solo';
-        _activity = _common.activity
-            .where(
-              (i) => i.type == 'MASTURBATION',
-            )
-            .toList();
-      } else if (_common.activityFilter == 'solo') {
-        _common.activityFilter = 'all';
-        _activity = _common.activity;
-      }
-    });
-    setState(() {});
-    _scrollController.jumpTo(0);
-    debugPrint('toggleFilter: ${_common.activityFilter}');
-  }
-
-  Icon get toggleIcon {
-    if (_common.activityFilter == 'activity') {
-      return const Icon(Icons.favorite);
-    } else if (_common.activityFilter == 'solo') {
-      return const Icon(Icons.front_hand);
-    } else {
-      return const Icon(Icons.filter_list_off);
-    }
-  }
-
   Future<void> refresh() async {
     if (_common.isLoggedIn) {
       _activity = await _api.getActivity();
@@ -94,6 +59,31 @@ class _JournalPageState extends State<JournalPage> {
     setState(() {
       _activity = _activity;
     });
+  }
+
+  void menuEntryItemSelected(FilterEntryItem item) {
+    debugPrint(item.name);
+    setState(() {
+      _common.activityFilter = item.name;
+      if (_common.activityFilter == 'all') {
+        _activity = _common.activity;
+      } else if (_common.activityFilter == 'activity') {
+        _activity = _common.activity
+            .where(
+              (i) => i.type != 'MASTURBATION',
+            )
+            .toList();
+      } else if (_common.activityFilter == 'solo') {
+        _activity = _common.activity
+            .where(
+              (i) => i.type == 'MASTURBATION',
+            )
+            .toList();
+      }
+    });
+    setState(() {});
+    _scrollController.jumpTo(0);
+    debugPrint('toggleFilter: ${_common.activityFilter}');
   }
 
   Widget separator(int index) {
@@ -133,9 +123,24 @@ class _JournalPageState extends State<JournalPage> {
             GenericHeader(
               title: const Text('Journal'),
               actions: [
-                IconButton(
-                  onPressed: toggleFilter,
-                  icon: toggleIcon,
+                PopupMenuButton(
+                  // icon: const Icon(Icons.filter),
+                  onSelected: menuEntryItemSelected,
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<FilterEntryItem>>[
+                    const PopupMenuItem(
+                      value: FilterEntryItem.all,
+                      child: Text('All'),
+                    ),
+                    const PopupMenuItem(
+                      value: FilterEntryItem.activity,
+                      child: Text('Activity'),
+                    ),
+                    const PopupMenuItem(
+                      value: FilterEntryItem.solo,
+                      child: Text('Solo'),
+                    ),
+                  ],
                 ),
               ],
             ),

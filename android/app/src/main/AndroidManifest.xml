@@ -9,7 +9,10 @@
     <application
         android:label="LoveLust"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        >
         <activity
             android:name=".MainActivity"
             android:exported="true"

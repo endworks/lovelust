@@ -120,7 +120,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
 
   get cards {
     List<Widget> list = [];
-    if (widget.partner.notes != null) {
+    if (widget.partner.notes != null && widget.partner.notes!.isNotEmpty) {
       list.add(
         NotesBlock(
           notes: widget.partner.notes!,

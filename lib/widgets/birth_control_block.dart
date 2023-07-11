@@ -23,6 +23,11 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
 
   List<Widget> get birthControl {
     List<Widget> list = [];
+    TextStyle style = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
     if (widget.birthControl == widget.partnerBirthControl) {
       list.add(
         Text.rich(
@@ -30,11 +35,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             children: [
               TextSpan(
                 text: widget.birthControl!.name,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+                style: style,
               ),
               const TextSpan(text: ' by both'),
             ],
@@ -49,11 +50,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
               children: [
                 TextSpan(
                   text: widget.birthControl!.name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  style: style,
                 ),
                 const TextSpan(text: ' by me'),
               ],
@@ -67,11 +64,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
               children: [
                 TextSpan(
                   text: widget.partnerBirthControl!.name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  style: style,
                 ),
                 const TextSpan(text: ' by partner'),
               ],

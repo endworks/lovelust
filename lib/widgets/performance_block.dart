@@ -13,7 +13,7 @@ class PerformanceBlock extends StatefulWidget {
 
   final int orgasms;
   final int partnerOrgasms;
-  final IdName initiator;
+  final IdName? initiator;
 
   @override
   State<PerformanceBlock> createState() => _PerformanceBlockState();
@@ -24,6 +24,11 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
 
   List<Widget> get performance {
     List<Widget> list = [];
+    TextStyle style = TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
+      color: Theme.of(context).colorScheme.onSurface,
+    );
 
     if (widget.orgasms > 0) {
       list.add(
@@ -32,11 +37,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
             children: [
               TextSpan(
                 text: widget.orgasms.toString(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+                style: style,
               ),
               const TextSpan(text: ' orgasms by me'),
             ],
@@ -50,11 +51,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
             children: [
               TextSpan(
                 text: widget.partnerOrgasms.toString(),
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+                style: style,
               ),
               const TextSpan(text: ' orgasms by partner'),
             ],
@@ -63,23 +60,21 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
       );
     }
 
-    list.add(
-      Text.rich(
-        TextSpan(
-          children: [
-            TextSpan(
-              text: widget.initiator.name,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+    if (widget.initiator != null) {
+      list.add(
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: widget.initiator!.name,
+                style: style,
               ),
-            ),
-            const TextSpan(text: ' initiated it'),
-          ],
+              const TextSpan(text: ' initiated it'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     return list;
   }

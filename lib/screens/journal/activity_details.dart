@@ -165,15 +165,20 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
             widget.activity.partnerBirthControl!,
           ),
         ),
-        PerformanceBlock(
-          orgasms: widget.activity.orgasms,
-          partnerOrgasms: widget.activity.partnerOrgasms,
-          initiator: _common.getInitiatorById(
-            widget.activity.initiator!,
-          )!,
-        )
       ];
     }
+
+    list.add(
+      PerformanceBlock(
+        orgasms: widget.activity.orgasms,
+        partnerOrgasms: widget.activity.partnerOrgasms,
+        initiator: widget.activity.initiator != null
+            ? _common.getInitiatorById(
+                widget.activity.initiator!,
+              )
+            : null,
+      ),
+    );
 
     if (widget.activity.practices != null &&
         widget.activity.practices!.isNotEmpty) {
@@ -184,7 +189,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       );
     }
 
-    if (widget.activity.notes != null) {
+    if (widget.activity.notes != null && widget.activity.notes!.isNotEmpty) {
       list.add(
         NotesBlock(
           notes: widget.activity.notes!,

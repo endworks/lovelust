@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/forms/login_form.dart';
 import 'package:lovelust/service_locator.dart';
@@ -45,31 +46,50 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: null, child: Text("Default")),
-      const DropdownMenuItem(value: "dynamic", child: Text("Dynamic")),
-      const DropdownMenuItem(value: "love", child: Text("Love")),
-      const DropdownMenuItem(value: "lust", child: Text("Lust")),
-      const DropdownMenuItem(value: "lovelust", child: Text("LoveLust")),
-      const DropdownMenuItem(value: "lustfullove", child: Text("Lustful love")),
-      const DropdownMenuItem(value: "lovefullust", child: Text("Loveful lust")),
-      const DropdownMenuItem(value: "monochrome", child: Text("Monochrome")),
+      DropdownMenuItem(
+          value: null, child: Text(AppLocalizations.of(context)!.byDefault)),
+      DropdownMenuItem(
+          value: "dynamic", child: Text(AppLocalizations.of(context)!.dynamic)),
+      DropdownMenuItem(
+          value: "lovelust",
+          child: Text(AppLocalizations.of(context)!.lovelust)),
+      DropdownMenuItem(
+          value: "love", child: Text(AppLocalizations.of(context)!.love)),
+      DropdownMenuItem(
+          value: "lust", child: Text(AppLocalizations.of(context)!.lust)),
+      DropdownMenuItem(
+          value: "lustfullove",
+          child: Text(AppLocalizations.of(context)!.lustfullove)),
+      DropdownMenuItem(
+          value: "lovefullust",
+          child: Text(AppLocalizations.of(context)!.lovefullust)),
+      DropdownMenuItem(
+          value: "monochrome",
+          child: Text(AppLocalizations.of(context)!.monochrome)),
     ];
     return menuItems;
   }
 
   List<DropdownMenuItem<String>> get dropdownThemeItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "system", child: Text("System")),
-      const DropdownMenuItem(value: "light", child: Text("Light")),
-      const DropdownMenuItem(value: "dark", child: Text("Dark")),
+      DropdownMenuItem(
+          value: "system", child: Text(AppLocalizations.of(context)!.system)),
+      DropdownMenuItem(
+          value: "light", child: Text(AppLocalizations.of(context)!.light)),
+      DropdownMenuItem(
+          value: "dark", child: Text(AppLocalizations.of(context)!.dark)),
     ];
     return menuItems;
   }
 
   List<DropdownMenuItem<bool>> get dropdownPrivacyModeItems {
     List<DropdownMenuItem<bool>> menuItems = [
-      const DropdownMenuItem(value: true, child: Text("Privacy mode ON")),
-      const DropdownMenuItem(value: false, child: Text("Privacy mode OFF")),
+      DropdownMenuItem(
+          value: true,
+          child: Text(AppLocalizations.of(context)!.privacyModeOn)),
+      DropdownMenuItem(
+          value: false,
+          child: Text(AppLocalizations.of(context)!.privacyModeOff)),
     ];
     return menuItems;
   }

@@ -21,8 +21,26 @@
   "byPartner": "by partner",
   "byBoth": "by both",
   "performance": "Performance",
-  "orgasmsByMe": "orgasms by me",
-  "orgasmsByPartner": "orgasms by partner",
+  "orgasmsByMe": "{count, plural, =1{orgasm by me} other{orgasms by me}}",
+  "@orgasmsByMe": {
+    "description": "Orgams by me",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "orgasmsByPartner": "{count, plural, =1{orgasm by partner} other{orgasms by partner}}",
+  "@orgasmsByPartner": {
+    "description": "Orgams by partner",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
   "practices": "Practices",
   "sexualActivity": "Sexual activity",
   "initiatedIt": "initiated it",

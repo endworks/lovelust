@@ -40,7 +40,9 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
                 text: widget.orgasms.toString(),
                 style: style,
               ),
-              TextSpan(text: ' ${AppLocalizations.of(context)!.orgasmsByMe}'),
+              TextSpan(
+                  text:
+                      ' ${AppLocalizations.of(context)!.orgasmsByMe(widget.orgasms)}'),
             ],
           ),
         ),
@@ -55,7 +57,8 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
                 style: style,
               ),
               TextSpan(
-                  text: ' ${AppLocalizations.of(context)!.orgasmsByPartner}'),
+                  text:
+                      ' ${AppLocalizations.of(context)!.orgasmsByPartner(widget.partnerOrgasms)}'),
             ],
           ),
         ),

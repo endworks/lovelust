@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/forms/activity_form.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
@@ -21,16 +22,19 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit activity'),
+        title: Text(widget.activity.id.isEmpty
+            ? AppLocalizations.of(context)!.logActivity
+            : AppLocalizations.of(context)!.editActivity),
         actions: [
-          FilledButton(onPressed: save, child: const Text('Save')),
+          FilledButton(
+              onPressed: save, child: Text(AppLocalizations.of(context)!.save)),
           PopupMenuButton(
             onSelected: (MenuEntryItem item) {},
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<MenuEntryItem>>[
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: MenuEntryItem.help,
-                child: Text('Help'),
+                child: Text(AppLocalizations.of(context)!.help),
               ),
             ],
           ),

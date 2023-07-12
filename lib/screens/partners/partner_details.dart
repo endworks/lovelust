@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
@@ -160,9 +161,9 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
                   onSelected: menuEntryItemSelected,
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<MenuEntryItem>>[
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: MenuEntryItem.delete,
-                      child: Text('Delete'),
+                      child: Text(AppLocalizations.of(context)!.delete),
                     ),
                   ],
                 ),

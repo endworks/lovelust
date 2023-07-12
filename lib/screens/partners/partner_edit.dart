@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
@@ -149,7 +150,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   }
 
   Icon iconByGender(String gender) {
-    if (gender == 'M' || gender == 'Male') {
+    if (gender == 'M' || gender == AppLocalizations.of(context)!.male) {
       return const Icon(Icons.male);
     } else if (gender == 'F' || gender == 'Female') {
       return const Icon(Icons.female);
@@ -162,20 +163,21 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            Text(widget.partner.id.isEmpty ? 'Create partner' : 'Edit partner'),
+        title: Text(widget.partner.id.isEmpty
+            ? AppLocalizations.of(context)!.createPartner
+            : AppLocalizations.of(context)!.editPartner),
         actions: [
           FilledButton(
             onPressed: valid ? save : null,
-            child: const Text('Save'),
+            child: Text(AppLocalizations.of(context)!.save),
           ),
           PopupMenuButton(
             onSelected: (MenuEntryItem item) {},
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<MenuEntryItem>>[
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: MenuEntryItem.help,
-                child: Text('Help'),
+                child: Text(AppLocalizations.of(context)!.help),
               ),
             ],
           ),
@@ -190,11 +192,11 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               padding: const EdgeInsets.all(16.0),
               child: TextField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.person),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.person),
                   filled: true,
-                  labelText: 'Name',
-                  hintText: 'Enter name...',
+                  labelText: AppLocalizations.of(context)!.name,
+                  hintText: AppLocalizations.of(context)!.nameHint,
                 ),
               ),
             ),
@@ -205,8 +207,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 decoration: InputDecoration(
                   prefixIcon: iconByGender(_genderController.text),
                   filled: true,
-                  labelText: 'Gender',
-                  hintText: 'Enter gender...',
+                  labelText: AppLocalizations.of(context)!.gender,
                 ),
                 items: genderDropdownMenuEntries,
                 onChanged: (value) {
@@ -221,8 +222,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 decoration: InputDecoration(
                   prefixIcon: iconByGender(_sexController.text),
                   filled: true,
-                  labelText: 'Sex',
-                  hintText: 'Enter sex...',
+                  labelText: AppLocalizations.of(context)!.sex,
                 ),
                 items: genderDropdownMenuEntries,
                 onChanged: (value) {
@@ -235,11 +235,11 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               child: TextField(
                 controller: _notesController,
                 maxLines: null,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.note_alt),
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.note_alt),
                   filled: true,
-                  labelText: 'Notes',
-                  hintText: 'Enter notes...',
+                  labelText: AppLocalizations.of(context)!.notes,
+                  hintText: AppLocalizations.of(context)!.notesHint,
                 ),
               ),
             ),

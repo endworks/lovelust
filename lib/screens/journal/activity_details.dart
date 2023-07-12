@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -10,8 +12,6 @@ import 'package:lovelust/widgets/notes_block.dart';
 import 'package:lovelust/widgets/performance_block.dart';
 import 'package:lovelust/widgets/practices_block.dart';
 import 'package:lovelust/widgets/safety_block.dart';
-
-import 'activity_edit.dart';
 
 class ActivityDetailsPage extends StatefulWidget {
   const ActivityDetailsPage({super.key, required this.activity});
@@ -78,10 +78,10 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       if (partner != null) {
         return partner!.name;
       } else {
-        return 'Unknown partner';
+        return AppLocalizations.of(context)!.unknownPartner;
       }
     } else {
-      return 'Solo';
+      return AppLocalizations.of(context)!.solo;
     }
   }
 
@@ -218,9 +218,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   onSelected: menuEntryItemSelected,
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<MenuEntryItem>>[
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: MenuEntryItem.delete,
-                      child: Text('Delete'),
+                      child: Text(AppLocalizations.of(context)!.delete),
                     ),
                   ],
                 ),

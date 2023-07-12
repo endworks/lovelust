@@ -129,17 +129,17 @@ class _JournalPageState extends State<JournalPage> {
                   onSelected: menuEntryItemSelected,
                   itemBuilder: (BuildContext context) =>
                       <PopupMenuEntry<FilterEntryItem>>[
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: FilterEntryItem.all,
-                      child: Text('All'),
+                      child: Text(AppLocalizations.of(context)!.allEntries),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: FilterEntryItem.activity,
-                      child: Text('Activity'),
+                      child: Text(AppLocalizations.of(context)!.onlySex),
                     ),
-                    const PopupMenuItem(
+                    PopupMenuItem(
                       value: FilterEntryItem.solo,
-                      child: Text('Solo'),
+                      child: Text(AppLocalizations.of(context)!.onlySolo),
                     ),
                   ],
                 ),
@@ -158,12 +158,12 @@ class _JournalPageState extends State<JournalPage> {
       floatingActionButton: isExtended
           ? FloatingActionButton.extended(
               onPressed: addActivity,
-              label: const Text('Log activity'),
+              label: Text(AppLocalizations.of(context)!.logActivity),
               icon: const Icon(Icons.post_add),
             )
           : FloatingActionButton(
               onPressed: addActivity,
-              tooltip: 'Log activity',
+              tooltip: AppLocalizations.of(context)!.logActivity,
               child: const Icon(Icons.post_add),
             ),
     );

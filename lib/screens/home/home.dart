@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
@@ -62,10 +63,10 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                'activity: ${_common.activity.length}',
+                '${AppLocalizations.of(context)!.journal}: ${_common.activity.length}',
               ),
               Text(
-                'partners: ${_common.partners.length}',
+                '${AppLocalizations.of(context)!.partners}: ${_common.partners.length}',
               ),
             ],
           ),

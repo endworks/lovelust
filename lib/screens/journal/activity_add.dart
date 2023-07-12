@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/forms/activity_form.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
@@ -39,16 +40,17 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create activity'),
+        title: Text(AppLocalizations.of(context)!.logActivity),
         actions: [
-          FilledButton(onPressed: save, child: const Text('Save')),
+          FilledButton(
+              onPressed: save, child: Text(AppLocalizations.of(context)!.save)),
           PopupMenuButton(
             onSelected: (MenuEntryItem item) {},
             itemBuilder: (BuildContext context) =>
                 <PopupMenuEntry<MenuEntryItem>>[
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: MenuEntryItem.help,
-                child: Text('Help'),
+                child: Text(AppLocalizations.of(context)!.help),
               ),
             ],
           ),

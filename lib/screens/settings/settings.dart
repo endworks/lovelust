@@ -47,9 +47,11 @@ class _SettingsPageState extends State<SettingsPage> {
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
-          value: null, child: Text(AppLocalizations.of(context)!.byDefault)),
+          value: null,
+          child: Text(AppLocalizations.of(context)!.defaultColorScheme)),
       DropdownMenuItem(
-          value: "dynamic", child: Text(AppLocalizations.of(context)!.dynamic)),
+          value: "dynamic",
+          child: Text(AppLocalizations.of(context)!.dynamicColorScheme)),
       DropdownMenuItem(
           value: "lovelust",
           child: Text(AppLocalizations.of(context)!.lovelust)),

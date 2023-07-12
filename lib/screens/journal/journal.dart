@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/model_entry_item.dart';
 import 'package:lovelust/screens/journal/activity_add.dart';
@@ -121,7 +122,7 @@ class _JournalPageState extends State<JournalPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
-              title: const Text('Journal'),
+              title: Text(AppLocalizations.of(context)!.journal),
               actions: [
                 PopupMenuButton(
                   // icon: const Icon(Icons.filter),

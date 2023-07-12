@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
@@ -35,26 +36,26 @@ class _HomeState extends State<Home> {
 
   List<Widget> get destinations {
     return [
-      const NavigationDestination(
-        selectedIcon: Icon(
+      NavigationDestination(
+        selectedIcon: const Icon(
           Icons.monitor_heart,
         ),
-        icon: Icon(Icons.monitor_heart_outlined),
-        label: 'Home',
+        icon: const Icon(Icons.monitor_heart_outlined),
+        label: AppLocalizations.of(context)!.home,
       ),
-      const NavigationDestination(
-        selectedIcon: Icon(
+      NavigationDestination(
+        selectedIcon: const Icon(
           Icons.assignment,
         ),
-        icon: Icon(Icons.assignment_outlined),
-        label: 'Journal',
+        icon: const Icon(Icons.assignment_outlined),
+        label: AppLocalizations.of(context)!.journal,
       ),
-      const NavigationDestination(
-        selectedIcon: Icon(
+      NavigationDestination(
+        selectedIcon: const Icon(
           Icons.group,
         ),
-        icon: Icon(Icons.group_outlined),
-        label: 'Partners',
+        icon: const Icon(Icons.group_outlined),
+        label: AppLocalizations.of(context)!.partners,
       ),
     ];
   }

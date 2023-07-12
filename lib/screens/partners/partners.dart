@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
@@ -70,8 +71,8 @@ class _PartnersPageState extends State<PartnersPage> {
           controller: _scrollController,
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
-            const GenericHeader(
-              title: Text('Partners'),
+            GenericHeader(
+              title: Text(AppLocalizations.of(context)!.journal),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(

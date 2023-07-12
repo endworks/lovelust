@@ -36,9 +36,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.3.1
   http: ^1.0.0
-  health: ^6.0.0
+  health: ^7.0.1
   flutter_secure_storage: ^8.0.0
-  intl: ^0.17.0
+  intl: ^0.18.1
   google_fonts: ^5.0.0
   permission_handler: ^10.3.0
   get_it: ^7.6.0

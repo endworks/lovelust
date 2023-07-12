@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
@@ -41,6 +43,7 @@ class CommonService {
       _storage.getActivityFilter(),
       loadStaticData(),
       googleFontsPending,
+      findSystemLocale()
     ];
 
     List result = await Future.wait(futures);
@@ -53,6 +56,7 @@ class CommonService {
     privacyMode = result[6];
     calendarView = result[7];
     activityFilter = result[8];
+    Intl.systemLocale = result[10];
     return Future.value(null);
   }
 

@@ -71,7 +71,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
             children: [
               Icon(Icons.help, color: color, size: 18),
               Text(
-                AppLocalizations.of(context)!.partleUnsafe,
+                AppLocalizations.of(context)!.partlyUnsafe,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.w600,

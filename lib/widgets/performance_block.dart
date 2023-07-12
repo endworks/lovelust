@@ -47,7 +47,9 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
           ),
         ),
       );
-    } else if (widget.partnerOrgasms > 0) {
+    }
+
+    if (widget.partnerOrgasms > 0) {
       list.add(
         Text.rich(
           TextSpan(

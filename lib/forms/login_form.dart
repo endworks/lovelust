@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/service_locator.dart';
@@ -68,12 +69,10 @@ class _LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.all(16.0),
             child: TextField(
               controller: usernameController,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.person),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.person),
                 filled: true,
-                border: UnderlineInputBorder(),
-                labelText: 'Username',
-                hintText: 'Enter username...',
+                labelText: AppLocalizations.of(context)!.username,
               ),
             ),
           ),
@@ -82,12 +81,10 @@ class _LoginFormState extends State<LoginForm> {
             child: TextField(
               controller: passwordController,
               obscureText: true,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.key),
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.key),
                 filled: true,
-                border: UnderlineInputBorder(),
-                labelText: 'Password',
-                hintText: 'Enter passsword...',
+                labelText: AppLocalizations.of(context)!.password,
               ),
             ),
           ),
@@ -95,7 +92,7 @@ class _LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: FilledButton.tonal(
               onPressed: submit,
-              child: const Text('Sign in'),
+              child: Text(AppLocalizations.of(context)!.signIn),
             ),
           ),
         ],

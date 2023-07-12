@@ -32,7 +32,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
   Widget get safety {
     IconData icon = Icons.help;
     Color color = Colors.orange;
-    String label = AppLocalizations.of(context)!.partleUnsafe;
+    String label = AppLocalizations.of(context)!.partlyUnsafe;
 
     if (widget.activity.safety == 'safe') {
       icon = Icons.check_circle;
@@ -60,16 +60,17 @@ class _ActivityBlockState extends State<ActivityBlock> {
   }
 
   Widget get duration {
-    TextStyle style = const TextStyle(
+    TextStyle style = TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w600,
+      color: Theme.of(context).colorScheme.onSurface,
     );
     IdName place = _common.getPlaceById(widget.activity.place!)!;
     return Text.rich(
       TextSpan(
         children: [
           TextSpan(text: widget.activity.duration.toString(), style: style),
-          const TextSpan(text: 'min.'),
+          const TextSpan(text: 'min. '),
           TextSpan(text: place.name, style: style),
         ],
       ),

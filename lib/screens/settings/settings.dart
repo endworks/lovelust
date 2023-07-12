@@ -100,7 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(AppLocalizations.of(context)!.settings),
       ),
       body: Center(
         child: Column(
@@ -110,20 +110,20 @@ class _SettingsPageState extends State<SettingsPage> {
               _common.isLoggedIn
                   ? FilledButton.tonal(
                       onPressed: signOut,
-                      child: const Text('Sign out'),
+                      child: Text(AppLocalizations.of(context)!.signOut),
                     )
                   : const LoginForm(),
               FilledButton.tonal(
                 onPressed: _common.clearData,
-                child: const Text('Clear data'),
+                child: Text(AppLocalizations.of(context)!.clearData),
               ),
               FilledButton.tonal(
                 onPressed: _common.initialFetch,
-                child: const Text('Initial fetch'),
+                child: Text(AppLocalizations.of(context)!.initialFetch),
               ),
               FilledButton.tonal(
                 onPressed: _common.fetchStaticData,
-                child: const Text('Fetch static data'),
+                child: Text(AppLocalizations.of(context)!.fetchStaticData),
               ),
               DropdownButton(
                 value: _common.theme,

@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
@@ -31,16 +32,16 @@ class _ActivityBlockState extends State<ActivityBlock> {
   Widget get safety {
     IconData icon = Icons.help;
     Color color = Colors.orange;
-    String label = 'Partly unsafe';
+    String label = AppLocalizations.of(context)!.partleUnsafe;
 
     if (widget.activity.safety == 'safe') {
       icon = Icons.check_circle;
       color = Colors.green;
-      label = 'Safe';
+      label = AppLocalizations.of(context)!.safe;
     } else if (widget.activity.safety == 'unsafe') {
       icon = Icons.error;
       color = Colors.red;
-      label = 'Unsafe';
+      label = AppLocalizations.of(context)!.unsafe;
     }
 
     color = color.harmonizeWith(Theme.of(context).colorScheme.primary);
@@ -94,7 +95,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
             color: pink,
           ),
           Text(
-            'Sexual activity',
+            AppLocalizations.of(context)!.sexualActivity,
             style: TextStyle(
               color: pink,
               fontWeight: FontWeight.w600,

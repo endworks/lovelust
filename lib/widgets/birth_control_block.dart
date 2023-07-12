@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -37,7 +38,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
                 text: widget.birthControl!.name,
                 style: style,
               ),
-              const TextSpan(text: ' by both'),
+              TextSpan(text: ' ${AppLocalizations.of(context)!.byBoth}'),
             ],
           ),
         ),
@@ -52,7 +53,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
                   text: widget.birthControl!.name,
                   style: style,
                 ),
-                const TextSpan(text: ' by me'),
+                TextSpan(text: ' ${AppLocalizations.of(context)!.byMe}'),
               ],
             ),
           ),
@@ -66,7 +67,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
                   text: widget.partnerBirthControl!.name,
                   style: style,
                 ),
-                const TextSpan(text: ' by partner'),
+                TextSpan(text: ' ${AppLocalizations.of(context)!.byPartner}'),
               ],
             ),
           ),
@@ -93,7 +94,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             color: color,
           ),
           Text(
-            'Birth control',
+            AppLocalizations.of(context)!.birthControl,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w600,

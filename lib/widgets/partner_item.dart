@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
@@ -35,18 +36,18 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Text get gender {
-    String gender = 'Non binary';
+    String gender = AppLocalizations.of(context)!.nonBinary;
     if (widget.partner.gender == 'M') {
       if (widget.partner.sex == 'M') {
-        gender = 'Man';
+        gender = AppLocalizations.of(context)!.man;
       } else {
-        gender = 'Trans man';
+        gender = AppLocalizations.of(context)!.transMan;
       }
     } else if (widget.partner.gender == 'F') {
       if (widget.partner.sex == 'F') {
-        gender = 'Woman';
+        gender = AppLocalizations.of(context)!.woman;
       } else {
-        gender = 'Trans woman';
+        gender = AppLocalizations.of(context)!.transWoman;
       }
     }
     return Text(gender, style: secondaryTextStyle());

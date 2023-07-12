@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
 
@@ -26,7 +27,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
             children: [
               Icon(Icons.check_circle, color: color, size: 18),
               Text(
-                'Safe',
+                AppLocalizations.of(context)!.safe,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.w600,
@@ -35,9 +36,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
               ),
             ],
           ),
-          const Text(
-            'You are safe from unwanted conception and STD because you or your partner used condom',
-          )
+          Text(AppLocalizations.of(context)!.safeMsg)
         ],
       );
     } else if (widget.safety == 'unsafe') {
@@ -50,7 +49,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
             children: [
               Icon(Icons.error, color: color, size: 18),
               Text(
-                'Unsafe',
+                AppLocalizations.of(context)!.unsafe,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.w600,
@@ -59,9 +58,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
               ),
             ],
           ),
-          const Text(
-            'Unsafe sex because neither you or your partner used any birth control method',
-          )
+          Text(AppLocalizations.of(context)!.unsafeMsg)
         ],
       );
     } else {
@@ -74,7 +71,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
             children: [
               Icon(Icons.help, color: color, size: 18),
               Text(
-                'Partly unsafe',
+                AppLocalizations.of(context)!.partleUnsafe,
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.w600,
@@ -83,9 +80,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
               ),
             ],
           ),
-          const Text(
-            'Partly unsafe birth control method because while preventing conception you can still get Sexually Transmitted Infections (STDs)',
-          )
+          Text(AppLocalizations.of(context)!.partlyUnsafeMsg)
         ],
       );
     }
@@ -108,7 +103,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
             color: color,
           ),
           Text(
-            'Safety',
+            AppLocalizations.of(context)!.safety,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w600,

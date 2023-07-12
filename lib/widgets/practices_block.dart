@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -33,7 +34,7 @@ class _PracticesBlockState extends State<PracticesBlock> {
             color: color,
           ),
           Text(
-            'Practices',
+            AppLocalizations.of(context)!.practices,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w600,

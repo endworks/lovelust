@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
@@ -53,17 +54,17 @@ class _ActivityItemState extends State<ActivityItem> {
           ),
         );
       } else {
-        return const Text(
-          'Unknown partner',
-          style: TextStyle(
+        return Text(
+          AppLocalizations.of(context)!.unknownPartner,
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
           ),
         );
       }
     } else {
-      return const Text(
-        'Solo',
-        style: TextStyle(
+      return Text(
+        AppLocalizations.of(context)!.solo,
+        style: const TextStyle(
           fontWeight: FontWeight.w600,
         ),
       );
@@ -98,7 +99,7 @@ class _ActivityItemState extends State<ActivityItem> {
       return widget.activity.place!.capitalize();
     }
 
-    return 'Unknown place';
+    return AppLocalizations.of(context)!.unknownPlace;
   }
 
   @override

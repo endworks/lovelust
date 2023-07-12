@@ -72,7 +72,7 @@ class _PartnersPageState extends State<PartnersPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
-              title: Text(AppLocalizations.of(context)!.journal),
+              title: Text(AppLocalizations.of(context)!.partners),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(

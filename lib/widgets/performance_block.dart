@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
@@ -39,7 +40,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
                 text: widget.orgasms.toString(),
                 style: style,
               ),
-              const TextSpan(text: ' orgasms by me'),
+              TextSpan(text: ' ${AppLocalizations.of(context)!.orgasmsByMe}'),
             ],
           ),
         ),
@@ -53,7 +54,8 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
                 text: widget.partnerOrgasms.toString(),
                 style: style,
               ),
-              const TextSpan(text: ' orgasms by partner'),
+              TextSpan(
+                  text: ' ${AppLocalizations.of(context)!.orgasmsByPartner}'),
             ],
           ),
         ),
@@ -69,7 +71,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
                 text: widget.initiator!.name,
                 style: style,
               ),
-              const TextSpan(text: ' initiated it'),
+              TextSpan(text: ' ${AppLocalizations.of(context)!.initiatedIt}'),
             ],
           ),
         ),
@@ -96,7 +98,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
             color: color,
           ),
           Text(
-            'Performance',
+            AppLocalizations.of(context)!.performance,
             style: TextStyle(
               color: color,
               fontWeight: FontWeight.w600,

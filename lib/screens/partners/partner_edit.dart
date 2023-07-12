@@ -139,11 +139,20 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   }
 
   List<DropdownMenuItem> get genderDropdownMenuEntries {
+    genderTranslation(String gender) {
+      if (gender == 'M') {
+        return AppLocalizations.of(context)!.male;
+      } else if (gender == 'F') {
+        return AppLocalizations.of(context)!.female;
+      }
+      return AppLocalizations.of(context)!.nonBinary;
+    }
+
     return _common.genders
         .map(
           (e) => DropdownMenuItem(
             value: e.id,
-            child: Text(e.name),
+            child: Text(genderTranslation(e.id)),
           ),
         )
         .toList();
@@ -152,7 +161,8 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   Icon iconByGender(String gender) {
     if (gender == 'M' || gender == AppLocalizations.of(context)!.male) {
       return const Icon(Icons.male);
-    } else if (gender == 'F' || gender == 'Female') {
+    } else if (gender == 'F' ||
+        gender == AppLocalizations.of(context)!.female) {
       return const Icon(Icons.female);
     } else {
       return const Icon(Icons.transgender);

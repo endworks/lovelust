@@ -4,7 +4,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/partner_item.dart';
@@ -17,7 +17,7 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
@@ -90,11 +90,13 @@ class _PartnersPageState extends State<PartnersPage> {
           ? FloatingActionButton.extended(
               onPressed: _addPartner,
               label: Text(AppLocalizations.of(context)!.addPartner),
+              elevation: 0,
               icon: const Icon(Icons.add),
             )
           : FloatingActionButton(
               onPressed: _addPartner,
               tooltip: AppLocalizations.of(context)!.addPartner,
+              elevation: 0,
               child: const Icon(Icons.add),
             ),
     );

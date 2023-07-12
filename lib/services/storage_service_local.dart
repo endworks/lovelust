@@ -212,6 +212,20 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
+  Future<bool> getRequireAuth() async {
+    final persisted = await _storage.read(key: 'require_auth');
+    if (persisted != null) {
+      return jsonDecode(persisted);
+    }
+    return false;
+  }
+
+  @override
+  Future<void> setRequireAuth(bool value) async {
+    return await _storage.write(key: 'require_auth', value: jsonEncode(value));
+  }
+
+  @override
   Future<bool> getCalendarView() async {
     final persisted = await _storage.read(key: 'calendar_view');
     if (persisted != null) {

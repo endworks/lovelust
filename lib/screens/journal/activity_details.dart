@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/models/model_entry_item.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/birth_control_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
 import 'package:lovelust/widgets/performance_block.dart';
@@ -23,7 +23,7 @@ class ActivityDetailsPage extends StatefulWidget {
 }
 
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
   int alpha = Colors.black26.alpha;
   Partner? partner;

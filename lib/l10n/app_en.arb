@@ -77,6 +77,8 @@
   "system": "System",
   "light": "Light",
   "dark": "Dark",
+  "requireAuth": "Require authentication",
+  "privacyMode": "Privacy mode",
   "privacyModeOn": "Privacy mode on",
   "privacyModeOff": "Privacy mode off",
   "username": "Username",

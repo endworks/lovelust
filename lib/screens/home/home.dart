@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   Widget get title {
     Color color1 = Theme.of(context).colorScheme.onSurface;

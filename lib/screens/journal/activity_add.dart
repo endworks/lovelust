@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/forms/activity_form.dart';
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/models/model_entry_item.dart';
+import 'package:lovelust/models/enum.dart';
 
 class ActivityAddPage extends StatefulWidget {
   const ActivityAddPage({super.key});

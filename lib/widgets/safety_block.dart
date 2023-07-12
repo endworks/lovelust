@@ -2,7 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class SafetyBlock extends StatefulWidget {
   const SafetyBlock({super.key, required this.safety});
@@ -14,7 +14,7 @@ class SafetyBlock extends StatefulWidget {
 }
 
 class _SafetyBlockState extends State<SafetyBlock> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   Widget get safetyNotice {
     if (widget.safety == 'safe') {

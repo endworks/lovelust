@@ -3,17 +3,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
 ColorScheme defaultColorScheme = ColorScheme.fromSeed(
-  seedColor: loveColor,
-);
+    seedColor: loveColor,
+    background: whiteColor[900],
+    brightness: Brightness.light);
 
 ColorScheme defaultDarkColorScheme = ColorScheme.fromSeed(
   seedColor: loveColor,
+  background: blackColor[900],
   brightness: Brightness.dark,
 );
 
 ThemeData defaultTheme = ThemeData(
   colorScheme: defaultColorScheme,
   appBarTheme: AppBarTheme(
+    backgroundColor: defaultColorScheme.background,
     surfaceTintColor: defaultColorScheme.surfaceVariant,
     elevation: 1,
   ),
@@ -30,12 +33,13 @@ ThemeData defaultTheme = ThemeData(
 ThemeData defaultDarkTheme = ThemeData(
   colorScheme: defaultDarkColorScheme,
   appBarTheme: AppBarTheme(
+    backgroundColor: defaultDarkColorScheme.background,
     surfaceTintColor: defaultDarkColorScheme.surfaceVariant,
     elevation: defaultTheme.appBarTheme.elevation,
   ),
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-    surfaceTintColor: defaultDarkColorScheme.surface,
+    surfaceTintColor: defaultDarkColorScheme.surfaceVariant,
     elevation: defaultTheme.navigationBarTheme.elevation,
   ),
   textTheme: GoogleFonts.dmSansTextTheme(

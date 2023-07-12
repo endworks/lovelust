@@ -4,7 +4,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -14,7 +14,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   final ApiService api = getIt<ApiService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();

@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 
 class PartnerItem extends StatefulWidget {
@@ -18,7 +18,7 @@ class PartnerItem extends StatefulWidget {
 }
 
 class _PartnerItemState extends State<PartnerItem> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   void _openPartner() {
     debugPrint('tap partner');

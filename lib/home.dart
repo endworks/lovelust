@@ -3,6 +3,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
 import 'package:lovelust/screens/settings/settings.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/local_auth_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,11 +15,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final SharedService _shared = getIt<SharedService>();
+  final LocalAuthService _localAuth = getIt<LocalAuthService>();
   int selectedIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    if (_shared.requireAuth) {
+      _localAuth.init();
+      _localAuth.getAvailableBiometrics();
+      _localAuth.authenticate();
+    }
   }
 
   Widget get selectedPage {

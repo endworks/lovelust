@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class ActivityForm extends StatefulWidget {
@@ -18,7 +18,7 @@ class ActivityForm extends StatefulWidget {
 
 class _ActivityFormState extends State<ActivityForm> {
   final StorageService storage = getIt<StorageService>();
-  final CommonService common = getIt<CommonService>();
+  final SharedService common = getIt<SharedService>();
   final ApiService api = getIt<ApiService>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final notesController = TextEditingController();

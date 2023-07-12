@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/themes.dart';
 
 class App extends StatefulWidget {
@@ -18,7 +18,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   @override
   void initState() {

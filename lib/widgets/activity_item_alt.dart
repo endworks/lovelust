@@ -5,7 +5,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 
 class ActivityItemAlt extends StatefulWidget {
@@ -18,7 +18,7 @@ class ActivityItemAlt extends StatefulWidget {
 }
 
 class _ActivityItemAltState extends State<ActivityItemAlt> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   Partner? partner;
   bool solo = false;
 

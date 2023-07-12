@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/forms/login_form.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -13,7 +13,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   reload() {
     Phoenix.rebirth(context);
@@ -107,6 +107,26 @@ class _SettingsPageState extends State<SettingsPage> {
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(children: [
+              SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.privacyMode),
+                value: _common.privacyMode,
+                onChanged: (bool value) {
+                  setState(() {
+                    _common.privacyMode = value;
+                  });
+                },
+                secondary: const Icon(Icons.visibility_off),
+              ),
+              SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.requireAuth),
+                value: _common.requireAuth,
+                onChanged: (bool value) {
+                  setState(() {
+                    _common.requireAuth = value;
+                  });
+                },
+                secondary: const Icon(Icons.fingerprint),
+              ),
               _common.isLoggedIn
                   ? FilledButton.tonal(
                       onPressed: signOut,
@@ -135,11 +155,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 items: dropdownColorSchemeItems,
                 onChanged: changeColorScheme,
               ),
-              DropdownButton(
-                value: _common.privacyMode,
-                items: dropdownPrivacyModeItems,
-                onChanged: changePrivacyMode,
-              )
             ])
           ],
         ),

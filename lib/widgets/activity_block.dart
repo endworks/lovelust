@@ -5,7 +5,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class ActivityBlock extends StatefulWidget {
   const ActivityBlock({super.key, required this.activity});
@@ -17,7 +17,7 @@ class ActivityBlock extends StatefulWidget {
 }
 
 class _ActivityBlockState extends State<ActivityBlock> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   void openActivity() {
     debugPrint('tap activity');

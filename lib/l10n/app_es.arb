@@ -57,6 +57,8 @@
   "system": "Sistema",
   "light": "Claro",
   "dark": "Oscuro",
+  "requireAuth": "Requerir autenticación",
+  "privacyMode": "Modo privacidad",
   "privacyModeOn": "Modo privacidad activado",
   "privacyModeOff": "Modo privacidad desactivado",
   "username": "Usuario",

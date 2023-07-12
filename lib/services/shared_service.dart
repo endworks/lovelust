@@ -9,7 +9,7 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 
-class CommonService {
+class SharedService {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
 
@@ -26,6 +26,7 @@ class CommonService {
   List<IdName> _genders = [];
   List<IdName> _activityTypes = [];
   bool _privacyMode = false;
+  bool _requireAuth = false;
   bool _calendarView = false;
   String? _activityFilter;
 
@@ -39,11 +40,12 @@ class CommonService {
       _storage.getActivity(),
       _storage.getPartners(),
       _storage.getPrivacyMode(),
+      _storage.getRequireAuth(),
       _storage.getCalendarView(),
       _storage.getActivityFilter(),
       loadStaticData(),
+      findSystemLocale(),
       googleFontsPending,
-      findSystemLocale()
     ];
 
     List result = await Future.wait(futures);
@@ -54,8 +56,9 @@ class CommonService {
     activity = result[4];
     partners = result[5];
     privacyMode = result[6];
-    calendarView = result[7];
-    activityFilter = result[8];
+    requireAuth = result[7];
+    calendarView = result[8];
+    activityFilter = result[9];
     Intl.systemLocale = result[10];
     return Future.value(null);
   }
@@ -239,6 +242,15 @@ class CommonService {
   set privacyMode(bool value) {
     _privacyMode = value;
     _storage.setPrivacyMode(value);
+  }
+
+  bool get requireAuth {
+    return _requireAuth;
+  }
+
+  set requireAuth(bool value) {
+    _requireAuth = value;
+    _storage.setRequireAuth(value);
   }
 
   bool get calendarView {

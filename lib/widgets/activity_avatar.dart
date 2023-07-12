@@ -2,7 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class ActivityAvatar extends StatefulWidget {
   const ActivityAvatar(
@@ -16,7 +16,7 @@ class ActivityAvatar extends StatefulWidget {
 }
 
 class _ActivityAvatarState extends State<ActivityAvatar> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   Partner? partner;
 
   @override

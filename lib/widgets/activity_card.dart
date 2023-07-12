@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 
 class ActivityCard extends StatefulWidget {
@@ -14,7 +14,7 @@ class ActivityCard extends StatefulWidget {
 }
 
 class _ActivityCardState extends State<ActivityCard> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   @override
   Widget build(BuildContext context) {

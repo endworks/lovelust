@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class PracticesBlock extends StatefulWidget {
   const PracticesBlock({super.key, required this.practices});
@@ -15,7 +15,7 @@ class PracticesBlock extends StatefulWidget {
 }
 
 class _PracticesBlockState extends State<PracticesBlock> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   @override
   Widget build(BuildContext context) {

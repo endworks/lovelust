@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/models/model_entry_item.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/screens/journal/activity_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_item.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -18,7 +18,7 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
@@ -159,11 +159,13 @@ class _JournalPageState extends State<JournalPage> {
           ? FloatingActionButton.extended(
               onPressed: addActivity,
               label: Text(AppLocalizations.of(context)!.logActivity),
+              elevation: 0,
               icon: const Icon(Icons.post_add),
             )
           : FloatingActionButton(
               onPressed: addActivity,
               tooltip: AppLocalizations.of(context)!.logActivity,
+              elevation: 0,
               child: const Icon(Icons.post_add),
             ),
     );

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class BirthControlBlock extends StatefulWidget {
   const BirthControlBlock({
@@ -20,7 +20,7 @@ class BirthControlBlock extends StatefulWidget {
 }
 
 class _BirthControlBlockState extends State<BirthControlBlock> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   List<Widget> get birthControl {
     List<Widget> list = [];

@@ -1,12 +1,12 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/models/model_entry_item.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
 
@@ -20,7 +20,7 @@ class PartnerDetailsPage extends StatefulWidget {
 }
 
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
 
   void editPartner() {

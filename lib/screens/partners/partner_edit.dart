@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/models/model_entry_item.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:uuid/uuid.dart';
 
 class PartnerEditPage extends StatefulWidget {
@@ -19,7 +19,7 @@ class PartnerEditPage extends StatefulWidget {
 }
 
 class _PartnerEditPageState extends State<PartnerEditPage> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();

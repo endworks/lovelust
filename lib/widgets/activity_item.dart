@@ -7,7 +7,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 
 class ActivityItem extends StatefulWidget {
@@ -20,7 +20,7 @@ class ActivityItem extends StatefulWidget {
 }
 
 class _ActivityItemState extends State<ActivityItem> {
-  final CommonService _commonService = getIt<CommonService>();
+  final SharedService _commonService = getIt<SharedService>();
   Partner? partner;
 
   @override

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/common_service.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class PerformanceBlock extends StatefulWidget {
   const PerformanceBlock(
@@ -21,7 +21,7 @@ class PerformanceBlock extends StatefulWidget {
 }
 
 class _PerformanceBlockState extends State<PerformanceBlock> {
-  final CommonService _common = getIt<CommonService>();
+  final SharedService _common = getIt<SharedService>();
 
   List<Widget> get performance {
     List<Widget> list = [];

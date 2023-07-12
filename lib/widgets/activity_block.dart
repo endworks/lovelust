@@ -70,7 +70,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
       TextSpan(
         children: [
           TextSpan(text: widget.activity.duration.toString(), style: style),
-          const TextSpan(text: 'min. '),
+          TextSpan(text: '${AppLocalizations.of(context)!.min} '),
           TextSpan(text: place.name, style: style),
         ],
       ),

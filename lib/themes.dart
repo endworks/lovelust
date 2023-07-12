@@ -2,12 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
+ColorScheme defaultColorScheme = ColorScheme.fromSeed(
+  seedColor: loveColor,
+);
+
+ColorScheme defaultDarkColorScheme = ColorScheme.fromSeed(
+  seedColor: loveColor,
+  brightness: Brightness.dark,
+);
+
 ThemeData defaultTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: loveColor,
+  colorScheme: defaultColorScheme,
+  appBarTheme: AppBarTheme(
+    surfaceTintColor: defaultColorScheme.surfaceVariant,
+    elevation: 1,
   ),
-  navigationBarTheme: const NavigationBarThemeData(
-    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+    surfaceTintColor: defaultColorScheme.surfaceVariant,
+    elevation: 1,
   ),
   textTheme: GoogleFonts.dmSansTextTheme(),
   useMaterial3: true,
@@ -15,12 +28,15 @@ ThemeData defaultTheme = ThemeData(
 );
 
 ThemeData defaultDarkTheme = ThemeData(
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: loveColor,
-    brightness: Brightness.dark,
+  colorScheme: defaultDarkColorScheme,
+  appBarTheme: AppBarTheme(
+    surfaceTintColor: defaultDarkColorScheme.surfaceVariant,
+    elevation: defaultTheme.appBarTheme.elevation,
   ),
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    surfaceTintColor: defaultDarkColorScheme.surface,
+    elevation: defaultTheme.navigationBarTheme.elevation,
   ),
   textTheme: GoogleFonts.dmSansTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme),

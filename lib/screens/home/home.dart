@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
-import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/common_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -15,13 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final CommonService _common = getIt<CommonService>();
-
-  void _onSettingsClick() {
-    Navigator.push(context,
-        MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return const SettingsPage();
-    }));
-  }
 
   Widget get title {
     Color color1 = Theme.of(context).colorScheme.onSurface;
@@ -49,12 +41,6 @@ class _HomePageState extends State<HomePage> {
           return <Widget>[
             GenericHeader(
               title: title,
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: _onSettingsClick,
-                )
-              ],
             ),
           ];
         },

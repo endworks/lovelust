@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
+import 'package:lovelust/screens/settings/settings.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -28,21 +28,22 @@ class _HomeState extends State<Home> {
 
   List<Widget> get pages {
     return [
-      const HomePage(),
+      // const HomePage(),
       const JournalPage(),
       const PartnersPage(),
+      const SettingsPage(),
     ];
   }
 
   List<Widget> get destinations {
     return [
-      NavigationDestination(
+      /*NavigationDestination(
         selectedIcon: const Icon(
           Icons.monitor_heart,
         ),
         icon: const Icon(Icons.monitor_heart_outlined),
         label: AppLocalizations.of(context)!.home,
-      ),
+      ),*/
       NavigationDestination(
         selectedIcon: const Icon(
           Icons.assignment,
@@ -56,6 +57,13 @@ class _HomeState extends State<Home> {
         ),
         icon: const Icon(Icons.group_outlined),
         label: AppLocalizations.of(context)!.partners,
+      ),
+      NavigationDestination(
+        selectedIcon: const Icon(
+          Icons.settings,
+        ),
+        icon: const Icon(Icons.settings_outlined),
+        label: AppLocalizations.of(context)!.settings,
       ),
     ];
   }

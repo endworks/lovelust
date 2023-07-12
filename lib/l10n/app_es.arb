@@ -14,6 +14,7 @@
   "partlyUnsafe": "Parcialmente inseguro",
   "partlyUnsafeMsg": "Parcialmente inseguro debido a que aunque se prevenga contra el embarazo puedes seguir contrayendo Infecciones de Transmisión Sexual (ITS)",
   "birthControl": "Metodo anticonceptivo",
+  "min": "min.",
   "byMe": "por mi",
   "byPartner": "por pareja",
   "byBoth": "por ambos",

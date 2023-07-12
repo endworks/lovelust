@@ -15,7 +15,7 @@ class StorageServiceLocal extends StorageService {
       synchronizable: true,
     ),
     aOptions: AndroidOptions(
-      encryptedSharedPreferences: false,
+      encryptedSharedPreferences: true,
     ),
   );
 

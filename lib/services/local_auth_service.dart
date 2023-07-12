@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/shared_service.dart';
 
 class LocalAuthService {
-  final SharedService _shared = getIt<SharedService>();
-
   final LocalAuthentication auth = LocalAuthentication();
   AuthSupportState supportState = AuthSupportState.unknown;
   bool? canCheckBiometrics;

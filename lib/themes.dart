@@ -25,6 +25,9 @@ ThemeData defaultTheme = ThemeData(
     surfaceTintColor: defaultColorScheme.surfaceVariant,
     elevation: 1,
   ),
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    elevation: 0,
+  ),
   textTheme: GoogleFonts.dmSansTextTheme(),
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -42,6 +45,7 @@ ThemeData defaultDarkTheme = ThemeData(
     surfaceTintColor: defaultDarkColorScheme.surfaceVariant,
     elevation: defaultTheme.navigationBarTheme.elevation,
   ),
+  floatingActionButtonTheme: defaultTheme.floatingActionButtonTheme,
   textTheme: GoogleFonts.dmSansTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme),
   useMaterial3: defaultTheme.useMaterial3,

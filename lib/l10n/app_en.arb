@@ -76,7 +76,7 @@
   "lovefullust": "Loveful Lust",
   "monochrome": "Monochrome",
   "appearance": "Appearance",
-  "system": "Use device theme",
+  "system": "Device theme",
   "light": "Light theme",
   "dark": "Dark theme",
   "requireAuth": "Require authentication",
@@ -90,6 +90,8 @@
   "clearData": "Clear data",
   "initialFetch": "Initial fetch",
   "fetchStaticData": "Fetch static data",
+  "loggedIn": "Logged in",
+  "fetch": "Fetch",
   "delete": "Delete",
   "save": "Save",
   "help": "Help"

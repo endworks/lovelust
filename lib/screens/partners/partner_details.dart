@@ -153,7 +153,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
                   ],
                 ),
               ),
-              backgroundColor: headerBackgroundColor,
+              // backgroundColor: headerBackgroundColor,
               actions: [
                 IconButton(
                     onPressed: editPartner, icon: const Icon(Icons.edit)),

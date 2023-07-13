@@ -210,7 +210,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               floating: false,
               pinned: true,
               title: Text(title),
-              backgroundColor: headerBackgroundColor,
+              // backgroundColor: headerBackgroundColor,
               actions: [
                 IconButton(
                     onPressed: editActivity, icon: const Icon(Icons.edit)),

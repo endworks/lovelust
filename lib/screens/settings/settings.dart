@@ -25,23 +25,21 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   changeTheme(String? value) {
-    setState(() {
-      _common.theme = value ?? 'system';
-    });
-    reload();
+    if (_common.theme != value) {
+      setState(() {
+        _common.theme = value ?? 'system';
+      });
+      reload();
+    }
   }
 
   changeColorScheme(String? value) {
-    setState(() {
-      _common.colorScheme = value;
-    });
-    reload();
-  }
-
-  changePrivacyMode(bool? value) {
-    setState(() {
-      _common.privacyMode = value ?? false;
-    });
+    if (_common.colorScheme != value) {
+      setState(() {
+        _common.colorScheme = value;
+      });
+      reload();
+    }
   }
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
@@ -106,25 +104,17 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            _common.isLoggedIn
+                ? ListTile(
+                    title: Text(AppLocalizations.of(context)!.loggedIn),
+                    leading: const Icon(Icons.person),
+                    trailing: FilledButton.tonal(
+                      onPressed: signOut,
+                      child: Text(AppLocalizations.of(context)!.signOut),
+                    ),
+                  )
+                : const LoginForm(),
             Column(children: [
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.appearance),
-                leading: const Icon(Icons.dark_mode),
-                trailing: DropdownButton(
-                  value: _common.theme,
-                  items: dropdownThemeItems,
-                  onChanged: changeTheme,
-                ),
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.colorScheme),
-                leading: const Icon(Icons.color_lens),
-                trailing: DropdownButton(
-                  value: _common.colorScheme,
-                  items: dropdownColorSchemeItems,
-                  onChanged: changeColorScheme,
-                ),
-              ),
               SwitchListTile(
                 title: Text(AppLocalizations.of(context)!.requireAuth),
                 value: _common.requireAuth,
@@ -146,11 +136,29 @@ class _SettingsPageState extends State<SettingsPage> {
                 secondary: const Icon(Icons.visibility_off),
               ),
               ListTile(
+                title: Text(AppLocalizations.of(context)!.appearance),
+                leading: const Icon(Icons.dark_mode),
+                trailing: DropdownButton(
+                  value: _common.theme,
+                  items: dropdownThemeItems,
+                  onChanged: changeTheme,
+                ),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.colorScheme),
+                leading: const Icon(Icons.color_lens),
+                trailing: DropdownButton(
+                  value: _common.colorScheme,
+                  items: dropdownColorSchemeItems,
+                  onChanged: changeColorScheme,
+                ),
+              ),
+              ListTile(
                 title: Text(AppLocalizations.of(context)!.initialFetch),
                 leading: const Icon(Icons.download),
                 trailing: FilledButton.tonal(
                   onPressed: _common.initialFetch,
-                  child: Text(AppLocalizations.of(context)!.initialFetch),
+                  child: Text(AppLocalizations.of(context)!.fetch),
                 ),
               ),
               ListTile(
@@ -158,7 +166,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.download),
                 trailing: FilledButton.tonal(
                   onPressed: _common.fetchStaticData,
-                  child: Text(AppLocalizations.of(context)!.fetchStaticData),
+                  child: Text(AppLocalizations.of(context)!.fetch),
                 ),
               ),
               ListTile(
@@ -166,19 +174,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.cleaning_services),
                 trailing: FilledButton.tonal(
                   onPressed: _common.clearData,
-                  child: Text(AppLocalizations.of(context)!.clearData),
+                  child: Text(AppLocalizations.of(context)!.delete),
                 ),
               ),
-              _common.isLoggedIn
-                  ? ListTile(
-                      title: Text(AppLocalizations.of(context)!.signOut),
-                      leading: const Icon(Icons.logout),
-                      trailing: FilledButton.tonal(
-                        onPressed: signOut,
-                        child: Text(AppLocalizations.of(context)!.signOut),
-                      ),
-                    )
-                  : const LoginForm(),
             ])
           ],
         ),

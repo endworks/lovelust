@@ -172,89 +172,95 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.partner.id.isEmpty
-            ? AppLocalizations.of(context)!.createPartner
-            : AppLocalizations.of(context)!.editPartner),
-        actions: [
-          FilledButton(
-            onPressed: valid ? save : null,
-            child: Text(AppLocalizations.of(context)!.save),
-          ),
-          PopupMenuButton(
-            onSelected: (MenuEntryItem item) {},
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MenuEntryItem>>[
-              PopupMenuItem(
-                value: MenuEntryItem.help,
-                child: Text(AppLocalizations.of(context)!.help),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            floating: false,
+            pinned: true,
+            title: Text(widget.partner.id.isEmpty
+                ? AppLocalizations.of(context)!.createPartner
+                : AppLocalizations.of(context)!.editPartner),
+            actions: [
+              FilledButton(
+                onPressed: valid ? save : null,
+                child: Text(AppLocalizations.of(context)!.save),
+              ),
+              PopupMenuButton(
+                onSelected: (MenuEntryItem item) {},
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<MenuEntryItem>>[
+                  PopupMenuItem(
+                    value: MenuEntryItem.help,
+                    child: Text(AppLocalizations.of(context)!.help),
+                  ),
+                ],
               ),
             ],
           ),
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.person),
+                      filled: true,
+                      labelText: AppLocalizations.of(context)!.name,
+                      hintText: AppLocalizations.of(context)!.nameHint,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: DropdownButtonFormField(
+                    value: _genderController.text,
+                    decoration: InputDecoration(
+                      prefixIcon: iconByGender(_genderController.text),
+                      filled: true,
+                      labelText: AppLocalizations.of(context)!.gender,
+                    ),
+                    items: genderDropdownMenuEntries,
+                    onChanged: (value) {
+                      _genderController.text = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: DropdownButtonFormField(
+                    value: _sexController.text,
+                    decoration: InputDecoration(
+                      prefixIcon: iconByGender(_sexController.text),
+                      filled: true,
+                      labelText: AppLocalizations.of(context)!.sex,
+                    ),
+                    items: genderDropdownMenuEntries,
+                    onChanged: (value) {
+                      _sexController.text = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _notesController,
+                    maxLines: null,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.note_alt),
+                      filled: true,
+                      labelText: AppLocalizations.of(context)!.notes,
+                      hintText: AppLocalizations.of(context)!.notesHint,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
-      ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.person),
-                  filled: true,
-                  labelText: AppLocalizations.of(context)!.name,
-                  hintText: AppLocalizations.of(context)!.nameHint,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: DropdownButtonFormField(
-                value: _genderController.text,
-                decoration: InputDecoration(
-                  prefixIcon: iconByGender(_genderController.text),
-                  filled: true,
-                  labelText: AppLocalizations.of(context)!.gender,
-                ),
-                items: genderDropdownMenuEntries,
-                onChanged: (value) {
-                  _genderController.text = value;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: DropdownButtonFormField(
-                value: _sexController.text,
-                decoration: InputDecoration(
-                  prefixIcon: iconByGender(_sexController.text),
-                  filled: true,
-                  labelText: AppLocalizations.of(context)!.sex,
-                ),
-                items: genderDropdownMenuEntries,
-                onChanged: (value) {
-                  _sexController.text = value;
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                controller: _notesController,
-                maxLines: null,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.note_alt),
-                  filled: true,
-                  labelText: AppLocalizations.of(context)!.notes,
-                  hintText: AppLocalizations.of(context)!.notesHint,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -36,27 +36,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            GenericHeader(
-              title: title,
-            ),
-          ];
-        },
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                '${AppLocalizations.of(context)!.journal}: ${_common.activity.length}',
-              ),
-              Text(
-                '${AppLocalizations.of(context)!.partners}: ${_common.partners.length}',
-              ),
-            ],
+      body: CustomScrollView(
+        slivers: [
+          GenericHeader(
+            title: title,
           ),
-        ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '${AppLocalizations.of(context)!.journal}: ${_common.activity.length}',
+                ),
+                Text(
+                  '${AppLocalizations.of(context)!.partners}: ${_common.partners.length}',
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

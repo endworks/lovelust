@@ -100,96 +100,88 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              floating: false,
-              pinned: true,
-              title: Text(AppLocalizations.of(context)!.settings),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            floating: false,
+            pinned: true,
+            title: Text(AppLocalizations.of(context)!.settings),
+          ),
+          _common.isLoggedIn
+              ? ListTile(
+                  title: Text(AppLocalizations.of(context)!.loggedIn),
+                  leading: const Icon(Icons.person),
+                  trailing: FilledButton.tonal(
+                    onPressed: signOut,
+                    child: Text(AppLocalizations.of(context)!.signOut),
+                  ),
+                )
+              : const LoginForm(),
+          Column(children: [
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.requireAuth),
+              value: _common.requireAuth,
+              onChanged: (bool value) {
+                setState(() {
+                  _common.requireAuth = value;
+                });
+              },
+              secondary: const Icon(Icons.fingerprint),
             ),
-          ];
-        },
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _common.isLoggedIn
-                ? ListTile(
-                    title: Text(AppLocalizations.of(context)!.loggedIn),
-                    leading: const Icon(Icons.person),
-                    trailing: FilledButton.tonal(
-                      onPressed: signOut,
-                      child: Text(AppLocalizations.of(context)!.signOut),
-                    ),
-                  )
-                : const LoginForm(),
-            Column(children: [
-              SwitchListTile(
-                title: Text(AppLocalizations.of(context)!.requireAuth),
-                value: _common.requireAuth,
-                onChanged: (bool value) {
-                  setState(() {
-                    _common.requireAuth = value;
-                  });
-                },
-                secondary: const Icon(Icons.fingerprint),
+            SwitchListTile(
+              title: Text(AppLocalizations.of(context)!.privacyMode),
+              value: _common.privacyMode,
+              onChanged: (bool value) {
+                setState(() {
+                  _common.privacyMode = value;
+                });
+              },
+              secondary: const Icon(Icons.visibility_off),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.appearance),
+              leading: const Icon(Icons.dark_mode),
+              trailing: DropdownButton(
+                value: _common.theme,
+                items: dropdownThemeItems,
+                onChanged: changeTheme,
               ),
-              SwitchListTile(
-                title: Text(AppLocalizations.of(context)!.privacyMode),
-                value: _common.privacyMode,
-                onChanged: (bool value) {
-                  setState(() {
-                    _common.privacyMode = value;
-                  });
-                },
-                secondary: const Icon(Icons.visibility_off),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.colorScheme),
+              leading: const Icon(Icons.color_lens),
+              trailing: DropdownButton(
+                value: _common.colorScheme,
+                items: dropdownColorSchemeItems,
+                onChanged: changeColorScheme,
               ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.appearance),
-                leading: const Icon(Icons.dark_mode),
-                trailing: DropdownButton(
-                  value: _common.theme,
-                  items: dropdownThemeItems,
-                  onChanged: changeTheme,
-                ),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.initialFetch),
+              leading: const Icon(Icons.download),
+              trailing: FilledButton.tonal(
+                onPressed: _common.initialFetch,
+                child: Text(AppLocalizations.of(context)!.fetch),
               ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.colorScheme),
-                leading: const Icon(Icons.color_lens),
-                trailing: DropdownButton(
-                  value: _common.colorScheme,
-                  items: dropdownColorSchemeItems,
-                  onChanged: changeColorScheme,
-                ),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.fetchStaticData),
+              leading: const Icon(Icons.download),
+              trailing: FilledButton.tonal(
+                onPressed: _common.fetchStaticData,
+                child: Text(AppLocalizations.of(context)!.fetch),
               ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.initialFetch),
-                leading: const Icon(Icons.download),
-                trailing: FilledButton.tonal(
-                  onPressed: _common.initialFetch,
-                  child: Text(AppLocalizations.of(context)!.fetch),
-                ),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.clearData),
+              leading: const Icon(Icons.cleaning_services),
+              trailing: FilledButton.tonal(
+                onPressed: _common.clearData,
+                child: Text(AppLocalizations.of(context)!.delete),
               ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.fetchStaticData),
-                leading: const Icon(Icons.download),
-                trailing: FilledButton.tonal(
-                  onPressed: _common.fetchStaticData,
-                  child: Text(AppLocalizations.of(context)!.fetch),
-                ),
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.clearData),
-                leading: const Icon(Icons.cleaning_services),
-                trailing: FilledButton.tonal(
-                  onPressed: _common.clearData,
-                  child: Text(AppLocalizations.of(context)!.delete),
-                ),
-              ),
-            ])
-          ],
-        ),
+            ),
+          ])
+        ],
       ),
     );
   }

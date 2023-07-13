@@ -139,43 +139,36 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              floating: false,
-              pinned: true,
-              title: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(text: widget.partner.name),
-                    WidgetSpan(child: genderIcon),
-                  ],
-                ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: false,
+            pinned: true,
+            title: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: widget.partner.name),
+                  WidgetSpan(child: genderIcon),
+                ],
               ),
-              // backgroundColor: headerBackgroundColor,
-              actions: [
-                IconButton(
-                    onPressed: editPartner, icon: const Icon(Icons.edit)),
-                PopupMenuButton(
-                  onSelected: menuEntryItemSelected,
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<MenuEntryItem>>[
-                    PopupMenuItem(
-                      value: MenuEntryItem.delete,
-                      child: Text(AppLocalizations.of(context)!.delete),
-                    ),
-                  ],
-                ),
-              ],
             ),
-          ];
-        },
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: cards,
-        ),
+            // backgroundColor: headerBackgroundColor,
+            actions: [
+              IconButton(onPressed: editPartner, icon: const Icon(Icons.edit)),
+              PopupMenuButton(
+                onSelected: menuEntryItemSelected,
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<MenuEntryItem>>[
+                  PopupMenuItem(
+                    value: MenuEntryItem.delete,
+                    child: Text(AppLocalizations.of(context)!.delete),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          ...cards
+        ],
       ),
     );
   }

@@ -50,40 +50,39 @@ jobs:
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
-      - name: Build iOS Ad-hoc ipa
-        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-method ad-hoc
+      - name: Install the Apple certificate and provisioning profile
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "${{ env.BUILD_PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "${{ env.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "${{ env.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "${{ env.P12_PASSWORD }}" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      - name: Build iOS App Store ipa
+        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           path: build/ios/ipa/*.ipa
 
-      - name: Build iOS App Store ipa
-        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
-
-      # - name: Install the Apple certificate and provisioning profile
-      #   run: |
-      #     # create variables
-      #     CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-      #     PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-      #     KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-
-      #     # import certificate and provisioning profile from secrets
-      #     echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
-      #     echo -n "${{ env.BUILD_PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
-
-      #     # create temporary keychain
-      #     security create-keychain -p "${{ env.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
-      #     security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-      #     security unlock-keychain -p "${{ env.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
-
-      #     # import certificate to keychain
-      #     security import $CERTIFICATE_PATH -P "${{ env.P12_PASSWORD }}" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-      #     security list-keychain -d user -s $KEYCHAIN_PATH
-
-      #     # apply provisioning profile
-      #     mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-      #     cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-
-      - run: xcrun altool --validate-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}
-      - run: xcrun altool --upload-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}
+      - name: Validate app
+        run: xcrun altool --validate-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}
+      - name: Upload app
+        run: xcrun altool --upload-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}

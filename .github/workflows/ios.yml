@@ -36,13 +36,12 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          APPSTORE_API_KEY_ID: op://end.works/App Store Connect API/app store api key
-          APPSTORE_API_PRIVATE_KEY: op://end.works/App Store Connect API/app store private key
-          APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
-          IOS_EXPORT_PRODUCTION: op://end.works/App Store Connect API/ios export production
-          IOS_PROD_CERTIFICATE: op://end.works/App Store Connect API/ios prod certificate
-          IOS_PROD_CERTIFICATE_PASSWORD: op://end.works/App Store Connect API/ios prod certificate password
-          IOS_PROVISION_PRODUCTION: op://end.works/App Store Connect API/ios provision production
+          APPSTORE_API_KEY_ID: op://end.works/App Store/App Store API Key
+          APPSTORE_ISSUER_ID: op://end.works/App Store/App Store Issuer ID
+          BUILD_CERTIFICATE_BASE64: op://end.works/App Store/Build Certificate Base64
+          P12_PASSWORD: op://end.works/App Store/P12 Password
+          BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store/Build Provision Profile Base64
+          KEYCHAIN_PASSWORD: op://end.works/App Store/Keychain Password
 
       - name: Get release name
         run: |
@@ -61,20 +60,6 @@ jobs:
 
       - name: Build iOS App Store ipa
         run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
-
-      - name: Load secret
-        id: op-load-secret
-        uses: 1password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          BUILD_CERTIFICATE_BASE64: op://end.works/App Store/Build Certificate Base64
-          P12_PASSWORD: op://end.works/App Store/P12 Password
-          BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store/Build Provision Profile Base64
-          KEYCHAIN_PASSWORD: op://end.works/App Store/Keychain Password
-          APPSTORE_API_KEY_ID: op://end.works/App Store/App Store API Key
-          APPSTORE_ISSUER_ID: op://end.works/App Store/App Store Issuer ID
 
       # - name: Install the Apple certificate and provisioning profile
       #   run: |

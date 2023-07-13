@@ -21,26 +21,37 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.activity.id.isEmpty
-            ? AppLocalizations.of(context)!.logActivity
-            : AppLocalizations.of(context)!.editActivity),
-        actions: [
-          FilledButton(
-              onPressed: save, child: Text(AppLocalizations.of(context)!.save)),
-          PopupMenuButton(
-            onSelected: (MenuEntryItem item) {},
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MenuEntryItem>>[
-              PopupMenuItem(
-                value: MenuEntryItem.help,
-                child: Text(AppLocalizations.of(context)!.help),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            floating: false,
+            pinned: true,
+            title: Text(widget.activity.id.isEmpty
+                ? AppLocalizations.of(context)!.logActivity
+                : AppLocalizations.of(context)!.editActivity),
+            actions: [
+              FilledButton(
+                  onPressed: save,
+                  child: Text(AppLocalizations.of(context)!.save)),
+              PopupMenuButton(
+                onSelected: (MenuEntryItem item) {},
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<MenuEntryItem>>[
+                  PopupMenuItem(
+                    value: MenuEntryItem.help,
+                    child: Text(AppLocalizations.of(context)!.help),
+                  ),
+                ],
               ),
             ],
           ),
+          SliverList.list(
+            children: [
+              ActivityForm(activity: widget.activity),
+            ],
+          )
         ],
       ),
-      body: ActivityForm(activity: widget.activity),
     );
   }
 }

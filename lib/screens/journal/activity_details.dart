@@ -224,7 +224,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               ),
             ],
           ),
-          ...cards,
+          SliverList.list(
+            children: cards,
+          )
         ],
       ),
     );

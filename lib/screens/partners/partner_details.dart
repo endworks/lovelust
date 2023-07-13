@@ -167,7 +167,9 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
               ),
             ],
           ),
-          ...cards
+          SliverList.list(
+            children: cards,
+          )
         ],
       ),
     );

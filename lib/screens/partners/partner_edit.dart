@@ -197,68 +197,72 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               ),
             ],
           ),
-          Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.person),
-                      filled: true,
-                      labelText: AppLocalizations.of(context)!.name,
-                      hintText: AppLocalizations.of(context)!.nameHint,
+          SliverList.list(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.person),
+                          filled: true,
+                          labelText: AppLocalizations.of(context)!.name,
+                          hintText: AppLocalizations.of(context)!.nameHint,
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: DropdownButtonFormField(
-                    value: _genderController.text,
-                    decoration: InputDecoration(
-                      prefixIcon: iconByGender(_genderController.text),
-                      filled: true,
-                      labelText: AppLocalizations.of(context)!.gender,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: DropdownButtonFormField(
+                        value: _genderController.text,
+                        decoration: InputDecoration(
+                          prefixIcon: iconByGender(_genderController.text),
+                          filled: true,
+                          labelText: AppLocalizations.of(context)!.gender,
+                        ),
+                        items: genderDropdownMenuEntries,
+                        onChanged: (value) {
+                          _genderController.text = value;
+                        },
+                      ),
                     ),
-                    items: genderDropdownMenuEntries,
-                    onChanged: (value) {
-                      _genderController.text = value;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: DropdownButtonFormField(
-                    value: _sexController.text,
-                    decoration: InputDecoration(
-                      prefixIcon: iconByGender(_sexController.text),
-                      filled: true,
-                      labelText: AppLocalizations.of(context)!.sex,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: DropdownButtonFormField(
+                        value: _sexController.text,
+                        decoration: InputDecoration(
+                          prefixIcon: iconByGender(_sexController.text),
+                          filled: true,
+                          labelText: AppLocalizations.of(context)!.sex,
+                        ),
+                        items: genderDropdownMenuEntries,
+                        onChanged: (value) {
+                          _sexController.text = value;
+                        },
+                      ),
                     ),
-                    items: genderDropdownMenuEntries,
-                    onChanged: (value) {
-                      _sexController.text = value;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: _notesController,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.note_alt),
-                      filled: true,
-                      labelText: AppLocalizations.of(context)!.notes,
-                      hintText: AppLocalizations.of(context)!.notesHint,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextField(
+                        controller: _notesController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.note_alt),
+                          filled: true,
+                          labelText: AppLocalizations.of(context)!.notes,
+                          hintText: AppLocalizations.of(context)!.notesHint,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

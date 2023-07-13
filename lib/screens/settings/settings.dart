@@ -107,15 +107,23 @@ class _SettingsPageState extends State<SettingsPage> {
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Column(children: [
-              SwitchListTile(
-                title: Text(AppLocalizations.of(context)!.privacyMode),
-                value: _common.privacyMode,
-                onChanged: (bool value) {
-                  setState(() {
-                    _common.privacyMode = value;
-                  });
-                },
-                secondary: const Icon(Icons.visibility_off),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.appearance),
+                leading: const Icon(Icons.dark_mode),
+                trailing: DropdownButton(
+                  value: _common.theme,
+                  items: dropdownThemeItems,
+                  onChanged: changeTheme,
+                ),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.colorScheme),
+                leading: const Icon(Icons.color_lens),
+                trailing: DropdownButton(
+                  value: _common.colorScheme,
+                  items: dropdownColorSchemeItems,
+                  onChanged: changeColorScheme,
+                ),
               ),
               SwitchListTile(
                 title: Text(AppLocalizations.of(context)!.requireAuth),
@@ -127,34 +135,50 @@ class _SettingsPageState extends State<SettingsPage> {
                 },
                 secondary: const Icon(Icons.fingerprint),
               ),
+              SwitchListTile(
+                title: Text(AppLocalizations.of(context)!.privacyMode),
+                value: _common.privacyMode,
+                onChanged: (bool value) {
+                  setState(() {
+                    _common.privacyMode = value;
+                  });
+                },
+                secondary: const Icon(Icons.visibility_off),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.initialFetch),
+                leading: const Icon(Icons.download),
+                trailing: FilledButton.tonal(
+                  onPressed: _common.initialFetch,
+                  child: Text(AppLocalizations.of(context)!.initialFetch),
+                ),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.fetchStaticData),
+                leading: const Icon(Icons.download),
+                trailing: FilledButton.tonal(
+                  onPressed: _common.fetchStaticData,
+                  child: Text(AppLocalizations.of(context)!.fetchStaticData),
+                ),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.clearData),
+                leading: const Icon(Icons.cleaning_services),
+                trailing: FilledButton.tonal(
+                  onPressed: _common.clearData,
+                  child: Text(AppLocalizations.of(context)!.clearData),
+                ),
+              ),
               _common.isLoggedIn
-                  ? FilledButton.tonal(
-                      onPressed: signOut,
-                      child: Text(AppLocalizations.of(context)!.signOut),
+                  ? ListTile(
+                      title: Text(AppLocalizations.of(context)!.signOut),
+                      leading: const Icon(Icons.logout),
+                      trailing: FilledButton.tonal(
+                        onPressed: signOut,
+                        child: Text(AppLocalizations.of(context)!.signOut),
+                      ),
                     )
                   : const LoginForm(),
-              FilledButton.tonal(
-                onPressed: _common.clearData,
-                child: Text(AppLocalizations.of(context)!.clearData),
-              ),
-              FilledButton.tonal(
-                onPressed: _common.initialFetch,
-                child: Text(AppLocalizations.of(context)!.initialFetch),
-              ),
-              FilledButton.tonal(
-                onPressed: _common.fetchStaticData,
-                child: Text(AppLocalizations.of(context)!.fetchStaticData),
-              ),
-              DropdownButton(
-                value: _common.theme,
-                items: dropdownThemeItems,
-                onChanged: changeTheme,
-              ),
-              DropdownButton(
-                value: _common.colorScheme,
-                items: dropdownColorSchemeItems,
-                onChanged: changeColorScheme,
-              ),
             ])
           ],
         ),

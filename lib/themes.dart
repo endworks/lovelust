@@ -3,26 +3,56 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
 ColorScheme defaultColorScheme = ColorScheme.fromSeed(
-    seedColor: loveColor,
-    background: whiteColor[900],
-    brightness: Brightness.light);
+  seedColor: loveColor,
+  brightness: Brightness.light,
+);
 
 ColorScheme defaultDarkColorScheme = ColorScheme.fromSeed(
-  seedColor: loveColor,
-  background: blackColor[900],
+  seedColor: lustColor,
   brightness: Brightness.dark,
 );
 
 ThemeData defaultTheme = ThemeData(
   colorScheme: defaultColorScheme,
+  useMaterial3: true,
+  visualDensity: VisualDensity.adaptivePlatformDensity,
+  navigationBarTheme: const NavigationBarThemeData(
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+  ),
+);
+
+ThemeData defaultDarkTheme = ThemeData(
+  colorScheme: defaultDarkColorScheme,
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  brightness: Brightness.dark,
+);
+
+ColorScheme experimentalColorScheme = ColorScheme.fromSeed(
+  seedColor: loveColor,
+  background: whiteColor[900],
+  brightness: Brightness.light,
+);
+
+ColorScheme experimentalDarkColorScheme = ColorScheme.fromSeed(
+  seedColor: loveColor,
+  background: blackColor[900],
+  brightness: Brightness.dark,
+);
+
+ThemeData experimentalTheme = ThemeData(
+  colorScheme: experimentalColorScheme,
   appBarTheme: AppBarTheme(
-    backgroundColor: defaultColorScheme.background,
-    surfaceTintColor: defaultColorScheme.surfaceVariant,
+    backgroundColor: experimentalColorScheme.background,
+    surfaceTintColor: experimentalColorScheme.surfaceVariant,
     elevation: 1,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-    surfaceTintColor: defaultColorScheme.surfaceVariant,
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    surfaceTintColor: experimentalColorScheme.surfaceVariant,
     elevation: 1,
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
@@ -33,23 +63,23 @@ ThemeData defaultTheme = ThemeData(
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
 
-ThemeData defaultDarkTheme = ThemeData(
-  colorScheme: defaultDarkColorScheme,
+ThemeData experimentalDarkTheme = ThemeData(
+  colorScheme: experimentalDarkColorScheme,
   appBarTheme: AppBarTheme(
-    backgroundColor: defaultDarkColorScheme.background,
-    surfaceTintColor: defaultDarkColorScheme.surfaceVariant,
-    elevation: defaultTheme.appBarTheme.elevation,
+    backgroundColor: experimentalDarkColorScheme.background,
+    surfaceTintColor: experimentalDarkColorScheme.surfaceVariant,
+    elevation: experimentalTheme.appBarTheme.elevation,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-    surfaceTintColor: defaultDarkColorScheme.surfaceVariant,
-    elevation: defaultTheme.navigationBarTheme.elevation,
+    labelBehavior: experimentalTheme.navigationBarTheme.labelBehavior,
+    surfaceTintColor: experimentalDarkColorScheme.surfaceVariant,
+    elevation: experimentalTheme.navigationBarTheme.elevation,
   ),
-  floatingActionButtonTheme: defaultTheme.floatingActionButtonTheme,
+  floatingActionButtonTheme: experimentalTheme.floatingActionButtonTheme,
   textTheme: GoogleFonts.dmSansTextTheme(
       ThemeData(brightness: Brightness.dark).textTheme),
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: experimentalTheme.useMaterial3,
+  visualDensity: experimentalTheme.visualDensity,
   brightness: Brightness.dark,
 );
 

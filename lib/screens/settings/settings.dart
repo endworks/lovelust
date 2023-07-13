@@ -51,6 +51,9 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "dynamic",
           child: Text(AppLocalizations.of(context)!.dynamicColorScheme)),
       DropdownMenuItem(
+          value: "experimental",
+          child: Text(AppLocalizations.of(context)!.experimental)),
+      DropdownMenuItem(
           value: "lovelust",
           child: Text(AppLocalizations.of(context)!.lovelust)),
       DropdownMenuItem(
@@ -97,13 +100,20 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.settings),
-      ),
-      body: Center(
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              floating: false,
+              pinned: true,
+              title: Text(AppLocalizations.of(context)!.settings),
+            ),
+          ];
+        },
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
             _common.isLoggedIn
                 ? ListTile(
                     title: Text(AppLocalizations.of(context)!.loggedIn),

@@ -66,6 +66,9 @@ class _AppState extends State<App> {
               theme = appleTheme;
               darkTheme = appleDarkTheme;
             }
+          } else if (_common.colorScheme == 'experimental') {
+            theme = experimentalTheme;
+            darkTheme = experimentalDarkTheme;
           } else if (_common.colorScheme == 'lovelust') {
             theme = lovelustTheme;
             darkTheme = lovelustDarkTheme;

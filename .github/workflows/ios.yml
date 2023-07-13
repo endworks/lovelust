@@ -36,7 +36,8 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          APPSTORE_API_KEY_ID: op://end.works/App Store/App Store API Key
+          APPSTORE_API_KEY_ID: op://end.works/App Store/App Store API Key ID
+          APPSTORE_API_KEY_BASE64: op://end.works/App Store/App Store API Key Base64
           APPSTORE_ISSUER_ID: op://end.works/App Store/App Store Issuer ID
           BUILD_CERTIFICATE_BASE64: op://end.works/App Store/Build Certificate Base64
           P12_PASSWORD: op://end.works/App Store/P12 Password
@@ -56,10 +57,12 @@ jobs:
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+          API_KEY_PATH=$RUNNER_TEMP/AuthKey.p8
 
           # import certificate and provisioning profile from secrets
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "${{ env.BUILD_PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
+          echo -n "${{ env.APPSTORE_API_KEY_BASE64 }}" | base64 --decode -o $API_KEY_PATH
 
           # create temporary keychain
           security create-keychain -p "${{ env.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
@@ -73,6 +76,10 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+          # apply api key
+          mkdir -p ~/.private_keys
+          cp $API_KEY_PATH ~/.private_keys
 
       - name: Build iOS App Store ipa
         run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/

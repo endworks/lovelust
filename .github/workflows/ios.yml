@@ -58,11 +58,12 @@ jobs:
           echo "APP_STORE_CONNECT_KEY_IDENTIFIER=${{ env.APPSTORE_API_KEY_ID }}" >> $GITHUB_ENV
           echo "CERTIFICATE_PRIVATE_KEY_PASSWORD=${{ env.P12_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Import api key
+      - name: Import App Store Connect API private key
         run: |
-          PRIVATE_KEYS=~/.appstoreconnect/private_keys
-          mkdir -p $PRIVATE_KEYS
-          echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEYS/AuthKey.p8
+          PRIVATE_KEYS_DIR=~/.private_keys
+          mkdir -p $PRIVATE_KEYS_DIR
+          echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEYS_DIR/AuthKey.p8
+          echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEYS_DIR/AuthKey.p8" >> $GITHUB_ENV
 
       - name: Generate iOS Distribution certificate
         run: |
@@ -75,7 +76,7 @@ jobs:
       - name: Set up a new temporary keychain
         run: keychain initialize
 
-      - name: Restore Login Keychain
+      - name: Set system default keychain
         run: keychain use-login
 
       - name: Fetch the code signing files from App Store Connect

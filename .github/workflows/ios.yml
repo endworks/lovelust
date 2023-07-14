@@ -45,6 +45,8 @@ jobs:
           P12_PASSWORD: op://end.works/App Store/p12 password
           BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store/build provision profile
           KEYCHAIN_PASSWORD: op://end.works/App Store/keychain password
+          CODE_SIGNING_IDENTITY: op://end.works/App Store/code signing identity
+          TEAM_ID: op://end.works/App Store/team id
 
       - name: Get release name
         run: |
@@ -52,6 +54,20 @@ jobs:
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: iOS build action
+        uses: yukiarrr/ios-build-action@v1.11.0
+        with:
+          p12-base64: ${{ env.BUILD_CERTIFICATE_BASE64 }}
+          certificate-password: ${{ env.P12_PASSWORD }}
+          mobileprovision-base64: ${{ env.BUILD_PROVISION_PROFILE_BASE64 }}
+          code-signing-identity: ${{ env.CODE_SIGNING_IDENTITY }}
+          team-id: ${{ env.TEAM_ID }}
+          increment-build-number: ${{ env.COMMIT_NUMBER }}
+          project-path: ios/Runner.xcodeproj
+          workspace-path: ios/Runner.xcworkspace
+          export-method: "ad-hoc"
+          output-path: "LoveLust.app"
 
       - name: Install the Apple certificate and provisioning profile
         run: |

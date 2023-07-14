@@ -71,8 +71,9 @@ jobs:
           CERTIFICATE_KEY_PATH=$RUNNER_TEMP/cert_key
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
-          echo CERTIFICATE_KEY_PATH
-          echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_PATH" >> $GITHUB_ENV
+          cat $CERTIFICATE_PATH
+          cat $CERTIFICATE_KEY_PATH
+          echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
 
       - name: Set up a new temporary keychain
         run: keychain initialize

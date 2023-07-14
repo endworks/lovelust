@@ -87,7 +87,7 @@ jobs:
       #   run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
 
       - name: Add the fetched certificates to keychain
-        run: keychain add-certificates --certificate-password=${{ env.P12_PASSWORD }}
+        run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'
 
       - name: Update the Xcode project settings to use fetched code signing profiles
         run: xcode-project use-profiles

@@ -70,8 +70,6 @@ jobs:
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}'  | openssl rsa -out $RUNNER_TEMP/cert_key
 
-      - run: cat cert_key
-
       - name: Set up a new temporary keychain
         run: keychain initialize
 

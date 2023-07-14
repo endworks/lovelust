@@ -74,8 +74,8 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
-          mkdir -p /Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH /Library/MobileDevice/Provisioning\ Profiles
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
 
           # apply api key
           mkdir -p ~/.private_keys

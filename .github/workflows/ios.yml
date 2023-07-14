@@ -149,10 +149,12 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
-          uuid=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
-          PP_PATH_UUID="~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision"
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          mv -f $PP_PATH "$PP_PATH_UUID"
+          # UUID=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
+          UUID="${{ env.UUID_PROVISION_PROFILE }}"
+          PROVISIONING_PROFILES_DIR="~/Library/MobileDevice/Provisioning\ Profiles"
+          PP_PATH_UUID="$PROVISIONING_PROFILES_DIR/$UUID.mobileprovision"
+          mkdir -p "$PROVISIONING_PROFILES_DIR"
+          cp $PP_PATH "$PP_PATH_UUID"
           echo "$PP_PATH_UUID"
 
           # apply api key

@@ -74,20 +74,23 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
-          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+          mkdir -p /Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH /Library/MobileDevice/Provisioning\ Profiles
 
           # apply api key
           mkdir -p ~/.private_keys
           cp $API_KEY_PATH ~/.private_keys
 
-      - name: Build app
-        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
+      - name: Build ad hoc app
+        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-method ad-hoc
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           path: build/ios/ipa/*.ipa
+
+      - name: Build app-store app
+        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
 
       - name: Validate app
         run: xcrun altool --validate-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}

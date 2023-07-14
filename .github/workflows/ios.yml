@@ -85,11 +85,8 @@ jobs:
       #     PROVISIONING_PROFILES_DIR="~/Library/MobileDevice/Provisioning\ Profiles"
       #     mkdir -p "$PROVISIONING_PROFILES_DIR"
       #     uuid=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
-      #     echo "$uuid"
       #     extension="${PP_PATH##*.}"
-      #     echo "$PP_PATH -> $uuid"
       #     PP_UUID_PATH="$PROVISIONING_PROFILES_DIR/$uuid.$extension"
-      #     echo "$PP_UUID_PATH"
       #     mv -f "$PP_PATH" "$PP_UUID_PATH"
 
       # - name: Set up a new temporary keychain
@@ -149,28 +146,23 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
 
           # apply provisioning profile
-          # UUID=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
-          UUID="${{ env.UUID_PROVISION_PROFILE }}"
+          UUID=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
           PROVISIONING_PROFILES_DIR="~/Library/MobileDevice/Provisioning\ Profiles"
           PP_PATH_UUID="$PROVISIONING_PROFILES_DIR/$UUID.mobileprovision"
           mkdir -p "$PROVISIONING_PROFILES_DIR"
           cp $PP_PATH "$PP_PATH_UUID"
-          echo "$PP_PATH_UUID"
 
           # apply api key
           mkdir -p ~/.private_keys
           cp $API_KEY_PATH ~/.private_keys
 
-      - name: Build ad hoc app
-        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-method ad-hoc --verbose
+      - name: Build app-store app
+        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           path: build/ios/ipa/*.ipa
-
-      - name: Build app-store app
-        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --verbose
 
       - name: Validate app
         run: xcrun altool --validate-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}

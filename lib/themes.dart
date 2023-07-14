@@ -38,7 +38,7 @@ ColorScheme experimentalColorScheme = ColorScheme.fromSeed(
 );
 
 ColorScheme experimentalDarkColorScheme = ColorScheme.fromSeed(
-  seedColor: loveColor,
+  seedColor: lustColor,
   background: blackColor[900],
   brightness: Brightness.dark,
 );

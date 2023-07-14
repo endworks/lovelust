@@ -55,43 +55,56 @@ jobs:
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
-      - name: Create a build archive with Codemagic CLI tools
+      - name: Install the Codemagic CLI tools
+        run: pip3 install codemagic-cli-tools
+
+      - name: Set the environment variables
         run: |
-          pip3 install codemagic-cli-tools
           export APP_STORE_CONNECT_ISSUER_ID=${{ env.APPSTORE_ISSUER_ID }}
           export APP_STORE_CONNECT_KEY_IDENTIFIER=${{ env.APPSTORE_API_KEY_ID }}
           export APP_STORE_CONNECT_PRIVATE_KEY=`echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode`
 
+      - name: Generate iOS Distribution certificate
+        run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
-
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}'  | openssl rsa -out cert_key
-          cat cert_key
 
-          keychain initialize
-          keychain use-login
+      - run: cat cert_key
 
+      - name: Set up a new temporary keychain
+        run: keychain initialize
+
+      - name: Restore Login Keychain
+        run: keychain use-login
+
+      - name: Fetch the code signing files from App Store Connect
+        run:
           app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) \
-            --platform IOS \
-            --type IOS_APP_STORE \
-            --certificate-key=@file:cert_key \
-            --create
+          --platform IOS \
+          --type IOS_APP_STORE \
+          --certificate-key=@file:cert_key \
+          --create
 
-          keychain add-certificates
-          xcode-project use-profiles
+      - name: Add the fetched certificates to keychain
+        run: keychain add-certificates
 
-          flutter packages pub get
-          find . -name "Podfile" -execdir pod install \;
+      - name: Update the Xcode project settings to use fetched code signing profiles
+        run: xcode-project use-profiles
 
-          flutter build ipa --release \
-            --export-options-plist=$HOME/export_options.plist
+      - name: Install Flutter dependencies
+        run: flutter packages pub get
 
-          cat export_options.plist
+      - name: Install CocoaPods dependencies
+        run: find . -name "Podfile" -execdir pod install \;
 
-          app-store-connect publish \
-            --path $(find $(pwd) -name "*.ipa")
+      - name: Build the Flutter the iOS project
+        run: flutter build ipa --release --export-options-plist=$HOME/export_options.plist
 
-          keychain use-login
+      - run: cat export_options.plist
+
+      - name: Publish the app to App Store Connect
+        run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

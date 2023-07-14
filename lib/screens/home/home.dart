@@ -16,12 +16,8 @@ class _HomePageState extends State<HomePage> {
   final SharedService _common = getIt<SharedService>();
 
   Widget get title {
-    Color color1 = Theme.of(context).colorScheme.onSurface;
-    Color color2 = Theme.of(context).colorScheme.onSurface;
-    if (!_common.monochrome) {
-      color1 = loveColor;
-      color2 = loveColor;
-    }
+    Color color1 = loveColor;
+    Color color2 = lustColor;
 
     return Text.rich(
       TextSpan(
@@ -41,19 +37,23 @@ class _HomePageState extends State<HomePage> {
           GenericHeader(
             title: title,
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '${AppLocalizations.of(context)!.journal}: ${_common.activity.length}',
+          SliverList.list(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      '${AppLocalizations.of(context)!.journal}: ${_common.activity.length}',
+                    ),
+                    Text(
+                      '${AppLocalizations.of(context)!.partners}: ${_common.partners.length}',
+                    ),
+                  ],
                 ),
-                Text(
-                  '${AppLocalizations.of(context)!.partners}: ${_common.partners.length}',
-                ),
-              ],
-            ),
-          ),
+              ),
+            ],
+          )
         ],
       ),
     );

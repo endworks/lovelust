@@ -92,5 +92,5 @@ jobs:
       - name: Validate app
         run: xcrun altool --validate-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}
 
-      - name: Upload app
+      - name: Publish app
         run: xcrun altool --upload-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}

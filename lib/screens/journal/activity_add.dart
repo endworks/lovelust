@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/forms/activity_form.dart';
 import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/models/enum.dart';
+import 'package:lovelust/screens/journal/activity_edit.dart';
+import 'package:lovelust/service_locator.dart';
+
+import '../../services/shared_service.dart';
 
 class ActivityAddPage extends StatefulWidget {
   const ActivityAddPage({super.key});
@@ -12,51 +13,35 @@ class ActivityAddPage extends StatefulWidget {
 }
 
 class _ActivityAddPageState extends State<ActivityAddPage> {
-  Activity activity = Activity(
-    id: '',
-    partner: null,
-    birthControl: null,
-    partnerBirthControl: null,
-    date: DateTime.now(),
-    location: null,
-    notes: null,
-    duration: 0,
-    orgasms: 0,
-    partnerOrgasms: 0,
-    place: null,
-    initiator: null,
-    rating: 0,
-    type: null,
-    practices: null,
-    safety: null,
-    encounters: 0,
-  );
+  final SharedService _shared = getIt<SharedService>();
 
-  void save() {
-    Navigator.pop(context);
+  late Activity activity;
+
+  @override
+  void initState() {
+    super.initState();
+    activity = Activity(
+      id: '',
+      partner: null,
+      birthControl: null,
+      partnerBirthControl: null,
+      date: DateTime.now(),
+      location: null,
+      notes: null,
+      duration: 0,
+      orgasms: 0,
+      partnerOrgasms: 0,
+      place: null,
+      initiator: null,
+      rating: 0,
+      type: _shared.activityTypes[1].id,
+      practices: null,
+      safety: null,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.logActivity),
-        actions: [
-          FilledButton(
-              onPressed: save, child: Text(AppLocalizations.of(context)!.save)),
-          PopupMenuButton(
-            onSelected: (MenuEntryItem item) {},
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MenuEntryItem>>[
-              PopupMenuItem(
-                value: MenuEntryItem.help,
-                child: Text(AppLocalizations.of(context)!.help),
-              ),
-            ],
-          ),
-        ],
-      ),
-      body: ActivityForm(activity: activity),
-    );
+    return ActivityEditPage(activity: activity);
   }
 }

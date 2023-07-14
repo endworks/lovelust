@@ -5,6 +5,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/forms/login_form.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -187,9 +188,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar.medium(
-            floating: false,
-            pinned: true,
+          GenericHeader(
             title: Text(AppLocalizations.of(context)!.settings),
           ),
           SliverList.list(

@@ -17,7 +17,6 @@ class Activity {
   final String? type;
   final List<IdName>? practices;
   final String? safety;
-  final int encounters;
 
   const Activity({
     required this.id,
@@ -36,7 +35,6 @@ class Activity {
     required this.type,
     required this.practices,
     required this.safety,
-    required this.encounters,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -61,7 +59,6 @@ class Activity {
               .map<IdName>((map) => IdName.fromJson(map))
               .toList() as List<IdName>,
       safety: json['safety'],
-      encounters: json['encounters'],
     );
   }
 
@@ -82,6 +79,5 @@ class Activity {
         'type': type,
         'practices': practices?.map((e) => e.toJson()).toList(),
         'safety': safety,
-        'encounters': encounters,
       };
 }

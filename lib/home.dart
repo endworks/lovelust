@@ -8,7 +8,9 @@ import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  const Home({super.key, this.initialLoadDone = false});
+
+  final bool initialLoadDone;
 
   @override
   State<Home> createState() => _HomeState();
@@ -80,6 +82,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    if (!widget.initialLoadDone) {
+      return const CircularProgressIndicator.adaptive();
+    }
     return Scaffold(
       body: selectedPage,
       bottomNavigationBar: NavigationBar(

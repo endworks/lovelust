@@ -54,6 +54,7 @@ jobs:
 
       - run: echo "APP_STORE_CONNECT_ISSUER_ID=${{ env.APPSTORE_ISSUER_ID }}" >> $GITHUB_ENV
       - run: echo "APP_STORE_CONNECT_KEY_IDENTIFIER=${{ env.APPSTORE_API_KEY_ID }}" >> $GITHUB_ENV
+      - run: mkdir ~/.appstoreconnect/private_keys
       - run: echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o ~/.appstoreconnect/private_keys/AuthKey.p8
       - run: echo "CERTIFICATE_PRIVATE_KEY_PASSWORD=${{ env.P12_PASSWORD }}" >> $GITHUB_ENV
       - name: Generate iOS Distribution certificate

@@ -66,7 +66,7 @@ jobs:
           echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEYS_DIR/AuthKey.p8" >> $GITHUB_ENV
           cat $PRIVATE_KEYS_DIR/AuthKey.p8
 
-      - name: Generate iOS Distribution certificate
+      - name: Generate private key used to generate the certificate
         run: |
           CERTIFICATES_DIR=~/Library/MobileDevice/Certificates/
           mkdir -p $CERTIFICATES_DIR
@@ -83,8 +83,8 @@ jobs:
       - name: Set system default keychain
         run: keychain use-login
 
-      - name: Fetch the code signing files from App Store Connect
-        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
+      # - name: Fetch the code signing files from App Store Connect
+      #   run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
 
       - name: Add the fetched certificates to keychain
         run: keychain add-certificates

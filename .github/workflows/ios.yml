@@ -83,13 +83,13 @@ jobs:
           PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
           UUID="${{ env.UUID_PROVISION_PROFILE }}"
           echo -n "${{ env.BUILD_PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
-          PROVISIONING_PROFILES_DIR="$HOME/Library/MobileDevice/Provisioning\ Profiles"
+          PROVISIONING_PROFILES_DIR="~/Library/MobileDevice/Provisioning\ Profiles"
           mkdir -p "$PROVISIONING_PROFILES_DIR"
-          PP_UUID_PATH="$PROVISIONING_PROFILES_DIR/$UUID.mobileprovision"
-          echo "$UUID"
-          echo "$PP_UUID_PATH"
-          ls -l "$PP_UUID_PATH"
-          cp "$PP_PATH" "$PP_UUID_PATH"
+          uuid=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
+          extension="${PP_PATH##*.}"
+          echo "$PP_PATH -> $uuid"
+          PP_UUID_PATH="$PROVISIONING_PROFILES_DIR/$uuid.$extension"
+          mv -f "$PP_PATH" "$PP_UUID_PATH"
 
       - name: Set up a new temporary keychain
         run: keychain initialize

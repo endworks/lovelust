@@ -36,13 +36,13 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          APPSTORE_API_KEY_ID: op://end.works/App Store/App Store API Key ID
-          APPSTORE_API_KEY_BASE64: op://end.works/App Store/App Store API Key Base64
-          APPSTORE_ISSUER_ID: op://end.works/App Store/App Store Issuer ID
-          BUILD_CERTIFICATE_BASE64: op://end.works/App Store/Build Certificate Base64
-          P12_PASSWORD: op://end.works/App Store/P12 Password
-          BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store/Build Provision Profile Base64
-          KEYCHAIN_PASSWORD: op://end.works/App Store/Keychain Password
+          APPSTORE_API_KEY_ID: op://end.works/App Store/app store api key id
+          APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store/app store api private key
+          APPSTORE_ISSUER_ID: op://end.works/App Store/app store issuer id
+          BUILD_CERTIFICATE_BASE64: op://end.works/App Store/build certificate
+          P12_PASSWORD: op://end.works/App Store/p12 password
+          BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store/build provision profile
+          KEYCHAIN_PASSWORD: op://end.works/App Store/keychain password
 
       - name: Get release name
         run: |
@@ -62,7 +62,7 @@ jobs:
           # import certificate and provisioning profile from secrets
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           echo -n "${{ env.BUILD_PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
-          echo -n "${{ env.APPSTORE_API_KEY_BASE64 }}" | base64 --decode -o $API_KEY_PATH
+          echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $API_KEY_PATH
 
           # create temporary keychain
           security create-keychain -p "${{ env.KEYCHAIN_PASSWORD }}" $KEYCHAIN_PATH
@@ -81,7 +81,7 @@ jobs:
           mkdir -p ~/.private_keys
           cp $API_KEY_PATH ~/.private_keys
 
-      - name: Build iOS App Store ipa
+      - name: Build app
         run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
 
       - name: Upload artifact
@@ -91,5 +91,6 @@ jobs:
 
       - name: Validate app
         run: xcrun altool --validate-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}
+
       - name: Upload app
         run: xcrun altool --upload-app -f build/ios/ipa/*.ipa --type ios --apiKey ${{ env.APPSTORE_API_KEY_ID }} --apiIssuer ${{ env.APPSTORE_ISSUER_ID }}

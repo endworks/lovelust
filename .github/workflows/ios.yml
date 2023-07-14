@@ -60,7 +60,7 @@ jobs:
 
       - name: Import api key
         run: |
-          PRIVATE_KEYS ~/.appstoreconnect/private_keys
+          PRIVATE_KEYS=~/.appstoreconnect/private_keys
           mkdir -p $PRIVATE_KEYS
           echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEYS/AuthKey.p8
 

@@ -60,7 +60,7 @@ jobs:
         with:
           python-version: "3.9"
           cache: "pip"
-      - run: pip install codemagic-cli-tools
+      - run: pip3 install codemagic-cli-tools
 
       - name: Set the environment variables
         run: |

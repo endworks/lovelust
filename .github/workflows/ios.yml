@@ -101,30 +101,30 @@ jobs:
       # - name: Fetch the code signing files from App Store Connect
       #   run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
 
-      - name: Add the fetched certificates to keychain
-        run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'
+      # - name: Add the fetched certificates to keychain
+      #   run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'
 
-      - name: Update the Xcode project settings to use fetched code signing profiles
-        run: xcode-project use-profiles
+      # - name: Update the Xcode project settings to use fetched code signing profiles
+      #   run: xcode-project use-profiles
 
-      - name: Install Flutter dependencies
-        run: flutter packages pub get
+      # - name: Install Flutter dependencies
+      #   run: flutter packages pub get
 
-      - name: Install CocoaPods dependencies
-        run: find . -name "Podfile" -execdir pod install \;
+      # - name: Install CocoaPods dependencies
+      #   run: find . -name "Podfile" -execdir pod install \;
 
-      - name: Build the Flutter the iOS project
-        run: flutter build ipa --release --export-options-plist=$HOME/export_options.plist
+      # - name: Build the Flutter the iOS project
+      #   run: flutter build ipa --release --export-options-plist=$HOME/export_options.plist
 
-      - run: cat export_options.plist
+      # - run: cat export_options.plist
 
-      - name: Publish the app to App Store Connect
-        run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")
+      # - name: Publish the app to App Store Connect
+      #   run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: $(find $(pwd) -name "*.ipa")
+      # - name: Upload artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     path: $(find $(pwd) -name "*.ipa")
 
       - name: Install the Apple certificate and provisioning profile
         run: |

@@ -77,6 +77,13 @@ jobs:
           echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
           cat $CERTIFICATE_KEY_PATH
 
+      - name: Import provisioning profile
+        run: |
+          PROVISIONING_PROFILES_DIR=~/Library/MobileDevice/Provisioning\ Profiles
+          mkdir -p $PROVISIONING_PROFILES_DIR
+          PP_PATH=$PROVISIONING_PROFILES_DIR/build_pp.mobileprovision
+          echo -n "${{ env.BUILD_PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
+
       - name: Set up a new temporary keychain
         run: keychain initialize
 

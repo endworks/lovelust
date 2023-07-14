@@ -56,13 +56,16 @@ jobs:
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
       - name: Install the Codemagic CLI tools
-        run: pip3 install codemagic-cli-tools
+        uses: actions/setup-python@v4
+        with:
+          cache: "pip"
+      - run: pip install codemagic-cli-tools
 
       - name: Set the environment variables
         run: |
           echo "APP_STORE_CONNECT_ISSUER_ID=${{ env.APPSTORE_ISSUER_ID }} >> $GITHUB_ENV
           echo "APP_STORE_CONNECT_KEY_IDENTIFIER=${{ env.APPSTORE_API_KEY_ID }} >> $GITHUB_ENV
-          $PRIVATE_KEY=`echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode`
+          export PRIVATE_KEY=`echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode`
           echo "APP_STORE_CONNECT_PRIVATE_KEY=$PRIVATE_KEY" >> $GITHUB_ENV
           echo "CERTIFICATE_PRIVATE_KEY_PASSWORD=${{ env.P12_PASSWORD }} >> $GITHUB_ENV
 

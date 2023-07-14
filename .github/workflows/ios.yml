@@ -66,10 +66,7 @@ jobs:
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
 
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}'  | openssl rsa -out cert_key
-          ssh-keygen -t rsa -b 2048 -m PEM -f cert_key2 -q -N ""
-
           cat cert_key
-          cat cert_key2
 
           keychain initialize
           keychain use-login
@@ -80,8 +77,6 @@ jobs:
             --certificate-key=@file:cert_key \
             --create
 
-          cat export_options.plist
-
           keychain add-certificates
           xcode-project use-profiles
 
@@ -90,6 +85,8 @@ jobs:
 
           flutter build ipa --release \
             --export-options-plist=$HOME/export_options.plist
+
+          cat export_options.plist
 
           app-store-connect publish \
             --path $(find $(pwd) -name "*.ipa")

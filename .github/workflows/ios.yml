@@ -68,7 +68,7 @@ jobs:
 
       - name: Generate private key used to generate the certificate
         run: |
-          CERTIFICATES_DIR=~/Library/MobileDevice/Certificates/
+          CERTIFICATES_DIR=$HOME/Library/MobileDevice/Certificates
           mkdir -p $CERTIFICATES_DIR
           CERTIFICATE_PATH=$CERTIFICATES_DIR/build_certificate.p12
           CERTIFICATE_KEY_PATH=$CERTIFICATES_DIR/cert.key
@@ -87,7 +87,7 @@ jobs:
       #   run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
 
       - name: Add the fetched certificates to keychain
-        run: keychain add-certificates
+        run: keychain add-certificates --certificate-password=${{ env.P12_PASSWORD }}
 
       - name: Update the Xcode project settings to use fetched code signing profiles
         run: xcode-project use-profiles

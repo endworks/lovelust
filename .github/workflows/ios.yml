@@ -68,8 +68,9 @@ jobs:
 
       - name: Generate iOS Distribution certificate
         run: |
-          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-          CERTIFICATE_KEY_PATH=$RUNNER_TEMP/cert_key
+          CERTIFICATES_DIR=~/Library/MobileDevice/Certificates/
+          CERTIFICATE_PATH=$CERTIFICATES_DIR/build_certificate.p12
+          CERTIFICATE_KEY_PATH=$CERTIFICATES_DIR/cert.key
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
           echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV

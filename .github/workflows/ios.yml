@@ -65,13 +65,16 @@ jobs:
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
 
+          openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}'  | openssl rsa -out cert_key
+          ssh-keygen -t rsa -b 2048 -m PEM -f cert_key2 -q -N ""
+
           keychain initialize
           keychain use-login
 
           app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) \
             --platform IOS \
             --type IOS_APP_STORE \
-            --certificate-key=@file:$CERTIFICATE_PATH \
+            --certificate-key=@file:cert_key \
             --create
 
           keychain add-certificates

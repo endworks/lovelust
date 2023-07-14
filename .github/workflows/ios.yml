@@ -58,6 +58,7 @@ jobs:
       - name: Install the Codemagic CLI tools
         uses: actions/setup-python@v4
         with:
+          python-version: "3.9"
           cache: "pip"
       - run: pip install codemagic-cli-tools
 

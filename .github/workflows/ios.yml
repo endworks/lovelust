@@ -69,7 +69,6 @@ jobs:
           CERTIFICATE_KEY_PATH=$RUNNER_TEMP/cert_key
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
-          echo "CERTIFICATE_PRIVATE_KEY=$(<$CERTIFICATE_KEY_PATH)" >> $GITHUB_ENV
 
       - name: Set up a new temporary keychain
         run: keychain initialize
@@ -78,7 +77,7 @@ jobs:
         run: keychain use-login
 
       - name: Fetch the code signing files from App Store Connect
-        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
+        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --private-key=@file:$RUNNER_TEMP/cert_key --create
 
       - name: Add the fetched certificates to keychain
         run: keychain add-certificates
@@ -98,7 +97,7 @@ jobs:
       - run: cat export_options.plist
 
       - name: Publish the app to App Store Connect
-        run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")
+        run: app-store-connect publish --private-key=@file:$RUNNER_TEMP/cert_key --path $(find $(pwd) -name "*.ipa")
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

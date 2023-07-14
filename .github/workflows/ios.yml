@@ -69,6 +69,7 @@ jobs:
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}'  | openssl rsa -out $RUNNER_TEMP/cert_key
+          export CERTIFICATE_PRIVATE_KEY=`cat $RUNNER_TEMP/cert_key`
 
       - name: Set up a new temporary keychain
         run: keychain initialize
@@ -77,12 +78,7 @@ jobs:
         run: keychain use-login
 
       - name: Fetch the code signing files from App Store Connect
-        run:
-          app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) \
-          --platform IOS \
-          --type IOS_APP_STORE \
-          --certificate-key=@file:$RUNNER_TEMP/cert_key \
-          --create
+        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
 
       - name: Add the fetched certificates to keychain
         run: keychain add-certificates

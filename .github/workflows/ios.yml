@@ -52,17 +52,24 @@ jobs:
       - name: Install the Codemagic CLI tools
         run: pip3 install codemagic-cli-tools
 
-      - run: echo "APP_STORE_CONNECT_ISSUER_ID=${{ env.APPSTORE_ISSUER_ID }}" >> $GITHUB_ENV
-      - run: echo "APP_STORE_CONNECT_KEY_IDENTIFIER=${{ env.APPSTORE_API_KEY_ID }}" >> $GITHUB_ENV
-      - run: mkdir -p ~/.appstoreconnect/private_keys
-      - run: echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o ~/.appstoreconnect/private_keys/AuthKey.p8
-      - run: echo "CERTIFICATE_PRIVATE_KEY_PASSWORD=${{ env.P12_PASSWORD }}" >> $GITHUB_ENV
+      - name: Set the environment variables
+        run: |
+          echo "APP_STORE_CONNECT_ISSUER_ID=${{ env.APPSTORE_ISSUER_ID }}" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_KEY_IDENTIFIER=${{ env.APPSTORE_API_KEY_ID }}" >> $GITHUB_ENV
+          echo "CERTIFICATE_PRIVATE_KEY_PASSWORD=${{ env.P12_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Import api key
+        run: |
+          mkdir -p ~/.appstoreconnect/private_keys
+          echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o ~/.appstoreconnect/private_keys/AuthKey.p8
+
       - name: Generate iOS Distribution certificate
         run: |
           CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          CERTIFICATE_KEY_PATH=$RUNNER_TEMP/cert_key
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
-          openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $RUNNER_TEMP/cert_key
-          echo "CERTIFICATE_PRIVATE_KEY=$(cat $RUNNER_TEMP/cert_key) >> $GITHUB_ENV
+          openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
+          echo "CERTIFICATE_PRIVATE_KEY=$(<$CERTIFICATE_KEY_PATH)" >> $GITHUB_ENV
 
       - name: Set up a new temporary keychain
         run: keychain initialize

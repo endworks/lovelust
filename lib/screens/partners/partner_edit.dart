@@ -210,7 +210,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.person),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.name,
                         ),
                       ),
@@ -221,7 +220,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                         value: _genderController.text,
                         decoration: InputDecoration(
                           prefixIcon: iconByGender(_genderController.text),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.gender,
                         ),
                         items: genderDropdownMenuEntries,
@@ -236,7 +234,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                         value: _sexController.text,
                         decoration: InputDecoration(
                           prefixIcon: iconByGender(_sexController.text),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.sex,
                         ),
                         items: genderDropdownMenuEntries,
@@ -252,7 +249,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                         maxLines: null,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.note_alt),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.notes,
                         ),
                       ),

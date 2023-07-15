@@ -91,9 +91,6 @@ class _SafetyBlockState extends State<SafetyBlock> {
     Color color =
         Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
-      elevation: 0,
-      color:
-          Theme.of(context).colorScheme.surfaceVariant.withAlpha(_common.alpha),
       margin:
           const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(

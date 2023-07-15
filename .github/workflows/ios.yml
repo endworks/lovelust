@@ -32,16 +32,16 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          APPSTORE_API_KEY_ID: op://end.works/App Store/app store api key id
-          APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store/app store api private key
-          APPSTORE_ISSUER_ID: op://end.works/App Store/app store issuer id
-          BUILD_CERTIFICATE_BASE64: op://end.works/App Store/build certificate
-          P12_PASSWORD: op://end.works/App Store/p12 password
-          BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store/build provision profile
-          UUID_PROVISION_PROFILE: op://end.works/App Store/uuid provision profile
-          KEYCHAIN_PASSWORD: op://end.works/App Store/keychain password
-          CODE_SIGNING_IDENTITY: op://end.works/App Store/code signing identity
-          TEAM_ID: op://end.works/App Store/team id
+          APPSTORE_API_KEY_ID: op://end.works/App Store Connect API/app store api key id
+          APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/app store api private key
+          APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
+          BUILD_CERTIFICATE_BASE64: op://end.works/App Store Connect API/build certificate
+          P12_PASSWORD: op://end.works/App Store Connect API/p12 password
+          BUILD_PROVISION_PROFILE_BASE64: op://end.works/App Store Connect API/build provision profile auto
+          UUID_PROVISION_PROFILE: op://end.works/App Store Connect API/uuid provision profile
+          KEYCHAIN_PASSWORD: op://end.works/App Store Connect API/keychain password
+          CODE_SIGNING_IDENTITY: op://end.works/App Store Connect API/code signing identity
+          TEAM_ID: op://end.works/App Store Connect API/team id
 
       - name: Get release name
         run: |
@@ -149,8 +149,8 @@ jobs:
           UUID=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
           PROVISIONING_PROFILES_DIR="~/Library/MobileDevice/Provisioning\ Profiles"
           mkdir -p "$PROVISIONING_PROFILES_DIR"
-          cp $PP_PATH "$PROVISIONING_PROFILES_DIR"
-          # cp $PP_PATH "$PROVISIONING_PROFILES_DIR/$UUID.mobileprovision"
+          cp $PP_PATH "$PROVISIONING_PROFILES_DIR/$UUID.mobileprovision"
+          ls -l $PROVISIONING_PROFILES_DIR
 
           # apply api key
           mkdir -p ~/.private_keys

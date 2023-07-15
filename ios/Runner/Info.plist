@@ -33,6 +33,10 @@
 	<true/>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Why is my app authenticating using face id?</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Why is my app using health data?</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Why is my app using health data?</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

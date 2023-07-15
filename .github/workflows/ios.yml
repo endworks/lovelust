@@ -77,7 +77,8 @@ jobs:
           CERTIFICATE_PATH=$CERTIFICATES_DIR/build_certificate.p12
           CERTIFICATE_KEY_PATH=$CERTIFICATES_DIR/cert.key
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
-          openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
+          # openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
+          ssh-keygen -t rsa -b 2048 -m PEM -f CERTIFICATE_KEY_PATH -q -N ""
           echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
 
       - name: Import provisioning profile
@@ -99,10 +100,7 @@ jobs:
         run: keychain use-login
 
       - name: Fetch the code signing files from App Store Connect
-        run: |
-          CERTIFICATE_PRIVATE_KEY=$(< $HOME/Library/MobileDevice/Certificates/cert.key)
-          echo "$CERTIFICATE_PRIVATE_KEY"
-          app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key "$CERTIFICATE_PRIVATE_KEY" --create
+        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --create
 
       - name: Add the fetched certificates to keychain
         run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'

@@ -78,7 +78,7 @@ jobs:
           CERTIFICATE_KEY_PATH=$CERTIFICATES_DIR/cert.key
           echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
           # openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
-          ssh-keygen -t rsa -b 2048 -m PEM -f $CERTIFICATE_KEY_PATH -q -N ""
+          ssh-keygen -t rsa -b 2048 -f $CERTIFICATE_KEY_PATH -q -N ""
           echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
 
       - name: Import provisioning profile

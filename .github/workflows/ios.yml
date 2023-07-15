@@ -156,13 +156,17 @@ jobs:
           UUID_AH=`grep UUID -A1 -a "$PPAH_PATH" | grep -io "[-A-F0-9]\{36\}"`
           cp $PPAS_PATH "$PROVISIONING_PROFILES_DIR/$UUID_AS.mobileprovision"
           cp $PPAH_PATH "$PROVISIONING_PROFILES_DIR/$UUID_AH.mobileprovision"
+          ls -l "$PROVISIONING_PROFILES_DIR"
 
           # apply api key
           mkdir -p ~/.private_keys
           cp $API_KEY_PATH ~/.private_keys
 
+      - name: Build ad hoc app
+        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --export-method ad-hoc #--obfuscate --split-debug-info=out/ios/
+
       - name: Build app-store app
-        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
+        run: flutter build ipa --release --build-number=${{ env.COMMIT_NUMBER }} #--obfuscate --split-debug-info=out/ios/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3

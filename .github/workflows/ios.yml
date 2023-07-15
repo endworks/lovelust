@@ -68,7 +68,8 @@ jobs:
           PRIVATE_KEYS_DIR=~/.private_keys
           mkdir -p $PRIVATE_KEYS_DIR
           echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEYS_DIR/AuthKey.p8
-          echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEYS_DIR/AuthKey.p8" >> $GITHUB_ENV
+          # echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEYS_DIR/AuthKey.p8" >> $GITHUB_ENV
+          echo "APP_STORE_CONNECT_PRIVATE_KEY=$(< $PRIVATE_KEYS_DIR/AuthKey.p8)" >> $GITHUB_ENV
 
       - name: Generate private key used to generate the certificate
         run: |
@@ -99,10 +100,7 @@ jobs:
         run: keychain use-login
 
       - name: Fetch the code signing files from App Store Connect
-        run: |
-          CERTIFICATE_KEY=$(< ~/.private_keys/AuthKey.p8)
-          echo "$CERTIFICATE_KEY"
-          app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key <(echo -n "$CERTIFICATE_KEY") --create
+        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key <(echo -n "$CERTIFICATE_KEY") --create
 
       - name: Add the fetched certificates to keychain
         run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'

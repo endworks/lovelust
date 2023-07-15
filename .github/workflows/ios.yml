@@ -100,8 +100,8 @@ jobs:
 
       - name: Fetch the code signing files from App Store Connect
         run: |
-          CERTIFICATE_KEY=$(cat ~/.private_keys/AuthKey.p8)
-          cat "$CERTIFICATE_KEY"
+          CERTIFICATE_KEY=$(< ~/.private_keys/AuthKey.p8)
+          echo "$CERTIFICATE_KEY"
           app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key <(echo -n "$CERTIFICATE_KEY") --create
 
       - name: Add the fetched certificates to keychain

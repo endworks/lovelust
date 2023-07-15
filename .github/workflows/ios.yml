@@ -100,7 +100,9 @@ jobs:
         run: keychain use-login
 
       - name: Fetch the code signing files from App Store Connect
-        run: app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key <(echo -n "$CERTIFICATE_KEY") --create
+        run: |
+          echo "$APP_STORE_CONNECT_PRIVATE_KEY"
+          app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key <(echo -n "$CERTIFICATE_KEY") --create
 
       - name: Add the fetched certificates to keychain
         run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'

@@ -100,7 +100,7 @@ jobs:
 
       - name: Fetch the code signing files from App Store Connect
         run: |
-          APP_STORE_CONNECT_PRIVATE_KEY=$(< $PRIVATE_KEYS_DIR/AuthKey.p8)
+          APP_STORE_CONNECT_PRIVATE_KEY=$(< ~/.private_keys/AuthKey.p8)
           echo "$APP_STORE_CONNECT_PRIVATE_KEY"
           app-store-connect fetch-signing-files $(xcode-project detect-bundle-id) --type IOS_APP_STORE --certificate-key "$APP_STORE_CONNECT_PRIVATE_KEY" --create
 

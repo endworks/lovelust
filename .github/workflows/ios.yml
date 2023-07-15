@@ -25,6 +25,9 @@ jobs:
           architecture: x64
           cache: true
 
+      - name: Disable telemetry
+        run: flutter --disable-telemetry
+
       - name: Load secret
         id: op-load-secret
         uses: 1password/load-secrets-action@v1.2.0

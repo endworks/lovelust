@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (!widget.initialLoadDone) {
-      return const CircularProgressIndicator.adaptive();
+      return const SizedBox.shrink();
     }
     return Scaffold(
       body: selectedPage,

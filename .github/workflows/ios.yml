@@ -39,6 +39,7 @@ jobs:
           APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/app store api private key
           APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
           BUILD_CERTIFICATE_BASE64: op://end.works/App Store Connect API/build certificate
+          BUILD_CERTIFICATE_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/build certificate private key
           P12_PASSWORD: op://end.works/App Store Connect API/p12 password
           PROVISION_PROFILE_APP_STORE_BASE64: op://end.works/App Store Connect API/provision profile app store
           PROVISION_PROFILE_AD_HOC_BASE64: op://end.works/App Store Connect API/provision profile ad hoc
@@ -72,22 +73,25 @@ jobs:
           echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEY_PATH" >> $GITHUB_ENV
           cat "$PRIVATE_KEY_PATH"
 
-      - name: Generate private key used to generate the certificate
+      # - name: Generate private key used to generate the certificate
+      #   run: |
+      #     CERTIFICATES_DIR=~/Library/MobileDevice/Certificates
+      #     mkdir -p $CERTIFICATES_DIR
+      #     CERTIFICATE_PATH=$CERTIFICATES_DIR/build_certificate.p12
+      #     CERTIFICATE_KEY_PATH=$CERTIFICATES_DIR/cert.key
+      #     echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
+      #     # openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
+      #     ssh-keygen -t rsa -b 2048 -f $CERTIFICATE_KEY_PATH -q -N ""
+      #     echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
+      #     cat "$CERTIFICATE_KEY_PATH"
+
+      - name: Get private key used to generate the certificate
         run: |
           CERTIFICATES_DIR=~/Library/MobileDevice/Certificates
           mkdir -p $CERTIFICATES_DIR
-          CERTIFICATE_PATH=$CERTIFICATES_DIR/build_certificate.p12
           CERTIFICATE_KEY_PATH=$CERTIFICATES_DIR/cert.key
-          echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
-          # openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
-          ssh-keygen -t rsa -b 2048 -f $CERTIFICATE_KEY_PATH -q -N ""
+          echo -n "${{ env.BUILD_CERTIFICATE_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $CERTIFICATE_KEY_PATH
           echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
-          cat "$CERTIFICATE_KEY_PATH"
-
-      - name: Upload private key artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: ~/Library/MobileDevice/Certificates/cert.key
 
       # - name: Import provisioning profile
       #   run: |
@@ -116,20 +120,21 @@ jobs:
       - name: Update the Xcode project settings to use fetched code signing profiles
         run: xcode-project use-profiles
 
-      - run: ls "~/Library/MobileDevice/Provisioning\ Profiles"
-
-      - name: Upload Provisioning Profiles artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Install Flutter dependencies
         run: flutter packages pub get
 
       - name: Install CocoaPods dependencies
         run: find . -name "Podfile" -execdir pod install \;
 
-      - run: cat export_options.plist
+      - name: Upload export_options artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: $HOME/export_options.plist
+
+      - name: Upload Provisioning Profiles artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Build the Flutter the iOS project
         run: flutter build ipa --release --export-options-plist=$HOME/export_options.plist

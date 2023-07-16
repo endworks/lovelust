@@ -85,7 +85,13 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
         vertical: 4,
       ),
       elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      //color: Theme.of(context).colorScheme.surfaceVariant,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
+      ),
       child: ListTile(
         title: Row(children: [
           Icon(Icons.medication,

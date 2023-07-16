@@ -45,28 +45,23 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   Text get title {
+    TextStyle style = Theme.of(context).textTheme.titleLarge!;
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
         return Text(
           partner!.name,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
+          style: style,
         );
       } else {
         return Text(
           AppLocalizations.of(context)!.unknownPartner,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
+          style: style,
         );
       }
     } else {
       return Text(
         AppLocalizations.of(context)!.solo,
-        style: const TextStyle(
-          fontWeight: FontWeight.w600,
-        ),
+        style: style,
       );
     }
   }

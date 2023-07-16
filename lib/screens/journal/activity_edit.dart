@@ -332,8 +332,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       child: DropdownButtonFormField(
                         value: _typeController.text,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.favorite),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.activityType,
                         ),
                         items: typeDropdownMenuEntries,
@@ -347,8 +347,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       child: DropdownButtonFormField(
                         value: _partnerController.text,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.person),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.partner,
                         ),
                         items: partnerDropdownMenuEntries,
@@ -362,8 +362,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       child: DropdownButtonFormField(
                         value: _birthControlController.text,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.medication),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.birthControl,
                         ),
                         items: birthControlDropdownMenuEntries,
@@ -377,8 +377,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       child: DropdownButtonFormField(
                         value: _partnerBirthControlController.text,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.medication),
-                          filled: true,
                           labelText:
                               AppLocalizations.of(context)!.partnerBirthControl,
                         ),
@@ -393,8 +393,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       child: DropdownButtonFormField(
                         value: _initiatorController.text,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.start),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.initiator,
                         ),
                         items: initiatorDropdownMenuEntries,
@@ -408,8 +408,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       child: DropdownButtonFormField(
                         value: _placeController.text,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.place),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.place,
                         ),
                         items: placeDropdownMenuEntries,
@@ -424,8 +424,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         controller: _locationController,
                         maxLines: null,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.map),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.location,
                         ),
                       ),
@@ -436,8 +436,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         controller: _notesController,
                         maxLines: null,
                         decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.note_alt),
-                          filled: true,
                           labelText: AppLocalizations.of(context)!.notes,
                         ),
                       ),

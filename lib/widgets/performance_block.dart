@@ -2,8 +2,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
-import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/shared_service.dart';
 
 class PerformanceBlock extends StatefulWidget {
   const PerformanceBlock(
@@ -21,15 +19,9 @@ class PerformanceBlock extends StatefulWidget {
 }
 
 class _PerformanceBlockState extends State<PerformanceBlock> {
-  final SharedService _common = getIt<SharedService>();
-
   List<Widget> get performance {
     List<Widget> list = [];
-    TextStyle style = TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-      color: Theme.of(context).colorScheme.onSurface,
-    );
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
     if (widget.orgasms > 0) {
       list.add(
@@ -42,7 +34,8 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
               ),
               TextSpan(
                   text:
-                      ' ${AppLocalizations.of(context)!.orgasmsByMe(widget.orgasms)}'),
+                      ' ${AppLocalizations.of(context)!.orgasmsByMe(widget.orgasms)}',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
@@ -60,7 +53,8 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
               ),
               TextSpan(
                   text:
-                      ' ${AppLocalizations.of(context)!.orgasmsByPartner(widget.partnerOrgasms)}'),
+                      ' ${AppLocalizations.of(context)!.orgasmsByPartner(widget.partnerOrgasms)}',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
@@ -76,7 +70,9 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
                 text: widget.initiator!.name,
                 style: style,
               ),
-              TextSpan(text: ' ${AppLocalizations.of(context)!.initiatedIt}'),
+              TextSpan(
+                  text: ' ${AppLocalizations.of(context)!.initiatedIt}',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
@@ -91,21 +87,22 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
     Color color =
         Colors.deepOrange.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
-      margin:
-          const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
+      ),
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
         title: Row(children: [
           Icon(
             Icons.tag_faces,
             color: color,
+            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
           ),
           Text(
             AppLocalizations.of(context)!.performance,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ]),
         subtitle: Column(

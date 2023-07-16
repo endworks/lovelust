@@ -1,8 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/shared_service.dart';
 
 class SafetyBlock extends StatefulWidget {
   const SafetyBlock({super.key, required this.safety});
@@ -14,9 +12,10 @@ class SafetyBlock extends StatefulWidget {
 }
 
 class _SafetyBlockState extends State<SafetyBlock> {
-  final SharedService _common = getIt<SharedService>();
-
   Widget get safetyNotice {
+    double size = Theme.of(context).textTheme.titleMedium!.fontSize!;
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
+
     if (widget.safety == 'safe') {
       Color color =
           Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
@@ -25,18 +24,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Icon(Icons.check_circle, color: color, size: 18),
+              Icon(Icons.check_circle, color: color, size: size),
               Text(
                 AppLocalizations.of(context)!.safe,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                ),
+                style: style,
               ),
             ],
           ),
-          Text(AppLocalizations.of(context)!.safeMsg)
+          Text(
+            AppLocalizations.of(context)!.safeMsg,
+            style: Theme.of(context).textTheme.bodyMedium,
+          )
         ],
       );
     } else if (widget.safety == 'unsafe') {
@@ -47,18 +45,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Icon(Icons.error, color: color, size: 18),
+              Icon(Icons.error, color: color, size: size),
               Text(
                 AppLocalizations.of(context)!.unsafe,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                ),
+                style: style,
               ),
             ],
           ),
-          Text(AppLocalizations.of(context)!.unsafeMsg)
+          Text(
+            AppLocalizations.of(context)!.unsafeMsg,
+            style: Theme.of(context).textTheme.bodyMedium,
+          )
         ],
       );
     } else {
@@ -69,18 +66,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Icon(Icons.help, color: color, size: 18),
+              Icon(Icons.help, color: color, size: size),
               Text(
                 AppLocalizations.of(context)!.partlyUnsafe,
-                style: TextStyle(
-                  color: color,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
-                ),
+                style: style,
               ),
             ],
           ),
-          Text(AppLocalizations.of(context)!.partlyUnsafeMsg)
+          Text(
+            AppLocalizations.of(context)!.partlyUnsafeMsg,
+            style: Theme.of(context).textTheme.bodyMedium,
+          )
         ],
       );
     }
@@ -91,21 +87,22 @@ class _SafetyBlockState extends State<SafetyBlock> {
     Color color =
         Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
-      margin:
-          const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
+      ),
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
         title: Row(children: [
           Icon(
             Icons.health_and_safety,
             color: color,
+            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
           ),
           Text(
             AppLocalizations.of(context)!.safety,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ]),
         subtitle: safetyNotice,

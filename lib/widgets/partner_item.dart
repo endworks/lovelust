@@ -32,7 +32,7 @@ class _PartnerItemState extends State<PartnerItem> {
 
   Text get title {
     return Text(!_common.privacyMode ? widget.partner.name : 'Hidden',
-        style: const TextStyle(fontWeight: FontWeight.w600));
+        style: Theme.of(context).textTheme.titleLarge);
   }
 
   Text get gender {
@@ -50,7 +50,7 @@ class _PartnerItemState extends State<PartnerItem> {
         gender = AppLocalizations.of(context)!.transWoman;
       }
     }
-    return Text(gender, style: secondaryTextStyle());
+    return Text(gender, style: Theme.of(context).textTheme.bodyMedium);
   }
 
   String date() {
@@ -76,12 +76,6 @@ class _PartnerItemState extends State<PartnerItem> {
           ),
         ),
       ],
-    );
-  }
-
-  TextStyle secondaryTextStyle() {
-    return const TextStyle(
-      fontSize: 13,
     );
   }
 

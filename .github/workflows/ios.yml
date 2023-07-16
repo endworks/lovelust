@@ -67,7 +67,7 @@ jobs:
         run: |
           PRIVATE_KEYS_DIR=~/.private_keys
           mkdir -p $PRIVATE_KEYS_DIR
-          PRIVATE_KEY_PATH=$CERTIFICATES_DIR/AuthKey.p8
+          PRIVATE_KEY_PATH=$PRIVATE_KEYS_DIR/AuthKey.p8
           echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEY_PATH
           echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEY_PATH" >> $GITHUB_ENV
           cat "$PRIVATE_KEY_PATH"

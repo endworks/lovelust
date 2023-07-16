@@ -2,8 +2,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
-import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/shared_service.dart';
 
 class BirthControlBlock extends StatefulWidget {
   const BirthControlBlock({
@@ -20,15 +18,9 @@ class BirthControlBlock extends StatefulWidget {
 }
 
 class _BirthControlBlockState extends State<BirthControlBlock> {
-  final SharedService _common = getIt<SharedService>();
-
   List<Widget> get birthControl {
     List<Widget> list = [];
-    TextStyle style = TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-      color: Theme.of(context).colorScheme.onSurface,
-    );
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.birthControl == widget.partnerBirthControl) {
       list.add(
         Text.rich(
@@ -38,7 +30,9 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
                 text: widget.birthControl!.name,
                 style: style,
               ),
-              TextSpan(text: ' ${AppLocalizations.of(context)!.byBoth}'),
+              TextSpan(
+                  text: ' ${AppLocalizations.of(context)!.byBoth}',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
         ),
@@ -53,7 +47,9 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
                   text: widget.birthControl!.name,
                   style: style,
                 ),
-                TextSpan(text: ' ${AppLocalizations.of(context)!.byMe}'),
+                TextSpan(
+                    text: ' ${AppLocalizations.of(context)!.byMe}',
+                    style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
           ),
@@ -67,7 +63,9 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
                   text: widget.partnerBirthControl!.name,
                   style: style,
                 ),
-                TextSpan(text: ' ${AppLocalizations.of(context)!.byPartner}'),
+                TextSpan(
+                    text: ' ${AppLocalizations.of(context)!.byPartner}',
+                    style: Theme.of(context).textTheme.bodyMedium),
               ],
             ),
           ),
@@ -82,21 +80,20 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
     Color color =
         Colors.cyan.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
-      margin:
-          const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
+      ),
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
         title: Row(children: [
-          Icon(
-            Icons.medication,
-            color: color,
-          ),
+          Icon(Icons.medication,
+              color: color,
+              size: Theme.of(context).textTheme.headlineSmall!.fontSize),
           Text(
             AppLocalizations.of(context)!.birthControl,
-            style: TextStyle(
-              color: color,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
         ]),
         subtitle: Column(

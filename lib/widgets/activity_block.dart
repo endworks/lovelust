@@ -33,6 +33,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
     IconData icon = Icons.help;
     Color color = Colors.orange;
     String label = AppLocalizations.of(context)!.partlyUnsafe;
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
     if (widget.activity.safety == 'safe') {
       icon = Icons.check_circle;
@@ -46,25 +47,20 @@ class _ActivityBlockState extends State<ActivityBlock> {
 
     color = color.harmonizeWith(Theme.of(context).colorScheme.primary);
 
-    TextStyle style = TextStyle(
-      color: color,
-      fontWeight: FontWeight.w600,
-    );
-
     return Row(
       children: [
-        Icon(icon, color: color),
+        Icon(
+          icon,
+          color: color,
+          size: style.fontSize,
+        ),
         Text(label, style: style),
       ],
     );
   }
 
   Widget get duration {
-    TextStyle style = TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w600,
-      color: Theme.of(context).colorScheme.onSurface,
-    );
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
     IdName place = _common.getPlaceById(widget.activity.place!)!;
     return Text.rich(
       TextSpan(
@@ -82,8 +78,12 @@ class _ActivityBlockState extends State<ActivityBlock> {
     Color pink =
         Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
-      margin:
-          const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
+      ),
+      elevation: 0,
+      color: Theme.of(context).colorScheme.surfaceVariant,
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: openActivity,
@@ -91,14 +91,11 @@ class _ActivityBlockState extends State<ActivityBlock> {
           Icon(
             Icons.favorite,
             color: pink,
+            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
           ),
           Text(
             AppLocalizations.of(context)!.sexualActivity,
-            style: TextStyle(
-              color: pink,
-              fontWeight: FontWeight.w600,
-              fontSize: 18,
-            ),
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           const Spacer(),
           const Icon(

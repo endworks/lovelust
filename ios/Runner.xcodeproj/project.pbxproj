@@ -519,7 +519,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = works.end.LoveLust;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LoveLust App Store";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "XC works end LoveLust ios_app_store 1689524629";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -721,7 +721,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = works.end.LoveLust;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LoveLust App Store";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "XC works end LoveLust ios_app_store 1689524629";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -756,7 +756,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = works.end.LoveLust;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LoveLust App Store";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "XC works end LoveLust ios_app_store 1689524629";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

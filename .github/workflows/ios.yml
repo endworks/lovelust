@@ -67,8 +67,10 @@ jobs:
         run: |
           PRIVATE_KEYS_DIR=~/.private_keys
           mkdir -p $PRIVATE_KEYS_DIR
-          echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEYS_DIR/AuthKey.p8
-          echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEYS_DIR/AuthKey.p8" >> $GITHUB_ENV
+          PRIVATE_KEY_PATH=$CERTIFICATES_DIR/AuthKey.p8
+          echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEY_PATH
+          echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEY_PATH" >> $GITHUB_ENV
+          cat "$PRIVATE_KEY_PATH"
 
       - name: Generate private key used to generate the certificate
         run: |
@@ -80,6 +82,7 @@ jobs:
           # openssl pkcs12 -in $CERTIFICATE_PATH -nodes -nocerts -password pass:'${{ env.P12_PASSWORD }}' | openssl rsa -out $CERTIFICATE_KEY_PATH
           ssh-keygen -t rsa -b 2048 -f $CERTIFICATE_KEY_PATH -q -N ""
           echo "CERTIFICATE_PRIVATE_KEY=@file:$CERTIFICATE_KEY_PATH" >> $GITHUB_ENV
+          cat "$CERTIFICATE_KEY_PATH"
 
       - name: Import provisioning profile
         run: |

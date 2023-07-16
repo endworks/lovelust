@@ -45,7 +45,7 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   Text get title {
-    TextStyle style = Theme.of(context).textTheme.titleLarge!;
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
         return Text(

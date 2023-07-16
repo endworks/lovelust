@@ -92,13 +92,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
         vertical: 4,
       ),
       elevation: 0,
-      //color: Theme.of(context).colorScheme.surfaceVariant,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: Theme.of(context).colorScheme.outline,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
+      color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
         title: Row(children: [
           Icon(

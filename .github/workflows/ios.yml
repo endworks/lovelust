@@ -111,21 +111,28 @@ jobs:
       - name: Update the Xcode project settings to use fetched code signing profiles
         run: xcode-project use-profiles
 
+      - run: ls "~/Library/MobileDevice/Provisioning\ Profiles"
+
+      - name: Upload Provisioning Profiles artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ~/Library/MobileDevice/Provisioning\ Profiles
+
       - name: Install Flutter dependencies
         run: flutter packages pub get
 
       - name: Install CocoaPods dependencies
         run: find . -name "Podfile" -execdir pod install \;
 
+      - run: cat export_options.plist
+
       - name: Build the Flutter the iOS project
         run: flutter build ipa --release --export-options-plist=$HOME/export_options.plist
-
-      - run: cat export_options.plist
 
       - name: Publish the app to App Store Connect
         run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")
 
-      - name: Upload artifact
+      - name: Upload IPA artifact
         uses: actions/upload-artifact@v3
         with:
           path: $(find $(pwd) -name "*.ipa")

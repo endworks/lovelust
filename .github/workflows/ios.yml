@@ -43,7 +43,7 @@ jobs:
       - if: ${{ steps.cache-op.outputs.cache-hit != 'true' }}
         name: Install 1Password CLI
         run: |
-          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_apple_universal_v$OP_VERSION.pkg" -O op.pkg
+          curl "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_apple_universal_v$OP_VERSION.pkg" -o op.pkg
           sudo installer -pkg op.pkg -target /
           rm -r op.pkg
 

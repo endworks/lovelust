@@ -180,6 +180,15 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       );
     }
+
+    list.addAll(
+      [
+        Text("Store: ${_common.packageInfo?.installerStore ?? 'store'}"),
+        Text("Version: ${_common.packageInfo?.version ?? '1.0.0'}"),
+        Text("Version: ${_common.packageInfo?.buildNumber ?? '1'}"),
+      ],
+    );
+
     return list;
   }
 

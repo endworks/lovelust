@@ -7,9 +7,6 @@ on:
 permissions:
   contents: read
 
-env:
-  OP_VERSION: 2.19.0
-
 jobs:
   build:
     name: Build
@@ -42,10 +39,7 @@ jobs:
 
       - if: ${{ steps.cache-op.outputs.cache-hit != 'true' }}
         name: Install 1Password CLI
-        run: |
-          curl "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_apple_universal_v$OP_VERSION.pkg" -o op.pkg
-          sudo installer -pkg op.pkg -target /
-          rm -r op.pkg
+        run: command -v op >/dev/null 2>&1 || { brew install --cask 1password/tap/1password-cli >&2; exit 1; }
 
       - name: Get secrets
         run: |

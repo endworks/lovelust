@@ -8,6 +8,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class SharedService {
   final StorageService _storage = getIt<StorageService>();
@@ -29,6 +30,7 @@ class SharedService {
   bool _requireAuth = false;
   bool _calendarView = false;
   String? _activityFilter;
+  PackageInfo? packageInfo;
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -45,6 +47,7 @@ class SharedService {
       _storage.getActivityFilter(),
       loadStaticData(),
       findSystemLocale(),
+      PackageInfo.fromPlatform(),
       googleFontsPending,
     ];
 
@@ -59,7 +62,8 @@ class SharedService {
     requireAuth = result[7];
     calendarView = result[8];
     activityFilter = result[9];
-    Intl.systemLocale = result[10];
+    Intl.systemLocale = result[11];
+    packageInfo = result[12];
     return Future.value(null);
   }
 

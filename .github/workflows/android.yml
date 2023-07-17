@@ -48,12 +48,10 @@ jobs:
 
       - name: Install 1Password CLI
         run: |
-          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.18.0/op_linux_amd64_v2.18.0.zip" -O op.zip
+          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.19.0/op_linux_amd64_v2.19.0.zip" -O op.zip
           unzip -d op op.zip
           sudo mv op/op /usr/local/bin
           rm -r op.zip op
-
-          op user get --me
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 

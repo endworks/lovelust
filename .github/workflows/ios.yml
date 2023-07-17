@@ -29,23 +29,51 @@ jobs:
       - name: Disable telemetry
         run: flutter --disable-telemetry
 
-      - name: Load secret
-        id: op-load-secret
-        uses: 1password/load-secrets-action@v1.2.0
-        with:
-          export-env: true
+      # - name: Load secret
+      #   id: op-load-secret
+      #   uses: 1password/load-secrets-action@v1.2.0
+      #   with:
+      #     export-env: true
+      #   env:
+      #     OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      #     APPSTORE_API_KEY_ID: op://end.works/App Store Connect API/app store api key id
+      #     APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/app store api private key
+      #     APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
+      #     BUILD_CERTIFICATE_BASE64: op://end.works/App Store Connect API/build certificate
+      #     BUILD_CERTIFICATE_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/build certificate private key
+      #     P12_PASSWORD: op://end.works/App Store Connect API/p12 password
+      #     PROVISION_PROFILE_BASE64: op://end.works/App Store Connect API/provision profile app store
+      #     KEYCHAIN_PASSWORD: op://end.works/App Store Connect API/keychain password
+      #     CODE_SIGNING_IDENTITY: op://end.works/App Store Connect API/code signing identity
+      #     TEAM_ID: op://end.works/App Store Connect API/team id
+
+      - name: Install 1Password CLI
+        run: command -v op >/dev/null 2>&1 || { brew install --cask 1password/tap/1password-cli >&2; exit 1; }
+
+      - name: Get secrets
+        run: |
+          export APPSTORE_API_KEY_ID=$(op read "op://end.works/App Store Connect API/app store api key id")
+          export APPSTORE_API_PRIVATE_KEY_BASE64=$(op read "op://end.works/App Store Connect API/app store api private key")
+          export APPSTORE_ISSUER_ID=$(op read "op://end.works/App Store Connect API/app store issuer id")
+          export BUILD_CERTIFICATE_BASE64=$(op read "op://end.works/App Store Connect API/build certificate")
+          export BUILD_CERTIFICATE_PRIVATE_KEY_BASE64=$(op read "op://end.works/App Store Connect API/build certificate private key")
+          export P12_PASSWORD=$(op read "op://end.works/App Store Connect API/p12 password")
+          export PROVISION_PROFILE_BASE64=$(op read "op://end.works/App Store Connect API/provision profile app store")
+          export KEYCHAIN_PASSWORD=$(op read "op://end.works/App Store Connect API/keychain password")
+          export CODE_SIGNING_IDENTITY=$(op read "op://end.works/App Store Connect API/code signing identity")
+          export TEAM_ID=$(op read "op://end.works/App Store Connect API/team id")
+          echo "APPSTORE_API_KEY_ID=$APPSTORE_API_KEY_ID" >> $GITHUB_ENV
+          echo "APPSTORE_API_PRIVATE_KEY_BASE64=$APPSTORE_API_PRIVATE_KEY_BASE64" >> $GITHUB_ENV
+          echo "APPSTORE_ISSUER_ID=$APPSTORE_ISSUER_ID" >> $GITHUB_ENV
+          echo "BUILD_CERTIFICATE_BASE64=$BUILD_CERTIFICATE_BASE64" >> $GITHUB_ENV
+          echo "BUILD_CERTIFICATE_PRIVATE_KEY_BASE64=$BUILD_CERTIFICATE_PRIVATE_KEY_BASE64" >> $GITHUB_ENV
+          echo "P12_PASSWORD=$P12_PASSWORD" >> $GITHUB_ENV
+          echo "PROVISION_PROFILE_BASE64=$PROVISION_PROFILE_BASE64" >> $GITHUB_ENV
+          echo "KEYCHAIN_PASSWORD=$KEYCHAIN_PASSWORD" >> $GITHUB_ENV
+          echo "CODE_SIGNING_IDENTITY=$CODE_SIGNING_IDENTITY" >> $GITHUB_ENV
+          echo "TEAM_ID=$TEAM_ID" >> $GITHUB_ENV
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          APPSTORE_API_KEY_ID: op://end.works/App Store Connect API/app store api key id
-          APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/app store api private key
-          APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
-          BUILD_CERTIFICATE_BASE64: op://end.works/App Store Connect API/build certificate
-          BUILD_CERTIFICATE_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/build certificate private key
-          P12_PASSWORD: op://end.works/App Store Connect API/p12 password
-          PROVISION_PROFILE_BASE64: op://end.works/App Store Connect API/provision profile app store
-          KEYCHAIN_PASSWORD: op://end.works/App Store Connect API/keychain password
-          CODE_SIGNING_IDENTITY: op://end.works/App Store Connect API/code signing identity
-          TEAM_ID: op://end.works/App Store Connect API/team id
 
       - name: Get release name
         run: |

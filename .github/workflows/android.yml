@@ -14,7 +14,7 @@ jobs:
   build:
     name: Build
     # runs-on: ubuntu-latest
-    runs-on: wired
+    runs-on: [self-hosted, linux]
 
     outputs:
       apk: ${{ steps.output.outputs.apk }}

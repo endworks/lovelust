@@ -101,6 +101,9 @@
   "fetchStaticData": "Fetch static data",
   "loggedIn": "Logged in",
   "fetch": "Fetch",
+  "version": "App version",
+  "buildNumber": "Build number",
+  "installerStore": "Installer store",
   "delete": "Delete",
   "save": "Save",
   "help": "Help"

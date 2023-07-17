@@ -81,6 +81,9 @@
   "fetchStaticData": "Cargar datos estáticos",
   "loggedIn": "Sesión iniciada",
   "fetch": "Cargar",
+  "version": "Versión de app",
+  "buildNumber": "Número de compilación",
+  "installerStore": "Tienda de instalación",
   "delete": "Eliminar",
   "save": "Guardar",
   "help": "Ayuda"

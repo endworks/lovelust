@@ -157,6 +157,21 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Text(AppLocalizations.of(context)!.delete),
         ),
       ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.version),
+        leading: const Icon(Icons.app_settings_alt),
+        trailing: Text(_common.packageInfo?.version ?? '1.0.0'),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.buildNumber),
+        leading: const Icon(Icons.settings_applications),
+        trailing: Text(_common.packageInfo?.buildNumber ?? '1'),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.installerStore),
+        leading: const Icon(Icons.store),
+        trailing: Text(_common.packageInfo?.installerStore ?? 'store'),
+      ),
     ];
     if (kDebugMode) {
       list.addAll(
@@ -180,14 +195,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       );
     }
-
-    list.addAll(
-      [
-        Text("Store: ${_common.packageInfo?.installerStore ?? 'store'}"),
-        Text("Version: ${_common.packageInfo?.version ?? '1.0.0'}"),
-        Text("Version: ${_common.packageInfo?.buildNumber ?? '1'}"),
-      ],
-    );
 
     return list;
   }

@@ -70,7 +70,6 @@ jobs:
           PRIVATE_KEY_PATH=$PRIVATE_KEYS_DIR/AuthKey_"${{ env.APPSTORE_API_KEY_ID }}".p8
           echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $PRIVATE_KEY_PATH
           echo "APP_STORE_CONNECT_PRIVATE_KEY=@file:$PRIVATE_KEY_PATH" >> $GITHUB_ENV
-          cat "$PRIVATE_KEY_PATH"
 
       - name: Get private key used to generate the certificate
         run: |
@@ -101,26 +100,16 @@ jobs:
       - name: Install CocoaPods dependencies
         run: find . -name "Podfile" -execdir pod install \;
 
-      - name: Upload export_options artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: $HOME/export_options.plist
-
       - name: Upload Provisioning Profiles artifact
         uses: actions/upload-artifact@v3
         with:
           path: ~/Library/MobileDevice/Provisioning\ Profiles
 
-      - name: Build the Flutter the iOS project
-        run: flutter build ipa --release --export-options-plist=$HOME/export_options.plist
+      - name: Build the Flutter iOS project
+        run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-options-plist=$HOME/export_options.plist
 
       - name: Publish the app to App Store Connect
         run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")
-
-      - name: Upload IPA artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: $(find $(pwd) -name "*.ipa")
 
       # - name: Install the Apple certificate and provisioning profile
       #   run: |

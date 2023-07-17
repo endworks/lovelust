@@ -42,9 +42,7 @@ jobs:
           BUILD_CERTIFICATE_BASE64: op://end.works/App Store Connect API/build certificate
           BUILD_CERTIFICATE_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/build certificate private key
           P12_PASSWORD: op://end.works/App Store Connect API/p12 password
-          PROVISION_PROFILE_APP_STORE_BASE64: op://end.works/App Store Connect API/provision profile app store
-          PROVISION_PROFILE_AD_HOC_BASE64: op://end.works/App Store Connect API/provision profile ad hoc
-          UUID_PROVISION_PROFILE: op://end.works/App Store Connect API/uuid provision profile
+          PROVISION_PROFILE_BASE64: op://end.works/App Store Connect API/provision profile app store
           KEYCHAIN_PASSWORD: op://end.works/App Store Connect API/keychain password
           CODE_SIGNING_IDENTITY: op://end.works/App Store Connect API/code signing identity
           TEAM_ID: op://end.works/App Store Connect API/team id
@@ -128,14 +126,13 @@ jobs:
       #   run: |
       #     # create variables
       #     CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-      #     PPAS_PATH=$RUNNER_TEMP/app_store_pp.mobileprovision
-      #     PPAH_PATH=$RUNNER_TEMP/ad_hoc_pp.mobileprovision
+      #     PP_PATH=$RUNNER_TEMP/app_store_pp.mobileprovision
       #     KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
       #     API_KEY_PATH=$RUNNER_TEMP/AuthKey.p8
 
       #     # import certificate and provisioning profile from secrets
       #     echo -n "${{ env.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode -o $CERTIFICATE_PATH
-      #     echo -n "${{ env.PROVISION_PROFILE_APP_STORE_BASE64 }}" | base64 --decode -o $PPAS_PATH
+      #     echo -n "${{ env.PROVISION_PROFILE_BASE64 }}" | base64 --decode -o $PP_PATH
       #     echo -n "${{ env.PROVISION_PROFILE_AD_HOC_BASE64 }}" | base64 --decode -o $PPAH_PATH
       #     echo -n "${{ env.APPSTORE_API_PRIVATE_KEY_BASE64 }}" | base64 --decode -o $API_KEY_PATH
 
@@ -152,10 +149,8 @@ jobs:
       #     PROVISIONING_PROFILES_DIR="~/Library/MobileDevice/Provisioning\ Profiles"
       #     mkdir -p "$PROVISIONING_PROFILES_DIR"
 
-      #     UUID_AS=`grep UUID -A1 -a "$PPAS_PATH" | grep -io "[-A-F0-9]\{36\}"`
-      #     UUID_AH=`grep UUID -A1 -a "$PPAH_PATH" | grep -io "[-A-F0-9]\{36\}"`
-      #     cp $PPAS_PATH "$PROVISIONING_PROFILES_DIR/$UUID_AS.mobileprovision"
-      #     cp $PPAH_PATH "$PROVISIONING_PROFILES_DIR/$UUID_AH.mobileprovision"
+      #     UUID=`grep UUID -A1 -a "$PP_PATH" | grep -io "[-A-F0-9]\{36\}"`
+      #     cp $PP_PATH "$PROVISIONING_PROFILES_DIR/$UUID.mobileprovision"
       #     ls -l "$PROVISIONING_PROFILES_DIR"
 
       #     # apply api key

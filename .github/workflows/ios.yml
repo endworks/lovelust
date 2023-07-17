@@ -10,7 +10,6 @@ permissions:
 jobs:
   build:
     name: Build
-    # runs-on: macos-latest
     runs-on: [self-hosted, macOS]
 
     steps:

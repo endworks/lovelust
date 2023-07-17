@@ -13,8 +13,7 @@ env:
 jobs:
   build:
     name: Build
-    # runs-on: ubuntu-latest
-    runs-on: self-hosted
+    runs-on: [self-hosted, linux]
 
     outputs:
       apk: ${{ steps.output.outputs.apk }}
@@ -34,6 +33,9 @@ jobs:
           distribution: temurin
           java-version: 17
           cache: "gradle"
+
+      - name: Setup Android SDK
+        uses: amyu/setup-android@v2
 
       - name: Flutter setup
         uses: subosito/flutter-action@v2

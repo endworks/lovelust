@@ -86,7 +86,7 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   String get date {
-    return DateFormat('dd MMMM yyyy').format(widget.activity.date);
+    return DateFormat('dd MMMM yyyy HH:mm').format(widget.activity.date);
   }
 
   String get place {
@@ -105,28 +105,7 @@ class _ActivityItemState extends State<ActivityItem> {
           masturbation: widget.activity.type == 'MASTURBATION',
         ),
         title: title,
-        subtitle:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              size: 16,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                child: Text(date)),
-            Icon(
-              Icons.timer_outlined,
-              size: 16,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            Padding(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                child: Text(
-                    "${widget.activity.duration} ${AppLocalizations.of(context)!.min} ")),
-          ]),
-        ]),
+        subtitle: Text(date),
         trailing: safetyIcon,
         onTap: _openActivity);
   }

@@ -40,10 +40,10 @@ class _PracticesBlockState extends State<PracticesBlock> {
           children: [
             ...widget.practices.map(
               (e) => Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-                child: Chip(
-                  label: Text(e.name),
-                  avatar: const Icon(Icons.check),
+                padding: const EdgeInsets.fromLTRB(0, 0, 8, 4),
+                child: Text(
+                  e.name,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
             )

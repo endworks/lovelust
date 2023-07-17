@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  OP_VERSION: 2.19.0
+
 jobs:
   build:
     name: Build
@@ -46,14 +49,22 @@ jobs:
       - name: Test
         run: flutter test
 
-      - name: Install 1Password CLI
+      - name: Cache node modules
+        id: cache-op
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: /usr/local/bin/op
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-$OP_VERSION
+
+      - if: ${{ steps.cache-op.outputs.cache-hit != 'true' }}
+        name: Install 1Password CLI
         run: |
-          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.19.0/op_linux_amd64_v2.19.0.zip" -O op.zip
+          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_linux_amd64_v$OP_VERSION.zip" -O op.zip
           unzip -d op op.zip
           sudo mv op/op /usr/local/bin
           rm -r op.zip op
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Get secrets
         run: |

@@ -35,7 +35,7 @@ jobs:
           cache-name: cache-op
         with:
           path: /usr/local/bin/op
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.OP_VERSION }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}
 
       - if: ${{ steps.cache-op.outputs.cache-hit != 'true' }}
         name: Install 1Password CLI

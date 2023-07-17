@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  OP_VERSION: 2.19.0
+
 jobs:
   build:
     name: Build
@@ -28,26 +31,21 @@ jobs:
       - name: Disable telemetry
         run: flutter --disable-telemetry
 
-      # - name: Load secret
-      #   id: op-load-secret
-      #   uses: 1password/load-secrets-action@v1.2.0
-      #   with:
-      #     export-env: true
-      #   env:
-      #     OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      #     APPSTORE_API_KEY_ID: op://end.works/App Store Connect API/app store api key id
-      #     APPSTORE_API_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/app store api private key
-      #     APPSTORE_ISSUER_ID: op://end.works/App Store Connect API/app store issuer id
-      #     BUILD_CERTIFICATE_BASE64: op://end.works/App Store Connect API/build certificate
-      #     BUILD_CERTIFICATE_PRIVATE_KEY_BASE64: op://end.works/App Store Connect API/build certificate private key
-      #     P12_PASSWORD: op://end.works/App Store Connect API/p12 password
-      #     PROVISION_PROFILE_BASE64: op://end.works/App Store Connect API/provision profile app store
-      #     KEYCHAIN_PASSWORD: op://end.works/App Store Connect API/keychain password
-      #     CODE_SIGNING_IDENTITY: op://end.works/App Store Connect API/code signing identity
-      #     TEAM_ID: op://end.works/App Store Connect API/team id
+      - name: Cache 1password-cli
+        id: cache-op
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-op
+        with:
+          path: /usr/local/bin/op
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.OP_VERSION }}
 
-      - name: Install 1Password CLI
-        run: command -v op >/dev/null 2>&1 || { brew install --cask 1password/tap/1password-cli >&2; exit 1; }
+      - if: ${{ steps.cache-op.outputs.cache-hit != 'true' }}
+        name: Install 1Password CLI
+        run: |
+          wget "https://cache.agilebits.com/dist/1P/op2/pkg/v$OP_VERSION/op_apple_universal_v$OP_VERSION.pkg" -O op.pkg
+          sudo installer -pkg op.pkg -target /
+          rm -r op.pkg
 
       - name: Get secrets
         run: |

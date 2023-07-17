@@ -53,10 +53,10 @@ jobs:
         id: cache-op
         uses: actions/cache@v3
         env:
-          cache-name: cache-node-modules
+          cache-name: cache-op
         with:
           path: /usr/local/bin/op
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-$OP_VERSION
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.OP_VERSION }}
 
       - if: ${{ steps.cache-op.outputs.cache-hit != 'true' }}
         name: Install 1Password CLI

@@ -3,12 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
 ColorScheme defaultColorScheme = ColorScheme.fromSeed(
-  seedColor: loveColor,
   brightness: Brightness.light,
 );
 
 ColorScheme defaultDarkColorScheme = ColorScheme.fromSeed(
-  seedColor: lustColor,
   brightness: Brightness.dark,
 );
 

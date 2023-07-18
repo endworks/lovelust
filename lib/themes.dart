@@ -4,14 +4,16 @@ import 'package:lovelust/colors.dart';
 
 ColorScheme defaultColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.light,
+  seedColor: loveColor,
 );
 
 ColorScheme defaultDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
+  seedColor: lustColor,
 );
 
 ThemeData defaultTheme = ThemeData(
-  colorScheme: defaultColorScheme,
+  // colorScheme: defaultColorScheme,
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   navigationBarTheme: const NavigationBarThemeData(
@@ -20,7 +22,7 @@ ThemeData defaultTheme = ThemeData(
 );
 
 ThemeData defaultDarkTheme = ThemeData(
-  colorScheme: defaultDarkColorScheme,
+  // colorScheme: defaultDarkColorScheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   navigationBarTheme: NavigationBarThemeData(

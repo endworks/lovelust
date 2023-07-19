@@ -84,8 +84,6 @@ class _SafetyBlockState extends State<SafetyBlock> {
 
   @override
   Widget build(BuildContext context) {
-    Color color =
-        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
@@ -95,14 +93,9 @@ class _SafetyBlockState extends State<SafetyBlock> {
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
         title: Row(children: [
-          Icon(
-            Icons.health_and_safety,
-            color: color,
-            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
-          ),
           Text(
             AppLocalizations.of(context)!.safety,
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ]),
         subtitle: safetyNotice,

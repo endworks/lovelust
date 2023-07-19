@@ -25,17 +25,10 @@ class _PracticesBlockState extends State<PracticesBlock> {
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
-        title: Row(children: [
-          Icon(
-            Icons.task_alt,
-            color: color,
-            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
-          ),
-          Text(
-            AppLocalizations.of(context)!.practices,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ]),
+        title: Text(
+          AppLocalizations.of(context)!.practices,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         subtitle: Wrap(
           children: [
             ...widget.practices.map(
@@ -43,7 +36,6 @@ class _PracticesBlockState extends State<PracticesBlock> {
                 padding: const EdgeInsets.fromLTRB(0, 0, 8, 4),
                 child: Text(
                   e.name,
-                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
             )

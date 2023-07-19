@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,8 +13,6 @@ class NotesBlock extends StatefulWidget {
 class _NotesBlockState extends State<NotesBlock> {
   @override
   Widget build(BuildContext context) {
-    Color color =
-        Colors.orange.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
@@ -24,15 +21,10 @@ class _NotesBlockState extends State<NotesBlock> {
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
-        title: Row(children: [
-          Icon(Icons.text_snippet,
-              color: color,
-              size: Theme.of(context).textTheme.headlineSmall!.fontSize),
-          Text(
-            AppLocalizations.of(context)!.notes,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ]),
+        title: Text(
+          AppLocalizations.of(context)!.notes,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         subtitle: Text(
           widget.notes,
           style: Theme.of(context).textTheme.bodyMedium,

@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
@@ -84,8 +83,6 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
 
   @override
   Widget build(BuildContext context) {
-    Color color =
-        Colors.deepOrange.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
@@ -94,17 +91,10 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
       elevation: 0,
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
-        title: Row(children: [
-          Icon(
-            Icons.tag_faces,
-            color: color,
-            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
-          ),
-          Text(
-            AppLocalizations.of(context)!.performance,
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-        ]),
+        title: Text(
+          AppLocalizations.of(context)!.performance,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: performance,

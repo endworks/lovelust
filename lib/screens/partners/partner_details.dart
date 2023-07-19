@@ -9,6 +9,7 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
+import 'package:lovelust/widgets/partner_avatar.dart';
 
 class PartnerDetailsPage extends StatefulWidget {
   const PartnerDetailsPage({super.key, required this.partner});
@@ -120,7 +121,9 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   get cards {
-    List<Widget> list = [];
+    List<Widget> list = [
+      PartnerAvatar(partner: widget.partner),
+    ];
     if (widget.partner.notes != null && widget.partner.notes!.isNotEmpty) {
       list.add(
         NotesBlock(
@@ -145,15 +148,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
             SliverAppBar(
               floating: false,
               pinned: true,
-              title: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(text: widget.partner.name),
-                    WidgetSpan(child: genderIcon),
-                  ],
-                ),
-              ),
-              // backgroundColor: headerBackgroundColor,
+              // title: Text(widget.partner.name),
               actions: [
                 IconButton(
                     onPressed: editPartner, icon: const Icon(Icons.edit)),

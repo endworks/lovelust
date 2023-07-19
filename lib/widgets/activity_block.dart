@@ -75,8 +75,6 @@ class _ActivityBlockState extends State<ActivityBlock> {
 
   @override
   Widget build(BuildContext context) {
-    Color pink =
-        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
@@ -88,14 +86,9 @@ class _ActivityBlockState extends State<ActivityBlock> {
       child: ListTile(
         onTap: openActivity,
         title: Row(children: [
-          Icon(
-            Icons.favorite,
-            color: pink,
-            size: Theme.of(context).textTheme.headlineSmall!.fontSize,
-          ),
           Text(
             AppLocalizations.of(context)!.sexualActivity,
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const Spacer(),
           const Icon(

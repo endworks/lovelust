@@ -31,29 +31,17 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
   }
 
   Icon get icon {
-    Color color = Theme.of(context).colorScheme.onPrimary;
-    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color blue =
-        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color pink =
-        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
     if (!widget.masturbation) {
       if (partner != null) {
-        if (!_common.monochrome) {
-          color = partner!.sex == 'M' ? blue : red;
-        }
         return Icon(
           partner!.gender == 'M' ? Icons.male : Icons.female,
-          color: color,
+          color: Theme.of(context).colorScheme.onInverseSurface,
         );
       }
     } else {
-      if (!_common.monochrome) {
-        color = pink;
-      }
       return Icon(
         Icons.front_hand,
-        color: color,
+        color: Theme.of(context).colorScheme.onInverseSurface,
       );
     }
 
@@ -72,15 +60,13 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
     if (!_common.monochrome) {
       if (!widget.masturbation) {
         if (partner != null) {
-          return partner!.sex == 'M'
-              ? blue.withAlpha(_common.alpha)
-              : red.withAlpha(_common.alpha);
+          return partner!.sex == 'M' ? blue : red;
         }
       } else {
-        return pink.withAlpha(_common.alpha);
+        return pink;
       }
 
-      return Theme.of(context).colorScheme.primary.withAlpha(_common.alpha);
+      return Theme.of(context).colorScheme.primary;
     } else {
       return Theme.of(context).colorScheme.primary;
     }

@@ -22,9 +22,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final SharedService _shared = getIt<SharedService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
-  final bool _showDesktopNavigation =
-      Platform.isMacOS || Platform.isWindows || Platform.isLinux;
   int _selectedIndex = 0;
+  bool _showDesktopNavigation = Platform.isIOS;
 
   @override
   void initState() {
@@ -34,6 +33,13 @@ class _HomeState extends State<Home> {
       _localAuth.getAvailableBiometrics();
       _localAuth.authenticate();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _showDesktopNavigation =
+        MediaQuery.of(context).size.width >= MediaQuery.of(context).size.height;
   }
 
   Widget get _selectedPage {
@@ -98,48 +104,57 @@ class _HomeState extends State<Home> {
         .toList();
   }
 
+  NavigationRailLabelType get labelTypeFromTheme {
+    NavigationDestinationLabelBehavior? labelBehavior =
+        Theme.of(context).navigationBarTheme.labelBehavior;
+    if (labelBehavior == NavigationDestinationLabelBehavior.alwaysHide) {
+      return NavigationRailLabelType.none;
+    } else if (labelBehavior ==
+        NavigationDestinationLabelBehavior.onlyShowSelected) {
+      return NavigationRailLabelType.selected;
+    } else {
+      return NavigationRailLabelType.all;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!widget.initialLoadDone) {
       return const SizedBox.shrink();
     }
-    return OrientationBuilder(
-      builder: (context, orientation) => Scaffold(
-        body: _showDesktopNavigation
-            ? Row(
-                children: <Widget>[
-                  NavigationRail(
-                    selectedIndex: _selectedIndex,
-                    onDestinationSelected: (int index) {
-                      setState(() {
-                        _selectedIndex = index;
-                      });
-                    },
-                    destinations: _navigationRailDestinations,
-                  ),
-                  const VerticalDivider(thickness: 1, width: 1),
-                  // This is the main content.
-                  Expanded(
-                    child: _selectedPage,
-                  ),
-                ],
-              )
-            : _selectedPage,
-        bottomNavigationBar: !_showDesktopNavigation
-            ? NavigationBar(
-                selectedIndex: _selectedIndex,
-                labelBehavior: orientation == Orientation.landscape
-                    ? NavigationDestinationLabelBehavior.alwaysHide
-                    : null,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                destinations: _navigationDestinations,
-              )
-            : null,
-      ),
+    return Scaffold(
+      body: _showDesktopNavigation
+          ? Row(
+              children: <Widget>[
+                NavigationRail(
+                  selectedIndex: _selectedIndex,
+                  labelType: labelTypeFromTheme,
+                  onDestinationSelected: (int index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                  destinations: _navigationRailDestinations,
+                ),
+                const VerticalDivider(thickness: 1, width: 1),
+                // This is the main content.
+                Expanded(
+                  child: _selectedPage,
+                ),
+              ],
+            )
+          : _selectedPage,
+      bottomNavigationBar: !_showDesktopNavigation
+          ? NavigationBar(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              destinations: _navigationDestinations,
+            )
+          : null,
     );
   }
 }

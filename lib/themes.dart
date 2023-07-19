@@ -10,7 +10,7 @@ ThemeData defaultTheme = ThemeData(
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   navigationBarTheme: const NavigationBarThemeData(
-      // labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+      // labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       ),
 );
 

@@ -9,9 +9,9 @@
    id="svg5"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
    sodipodi:docname="adaptive-icon.svg"
-   inkscape:export-filename="..\android\app\src\main\res\mipmap-hdpi\ic_launcher_adaptive_fore.png"
-   inkscape:export-xdpi="144"
-   inkscape:export-ydpi="144"
+   inkscape:export-filename="..\android\app\src\main\res\mipmap-xxxhdpi\ic_launcher_adaptive_mono.png"
+   inkscape:export-xdpi="384"
+   inkscape:export-ydpi="384"
    xml:space="preserve"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -36,7 +36,7 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer3"
      showguides="true"
      inkscape:showpageshadow="2"
      inkscape:deskcolor="#d1d1d1"><inkscape:grid
@@ -779,7 +779,7 @@
        ry="14.2875"
        transform="rotate(90)"
        inkscape:label="Circle" /><rect
-       style="display:inline;fill:url(#linearGradient13328);fill-opacity:1.0;fill-rule:evenodd;stroke:none;stroke-width:0.0905694;stroke-opacity:1"
+       style="display:inline;fill:url(#linearGradient13328);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.0905694;stroke-opacity:1"
        id="rect13325"
        width="28.575001"
        height="28.575001"
@@ -848,9 +848,9 @@
        x="4.7624998"
        y="4.7624998"
        inkscape:label="Android Icon"
-       inkscape:export-filename="..\web\icons\Icon-maskable-192.png"
-       inkscape:export-xdpi="256"
-       inkscape:export-ydpi="256" /><rect
+       inkscape:export-filename="..\web\icons\Icon-maskable-512.png"
+       inkscape:export-xdpi="682.66998"
+       inkscape:export-ydpi="682.66998" /><rect
        style="display:none;opacity:1;fill:#121212;fill-opacity:1;stroke:none;stroke-width:1.60243;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:markers fill stroke"
        id="rect5520"
        width="15.345834"
@@ -868,7 +868,7 @@
        x="6.0854168"
        y="6.0854168"
        inkscape:label="iOS Icon alt 2"
-       inkscape:export-filename="..\..\kuroneko-ios\Kuroneko\App\Assets.xcassets\AppIcon.appiconset\App-Icon-29x29@3x.png"
+       inkscape:export-filename="..\ios\Runner\Assets.xcassets\AppIcon.appiconset\Icon-App-29x29@3x.png"
        inkscape:export-xdpi="134.71001"
        inkscape:export-ydpi="134.71001" /><rect
        style="display:none;opacity:1;fill:#121212;fill-opacity:1;stroke:none;stroke-width:1.82347;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;paint-order:markers fill stroke"
@@ -962,7 +962,8 @@
      transform="matrix(1.0000002,0,0,0.99999887,-1.6830635e-5,5.2419835)"
      style="display:inline"><g
        id="g498"
-       inkscape:label="Legacy"><path
+       inkscape:label="Legacy"
+       style="display:none"><path
          d="M 14.287512,14.383774 14.09504,14.219913 C 9.9568987,10.778854 8.8341483,9.5662894 8.8341483,7.5999681 c 0,-1.6385993 1.2831427,-2.9494803 2.8870747,-2.9494803 1.315223,0 2.053032,0.7537565 2.566289,1.3436524 0.513264,-0.5898959 1.251069,-1.3436524 2.566291,-1.3436524 1.603935,0 2.887076,1.310881 2.887076,2.9494803 0,1.9663213 -1.12275,3.1788859 -5.260895,6.6199449 z M 11.721223,5.3059278 c -1.251067,0 -2.2455033,1.015932 -2.2455033,2.2940403 0,1.6713723 1.0265173,2.7856189 4.8117923,5.9317369 3.785279,-3.146118 4.811788,-4.2603646 4.811788,-5.9317369 0,-1.2781083 -0.994438,-2.2940403 -2.245497,-2.2940403 -1.122749,0 -1.732245,0.6882124 -2.213425,1.2453368 L 14.287512,6.9773008 13.934648,6.5512646 C 13.453468,5.9941402 12.843974,5.3059278 11.721223,5.3059278 Z"
          id="path3580"
          style="display:none;fill:#000000;fill-opacity:1;stroke:url(#linearGradient19174);stroke-width:0.264583;stroke-dasharray:none;stroke-opacity:1"
@@ -1039,6 +1040,11 @@
        id="path537"
        style="display:none;fill:none;fill-opacity:1;stroke:url(#linearGradient1064);stroke-width:1.05822;stroke-dasharray:none;stroke-opacity:1"
        inkscape:label="Gradient"
+       sodipodi:nodetypes="ccsscsscc" /><path
+       d="m 14.287514,14.165331 -0.191436,-0.16637 C 9.9802092,10.505196 8.8635002,9.2740615 8.8635002,7.2776224 c 0,-1.6636977 1.2762358,-2.9946583 2.8715368,-2.9946583 1.308147,0 2.041981,0.7653021 2.552477,1.3642339 0.510504,-0.5989318 1.244337,-1.3642339 2.552478,-1.3642339 1.595303,0 2.871535,1.3309606 2.871535,2.9946583 0,1.9964391 -1.116707,3.2275736 -5.232578,6.7213386 z"
+       id="path2671"
+       style="display:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.05822;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:label="Mono"
        sodipodi:nodetypes="ccsscsscc" /><path
        d="m 14.287514,14.165331 -0.191436,-0.16637 C 9.9802092,10.505196 8.8635002,9.2740615 8.8635002,7.2776224 c 0,-1.6636977 1.2762358,-2.9946583 2.8715368,-2.9946583 1.308147,0 2.041981,0.7653021 2.552477,1.3642339 0.510504,-0.5989318 1.244337,-1.3642339 2.552478,-1.3642339 1.595303,0 2.871535,1.3309606 2.871535,2.9946583 0,1.9964391 -1.116707,3.2275736 -5.232578,6.7213386 z"
        id="path501"
@@ -1208,6 +1214,11 @@
        id="path13063"
        sodipodi:nodetypes="cccccc"
        inkscape:label="Beat" /><path
+       style="display:none;opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 13.229167,14.816667 14.2875,15.875 15.875,12.7"
+       id="path13332"
+       sodipodi:nodetypes="ccc"
+       inkscape:label="Check" /><path
        style="display:none;opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
        d="m 12.699998,14.316499 1.058333,1.058333 2.116667,-2.116667"
        id="path13330"
@@ -1227,9 +1238,4 @@
        d="m 13.229167,14.316499 1.058333,1.058333 2.116667,-2.116667"
        id="path338"
        sodipodi:nodetypes="ccc"
-       inkscape:label="Check alt sweet" /><path
-       style="display:none;opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 13.229167,14.816667 14.2875,15.875 15.875,12.7"
-       id="path13332"
-       sodipodi:nodetypes="ccc"
-       inkscape:label="Check" /></g></svg>
+       inkscape:label="Check alt gradient" /></g></svg>

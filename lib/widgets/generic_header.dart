@@ -13,7 +13,7 @@ class GenericHeader extends StatefulWidget {
 class _GenericHeaderState extends State<GenericHeader> {
   @override
   Widget build(BuildContext context) {
-    return SliverAppBar.medium(
+    return SliverAppBar(
       floating: false,
       pinned: true,
       actions: widget.actions,

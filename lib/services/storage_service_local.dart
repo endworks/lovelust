@@ -20,6 +20,11 @@ class StorageServiceLocal extends StorageService {
   );
 
   @override
+  Future<void> clear() async {
+    return await _storage.deleteAll();
+  }
+
+  @override
   Future<String> getTheme() async {
     return await _storage.read(key: 'theme') ?? 'system';
   }

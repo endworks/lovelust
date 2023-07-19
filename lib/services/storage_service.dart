@@ -4,6 +4,7 @@ import '../models/activity.dart';
 import '../models/partner.dart';
 
 abstract class StorageService {
+  Future<void> clear();
   Future<String> getTheme();
   Future<void> setTheme(String value);
   Future<String?> getColorScheme();

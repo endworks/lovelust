@@ -203,31 +203,34 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            floating: false,
-            pinned: true,
-            title: Text(title),
-            // backgroundColor: headerBackgroundColor,
-            actions: [
-              IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
-              PopupMenuButton(
-                onSelected: menuEntryItemSelected,
-                itemBuilder: (BuildContext context) =>
-                    <PopupMenuEntry<MenuEntryItem>>[
-                  PopupMenuItem(
-                    value: MenuEntryItem.delete,
-                    child: Text(AppLocalizations.of(context)!.delete),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SliverList.list(
-            children: cards,
-          )
-        ],
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              floating: false,
+              pinned: true,
+              title: Text(title),
+              // backgroundColor: headerBackgroundColor,
+              actions: [
+                IconButton(
+                    onPressed: editActivity, icon: const Icon(Icons.edit)),
+                PopupMenuButton(
+                  onSelected: menuEntryItemSelected,
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<MenuEntryItem>>[
+                    PopupMenuItem(
+                      value: MenuEntryItem.delete,
+                      child: Text(AppLocalizations.of(context)!.delete),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SliverList.list(
+              children: cards,
+            ),
+          ],
+        ),
       ),
     );
   }

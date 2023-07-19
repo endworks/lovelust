@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/destination.dart';
@@ -23,7 +21,8 @@ class _HomeState extends State<Home> {
   final SharedService _shared = getIt<SharedService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
   int _selectedIndex = 0;
-  bool _showDesktopNavigation = Platform.isIOS;
+  bool _showDesktopNavigation = false;
+  bool _centerDesktopNavigation = false;
 
   @override
   void initState() {
@@ -39,7 +38,8 @@ class _HomeState extends State<Home> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _showDesktopNavigation =
-        MediaQuery.of(context).size.width >= MediaQuery.of(context).size.height;
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    _centerDesktopNavigation = MediaQuery.of(context).size.height > 450;
   }
 
   Widget get _selectedPage {
@@ -129,6 +129,7 @@ class _HomeState extends State<Home> {
                 NavigationRail(
                   selectedIndex: _selectedIndex,
                   labelType: labelTypeFromTheme,
+                  groupAlignment: _centerDesktopNavigation ? 0 : -1,
                   onDestinationSelected: (int index) {
                     setState(() {
                       _selectedIndex = index;

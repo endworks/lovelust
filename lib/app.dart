@@ -108,7 +108,6 @@ class _AppState extends State<App> {
           home: Home(initialLoadDone: initialLoadDone),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          debugShowCheckedModeBanner: false,
         );
       }),
     );

@@ -145,16 +145,20 @@ class SharedService {
     refreshToken = null;
   }
 
-  void clearData() {
-    debugPrint('clearData');
+  void clearPersonalData() {
+    debugPrint('clearPersonalData');
     theme = 'system';
     colorScheme = null;
     accessToken = null;
     refreshToken = null;
     activity = [];
     partners = [];
-    calendarView = false;
-    activityFilter = null;
+  }
+
+  void clearData() async {
+    debugPrint('clearData');
+    await _storage.clear();
+    await initialLoad();
   }
 
   Activity? getActivityById(String id) {

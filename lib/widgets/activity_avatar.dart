@@ -47,7 +47,7 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
 
     return Icon(
       Icons.person_off,
-      color: Theme.of(context).colorScheme.primary,
+      color: Theme.of(context).colorScheme.onInverseSurface,
     );
   }
 

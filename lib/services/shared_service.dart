@@ -14,6 +14,8 @@ class SharedService {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
 
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   String _theme = 'system';
   String? _colorScheme;
   String? _accessToken;

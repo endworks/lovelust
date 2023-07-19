@@ -25,7 +25,7 @@ class _NotesBlockState extends State<NotesBlock> {
       color: Theme.of(context).colorScheme.surfaceVariant,
       child: ListTile(
         title: Row(children: [
-          Icon(Icons.note_alt,
+          Icon(Icons.text_snippet,
               color: color,
               size: Theme.of(context).textTheme.headlineSmall!.fontSize),
           Text(

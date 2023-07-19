@@ -73,6 +73,11 @@ jobs:
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
+      - name: Generate release notes
+        run: |
+          WHATS_NEW="$COMMIT_HASH:$COMMIT_MESSAGE"
+          echo "APP_STORE_CONNECT_WHATS_NEW=$WHATS_NEW" >> $GITHUB_ENV
+
       - name: Install the Codemagic CLI tools
         run: pip3 install codemagic-cli-tools
 

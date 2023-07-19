@@ -73,6 +73,11 @@ jobs:
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
           echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
 
+      - name: Generate release notes
+        run: |
+          WHATS_NEW="$COMMIT_HASH:$COMMIT_MESSAGE"
+          echo "APP_STORE_CONNECT_WHATS_NEW=$WHATS_NEW" >> $GITHUB_ENV
+
       - name: Install the Codemagic CLI tools
         run: pip3 install codemagic-cli-tools
 
@@ -130,10 +135,10 @@ jobs:
         with:
           path: ~/Library/MobileDevice/Provisioning\ Profiles
 
-      - name: Build the Flutter iOS project
+      - name: Build the Flutter macOS project
         run: flutter build macos --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
 
-      - name: Build the Flutter iOS project
+      - name: Package the macOS app
         run: |
           APP_NAME=$(find $(pwd) -name "*.app")
           PACKAGE_NAME=$(basename "$APP_NAME" .app).pkg

@@ -142,33 +142,30 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              floating: false,
-              pinned: true,
-              // title: Text(widget.partner.name),
-              actions: [
-                IconButton(
-                    onPressed: editPartner, icon: const Icon(Icons.edit)),
-                PopupMenuButton(
-                  onSelected: menuEntryItemSelected,
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<MenuEntryItem>>[
-                    PopupMenuItem(
-                      value: MenuEntryItem.delete,
-                      child: Text(AppLocalizations.of(context)!.delete),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SliverList.list(
-              children: cards,
-            ),
-          ],
-        ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: false,
+            pinned: true,
+            // title: Text(widget.partner.name),
+            actions: [
+              IconButton(onPressed: editPartner, icon: const Icon(Icons.edit)),
+              PopupMenuButton(
+                onSelected: menuEntryItemSelected,
+                itemBuilder: (BuildContext context) =>
+                    <PopupMenuEntry<MenuEntryItem>>[
+                  PopupMenuItem(
+                    value: MenuEntryItem.delete,
+                    child: Text(AppLocalizations.of(context)!.delete),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: cards,
+          ),
+        ],
       ),
     );
   }

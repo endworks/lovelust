@@ -108,8 +108,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.initialLoadDone ||
-        (_shared.requireAuth && !_localAuth.authorized)) {
+    if (!widget.initialLoadDone) {
       return const SizedBox.shrink();
     }
     return Scaffold(
@@ -131,6 +130,7 @@ class _HomeState extends State<Home> {
               onDestinationSelected: (int index) {
                 setState(() {
                   selectedIndex = index;
+                  _shared.scaffoldKey.currentState!.closeDrawer();
                 });
               },
               selectedIndex: selectedIndex,
@@ -138,8 +138,8 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
                   child: Text(
-                    'LoveLust',
-                    style: Theme.of(context).textTheme.titleSmall,
+                    _shared.packageInfo!.appName,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 ...drawerDestinations,

@@ -75,7 +75,7 @@ jobs:
 
       - name: Generate release notes
         run: |
-          WHATS_NEW="$COMMIT_HASH:$COMMIT_MESSAGE"
+          WHATS_NEW="$COMMIT_HASH: $COMMIT_MESSAGE"
           echo "APP_STORE_CONNECT_WHATS_NEW=$WHATS_NEW" >> $GITHUB_ENV
 
       - name: Install the Codemagic CLI tools

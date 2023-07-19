@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/destination.dart';
@@ -20,8 +22,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final SharedService _shared = getIt<SharedService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
-  int selectedIndex = 0;
-  bool showNavigationDrawer = false;
+  final bool _showDesktopNavigation =
+      Platform.isMacOS || Platform.isWindows || Platform.isLinux;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -33,16 +36,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    showNavigationDrawer =
-        MediaQuery.of(context).size.width >= MediaQuery.of(context).size.height;
-  }
-
-  Widget get selectedPage {
-    if (selectedIndex > -1) {
-      return pages[selectedIndex];
+  Widget get _selectedPage {
+    if (_selectedIndex > -1) {
+      return pages[_selectedIndex];
     }
     return const Text('loading');
   }
@@ -82,28 +78,24 @@ class _HomeState extends State<Home> {
     ];
   }
 
-  List<Widget> get navigationDestinations {
-    return destinations.map(
-      (destination) {
-        return NavigationDestination(
-          label: destination.label,
-          icon: destination.icon,
-          selectedIcon: destination.selectedIcon,
-        );
-      },
-    ).toList();
+  List<NavigationDestination> get _navigationDestinations {
+    return destinations
+        .map((destination) => NavigationDestination(
+              label: destination.label,
+              icon: destination.icon,
+              selectedIcon: destination.selectedIcon,
+            ))
+        .toList();
   }
 
-  List<Widget> get drawerDestinations {
-    return destinations.map(
-      (destination) {
-        return NavigationDrawerDestination(
-          label: Text(destination.label),
-          icon: destination.icon,
-          selectedIcon: destination.selectedIcon,
-        );
-      },
-    ).toList();
+  List<NavigationRailDestination> get _navigationRailDestinations {
+    return destinations
+        .map((destination) => NavigationRailDestination(
+              icon: destination.icon,
+              selectedIcon: destination.icon,
+              label: Text(destination.label),
+            ))
+        .toList();
   }
 
   @override
@@ -111,45 +103,43 @@ class _HomeState extends State<Home> {
     if (!widget.initialLoadDone) {
       return const SizedBox.shrink();
     }
-    return Scaffold(
-      key: _shared.scaffoldKey,
-      body: selectedPage,
-      bottomNavigationBar: !showNavigationDrawer
-          ? NavigationBar(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (int index) {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-              destinations: navigationDestinations,
-            )
-          : null,
-      drawer: showNavigationDrawer
-          ? NavigationDrawer(
-              onDestinationSelected: (int index) {
-                setState(() {
-                  selectedIndex = index;
-                  _shared.scaffoldKey.currentState!.closeDrawer();
-                });
-              },
-              selectedIndex: selectedIndex,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
-                  child: Text(
-                    _shared.packageInfo!.appName,
-                    style: Theme.of(context).textTheme.titleMedium,
+    return OrientationBuilder(
+      builder: (context, orientation) => Scaffold(
+        body: _showDesktopNavigation
+            ? Row(
+                children: <Widget>[
+                  NavigationRail(
+                    selectedIndex: _selectedIndex,
+                    onDestinationSelected: (int index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    destinations: _navigationRailDestinations,
                   ),
-                ),
-                ...drawerDestinations,
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
-                  child: Divider(),
-                ),
-              ],
-            )
-          : null,
+                  const VerticalDivider(thickness: 1, width: 1),
+                  // This is the main content.
+                  Expanded(
+                    child: _selectedPage,
+                  ),
+                ],
+              )
+            : _selectedPage,
+        bottomNavigationBar: !_showDesktopNavigation
+            ? NavigationBar(
+                selectedIndex: _selectedIndex,
+                labelBehavior: orientation == Orientation.landscape
+                    ? NavigationDestinationLabelBehavior.alwaysHide
+                    : null,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                destinations: _navigationDestinations,
+              )
+            : null,
+      ),
     );
   }
 }

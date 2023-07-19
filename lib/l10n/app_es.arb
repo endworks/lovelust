@@ -84,6 +84,7 @@
   "version": "Versión de app",
   "buildNumber": "Número de compilación",
   "installerStore": "Tienda de instalación",
+  "platform": "Plataforma",
   "delete": "Eliminar",
   "save": "Guardar",
   "help": "Ayuda"

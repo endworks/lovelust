@@ -104,6 +104,7 @@
   "version": "App version",
   "buildNumber": "Build number",
   "installerStore": "Installer store",
+  "platform": "Platform",
   "delete": "Delete",
   "save": "Save",
   "help": "Help"

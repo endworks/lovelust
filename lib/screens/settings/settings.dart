@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -172,6 +174,11 @@ class _SettingsPageState extends State<SettingsPage> {
         leading: const Icon(Icons.store),
         trailing: Text(_common.packageInfo?.installerStore ?? 'store'),
       ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.platform),
+        leading: const Icon(Icons.widgets),
+        trailing: Text(platformName),
+      ),
     ];
     if (kDebugMode) {
       list.addAll(
@@ -197,6 +204,19 @@ class _SettingsPageState extends State<SettingsPage> {
     }
 
     return list;
+  }
+
+  String get platformName {
+    if (Platform.isAndroid) {
+      return 'Android';
+    } else if (Platform.isIOS) {
+      return 'iOS';
+    } else if (Platform.isMacOS) {
+      return 'macOS';
+    } else if (Platform.isWindows) {
+      return 'Windows';
+    }
+    return 'Unknown';
   }
 
   @override

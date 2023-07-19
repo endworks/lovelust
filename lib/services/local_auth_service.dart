@@ -8,8 +8,9 @@ class LocalAuthService {
   AuthSupportState supportState = AuthSupportState.unknown;
   bool? canCheckBiometrics;
   List<BiometricType>? availableBiometrics;
-  String authorized = 'Not Authorized';
+  String authorizedMsg = 'Not Authorized';
   bool isAuthenticating = false;
+  bool authorized = false;
 
   void init() {
     auth.isDeviceSupported().then(
@@ -41,7 +42,7 @@ class LocalAuthService {
     bool authenticated = false;
     try {
       isAuthenticating = true;
-      authorized = 'Authenticating';
+      authorizedMsg = 'Authenticating';
 
       authenticated = await auth.authenticate(
         localizedReason: 'Let OS determine authentication method',
@@ -55,18 +56,21 @@ class LocalAuthService {
       debugPrint(e.toString());
 
       isAuthenticating = false;
-      authorized = 'Error - ${e.message}';
+      authorizedMsg = 'Error - ${e.message}';
+      authorized = false;
       return;
     }
 
-    () => authorized = authenticated ? 'Authorized' : 'Not Authorized';
+    final String message = authenticated ? 'Authorized' : 'Not Authorized';
+    authorized = authenticated;
+    authorizedMsg = message;
   }
 
   Future<void> authenticateWithBiometrics() async {
     bool authenticated = false;
     try {
       isAuthenticating = true;
-      authorized = 'Authenticating';
+      authorizedMsg = 'Authenticating';
 
       authenticated = await auth.authenticate(
         localizedReason:
@@ -78,18 +82,19 @@ class LocalAuthService {
       );
 
       isAuthenticating = false;
-      authorized = 'Authenticating';
+      authorizedMsg = 'Authenticating';
     } on PlatformException catch (e) {
       debugPrint(e.toString());
 
       isAuthenticating = false;
-      authorized = 'Error - ${e.message}';
-
+      authorizedMsg = 'Error - ${e.message}';
+      authorized = false;
       return;
     }
 
     final String message = authenticated ? 'Authorized' : 'Not Authorized';
-    authorized = message;
+    authorized = authenticated;
+    authorizedMsg = message;
   }
 
   Future<void> cancelAuthentication() async {

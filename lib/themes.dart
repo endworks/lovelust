@@ -2,18 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
-ColorScheme defaultColorScheme = ColorScheme.fromSeed(
-  brightness: Brightness.light,
-  seedColor: loveColor,
-);
-
-ColorScheme defaultDarkColorScheme = ColorScheme.fromSeed(
-  brightness: Brightness.dark,
-  seedColor: lustColor,
-);
-
 ThemeData defaultTheme = ThemeData(
-  // colorScheme: defaultColorScheme,
+/*   colorScheme: ColorScheme.fromSeed(
+    brightness: Brightness.light,
+    seedColor: loveColor,
+  ), */
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   navigationBarTheme: const NavigationBarThemeData(
@@ -22,7 +15,10 @@ ThemeData defaultTheme = ThemeData(
 );
 
 ThemeData defaultDarkTheme = ThemeData(
-  // colorScheme: defaultDarkColorScheme,
+  /* colorScheme: ColorScheme.fromSeed(
+    brightness: Brightness.dark,
+    seedColor: lustColor,
+  ), */
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
   navigationBarTheme: NavigationBarThemeData(

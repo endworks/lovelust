@@ -82,7 +82,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.initialLoadDone) {
+    if (!widget.initialLoadDone ||
+        (_shared.requireAuth && !_localAuth.authorized)) {
       return const SizedBox.shrink();
     }
     return Scaffold(

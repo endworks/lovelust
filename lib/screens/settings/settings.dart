@@ -273,7 +273,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ListTile(
         title: Text(AppLocalizations.of(context)!.version),
         subtitle: Text(
-          "${_common.packageInfo?.version ?? '1.0.0'}.${_common.packageInfo?.buildNumber ?? 1}",
+          "${_common.packageInfo?.version ?? '1.0.0'} (${_common.packageInfo?.buildNumber ?? 1}) ${_common.packageInfo?.installerStore ?? 'store'}",
           style: Theme.of(context).textTheme.bodySmall,
         ),
         leading: const Icon(Icons.app_settings_alt),

@@ -208,7 +208,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           SliverAppBar(
             floating: false,
             pinned: true,
-            title: Text(title),
+            title: Text(!_common.privacyMode
+                ? title
+                : title.replaceAll(RegExp(r"."), _common.obscureCharacter)),
             // backgroundColor: headerBackgroundColor,
             actions: [
               IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),

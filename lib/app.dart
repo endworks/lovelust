@@ -4,12 +4,14 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/themes.dart';
+import 'package:relative_time/relative_time.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -106,7 +108,13 @@ class _AppState extends State<App> {
           darkTheme: darkTheme,
           themeMode: themeMode,
           home: Home(initialLoadDone: initialLoadDone),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            RelativeTimeLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
           supportedLocales: AppLocalizations.supportedLocales,
         );
       }),

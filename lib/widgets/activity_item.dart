@@ -1,7 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
@@ -9,6 +8,7 @@ import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
+import 'package:relative_time/relative_time.dart';
 
 class ActivityItem extends StatefulWidget {
   const ActivityItem({super.key, required this.activity});
@@ -20,14 +20,14 @@ class ActivityItem extends StatefulWidget {
 }
 
 class _ActivityItemState extends State<ActivityItem> {
-  final SharedService _commonService = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   Partner? partner;
 
   @override
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = _commonService.getPartnerById(widget.activity.partner!);
+      partner = _shared.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
@@ -49,7 +49,10 @@ class _ActivityItemState extends State<ActivityItem> {
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
         return Text(
-          partner!.name,
+          !_shared.privacyMode
+              ? partner!.name
+              : partner!.name
+                  .replaceAll(RegExp(r"."), _shared.obscureCharacter),
           style: style,
         );
       } else {
@@ -86,7 +89,8 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   String get date {
-    return DateFormat('dd MMMM yyyy HH:mm').format(widget.activity.date);
+    return RelativeTime(context).format(widget.activity.date);
+    // return DateFormat('dd MMMM yyyy HH:mm').format(widget.activity.date);
   }
 
   String get place {

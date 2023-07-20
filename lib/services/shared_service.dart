@@ -31,6 +31,8 @@ class SharedService {
   String? _activityFilter;
   PackageInfo? packageInfo;
 
+  String obscureCharacter = '●';
+
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
     var futures = <Future>[

@@ -32,7 +32,10 @@ class _PartnerItemState extends State<PartnerItem> {
 
   Text get title {
     return Text(
-      !_common.privacyMode ? widget.partner.name : 'Hidden',
+      !_common.privacyMode
+          ? widget.partner.name
+          : widget.partner.name
+              .replaceAll(RegExp(r"."), _common.obscureCharacter),
       style: Theme.of(context).textTheme.titleMedium,
     );
   }

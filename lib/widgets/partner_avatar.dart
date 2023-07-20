@@ -43,7 +43,10 @@ class _PartnerAvatarState extends State<PartnerAvatar> {
             child: icon,
           ),
           Text(
-            widget.partner.name,
+            !_common.privacyMode
+                ? widget.partner.name
+                : widget.partner.name
+                    .replaceAll(RegExp(r"."), _common.obscureCharacter),
             style: Theme.of(context).textTheme.displayMedium,
           )
         ],

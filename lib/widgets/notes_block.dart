@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class NotesBlock extends StatefulWidget {
   const NotesBlock({super.key, required this.notes});
@@ -11,6 +13,8 @@ class NotesBlock extends StatefulWidget {
 }
 
 class _NotesBlockState extends State<NotesBlock> {
+  final SharedService _shared = getIt<SharedService>();
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -26,7 +30,9 @@ class _NotesBlockState extends State<NotesBlock> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Text(
-          widget.notes,
+          !_shared.privacyMode
+              ? widget.notes
+              : widget.notes.replaceAll(RegExp(r"."), _shared.obscureCharacter),
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),

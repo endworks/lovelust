@@ -11,12 +11,6 @@ class StorageServiceLocal extends StorageService {
     iOptions: IOSOptions(
       synchronizable: true,
     ),
-    mOptions: MacOsOptions(
-      synchronizable: true,
-    ),
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: false,
-    ),
   );
 
   @override

@@ -116,7 +116,7 @@ jobs:
         run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'
 
       - name: Update the Xcode project settings to use fetched code signing profiles
-        run: xcode-project use-profiles
+        run: xcode-project use-profiles --export-options-plist=ios/exportOptions.plist
 
       - name: Install Flutter dependencies
         run: flutter packages pub get
@@ -130,7 +130,7 @@ jobs:
           path: ~/Library/MobileDevice/Provisioning\ Profiles
 
       - name: Build the Flutter iOS project
-        run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-options-plist=$HOME/export_options.plist
+        run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-options-plist=ios/exportOptions.plist
 
       - name: Publish the app to App Store Connect
         run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")

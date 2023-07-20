@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
@@ -48,7 +47,6 @@ class SharedService {
       loadStaticData(),
       findSystemLocale(),
       PackageInfo.fromPlatform(),
-      googleFontsPending,
     ];
 
     List result = await Future.wait(futures);
@@ -122,10 +120,6 @@ class SharedService {
     activityTypes = result[5];
     return Future.value(null);
   }
-
-  Future googleFontsPending = GoogleFonts.pendingFonts([
-    GoogleFonts.dmSans(),
-  ]);
 
   bool get isLoggedIn {
     return accessToken != null;

@@ -1,30 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
+const fallbackTextStyle = TextStyle(
+  fontFamily: 'Roboto',
+  fontFamilyFallback: ['NotoEmoji'],
+);
+
+TextTheme fallbackTextTheme = const TextTheme(
+  bodyLarge: fallbackTextStyle,
+  bodyMedium: fallbackTextStyle,
+  labelLarge: fallbackTextStyle,
+  bodySmall: fallbackTextStyle,
+  labelSmall: fallbackTextStyle,
+  displayLarge: fallbackTextStyle,
+  displayMedium: fallbackTextStyle,
+  displaySmall: fallbackTextStyle,
+  headlineMedium: fallbackTextStyle,
+  headlineSmall: fallbackTextStyle,
+  titleLarge: fallbackTextStyle,
+  titleMedium: fallbackTextStyle,
+  titleSmall: fallbackTextStyle,
+);
+
 ThemeData defaultTheme = ThemeData(
-/*   colorScheme: ColorScheme.fromSeed(
+  colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.light,
-    seedColor: loveColor,
-  ), */
+    seedColor: lustColor,
+  ),
   useMaterial3: true,
+  brightness: Brightness.light,
   visualDensity: VisualDensity.adaptivePlatformDensity,
   navigationBarTheme: const NavigationBarThemeData(
-      // labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-      ),
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+  ),
+  textTheme: Typography.material2021().black.merge(fallbackTextTheme),
 );
 
 ThemeData defaultDarkTheme = ThemeData(
-  /* colorScheme: ColorScheme.fromSeed(
+  colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
     seedColor: lustColor,
-  ), */
+  ),
   useMaterial3: defaultTheme.useMaterial3,
+  brightness: Brightness.dark,
   visualDensity: defaultTheme.visualDensity,
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
-  brightness: Brightness.dark,
+  textTheme: Typography.material2021().white.merge(fallbackTextTheme),
 );
 
 ColorScheme experimentalColorScheme = ColorScheme.fromSeed(
@@ -54,7 +77,7 @@ ThemeData experimentalTheme = ThemeData(
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     elevation: 0,
   ),
-  textTheme: GoogleFonts.dmSansTextTheme(),
+  textTheme: defaultTheme.textTheme,
   useMaterial3: true,
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );
@@ -72,8 +95,7 @@ ThemeData experimentalDarkTheme = ThemeData(
     elevation: experimentalTheme.navigationBarTheme.elevation,
   ),
   floatingActionButtonTheme: experimentalTheme.floatingActionButtonTheme,
-  textTheme: GoogleFonts.dmSansTextTheme(
-      ThemeData(brightness: Brightness.dark).textTheme),
+  textTheme: defaultDarkTheme.textTheme,
   useMaterial3: experimentalTheme.useMaterial3,
   visualDensity: experimentalTheme.visualDensity,
   brightness: Brightness.dark,

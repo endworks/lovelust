@@ -17,7 +17,7 @@ class ActivityBlock extends StatefulWidget {
 }
 
 class _ActivityBlockState extends State<ActivityBlock> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
 
   void openActivity() {
     debugPrint('tap activity');
@@ -61,15 +61,16 @@ class _ActivityBlockState extends State<ActivityBlock> {
 
   Widget get duration {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
-    IdName place = _common.getPlaceById(widget.activity.place!)!;
-    return Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(text: widget.activity.duration.toString(), style: style),
-          TextSpan(text: '${AppLocalizations.of(context)!.min} '),
-          TextSpan(text: place.name, style: style),
-        ],
-      ),
+    IdName place = _shared.getPlaceById(widget.activity.place!)!;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: [
+        _shared.sensitiveText(widget.activity.duration.toString(),
+            style: style),
+        Text('${AppLocalizations.of(context)!.min} '),
+        _shared.sensitiveText(place.name, style: style),
+      ],
     );
   }
 
@@ -80,8 +81,8 @@ class _ActivityBlockState extends State<ActivityBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      elevation: 1,
+      shadowColor: Colors.transparent,
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: openActivity,

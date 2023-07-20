@@ -182,6 +182,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
     if (widget.activity.practices != null &&
         widget.activity.practices!.isNotEmpty) {
+      debugPrint(widget.activity.practices.toString());
       list.add(
         PracticesBlock(
           practices: widget.activity.practices!,

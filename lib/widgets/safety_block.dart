@@ -89,8 +89,8 @@ class _SafetyBlockState extends State<SafetyBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      elevation: 1,
+      shadowColor: Colors.transparent,
       child: ListTile(
         title: Row(children: [
           Text(

@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
     return destinations
         .map((destination) => NavigationRailDestination(
               icon: destination.icon,
-              selectedIcon: destination.icon,
+              selectedIcon: destination.selectedIcon,
               label: Text(destination.label),
             ))
         .toList();

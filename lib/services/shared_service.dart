@@ -159,9 +159,10 @@ class SharedService {
 
   Widget sensitiveText(String text, {TextStyle? style}) {
     Text widget = Text(text, style: style);
+    double blurRadius = style != null ? style.fontSize! / 5 : 5;
     if (privacyMode) {
       return ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+        imageFilter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
         child: Container(child: widget),
       );
     }

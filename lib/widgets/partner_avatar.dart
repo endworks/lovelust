@@ -19,7 +19,7 @@ class _PartnerAvatarState extends State<PartnerAvatar> {
   Icon get icon {
     return Icon(
       widget.partner.gender == 'M' ? Icons.male : Icons.female,
-      color: Theme.of(context).colorScheme.onInverseSurface,
+      color: Theme.of(context).colorScheme.surface,
       size: 108,
     );
   }

@@ -35,35 +35,34 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
       if (partner != null) {
         return Icon(
           partner!.gender == 'M' ? Icons.male : Icons.female,
-          color: Theme.of(context).colorScheme.onInverseSurface,
+          color: Theme.of(context).colorScheme.surface,
         );
       }
     } else {
       return Icon(
-        Icons.front_hand,
-        color: Theme.of(context).colorScheme.onInverseSurface,
+        Icons.back_hand,
+        color: Theme.of(context).colorScheme.surface,
       );
     }
 
     return Icon(
       Icons.person_off,
-      color: Theme.of(context).colorScheme.onInverseSurface,
+      color: Theme.of(context).colorScheme.surface,
     );
   }
 
   Color get backgroundColor {
-    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color blue =
-        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color pink =
-        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color red = Colors.red
+      ..harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color blue = Colors.blue
+      ..harmonizeWith(Theme.of(context).colorScheme.primary);
     if (!_common.monochrome) {
       if (!widget.masturbation) {
         if (partner != null) {
           return partner!.sex == 'M' ? blue : red;
         }
       } else {
-        return pink;
+        // return pink;
       }
 
       return Theme.of(context).colorScheme.primary;

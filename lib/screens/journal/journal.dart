@@ -7,7 +7,7 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
-import 'package:lovelust/widgets/activity_item.dart';
+import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 
 class JournalPage extends StatefulWidget {
@@ -147,7 +147,7 @@ class _JournalPageState extends State<JournalPage> {
             ),
             SliverList.builder(
               itemCount: _activity.length,
-              itemBuilder: (context, index) => ActivityItem(
+              itemBuilder: (context, index) => ActivityCard(
                 key: Key(_activity[index].id),
                 activity: _activity[index],
               ),

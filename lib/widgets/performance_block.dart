@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class PerformanceBlock extends StatefulWidget {
   const PerformanceBlock(
@@ -18,62 +20,61 @@ class PerformanceBlock extends StatefulWidget {
 }
 
 class _PerformanceBlockState extends State<PerformanceBlock> {
+  final SharedService _shared = getIt<SharedService>();
+
   List<Widget> get performance {
     List<Widget> list = [];
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
     if (widget.orgasms > 0) {
       list.add(
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: widget.orgasms.toString(),
-                style: style,
-              ),
-              TextSpan(
-                  text:
-                      ' ${AppLocalizations.of(context)!.orgasmsByMe(widget.orgasms)}',
-                  style: Theme.of(context).textTheme.bodyMedium),
-            ],
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            _shared.sensitiveText(
+              widget.orgasms.toString(),
+              style: style,
+            ),
+            Text(
+                ' ${AppLocalizations.of(context)!.orgasmsByMe(widget.orgasms)}',
+                style: Theme.of(context).textTheme.bodyMedium),
+          ],
         ),
       );
     }
 
     if (widget.partnerOrgasms > 0) {
       list.add(
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: widget.partnerOrgasms.toString(),
-                style: style,
-              ),
-              TextSpan(
-                  text:
-                      ' ${AppLocalizations.of(context)!.orgasmsByPartner(widget.partnerOrgasms)}',
-                  style: Theme.of(context).textTheme.bodyMedium),
-            ],
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            _shared.sensitiveText(
+              widget.partnerOrgasms.toString(),
+              style: style,
+            ),
+            Text(
+                ' ${AppLocalizations.of(context)!.orgasmsByPartner(widget.partnerOrgasms)}',
+                style: Theme.of(context).textTheme.bodyMedium),
+          ],
         ),
       );
     }
 
     if (widget.initiator != null) {
       list.add(
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: widget.initiator!.name,
-                style: style,
-              ),
-              TextSpan(
-                  text: ' ${AppLocalizations.of(context)!.initiatedIt}',
-                  style: Theme.of(context).textTheme.bodyMedium),
-            ],
-          ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
+          children: [
+            _shared.sensitiveText(
+              widget.initiator!.name,
+              style: style,
+            ),
+            Text(' ${AppLocalizations.of(context)!.initiatedIt}',
+                style: Theme.of(context).textTheme.bodyMedium),
+          ],
         ),
       );
     }
@@ -88,8 +89,8 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      elevation: 1,
+      shadowColor: Colors.transparent,
       child: ListTile(
         title: Text(
           AppLocalizations.of(context)!.performance,

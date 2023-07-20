@@ -23,8 +23,8 @@ class _PracticesBlockState extends State<PracticesBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 0,
-      color: Theme.of(context).colorScheme.surfaceVariant,
+      elevation: 1,
+      shadowColor: Colors.transparent,
       child: ListTile(
         title: Text(
           AppLocalizations.of(context)!.practices,

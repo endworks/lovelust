@@ -52,7 +52,12 @@ class _PartnerItemState extends State<PartnerItem> {
         gender = AppLocalizations.of(context)!.transWoman;
       }
     }
-    return Text(gender, style: Theme.of(context).textTheme.bodyMedium);
+    return Text(
+      gender,
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+    );
   }
 
   String date() {

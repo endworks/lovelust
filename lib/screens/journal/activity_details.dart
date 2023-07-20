@@ -144,17 +144,21 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       ];
     }
 
-    list.add(
-      PerformanceBlock(
-        orgasms: widget.activity.orgasms,
-        partnerOrgasms: widget.activity.partnerOrgasms,
-        initiator: widget.activity.initiator != null
-            ? _common.getInitiatorById(
-                widget.activity.initiator!,
-              )
-            : null,
-      ),
-    );
+    if (widget.activity.orgasms > 0 ||
+        widget.activity.partnerOrgasms > 0 ||
+        widget.activity.initiator != null) {
+      list.add(
+        PerformanceBlock(
+          orgasms: widget.activity.orgasms,
+          partnerOrgasms: widget.activity.partnerOrgasms,
+          initiator: widget.activity.initiator != null
+              ? _common.getInitiatorById(
+                  widget.activity.initiator!,
+                )
+              : null,
+        ),
+      );
+    }
 
     if (widget.activity.practices != null &&
         widget.activity.practices!.isNotEmpty) {

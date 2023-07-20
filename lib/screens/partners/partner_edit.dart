@@ -90,10 +90,10 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           } else {
             partners.add(partner);
           }
+          partners
+              .sort((a, b) => a.meetingDate.isAfter(b.meetingDate) ? -1 : 1);
           if (mounted) {
-            setState(() {
-              _common.partners = partners;
-            });
+            setState(() => _common.partners = partners);
           }
           Navigator.pop(context);
         } else {
@@ -105,8 +105,8 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 if (mounted) {
                   setState(() => _common.partners = value);
                 }
+                Navigator.pop(context);
               });
-              Navigator.pop(context);
             });
           } on SocketException {
             ScaffoldMessenger.of(context).showSnackBar(

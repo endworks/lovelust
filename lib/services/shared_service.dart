@@ -158,8 +158,12 @@ class SharedService extends ChangeNotifier {
   }
 
   Widget sensitiveText(String text, {TextStyle? style}) {
+    return blurText(text, style: style);
+  }
+
+  Widget blurText(String text, {TextStyle? style}) {
     Text widget = Text(text, style: style);
-    double blurRadius = style != null ? style.fontSize! / 5 : 5;
+    double blurRadius = style != null ? style.fontSize! / 4 : 5;
     if (privacyMode) {
       return ImageFiltered(
         imageFilter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
@@ -167,6 +171,11 @@ class SharedService extends ChangeNotifier {
       );
     }
     return widget;
+  }
+
+  Widget obscureText(String text, {TextStyle? style}) {
+    return Text(privacyMode ? text.replaceAll(RegExp(r"."), "●") : text,
+        style: style);
   }
 
   Activity? getActivityById(String id) {

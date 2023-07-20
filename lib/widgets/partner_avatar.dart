@@ -42,11 +42,8 @@ class _PartnerAvatarState extends State<PartnerAvatar> {
             backgroundColor: backgroundColor,
             child: icon,
           ),
-          Text(
-            !_common.privacyMode
-                ? widget.partner.name
-                : widget.partner.name
-                    .replaceAll(RegExp(r"."), _common.obscureCharacter),
+          _common.sensitiveText(
+            widget.partner.name,
             style: Theme.of(context).textTheme.displayMedium,
           )
         ],

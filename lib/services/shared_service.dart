@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
@@ -30,8 +32,6 @@ class SharedService {
   bool _calendarView = false;
   String? _activityFilter;
   PackageInfo? packageInfo;
-
-  String obscureCharacter = '●';
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -155,6 +155,17 @@ class SharedService {
     debugPrint('clearData');
     await _storage.clear();
     await initialLoad();
+  }
+
+  Widget sensitiveText(String text, {TextStyle? style}) {
+    Text widget = Text(text, style: style);
+    if (privacyMode) {
+      return ImageFiltered(
+        imageFilter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+        child: Container(child: widget),
+      );
+    }
+    return widget;
   }
 
   Activity? getActivityById(String id) {

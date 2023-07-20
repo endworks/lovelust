@@ -29,10 +29,8 @@ class _NotesBlockState extends State<NotesBlock> {
           AppLocalizations.of(context)!.notes,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        subtitle: Text(
-          !_shared.privacyMode
-              ? widget.notes
-              : widget.notes.replaceAll(RegExp(r"."), _shared.obscureCharacter),
+        subtitle: _shared.sensitiveText(
+          widget.notes,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),

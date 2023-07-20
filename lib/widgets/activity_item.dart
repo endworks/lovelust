@@ -44,17 +44,11 @@ class _ActivityItemState extends State<ActivityItem> {
     }));
   }
 
-  Text get title {
+  Widget get title {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
-        return Text(
-          !_shared.privacyMode
-              ? partner!.name
-              : partner!.name
-                  .replaceAll(RegExp(r"."), _shared.obscureCharacter),
-          style: style,
-        );
+        return _shared.sensitiveText(partner!.name, style: style);
       } else {
         return Text(
           AppLocalizations.of(context)!.unknownPartner,

@@ -30,12 +30,9 @@ class _PartnerItemState extends State<PartnerItem> {
     }));
   }
 
-  Text get title {
-    return Text(
-      !_common.privacyMode
-          ? widget.partner.name
-          : widget.partner.name
-              .replaceAll(RegExp(r"."), _common.obscureCharacter),
+  Widget get title {
+    return _common.sensitiveText(
+      widget.partner.name,
       style: Theme.of(context).textTheme.titleMedium,
     );
   }
@@ -72,7 +69,7 @@ class _PartnerItemState extends State<PartnerItem> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Icon(Icons.favorite, color: color),
-        Text(
+        _common.sensitiveText(
           _common.getActivityByPartner(widget.partner.id).length.toString(),
           style: TextStyle(
             color: color,

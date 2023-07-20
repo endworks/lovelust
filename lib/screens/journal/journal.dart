@@ -22,7 +22,6 @@ class _JournalPageState extends State<JournalPage> {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
-  List<Activity> _activity = [];
   bool isExtended = true;
 
   @override
@@ -34,8 +33,10 @@ class _JournalPageState extends State<JournalPage> {
       });
     });
 
-    setState(() {
-      _activity = _common.activity;
+    _common.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
@@ -52,44 +53,40 @@ class _JournalPageState extends State<JournalPage> {
 
   Future<void> refresh() async {
     if (_common.isLoggedIn) {
-      _activity = await _api.getActivity();
+      _common.activity = await _api.getActivity();
     } else {
-      _activity = await _storage.getActivity();
+      _common.activity = await _storage.getActivity();
     }
-    _common.activity = _activity;
-    setState(() {
-      _activity = _activity;
-    });
   }
 
   void menuEntryItemSelected(FilterEntryItem item) {
-    debugPrint(item.name);
     setState(() {
       _common.activityFilter = item.name;
-      if (_common.activityFilter == 'all') {
-        _activity = _common.activity;
-      } else if (_common.activityFilter == 'activity') {
-        _activity = _common.activity
-            .where(
-              (i) => i.type != 'MASTURBATION',
-            )
-            .toList();
-      } else if (_common.activityFilter == 'solo') {
-        _activity = _common.activity
-            .where(
-              (i) => i.type == 'MASTURBATION',
-            )
-            .toList();
-      }
     });
-    setState(() {});
     _scrollController.jumpTo(0);
-    debugPrint('toggleFilter: ${_common.activityFilter}');
+  }
+
+  List<Activity> get filteredActivity {
+    if (_common.activityFilter == 'activity') {
+      return _common.activity
+          .where(
+            (i) => i.type != 'MASTURBATION',
+          )
+          .toList();
+    } else if (_common.activityFilter == 'solo') {
+      return _common.activity
+          .where(
+            (i) => i.type == 'MASTURBATION',
+          )
+          .toList();
+    } else {
+      return _common.activity;
+    }
   }
 
   Widget separator(int index) {
-    final date = _activity[index].date;
-    final date2 = _activity[index + 1].date;
+    final date = filteredActivity[index].date;
+    final date2 = filteredActivity[index + 1].date;
     final difference = date.difference(date2).inDays;
     if (difference > 0) {
       return Padding(
@@ -146,10 +143,10 @@ class _JournalPageState extends State<JournalPage> {
               ],
             ),
             SliverList.builder(
-              itemCount: _activity.length,
+              itemCount: filteredActivity.length,
               itemBuilder: (context, index) => ActivityCard(
-                key: Key(_activity[index].id),
-                activity: _activity[index],
+                key: Key(filteredActivity[index].id),
+                activity: filteredActivity[index],
               ),
             ),
           ],

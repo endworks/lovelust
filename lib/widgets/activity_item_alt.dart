@@ -37,7 +37,6 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
   }
 
   void openActivity() {
-    debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
       return ActivityDetailsPage(

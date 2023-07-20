@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
@@ -21,7 +20,6 @@ class _PartnersPageState extends State<PartnersPage> {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
-  List<Partner> _partners = [];
   bool _isExtended = true;
 
   @override
@@ -33,8 +31,10 @@ class _PartnersPageState extends State<PartnersPage> {
       });
     });
 
-    setState(() {
-      _partners = _common.partners;
+    _common.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
@@ -51,14 +51,10 @@ class _PartnersPageState extends State<PartnersPage> {
 
   Future<void> refresh() async {
     if (_common.isLoggedIn) {
-      _partners = await _api.getPartners();
+      _common.partners = await _api.getPartners();
     } else {
-      _partners = await _storage.getPartners();
+      _common.partners = await _storage.getPartners();
     }
-    _common.partners = _partners;
-    setState(() {
-      _partners = _partners;
-    });
   }
 
   @override
@@ -77,10 +73,10 @@ class _PartnersPageState extends State<PartnersPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) => PartnerItem(
-                  key: Key(_partners[index].id),
-                  partner: _partners[index],
+                  key: Key(_common.partners[index].id),
+                  partner: _common.partners[index],
                 ),
-                childCount: _partners.length,
+                childCount: _common.partners.length,
               ),
             ),
           ],

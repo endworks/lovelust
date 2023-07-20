@@ -21,7 +21,6 @@ class _PartnerItemState extends State<PartnerItem> {
   final SharedService _common = getIt<SharedService>();
 
   void _openPartner() {
-    debugPrint('tap partner');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
       return PartnerDetailsPage(
@@ -71,7 +70,7 @@ class _PartnerItemState extends State<PartnerItem> {
     }
     return Row(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(Icons.favorite, color: color),
         _common.sensitiveText(

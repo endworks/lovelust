@@ -89,36 +89,6 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     return Theme.of(context).colorScheme.inverseSurface;
   }
 
-  Color get headerBackgroundColor {
-    return Theme.of(context).colorScheme.surface;
-    /*if (!_common.monochrome) {
-      if (solo) {
-        return Colors.pink
-            .harmonizeWith(Theme.of(context).colorScheme.primary)
-            .withAlpha(alpha);
-      }
-
-      switch (widget.activity.safety) {
-        case 'safe':
-          return Colors.green
-              .harmonizeWith(Theme.of(context).colorScheme.primary)
-              .withAlpha(alpha);
-
-        case 'unsafe':
-          return Colors.red
-              .harmonizeWith(Theme.of(context).colorScheme.primary)
-              .withAlpha(alpha);
-
-        default:
-          return Colors.orange
-              .harmonizeWith(Theme.of(context).colorScheme.primary)
-              .withAlpha(alpha);
-      }
-    } else {
-      return Theme.of(context).colorScheme.surfaceVariant;
-    }*/
-  }
-
   Icon? get safetyIcon {
     if (widget.activity.type != 'MASTURBATION') {
       if (widget.activity.safety == 'safe') {
@@ -133,12 +103,18 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   void menuEntryItemSelected(MenuEntryItem item) {
-    debugPrint(item.name);
     if (item.name == 'delete') {
       if (_common.isLoggedIn) {
         _api.deleteActivity(widget.activity).then(
-              (value) => Navigator.pop(context),
-            );
+          (value) {
+            _api.getActivity().then((value) {
+              setState(() {
+                _common.activity = value;
+              });
+              Navigator.pop(context);
+            });
+          },
+        );
       } else {
         List<Activity> activity = [..._common.activity];
         activity.removeWhere((element) => element.id == widget.activity.id);
@@ -182,7 +158,6 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
     if (widget.activity.practices != null &&
         widget.activity.practices!.isNotEmpty) {
-      debugPrint(widget.activity.practices.toString());
       list.add(
         PracticesBlock(
           practices: widget.activity.practices!,

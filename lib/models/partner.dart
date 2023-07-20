@@ -44,4 +44,9 @@ class Partner {
         'notes': notes,
         'activity': activity?.map((e) => e.toJson()).toList(),
       };
+
+  @override
+  String toString() {
+    return "{[$id] $name}";
+  }
 }

@@ -24,6 +24,16 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
 
+  @override
+  void initState() {
+    super.initState();
+    _common.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
+  }
+
   void editPartner() {
     Navigator.push(
       context,
@@ -103,12 +113,18 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   void menuEntryItemSelected(MenuEntryItem item) {
-    debugPrint(item.name);
     if (item.name == 'delete') {
       if (_common.isLoggedIn) {
         _api.deletePartner(widget.partner).then(
-              (value) => Navigator.pop(context),
-            );
+          (value) {
+            _api.getPartners().then((value) {
+              setState(() {
+                _common.partners = value;
+              });
+              Navigator.pop(context);
+            });
+          },
+        );
       } else {
         List<Partner> partners = [..._common.partners];
         partners.removeWhere((element) => element.id == widget.partner.id);

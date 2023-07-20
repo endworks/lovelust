@@ -40,7 +40,6 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   }
 
   void openActivity() {
-    debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
       return ActivityDetailsPage(
@@ -148,7 +147,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     Icon starEmpty = Icon(
       Icons.star_border,
       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-      color: Theme.of(context).colorScheme.secondary,
+      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
     );
     if (widget.activity.rating > 0) {
       container.add(star);

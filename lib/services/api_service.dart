@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/auth_tokens.dart';
@@ -34,6 +35,7 @@ class ApiService {
     if (response.statusCode == 201) {
       return AuthTokens.fromJson(jsonDecode(response.body));
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to login');
     }
   }
@@ -54,6 +56,7 @@ class ApiService {
     if (response.statusCode == 201) {
       return AuthTokens.fromJson(jsonDecode(response.body));
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to login');
     }
   }
@@ -70,6 +73,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<Activity>((map) => Activity.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load activity');
     }
   }
@@ -86,6 +90,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return Activity.fromJson(jsonDecode(response.body));
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load activity');
     }
   }
@@ -113,6 +118,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<Activity>((map) => Activity.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load activity');
     }
   }
@@ -129,6 +135,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<Partner>((map) => Partner.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load partners');
     }
   }
@@ -148,9 +155,10 @@ class ApiService {
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return Partner.fromJson(jsonDecode(response.body));
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load partner');
     }
   }
@@ -183,6 +191,7 @@ class ApiService {
     if (response.statusCode == 200) {
       return Partner.fromJson(jsonDecode(response.body));
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load partner');
     }
   }
@@ -194,6 +203,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<IdName>((map) => IdName.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load birth controls');
     }
   }
@@ -205,6 +215,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<IdName>((map) => IdName.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load activity types');
     }
   }
@@ -216,6 +227,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<IdName>((map) => IdName.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load genders');
     }
   }
@@ -227,6 +239,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<IdName>((map) => IdName.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load places');
     }
   }
@@ -238,6 +251,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<IdName>((map) => IdName.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load practices');
     }
   }
@@ -249,6 +263,7 @@ class ApiService {
       List json = jsonDecode(response.body);
       return json.map<IdName>((map) => IdName.fromJson(map)).toList();
     } else {
+      debugPrint(response.body);
       throw Exception('Failed to load initiators');
     }
   }

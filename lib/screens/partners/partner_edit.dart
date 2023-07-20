@@ -82,17 +82,15 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           activity: [],
         );
         if (!_common.isLoggedIn) {
+          List<Partner> partners = [..._common.partners];
           if (widget.partner.id.isNotEmpty) {
-            List<Partner> partners = [..._common.partners];
-            Partner element = partners.firstWhere((e) => e.id == partner.id);
+            Partner? element = partners.firstWhere((e) => e.id == partner.id);
             int index = partners.indexOf(element);
             partners[index] = partner;
-            setState(() {
-              _common.partners = partners;
-            });
           } else {
-            List<Partner> partners = [..._common.partners];
             partners.add(partner);
+          }
+          if (mounted) {
             setState(() {
               _common.partners = partners;
             });
@@ -100,14 +98,16 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           Navigator.pop(context);
         } else {
           try {
-            debugPrint('partner: ${partner.toJson().toString()}');
-            if (_new) {
-              _api.postPartner(partner).then((value) => Navigator.pop(context));
-            } else {
-              _api
-                  .patchPartner(partner)
-                  .then((value) => Navigator.pop(context));
-            }
+            Future request =
+                _new ? _api.postPartner(partner) : _api.patchPartner(partner);
+            request.then((value) {
+              _api.getPartners().then((value) {
+                if (mounted) {
+                  setState(() => _common.partners = value);
+                }
+              });
+              Navigator.pop(context);
+            });
           } on SocketException {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(

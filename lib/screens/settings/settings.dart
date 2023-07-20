@@ -202,16 +202,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<Widget> get items {
     List<Widget> list = [
-      _common.isLoggedIn
-          ? ListTile(
-              title: Text(AppLocalizations.of(context)!.loggedIn),
-              leading: const Icon(Icons.person),
-              trailing: FilledButton.tonal(
-                onPressed: signOut,
-                child: Text(AppLocalizations.of(context)!.signOut),
-              ),
-            )
-          : const LoginForm(),
       SwitchListTile(
         title: Text(AppLocalizations.of(context)!.requireAuth),
         subtitle: Text(
@@ -278,6 +268,16 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         leading: const Icon(Icons.app_settings_alt),
       ),
+      _common.isLoggedIn
+          ? ListTile(
+              title: Text(AppLocalizations.of(context)!.loggedIn),
+              leading: const Icon(Icons.person),
+              trailing: FilledButton.tonal(
+                onPressed: signOut,
+                child: Text(AppLocalizations.of(context)!.signOut),
+              ),
+            )
+          : const LoginForm(),
     ];
     if (kDebugMode) {
       list.addAll(

@@ -11,7 +11,7 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-class SharedService {
+class SharedService extends ChangeNotifier {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
 
@@ -52,16 +52,16 @@ class SharedService {
     ];
 
     List result = await Future.wait(futures);
-    theme = result[0];
-    colorScheme = result[1];
-    accessToken = result[2];
-    refreshToken = result[3];
-    activity = result[4];
-    partners = result[5];
-    privacyMode = result[6];
-    requireAuth = result[7];
-    calendarView = result[8];
-    activityFilter = result[9];
+    _theme = result[0];
+    _colorScheme = result[1];
+    _accessToken = result[2];
+    _refreshToken = result[3];
+    _activity = result[4];
+    _partners = result[5];
+    _privacyMode = result[6];
+    _requireAuth = result[7];
+    _calendarView = result[8];
+    _activityFilter = result[9];
     Intl.systemLocale = result[11];
     packageInfo = result[12];
     return Future.value(null);
@@ -93,12 +93,12 @@ class SharedService {
     ];
 
     List result = await Future.wait(futures);
-    genders = result[0];
-    initiators = result[1];
-    practices = result[2];
-    places = result[3];
-    birthControls = result[4];
-    activityTypes = result[5];
+    _genders = result[0];
+    _initiators = result[1];
+    _practices = result[2];
+    _places = result[3];
+    _birthControls = result[4];
+    _activityTypes = result[5];
     return Future.value(null);
   }
 
@@ -204,6 +204,7 @@ class SharedService {
   set theme(String value) {
     _theme = value;
     _storage.setTheme(value);
+    notifyListeners();
   }
 
   String? get colorScheme {
@@ -213,6 +214,7 @@ class SharedService {
   set colorScheme(String? value) {
     _colorScheme = value;
     _storage.setColorScheme(value);
+    notifyListeners();
   }
 
   String? get accessToken {
@@ -222,6 +224,7 @@ class SharedService {
   set accessToken(String? value) {
     _accessToken = value;
     _storage.setAccessToken(value);
+    notifyListeners();
   }
 
   String? get refreshToken {
@@ -231,6 +234,7 @@ class SharedService {
   set refreshToken(String? value) {
     _refreshToken = value;
     _storage.setRefreshToken(value);
+    notifyListeners();
   }
 
   List<Activity> get activity {
@@ -240,6 +244,7 @@ class SharedService {
   set activity(List<Activity> value) {
     _activity = value;
     _storage.setActivity(value);
+    notifyListeners();
   }
 
   List<Partner> get partners {
@@ -249,6 +254,7 @@ class SharedService {
   set partners(List<Partner> value) {
     _partners = value;
     _storage.setPartners(value);
+    notifyListeners();
   }
 
   bool get privacyMode {
@@ -258,6 +264,7 @@ class SharedService {
   set privacyMode(bool value) {
     _privacyMode = value;
     _storage.setPrivacyMode(value);
+    notifyListeners();
   }
 
   bool get requireAuth {
@@ -267,6 +274,7 @@ class SharedService {
   set requireAuth(bool value) {
     _requireAuth = value;
     _storage.setRequireAuth(value);
+    notifyListeners();
   }
 
   bool get calendarView {
@@ -276,6 +284,7 @@ class SharedService {
   set calendarView(bool value) {
     _calendarView = value;
     _storage.setCalendarView(value);
+    notifyListeners();
   }
 
   String? get activityFilter {
@@ -285,6 +294,7 @@ class SharedService {
   set activityFilter(String? value) {
     _activityFilter = value;
     _storage.setActivityFilter(value);
+    notifyListeners();
   }
 
   List<IdName> get birthControls {
@@ -294,6 +304,7 @@ class SharedService {
   set birthControls(List<IdName> value) {
     _birthControls = value;
     _storage.setBirthControls(value);
+    notifyListeners();
   }
 
   List<IdName> get practices {
@@ -303,6 +314,7 @@ class SharedService {
   set practices(List<IdName> value) {
     _practices = value;
     _storage.setPractices(value);
+    notifyListeners();
   }
 
   List<IdName> get places {
@@ -312,6 +324,7 @@ class SharedService {
   set places(List<IdName> value) {
     _places = value;
     _storage.setPlaces(value);
+    notifyListeners();
   }
 
   List<IdName> get initiators {
@@ -321,6 +334,7 @@ class SharedService {
   set initiators(List<IdName> value) {
     _initiators = value;
     _storage.setInitiators(value);
+    notifyListeners();
   }
 
   List<IdName> get genders {
@@ -330,6 +344,7 @@ class SharedService {
   set genders(List<IdName> value) {
     _genders = value;
     _storage.setGenders(value);
+    notifyListeners();
   }
 
   List<IdName> get activityTypes {
@@ -339,5 +354,6 @@ class SharedService {
   set activityTypes(List<IdName> value) {
     _activityTypes = value;
     _storage.setActivityTypes(value);
+    notifyListeners();
   }
 }

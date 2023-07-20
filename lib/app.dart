@@ -42,9 +42,6 @@ class _AppState extends State<App> {
         ThemeMode themeMode = ThemeMode.system;
 
         if (initialLoadDone) {
-          debugPrint('theme: ${_shared.theme}');
-          debugPrint('colorScheme: ${_shared.colorScheme}');
-
           if (_shared.colorScheme == 'dynamic') {
             if (lightDynamic != null && darkDynamic != null) {
               theme = ThemeData(

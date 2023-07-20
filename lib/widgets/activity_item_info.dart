@@ -54,16 +54,16 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       Color color = Theme.of(context).colorScheme.secondary;
       if (widget.activity.safety == 'safe') {
         icon = Icons.check;
-        /* color = Colors.green
-          ..harmonizeWith(Theme.of(context).colorScheme.primary); */
+        color = Colors.green
+          ..harmonizeWith(Theme.of(context).colorScheme.primary);
       } else if (widget.activity.safety == 'unsafe') {
         icon = Icons.priority_high;
         color = Colors.red
           ..harmonizeWith(Theme.of(context).colorScheme.primary);
       } else {
         icon = Icons.question_mark;
-        /* color = Colors.orange
-          ..harmonizeWith(Theme.of(context).colorScheme.primary); */
+        color = Colors.orange
+          ..harmonizeWith(Theme.of(context).colorScheme.primary);
       }
       return CircleAvatar(
         backgroundColor: Theme.of(context).colorScheme.surface,

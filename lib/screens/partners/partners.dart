@@ -86,12 +86,12 @@ class _PartnersPageState extends State<PartnersPage> {
           ? FloatingActionButton.extended(
               onPressed: _addPartner,
               label: Text(AppLocalizations.of(context)!.addPartner),
-              icon: const Icon(Icons.add),
+              icon: const Icon(Icons.person_add_alt),
             )
           : FloatingActionButton(
               onPressed: _addPartner,
               tooltip: AppLocalizations.of(context)!.addPartner,
-              child: const Icon(Icons.add),
+              child: const Icon(Icons.person_add_alt),
             ),
     );
   }

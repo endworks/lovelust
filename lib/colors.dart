@@ -11,6 +11,8 @@ get lovelustColor {
   return Color.fromARGB(255, red, green, blue);
 }
 
+const redlightColor = Color.fromARGB(255, 203, 0, 0);
+
 get lovelustMonoColor {
   return HSLColor.fromColor(lovelustColor).withSaturation(0).toColor();
 }

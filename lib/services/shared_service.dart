@@ -99,6 +99,14 @@ class SharedService extends ChangeNotifier {
     _places = result[3];
     _birthControls = result[4];
     _activityTypes = result[5];
+    if (_genders.isEmpty ||
+        _initiators.isEmpty ||
+        _practices.isEmpty ||
+        _places.isEmpty ||
+        _birthControls.isEmpty ||
+        _activityTypes.isEmpty) {
+      await fetchStaticData();
+    }
     return Future.value(null);
   }
 
@@ -154,7 +162,6 @@ class SharedService extends ChangeNotifier {
   void clearData() async {
     debugPrint('clearData');
     await _storage.clear();
-    await initialLoad();
   }
 
   Widget sensitiveText(String text, {TextStyle? style}) {

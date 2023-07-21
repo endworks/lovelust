@@ -231,6 +231,32 @@ ThemeData lustDarkTheme = ThemeData(
   brightness: Brightness.dark,
 );
 
+ThemeData redlightTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: redlightColor,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  textTheme: defaultTheme.textTheme,
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+);
+
+ThemeData redlightDarkTheme = ThemeData(
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: redlightColor,
+    brightness: Brightness.dark,
+  ),
+  navigationBarTheme: NavigationBarThemeData(
+    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  textTheme: defaultDarkTheme.textTheme,
+  useMaterial3: defaultTheme.useMaterial3,
+  visualDensity: defaultTheme.visualDensity,
+  brightness: Brightness.dark,
+);
+
 ThemeData appleTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: appleBlueColor,

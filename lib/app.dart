@@ -85,6 +85,9 @@ class _AppState extends State<App> {
           } else if (_shared.colorScheme == 'lust') {
             theme = lustTheme;
             darkTheme = lustDarkTheme;
+          } else if (_shared.colorScheme == 'redlight') {
+            theme = redlightTheme;
+            darkTheme = redlightDarkTheme;
           } else if (_shared.colorScheme == 'monochrome') {
             theme = monochromeTheme;
             darkTheme = monochromeDarkTheme;

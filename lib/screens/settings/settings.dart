@@ -69,6 +69,9 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "lovefullust",
           child: Text(AppLocalizations.of(context)!.lovefullust)),
       DropdownMenuItem(
+          value: "redlight",
+          child: Text(AppLocalizations.of(context)!.redlight)),
+      DropdownMenuItem(
           value: "monochrome",
           child: Text(AppLocalizations.of(context)!.monochrome)),
     ];

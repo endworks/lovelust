@@ -2,6 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
@@ -30,18 +31,21 @@ class _ActivityBlockState extends State<ActivityBlock> {
   }
 
   Widget get safety {
-    IconData icon = Icons.help;
-    Color color = Colors.orange;
-    String label = AppLocalizations.of(context)!.partlyUnsafe;
+    IconData icon = Icons.check_circle;
+    Color color = Colors.green;
+    String label = AppLocalizations.of(context)!.safe;
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
-    if (widget.activity.safety == 'safe') {
-      icon = Icons.check_circle;
-      color = Colors.green;
-      label = AppLocalizations.of(context)!.safe;
-    } else if (widget.activity.safety == 'unsafe') {
+    ActivitySafety safety = _shared.calculateSafety(widget.activity);
+    if (safety == ActivitySafety.partlySafe) {
+      icon = Icons.help;
+      color = Colors.orange;
+      style = style.copyWith(color: color);
+      label = AppLocalizations.of(context)!.partlyUnsafe;
+    } else if (safety == ActivitySafety.unsafe) {
       icon = Icons.error;
       color = Colors.red;
+      style = style.copyWith(color: color);
       label = AppLocalizations.of(context)!.unsafe;
     }
 
@@ -50,11 +54,14 @@ class _ActivityBlockState extends State<ActivityBlock> {
     return Row(
       children: [
         Text(label, style: style),
-        Icon(
-          icon,
-          color: Theme.of(context).colorScheme.secondary,
-          size: style.fontSize,
-        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Icon(
+            icon,
+            color: color,
+            size: style.fontSize,
+          ),
+        )
       ],
     );
   }

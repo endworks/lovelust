@@ -23,7 +23,7 @@ class ActivityDetailsPage extends StatefulWidget {
 }
 
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
   int alpha = Colors.black26.alpha;
   Partner? partner;
@@ -44,7 +44,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = _common.getPartnerById(widget.activity.partner!);
+      partner = _shared.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
@@ -91,9 +91,10 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
   Icon? get safetyIcon {
     if (widget.activity.type != 'MASTURBATION') {
-      if (widget.activity.safety == 'safe') {
+      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+      if (safety == ActivitySafety.safe) {
         return const Icon(Icons.check_circle, color: Colors.green);
-      } else if (widget.activity.safety == 'unsafe') {
+      } else if (safety == ActivitySafety.unsafe) {
         return const Icon(Icons.error, color: Colors.red);
       } else {
         return const Icon(Icons.help, color: Colors.orange);
@@ -104,22 +105,22 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
   void menuEntryItemSelected(MenuEntryItem item) {
     if (item.name == 'delete') {
-      if (_common.isLoggedIn) {
+      if (_shared.isLoggedIn) {
         _api.deleteActivity(widget.activity).then(
           (value) {
             _api.getActivity().then((value) {
               setState(() {
-                _common.activity = value;
+                _shared.activity = value;
               });
               Navigator.pop(context);
             });
           },
         );
       } else {
-        List<Activity> activity = [..._common.activity];
+        List<Activity> activity = [..._shared.activity];
         activity.removeWhere((element) => element.id == widget.activity.id);
         setState(() {
-          _common.activity = activity;
+          _shared.activity = activity;
         });
         Navigator.pop(context);
       }
@@ -131,15 +132,19 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     if (!solo) {
       list = [
         SafetyBlock(
-          safety: widget.activity.safety!,
+          safety: _shared.calculateSafety(widget.activity),
         ),
         BirthControlBlock(
-          birthControl: _common.getBirthControlById(
-            widget.activity.birthControl!,
-          ),
-          partnerBirthControl: _common.getBirthControlById(
-            widget.activity.partnerBirthControl!,
-          ),
+          birthControl: widget.activity.birthControl != null
+              ? _shared.getBirthControlById(
+                  widget.activity.birthControl!,
+                )
+              : null,
+          partnerBirthControl: widget.activity.partnerBirthControl != null
+              ? _shared.getBirthControlById(
+                  widget.activity.partnerBirthControl!,
+                )
+              : null,
         ),
       ];
     }
@@ -152,7 +157,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           orgasms: widget.activity.orgasms,
           partnerOrgasms: widget.activity.partnerOrgasms,
           initiator: widget.activity.initiator != null
-              ? _common.getInitiatorById(
+              ? _shared.getInitiatorById(
                   widget.activity.initiator!,
                 )
               : null,
@@ -188,7 +193,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           SliverAppBar(
             floating: false,
             pinned: true,
-            title: _common.sensitiveText(title),
+            title: _shared.sensitiveText(title),
             // backgroundColor: headerBackgroundColor,
             actions: [
               IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),

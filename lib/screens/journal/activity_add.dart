@@ -36,7 +36,6 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
       rating: 0,
       type: _shared.activityTypes[1].id,
       practices: null,
-      safety: null,
     );
   }
 

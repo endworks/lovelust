@@ -48,6 +48,9 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         TextPosition(offset: (widget.activity.type ?? '').length),
       ),
     );
+    _dateController.value = TextEditingValue(
+      text: widget.activity.date.toIso8601String(),
+    );
     _partnerController.value = TextEditingValue(
       text: widget.activity.partner ?? '',
       selection: TextSelection.fromPosition(
@@ -217,21 +220,33 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       if (valid) {
         Activity activity = Activity(
           id: _new ? const Uuid().v4() : widget.activity.id,
-          birthControl: _birthControlController.value.text,
+          birthControl: _birthControlController.value.text.isNotEmpty
+              ? _birthControlController.value.text
+              : null,
           date: DateTime.parse(_dateController.value.text),
           duration: int.parse(_durationController.value.text),
-          initiator: _initiatorController.value.text,
+          initiator: _initiatorController.value.text.isNotEmpty
+              ? _initiatorController.value.text
+              : null,
           location: _locationController.value.text,
           orgasms: int.parse(_orgasmsController.value.text),
-          partner: _partnerController.value.text,
-          partnerBirthControl: _partnerBirthControlController.value.text,
+          partner: _partnerController.value.text.isNotEmpty
+              ? _partnerController.value.text
+              : null,
+          partnerBirthControl:
+              _partnerBirthControlController.value.text.isNotEmpty
+                  ? _partnerBirthControlController.value.text
+                  : null,
           partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
-          place: _placeController.value.text,
+          place: _placeController.value.text.isNotEmpty
+              ? _placeController.value.text
+              : null,
           practices: [],
           rating: int.parse(_ratingController.value.text),
           notes: _notesController.value.text,
-          type: _typeController.value.text,
-          safety: null,
+          type: _typeController.value.text.isNotEmpty
+              ? _typeController.value.text
+              : null,
         );
         if (!_common.isLoggedIn) {
           if (widget.activity.id.isNotEmpty) {

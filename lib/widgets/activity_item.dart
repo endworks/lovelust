@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
@@ -64,11 +65,12 @@ class _ActivityItemState extends State<ActivityItem> {
 
   Icon? get safetyIcon {
     if (widget.activity.type != 'MASTURBATION') {
-      if (widget.activity.safety == 'safe') {
+      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+      if (safety == ActivitySafety.safe) {
         return Icon(Icons.check_circle,
             color: Colors.green
                 .harmonizeWith(Theme.of(context).colorScheme.primary));
-      } else if (widget.activity.safety == 'unsafe') {
+      } else if (safety == ActivitySafety.unsafe) {
         return Icon(Icons.error,
             color: Colors.red
                 .harmonizeWith(Theme.of(context).colorScheme.primary));

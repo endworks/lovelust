@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
@@ -35,7 +36,11 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     );
   }
 
-  Widget get encounters {
+  Widget? get encounters {
+    int count = _common.getActivityByPartner(widget.partner.id).length;
+    if (count == 0) {
+      return null;
+    }
     Color color = Theme.of(context).colorScheme.onSurface;
     if (!_common.monochrome) {
       color = Theme.of(context).colorScheme.secondary;
@@ -46,7 +51,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
       children: [
         Icon(Icons.favorite, color: color),
         _common.sensitiveText(
-          _common.getActivityByPartner(widget.partner.id).length.toString(),
+          count.toString(),
           style: TextStyle(
             color: color,
             fontSize: 19,
@@ -60,15 +65,16 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   Widget? get lastEncounterDate {
     Activity? lastEncounter =
         _common.getActivityByPartner(widget.partner.id).firstOrNull;
+    String text = AppLocalizations.of(context)!.noSexualActivity;
     if (lastEncounter != null) {
-      return Text(
-        RelativeTime(context).format(lastEncounter.date),
-        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-            ),
-      );
+      text = RelativeTime(context).format(lastEncounter.date);
     }
-    return null;
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+    );
   }
 
   @override

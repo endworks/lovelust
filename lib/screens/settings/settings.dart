@@ -226,6 +226,17 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  String? get installerStore {
+    if (_common.packageInfo?.installerStore == 'com.apple.simulator') {
+      return 'Simulator';
+    } else if (_common.packageInfo?.installerStore == 'com.apple.testflight') {
+      return 'Testflight';
+    } else if (_common.packageInfo?.installerStore == 'com.android.vending') {
+      return 'Play Store';
+    }
+    return _common.packageInfo?.installerStore;
+  }
+
   List<Widget> get items {
     List<Widget> list = [
       SwitchListTile(
@@ -315,7 +326,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ListTile(
         title: Text(AppLocalizations.of(context)!.version),
         subtitle: Text(
-          "${_common.packageInfo?.version ?? '1.0.0'} (${_common.packageInfo?.buildNumber ?? 1}) ${_common.packageInfo?.installerStore ?? 'store'}",
+          "${_common.packageInfo?.version ?? '1.0.0'} (${_common.packageInfo?.buildNumber ?? 1}) ${installerStore ?? 'store'}",
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),

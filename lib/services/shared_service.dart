@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
@@ -183,6 +184,10 @@ class SharedService extends ChangeNotifier {
   Widget obscureText(String text, {TextStyle? style}) {
     return Text(privacyMode ? text.replaceAll(RegExp(r"."), "●") : text,
         style: style);
+  }
+
+  ActivitySafety calculateSafety(Activity activity) {
+    return ActivitySafety.unsafe;
   }
 
   Activity? getActivityById(String id) {

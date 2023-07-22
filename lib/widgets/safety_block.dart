@@ -1,11 +1,12 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:lovelust/models/enum.dart';
 
 class SafetyBlock extends StatefulWidget {
   const SafetyBlock({super.key, required this.safety});
 
-  final String safety;
+  final ActivitySafety safety;
 
   @override
   State<SafetyBlock> createState() => _SafetyBlockState();
@@ -16,7 +17,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
     double size = Theme.of(context).textTheme.titleMedium!.fontSize!;
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
-    if (widget.safety == 'safe') {
+    if (widget.safety == ActivitySafety.safe) {
       Color color =
           Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
       return Column(
@@ -24,10 +25,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Icon(Icons.check_circle, color: color, size: size),
               Text(
                 AppLocalizations.of(context)!.safe,
                 style: style,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(
+                  Icons.check_circle,
+                  color: color,
+                  size: size,
+                ),
               ),
             ],
           ),
@@ -37,7 +45,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
           )
         ],
       );
-    } else if (widget.safety == 'unsafe') {
+    } else if (widget.safety == ActivitySafety.unsafe) {
       Color color =
           Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
       return Column(
@@ -45,10 +53,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Icon(Icons.error, color: color, size: size),
               Text(
                 AppLocalizations.of(context)!.unsafe,
-                style: style,
+                style: style.copyWith(color: color),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(
+                  Icons.error,
+                  color: color,
+                  size: size,
+                ),
               ),
             ],
           ),
@@ -66,10 +81,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Icon(Icons.help, color: color, size: size),
               Text(
                 AppLocalizations.of(context)!.partlyUnsafe,
-                style: style,
+                style: style.copyWith(color: color),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Icon(
+                  Icons.help,
+                  color: color,
+                  size: size,
+                ),
               ),
             ],
           ),

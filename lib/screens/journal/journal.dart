@@ -9,6 +9,7 @@ import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_card.dart';
 import 'package:lovelust/widgets/generic_header.dart';
+import 'package:lovelust/widgets/no_content.dart';
 
 class JournalPage extends StatefulWidget {
   const JournalPage({super.key});
@@ -142,13 +143,18 @@ class _JournalPageState extends State<JournalPage> {
                 ),
               ],
             ),
-            SliverList.builder(
-              itemCount: filteredActivity.length,
-              itemBuilder: (context, index) => ActivityCard(
-                key: Key(filteredActivity[index].id),
-                activity: filteredActivity[index],
-              ),
-            ),
+            filteredActivity.isEmpty
+                ? SliverFillRemaining(
+                    child: NoContent(
+                        message: AppLocalizations.of(context)!.noActivity),
+                  )
+                : SliverList.builder(
+                    itemCount: filteredActivity.length,
+                    itemBuilder: (context, index) => ActivityCard(
+                      key: Key(filteredActivity[index].id),
+                      activity: filteredActivity[index],
+                    ),
+                  ),
           ],
         ),
       ),

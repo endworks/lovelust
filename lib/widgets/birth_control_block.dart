@@ -31,7 +31,9 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
           textBaseline: TextBaseline.alphabetic,
           children: [
             _shared.sensitiveText(
-              widget.birthControl!.name,
+              widget.birthControl != null
+                  ? widget.birthControl!.name
+                  : AppLocalizations.of(context)!.noBirthControl,
               style: style,
             ),
             Text(' ${AppLocalizations.of(context)!.byBoth}',
@@ -55,7 +57,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             ],
           ),
         );
-      } else {
+      } else if (widget.partnerBirthControl != null) {
         list.add(
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,

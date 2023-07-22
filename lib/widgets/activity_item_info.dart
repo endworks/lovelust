@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
@@ -21,7 +22,7 @@ class ActivityItemInfo extends StatefulWidget {
 }
 
 class _ActivityItemInfoState extends State<ActivityItemInfo> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   Partner? partner;
   bool solo = false;
 
@@ -29,7 +30,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = _common.getPartnerById(widget.activity.partner!);
+      partner = _shared.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
@@ -52,11 +53,12 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     if (widget.activity.type != 'MASTURBATION') {
       late IconData icon;
       Color color = Theme.of(context).colorScheme.secondary;
-      if (widget.activity.safety == 'safe') {
+      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+      if (safety == ActivitySafety.safe) {
         icon = Icons.check;
         color = Colors.green
           ..harmonizeWith(Theme.of(context).colorScheme.primary);
-      } else if (widget.activity.safety == 'unsafe') {
+      } else if (safety == ActivitySafety.unsafe) {
         icon = Icons.priority_high;
         color = Colors.red
           ..harmonizeWith(Theme.of(context).colorScheme.primary);
@@ -127,7 +129,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       ),
       widget.activity.place != null
           ? Text(
-              _common.getPlaceById(widget.activity.place!)!.name,
+              _shared.getPlaceById(widget.activity.place!)!.name,
               style: secondaryTextStyle(),
             )
           : Text(
@@ -184,7 +186,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
         widget.activity.birthControl == 'NO_BIRTH_CONTROL') {
       if (widget.activity.partnerBirthControl != null &&
           widget.activity.partnerBirthControl != 'NO_BIRTH_CONTROL') {
-        text = _common
+        text = _shared
             .getBirthControlById(widget.activity.partnerBirthControl!)!
             .name;
       }
@@ -192,14 +194,14 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
         widget.activity.partnerBirthControl == 'NO_BIRTH_CONTROL') {
       if (widget.activity.birthControl != null &&
           widget.activity.birthControl != 'NO_BIRTH_CONTROL') {
-        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
       }
     } else {
       if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
-        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
       } else {
         text =
-            '${_common.getBirthControlById(widget.activity.birthControl!)!.name} + ${_common.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
+            '${_shared.getBirthControlById(widget.activity.birthControl!)!.name} + ${_shared.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
       }
     }
 
@@ -223,7 +225,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.activity.type != 'MASTURBATION') {
       if (partner != null) {
-        return _common.sensitiveText(partner!.name, style: style);
+        return _shared.sensitiveText(partner!.name, style: style);
       } else {
         return Text(
           AppLocalizations.of(context)!.unknownPartner,
@@ -244,12 +246,13 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     if (solo) {
       title = 'Self gratification';
     } else {
-      switch (widget.activity.safety) {
-        case 'safe':
+      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+      switch (safety) {
+        case ActivitySafety.safe:
           title = 'Safe sex';
 
           break;
-        case 'unsafe':
+        case ActivitySafety.unsafe:
           title = 'Unsafe sex';
 
           break;

@@ -2,6 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
@@ -18,7 +19,7 @@ class ActivityItemAlt extends StatefulWidget {
 }
 
 class _ActivityItemAltState extends State<ActivityItemAlt> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   Partner? partner;
   bool solo = false;
 
@@ -26,7 +27,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
   void initState() {
     super.initState();
     if (widget.activity.partner != null) {
-      partner = _common.getPartnerById(widget.activity.partner!);
+      partner = _shared.getPartnerById(widget.activity.partner!);
       setState(() {
         partner = partner;
       });
@@ -47,11 +48,12 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
 
   Icon? safetyIcon() {
     if (widget.activity.type != 'MASTURBATION') {
-      if (widget.activity.safety == 'safe') {
+      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+      if (safety == ActivitySafety.safe) {
         return Icon(Icons.check_circle,
             color: Colors.green
                 .harmonizeWith(Theme.of(context).colorScheme.primary));
-      } else if (widget.activity.safety == 'unsafe') {
+      } else if (safety == ActivitySafety.unsafe) {
         return Icon(Icons.error,
             color: Colors.red
                 .harmonizeWith(Theme.of(context).colorScheme.primary));
@@ -112,7 +114,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
       ),
       widget.activity.place != null
           ? Text(
-              _common.getPlaceById(widget.activity.place!)!.name,
+              _shared.getPlaceById(widget.activity.place!)!.name,
               style: secondaryTextStyle(),
             )
           : Text(
@@ -131,7 +133,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
         widget.activity.birthControl == 'NO_BIRTH_CONTROL') {
       if (widget.activity.partnerBirthControl != null &&
           widget.activity.partnerBirthControl != 'NO_BIRTH_CONTROL') {
-        text = _common
+        text = _shared
             .getBirthControlById(widget.activity.partnerBirthControl!)!
             .name;
       }
@@ -139,14 +141,14 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
         widget.activity.partnerBirthControl == 'NO_BIRTH_CONTROL') {
       if (widget.activity.birthControl != null &&
           widget.activity.birthControl != 'NO_BIRTH_CONTROL') {
-        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
       }
     } else {
       if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
-        text = _common.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
       } else {
         text =
-            '${_common.getBirthControlById(widget.activity.birthControl!)!.name} + ${_common.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
+            '${_shared.getBirthControlById(widget.activity.birthControl!)!.name} + ${_shared.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
       }
     }
 
@@ -179,24 +181,25 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
     if (solo) {
       title = 'Solo';
     } else {
-      switch (widget.activity.safety) {
-        case 'safe':
+      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+      switch (safety) {
+        case ActivitySafety.safe:
           title = 'Safe sex';
-          if (!_common.monochrome) {
+          if (!_shared.monochrome) {
             color = Colors.green
                 .harmonizeWith(Theme.of(context).colorScheme.primary);
           }
           break;
-        case 'unsafe':
+        case ActivitySafety.unsafe:
           title = 'Unsafe sex';
-          if (!_common.monochrome) {
+          if (!_shared.monochrome) {
             color =
                 Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
           }
           break;
         default:
           title = 'Partly unsafe sex';
-          if (!_common.monochrome) {
+          if (!_shared.monochrome) {
             color = Colors.orange
                 .harmonizeWith(Theme.of(context).colorScheme.primary);
           }

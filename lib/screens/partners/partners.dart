@@ -6,6 +6,7 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
+import 'package:lovelust/widgets/no_content.dart';
 import 'package:lovelust/widgets/partner_item_alt.dart';
 
 class PartnersPage extends StatefulWidget {
@@ -70,15 +71,20 @@ class _PartnersPageState extends State<PartnersPage> {
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.partners),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) => PartnerItemAlt(
-                  key: Key(_common.partners[index].id),
-                  partner: _common.partners[index],
-                ),
-                childCount: _common.partners.length,
-              ),
-            ),
+            _common.partners.isEmpty
+                ? SliverFillRemaining(
+                    child: NoContent(
+                        message: AppLocalizations.of(context)!.noPartners),
+                  )
+                : SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) => PartnerItemAlt(
+                        key: Key(_common.partners[index].id),
+                        partner: _common.partners[index],
+                      ),
+                      childCount: _common.partners.length,
+                    ),
+                  ),
           ],
         ),
       ),

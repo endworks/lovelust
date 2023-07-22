@@ -50,7 +50,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       });
     }
     setState(() {
-      solo = widget.activity.type == 'MASTURBATION';
+      solo = widget.activity.type == ActivityType.masturbation;
     });
   }
 
@@ -74,7 +74,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }*/
 
   String get title {
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type == ActivityType.masturbation) {
       if (partner != null) {
         return partner!.name;
       } else {
@@ -90,7 +90,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   Icon? get safetyIcon {
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type != ActivityType.masturbation) {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
       if (safety == ActivitySafety.safe) {
         return const Icon(Icons.check_circle, color: Colors.green);
@@ -135,16 +135,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           safety: _shared.calculateSafety(widget.activity),
         ),
         BirthControlBlock(
-          birthControl: widget.activity.birthControl != null
-              ? _shared.getBirthControlById(
-                  widget.activity.birthControl!,
-                )
-              : null,
-          partnerBirthControl: widget.activity.partnerBirthControl != null
-              ? _shared.getBirthControlById(
-                  widget.activity.partnerBirthControl!,
-                )
-              : null,
+          birthControl: widget.activity.birthControl,
+          partnerBirthControl: widget.activity.partnerBirthControl,
         ),
       ];
     }
@@ -156,11 +148,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
         PerformanceBlock(
           orgasms: widget.activity.orgasms,
           partnerOrgasms: widget.activity.partnerOrgasms,
-          initiator: widget.activity.initiator != null
-              ? _shared.getInitiatorById(
-                  widget.activity.initiator!,
-                )
-              : null,
+          initiator: widget.activity.initiator,
         ),
       );
     }

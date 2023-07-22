@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
-import 'package:lovelust/service_locator.dart';
-
-import '../../services/shared_service.dart';
 
 class ActivityAddPage extends StatefulWidget {
   const ActivityAddPage({super.key});
@@ -13,8 +11,6 @@ class ActivityAddPage extends StatefulWidget {
 }
 
 class _ActivityAddPageState extends State<ActivityAddPage> {
-  final SharedService _shared = getIt<SharedService>();
-
   late Activity activity;
 
   @override
@@ -34,7 +30,7 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
       place: null,
       initiator: null,
       rating: 0,
-      type: _shared.activityTypes[1].id,
+      type: ActivityType.sexualIntercourse,
       practices: null,
     );
   }

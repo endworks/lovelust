@@ -14,7 +14,6 @@ class SafetyBlock extends StatefulWidget {
 
 class _SafetyBlockState extends State<SafetyBlock> {
   Widget get safetyNotice {
-    double size = Theme.of(context).textTheme.titleMedium!.fontSize!;
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
     if (widget.safety == ActivitySafety.safe) {

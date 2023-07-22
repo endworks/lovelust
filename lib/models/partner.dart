@@ -1,13 +1,13 @@
-import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class Partner {
   final String id;
-  final String sex;
-  final String gender;
+  final BiologicalSex sex;
+  final Gender gender;
   final String name;
   final DateTime meetingDate;
   final String? notes;
-  final List<Activity>? activity;
 
   Partner({
     required this.id,
@@ -16,33 +16,26 @@ class Partner {
     required this.name,
     required this.meetingDate,
     required this.notes,
-    required this.activity,
   });
 
   factory Partner.fromJson(Map<String, dynamic> json) {
     return Partner(
       id: json['id'],
-      sex: json['sex'],
-      gender: json['gender'],
+      sex: SharedService.getBiologicalSexByValue(json['sex']),
+      gender: SharedService.getGenderByValue(json['gender']),
       name: json['name'],
       meetingDate: DateTime.parse(json['meeting_date']),
       notes: json['notes'],
-      activity: json['activity'] == null
-          ? null
-          : json['activity']
-              .map<Activity>((map) => Activity.fromJson(map))
-              .toList() as List<Activity>,
     );
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'sex': sex,
-        'gender': gender,
+        'sex': SharedService.setValueByBiologicalSex(sex),
+        'gender': SharedService.setValueByGender(gender),
         'name': name,
         'meeting_date': meetingDate.toIso8601String(),
         'notes': notes,
-        'activity': activity?.map((e) => e.toJson()).toList(),
       };
 
   @override

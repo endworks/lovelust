@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
@@ -18,17 +19,18 @@ class _PartnerAvatarState extends State<PartnerAvatar> {
 
   Icon get icon {
     return Icon(
-      widget.partner.gender == 'M' ? Icons.male : Icons.female,
+      widget.partner.gender == Gender.male ? Icons.male : Icons.female,
       color: Theme.of(context).colorScheme.surface,
       size: 108,
     );
   }
 
   Color get backgroundColor {
-    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color blue =
-        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
-    return widget.partner.sex == 'M' ? blue : red;
+    Color red = Colors.red
+      ..harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color blue = Colors.blue
+      ..harmonizeWith(Theme.of(context).colorScheme.primary);
+    return widget.partner.sex == BiologicalSex.male ? blue : red;
   }
 
   @override

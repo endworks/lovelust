@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/models/id_name.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
@@ -13,7 +13,7 @@ class PerformanceBlock extends StatefulWidget {
 
   final int orgasms;
   final int partnerOrgasms;
-  final IdName? initiator;
+  final Initiator? initiator;
 
   @override
   State<PerformanceBlock> createState() => _PerformanceBlockState();
@@ -63,13 +63,19 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
     }
 
     if (widget.initiator != null) {
+      String initiatorString = AppLocalizations.of(context)!.both;
+      if (widget.initiator == Initiator.me) {
+        initiatorString = AppLocalizations.of(context)!.me;
+      } else if (widget.initiator == Initiator.partner) {
+        initiatorString = AppLocalizations.of(context)!.partner;
+      }
       list.add(
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
             _shared.sensitiveText(
-              widget.initiator!.name,
+              initiatorString,
               style: style,
             ),
             Text(' ${AppLocalizations.of(context)!.initiatedIt}',

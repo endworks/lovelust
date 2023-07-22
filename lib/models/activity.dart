@@ -1,20 +1,22 @@
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/id_name.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class Activity {
   final String id;
   final String? partner;
-  final String? birthControl;
-  final String? partnerBirthControl;
+  final Contraceptive? birthControl;
+  final Contraceptive? partnerBirthControl;
   final DateTime date;
   final String? location;
   final String? notes;
   final int duration;
   final int orgasms;
   final int partnerOrgasms;
-  final String? place;
-  final String? initiator;
+  final Place? place;
+  final Initiator? initiator;
   final int rating;
-  final String? type;
+  final ActivityType? type;
   final List<IdName>? practices;
 
   const Activity({
@@ -39,18 +41,20 @@ class Activity {
     return Activity(
       id: json['id'],
       partner: json['partner'],
-      birthControl: json['birth_control'],
-      partnerBirthControl: json['partner_birth_control'],
+      birthControl:
+          SharedService.getContraceptiveByValue(json['birth_control']),
+      partnerBirthControl:
+          SharedService.getContraceptiveByValue(json['partner_birth_control']),
       date: DateTime.parse(json['date']),
       location: json['location'],
       notes: json['notes'],
       duration: json['duration'],
       orgasms: json['orgasms'],
       partnerOrgasms: json['partner_orgasms'],
-      place: json['place'],
-      initiator: json['initiator'],
+      place: SharedService.getPlaceByValue(json['place']),
+      initiator: SharedService.getInitiatorByValue(json['initiator']),
       rating: json['rating'],
-      type: json['type'],
+      type: SharedService.getActivityTypeByValue(json['type']),
       practices: json['practices'] == null
           ? null
           : json['practices']
@@ -62,8 +66,9 @@ class Activity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'partner': partner,
-        'birth_control': birthControl,
-        'partner_birth_control': partnerBirthControl,
+        'birth_control': SharedService.setValueByContraceptive(birthControl),
+        'partner_birth_control':
+            SharedService.setValueByContraceptive(partnerBirthControl),
         'date': date.toIso8601String(),
         'location': location,
         'notes': notes,

@@ -1,7 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
@@ -46,7 +45,7 @@ class _ActivityItemState extends State<ActivityItem> {
 
   Widget get title {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type != ActivityType.masturbation) {
       if (partner != null) {
         return _shared.sensitiveText(partner!.name, style: style);
       } else {
@@ -64,7 +63,7 @@ class _ActivityItemState extends State<ActivityItem> {
   }
 
   Icon? get safetyIcon {
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type != ActivityType.masturbation) {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
       if (safety == ActivitySafety.safe) {
         return Icon(Icons.check_circle,
@@ -90,7 +89,7 @@ class _ActivityItemState extends State<ActivityItem> {
 
   String get place {
     if (widget.activity.place != null) {
-      return widget.activity.place!.capitalize();
+      return widget.activity.place.toString();
     }
 
     return AppLocalizations.of(context)!.unknownPlace;
@@ -101,7 +100,7 @@ class _ActivityItemState extends State<ActivityItem> {
     return ListTile(
         leading: ActivityAvatar(
           partnerId: widget.activity.partner,
-          masturbation: widget.activity.type == 'MASTURBATION',
+          masturbation: widget.activity.type == ActivityType.masturbation,
         ),
         title: title,
         subtitle: Text(date),

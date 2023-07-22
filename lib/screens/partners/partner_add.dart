@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
 
@@ -12,12 +13,11 @@ class PartnerAddPage extends StatefulWidget {
 class _PartnerAddPageState extends State<PartnerAddPage> {
   Partner partner = Partner(
     id: '',
-    sex: 'F',
-    gender: 'F',
+    sex: BiologicalSex.female,
+    gender: Gender.female,
     name: '',
     meetingDate: DateTime.now(),
     notes: null,
-    activity: null,
   );
 
   @override

@@ -90,16 +90,16 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
     IconData icon = Icons.bed;
 
     switch (widget.activity.place) {
-      case 'BEDROOM':
+      case Place.bedroom:
         icon = Icons.bed;
         break;
-      case 'PUBLIC':
+      case Place.public:
         icon = Icons.park;
         break;
-      case 'SOFA':
+      case Place.sofa:
         icon = Icons.weekend;
         break;
-      case 'TABLE':
+      case Place.table:
         icon = Icons.table_restaurant;
         break;
       default:
@@ -114,7 +114,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
       ),
       widget.activity.place != null
           ? Text(
-              _shared.getPlaceById(widget.activity.place!)!.name,
+              widget.activity.place.toString(),
               style: secondaryTextStyle(),
             )
           : Text(
@@ -130,25 +130,24 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
     }
     String text = 'No protection';
     if (widget.activity.birthControl == null ||
-        widget.activity.birthControl == 'NO_BIRTH_CONTROL') {
+        widget.activity.birthControl == Contraceptive.noContraceptive) {
       if (widget.activity.partnerBirthControl != null &&
-          widget.activity.partnerBirthControl != 'NO_BIRTH_CONTROL') {
-        text = _shared
-            .getBirthControlById(widget.activity.partnerBirthControl!)!
-            .name;
+          widget.activity.partnerBirthControl !=
+              Contraceptive.noContraceptive) {
+        text = widget.activity.partnerBirthControl.toString();
       }
     } else if (widget.activity.partnerBirthControl == null ||
-        widget.activity.partnerBirthControl == 'NO_BIRTH_CONTROL') {
+        widget.activity.partnerBirthControl == Contraceptive.noContraceptive) {
       if (widget.activity.birthControl != null &&
-          widget.activity.birthControl != 'NO_BIRTH_CONTROL') {
-        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
+          widget.activity.birthControl != Contraceptive.noContraceptive) {
+        text = widget.activity.birthControl.toString();
       }
     } else {
       if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
-        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = widget.activity.birthControl.toString();
       } else {
         text =
-            '${_shared.getBirthControlById(widget.activity.birthControl!)!.name} + ${_shared.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
+            '${widget.activity.birthControl.toString()} + ${widget.activity.partnerBirthControl.toString()}';
       }
     }
 

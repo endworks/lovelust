@@ -22,19 +22,21 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final _partnerController = TextEditingController();
-  final _birthControlController = TextEditingController();
-  final _partnerBirthControlController = TextEditingController();
+
   final _dateController = TextEditingController();
   final _locationController = TextEditingController();
   final _notesController = TextEditingController();
   final _durationController = TextEditingController();
   final _orgasmsController = TextEditingController();
   final _partnerOrgasmsController = TextEditingController();
-  final _placeController = TextEditingController();
-  final _initiatorController = TextEditingController();
   final _ratingController = TextEditingController();
-  final _typeController = TextEditingController();
+
+  ActivityType? _type;
+  String? _partner;
+  Contraceptive? _birthControl;
+  Contraceptive? _partnerBirthControl;
+  Place? _place;
+  Initiator? _initiator;
 
   bool _new = true;
 
@@ -42,34 +44,17 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   void initState() {
     super.initState();
     _new = widget.activity.id.isEmpty;
-    _typeController.value = TextEditingValue(
-      text: widget.activity.type ?? '',
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: (widget.activity.type ?? '').length),
-      ),
-    );
+    _type = widget.activity.type;
+    _partner = widget.activity.partner;
+    _birthControl = widget.activity.birthControl;
+    _partnerBirthControl = widget.activity.partnerBirthControl;
+    _place = widget.activity.place;
+    _initiator = widget.activity.initiator;
+
     _dateController.value = TextEditingValue(
       text: widget.activity.date.toIso8601String(),
     );
-    _partnerController.value = TextEditingValue(
-      text: widget.activity.partner ?? '',
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: (widget.activity.partner ?? '').length),
-      ),
-    );
-    _birthControlController.value = TextEditingValue(
-      text: widget.activity.birthControl ?? '',
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: (widget.activity.birthControl ?? '').length),
-      ),
-    );
-    _partnerBirthControlController.value = TextEditingValue(
-      text: widget.activity.partnerBirthControl ?? '',
-      selection: TextSelection.fromPosition(
-        TextPosition(
-            offset: (widget.activity.partnerBirthControl ?? '').length),
-      ),
-    );
+    _partner = widget.activity.partner;
     _locationController.value = TextEditingValue(
       text: widget.activity.location ?? '',
       selection: TextSelection.fromPosition(
@@ -100,18 +85,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         TextPosition(offset: widget.activity.partnerOrgasms.toString().length),
       ),
     );
-    _placeController.value = TextEditingValue(
-      text: widget.activity.place ?? '',
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: (widget.activity.place ?? '').length),
-      ),
-    );
-    _initiatorController.value = TextEditingValue(
-      text: widget.activity.initiator ?? '',
-      selection: TextSelection.fromPosition(
-        TextPosition(offset: (widget.activity.initiator ?? '').length),
-      ),
-    );
+
     _ratingController.value = TextEditingValue(
       text: widget.activity.rating.toString(),
       selection: TextSelection.fromPosition(
@@ -122,97 +96,182 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
   @override
   void dispose() {
-    _partnerController.dispose();
-    _birthControlController.dispose();
-    _partnerBirthControlController.dispose();
     _dateController.dispose();
     _locationController.dispose();
     _notesController.dispose();
     _durationController.dispose();
     _orgasmsController.dispose();
     _partnerOrgasmsController.dispose();
-    _placeController.dispose();
-    _initiatorController.dispose();
     _ratingController.dispose();
-    _typeController.dispose();
     super.dispose();
   }
 
   bool get valid => true;
 
-  List<DropdownMenuItem> get typeDropdownMenuEntries {
-    return _common.activityTypes
-        .map(
-          (e) => DropdownMenuItem(
-            value: e.id,
-            child: Text(e.name),
-          ),
-        )
-        .toList();
+  List<DropdownMenuItem<ActivityType>> get typeDropdownMenuEntries {
+    return [
+      DropdownMenuItem(
+        value: ActivityType.sexualIntercourse,
+        child: Text(AppLocalizations.of(context)!.sexualIntercourse),
+      ),
+      DropdownMenuItem(
+        value: ActivityType.masturbation,
+        child: Text(AppLocalizations.of(context)!.masturbation),
+      )
+    ];
   }
 
-  List<DropdownMenuItem> get partnerDropdownMenuEntries {
-    var list = _common.partners
+  List<DropdownMenuItem<String?>> get partnerDropdownMenuEntries {
+    List<DropdownMenuItem<String?>> list = _common.partners
         .map(
-          (e) => DropdownMenuItem(
+          (e) => DropdownMenuItem<String?>(
             value: e.id,
             child: Text(e.name),
           ),
         )
         .toList();
-    list.add(DropdownMenuItem(
-      value: '',
-      child: Text(AppLocalizations.of(context)!.unknownPartner),
-    ));
+    list.insert(
+        0,
+        DropdownMenuItem(
+          value: null,
+          child: Text(AppLocalizations.of(context)!.unknownPartner),
+        ));
     return list;
   }
 
-  List<DropdownMenuItem> get birthControlDropdownMenuEntries {
-    var list = _common.birthControls
-        .map(
-          (e) => DropdownMenuItem(
-            value: e.id,
-            child: Text(e.name),
-          ),
-        )
-        .toList();
-    list.add(DropdownMenuItem(
-      value: '',
-      child: Text(AppLocalizations.of(context)!.noBirthControl),
-    ));
-    return list;
+  List<DropdownMenuItem<Contraceptive?>> get birthControlDropdownMenuEntries {
+    return [
+      DropdownMenuItem(
+        value: null,
+        child: Text(AppLocalizations.of(context)!.noBirthControl),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.condom,
+        child: Text(AppLocalizations.of(context)!.condom),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.cervicalCap,
+        child: Text(AppLocalizations.of(context)!.cervicalCap),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.contraceptiveImplant,
+        child: Text(AppLocalizations.of(context)!.contraceptiveImplant),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.contraceptivePatch,
+        child: Text(AppLocalizations.of(context)!.contraceptivePatch),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.contraceptiveShot,
+        child: Text(AppLocalizations.of(context)!.contraceptiveShot),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.diaphragm,
+        child: Text(AppLocalizations.of(context)!.diaphragm),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.infertility,
+        child: Text(AppLocalizations.of(context)!.infertility),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.internalCondom,
+        child: Text(AppLocalizations.of(context)!.internalCondom),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.intrauterineDevice,
+        child: Text(AppLocalizations.of(context)!.intrauterineDevice),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.outercourse,
+        child: Text(AppLocalizations.of(context)!.outercourse),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.pill,
+        child: Text(AppLocalizations.of(context)!.pill),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.sponge,
+        child: Text(AppLocalizations.of(context)!.sponge),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.vaginalRing,
+        child: Text(AppLocalizations.of(context)!.vaginalRing),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.tubalLigation,
+        child: Text(AppLocalizations.of(context)!.tubalLigation),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.vasectomy,
+        child: Text(AppLocalizations.of(context)!.vasectomy),
+      ),
+      DropdownMenuItem(
+        value: Contraceptive.unsafeContraceptive,
+        child: Text(AppLocalizations.of(context)!.unsafeContraceptive),
+      ),
+    ];
   }
 
-  List<DropdownMenuItem> get placeDropdownMenuEntries {
-    var list = _common.places
-        .map(
-          (e) => DropdownMenuItem(
-            value: e.id,
-            child: Text(e.name),
-          ),
-        )
-        .toList();
-    list.add(DropdownMenuItem(
-      value: '',
-      child: Text(AppLocalizations.of(context)!.unknownPlace),
-    ));
-    return list;
+  List<DropdownMenuItem<Place?>> get placeDropdownMenuEntries {
+    return [
+      DropdownMenuItem(
+        value: null,
+        child: Text(AppLocalizations.of(context)!.unknownPlace),
+      ),
+      DropdownMenuItem(
+        value: Place.bedroom,
+        child: Text(AppLocalizations.of(context)!.bedroom),
+      ),
+      DropdownMenuItem(
+        value: Place.bathroom,
+        child: Text(AppLocalizations.of(context)!.bathroom),
+      ),
+      DropdownMenuItem(
+        value: Place.bar,
+        child: Text(AppLocalizations.of(context)!.bar),
+      ),
+      DropdownMenuItem(
+        value: Place.backyard,
+        child: Text(AppLocalizations.of(context)!.backyard),
+      ),
+      DropdownMenuItem(
+        value: Place.beach,
+        child: Text(AppLocalizations.of(context)!.beach),
+      ),
+      DropdownMenuItem(
+        value: Place.public,
+        child: Text(AppLocalizations.of(context)!.public),
+      ),
+      DropdownMenuItem(
+        value: Place.sofa,
+        child: Text(AppLocalizations.of(context)!.sofa),
+      ),
+      DropdownMenuItem(
+        value: Place.table,
+        child: Text(AppLocalizations.of(context)!.table),
+      ),
+    ];
   }
 
-  List<DropdownMenuItem> get initiatorDropdownMenuEntries {
-    var list = _common.initiators
-        .map(
-          (e) => DropdownMenuItem(
-            value: e.id,
-            child: Text(e.name),
-          ),
-        )
-        .toList();
-    list.add(DropdownMenuItem(
-      value: '',
-      child: Text(AppLocalizations.of(context)!.noInitiator),
-    ));
-    return list;
+  List<DropdownMenuItem<Initiator?>> get initiatorDropdownMenuEntries {
+    return [
+      DropdownMenuItem(
+        value: null,
+        child: Text(AppLocalizations.of(context)!.noInitiator),
+      ),
+      DropdownMenuItem(
+        value: Initiator.me,
+        child: Text(AppLocalizations.of(context)!.me),
+      ),
+      DropdownMenuItem(
+        value: Initiator.partner,
+        child: Text(AppLocalizations.of(context)!.partner),
+      ),
+      DropdownMenuItem(
+        value: Initiator.both,
+        child: Text(AppLocalizations.of(context)!.both),
+      ),
+    ];
   }
 
   void save() {
@@ -220,33 +279,20 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       if (valid) {
         Activity activity = Activity(
           id: _new ? const Uuid().v4() : widget.activity.id,
-          birthControl: _birthControlController.value.text.isNotEmpty
-              ? _birthControlController.value.text
-              : null,
+          birthControl: _birthControl,
           date: DateTime.parse(_dateController.value.text),
           duration: int.parse(_durationController.value.text),
-          initiator: _initiatorController.value.text.isNotEmpty
-              ? _initiatorController.value.text
-              : null,
+          initiator: _initiator,
           location: _locationController.value.text,
           orgasms: int.parse(_orgasmsController.value.text),
-          partner: _partnerController.value.text.isNotEmpty
-              ? _partnerController.value.text
-              : null,
-          partnerBirthControl:
-              _partnerBirthControlController.value.text.isNotEmpty
-                  ? _partnerBirthControlController.value.text
-                  : null,
+          partner: _partner,
+          partnerBirthControl: _partnerBirthControl,
           partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
-          place: _placeController.value.text.isNotEmpty
-              ? _placeController.value.text
-              : null,
+          place: _place,
           practices: [],
           rating: int.parse(_ratingController.value.text),
           notes: _notesController.value.text,
-          type: _typeController.value.text.isNotEmpty
-              ? _typeController.value.text
-              : null,
+          type: _type,
         );
         if (!_common.isLoggedIn) {
           if (widget.activity.id.isNotEmpty) {
@@ -345,7 +391,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _typeController.text,
+                        value: _type,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.favorite),
@@ -353,14 +399,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         ),
                         items: typeDropdownMenuEntries,
                         onChanged: (value) {
-                          _typeController.text = value;
+                          _type = value;
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _partnerController.text,
+                        value: _partner,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.person),
@@ -368,14 +414,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         ),
                         items: partnerDropdownMenuEntries,
                         onChanged: (value) {
-                          _partnerController.text = value;
+                          _partner = value;
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _birthControlController.text,
+                        value: _birthControl,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.medication),
@@ -383,14 +429,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         ),
                         items: birthControlDropdownMenuEntries,
                         onChanged: (value) {
-                          _birthControlController.text = value;
+                          _birthControl = value;
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _partnerBirthControlController.text,
+                        value: _partnerBirthControl,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.medication),
@@ -399,14 +445,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         ),
                         items: birthControlDropdownMenuEntries,
                         onChanged: (value) {
-                          _partnerBirthControlController.text = value;
+                          _partnerBirthControl = value;
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _initiatorController.text,
+                        value: _initiator,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.start),
@@ -414,14 +460,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         ),
                         items: initiatorDropdownMenuEntries,
                         onChanged: (value) {
-                          _initiatorController.text = value;
+                          _initiator = value;
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _placeController.text,
+                        value: _place,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           prefixIcon: const Icon(Icons.place),
@@ -429,7 +475,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                         ),
                         items: placeDropdownMenuEntries,
                         onChanged: (value) {
-                          _placeController.text = value;
+                          _place = value;
                         },
                       ),
                     ),

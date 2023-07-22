@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
@@ -68,7 +67,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
 
   Widget get duration {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
-    IdName place = _shared.getPlaceById(widget.activity.place!)!;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
@@ -76,7 +75,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
         _shared.sensitiveText(widget.activity.duration.toString(),
             style: style),
         Text('${AppLocalizations.of(context)!.min} '),
-        _shared.sensitiveText(place.name, style: style),
+        _shared.sensitiveText(widget.activity.place.toString(), style: style),
       ],
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/models/id_name.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
@@ -11,8 +11,8 @@ class BirthControlBlock extends StatefulWidget {
     required this.partnerBirthControl,
   });
 
-  final IdName? birthControl;
-  final IdName? partnerBirthControl;
+  final Contraceptive? birthControl;
+  final Contraceptive? partnerBirthControl;
 
   @override
   State<BirthControlBlock> createState() => _BirthControlBlockState();

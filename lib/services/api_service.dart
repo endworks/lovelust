@@ -146,13 +146,7 @@ class ApiService {
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
-      body: {
-        'name': partner.name,
-        'gender': partner.gender,
-        'sex': partner.sex,
-        'notes': partner.notes,
-        'meeting_date': partner.meetingDate.toIso8601String()
-      },
+      body: partner.toJson(),
     );
 
     if (response.statusCode == 201) {
@@ -179,13 +173,7 @@ class ApiService {
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
-      body: {
-        'name': partner.name,
-        'gender': partner.gender,
-        'sex': partner.sex,
-        'notes': partner.notes,
-        'meeting_date': partner.meetingDate.toIso8601String()
-      },
+      body: partner.toJson(),
     );
 
     if (response.statusCode == 200) {

@@ -23,8 +23,8 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   final ApiService _api = getIt<ApiService>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _genderController = TextEditingController();
-  final _sexController = TextEditingController();
+  late Gender _gender;
+  late BiologicalSex _sex;
   final _notesController = TextEditingController();
   bool _new = true;
 
@@ -38,12 +38,8 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         TextPosition(offset: widget.partner.name.length),
       ),
     );
-    _genderController.value = TextEditingValue(
-      text: widget.partner.gender,
-    );
-    _sexController.value = TextEditingValue(
-      text: widget.partner.sex,
-    );
+    _gender = widget.partner.gender;
+    _sex = widget.partner.sex;
     _notesController.value = TextEditingValue(
       text: widget.partner.notes ?? '',
       selection: TextSelection.fromPosition(
@@ -51,35 +47,27 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
       ),
     );
     _nameController.addListener(() => setState(() {}));
-    _genderController.addListener(() => setState(() {}));
-    _sexController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _genderController.dispose();
-    _sexController.dispose();
     _notesController.dispose();
     super.dispose();
   }
 
-  bool get valid =>
-      _nameController.value.text.isNotEmpty &&
-      _genderController.value.text.isNotEmpty &&
-      _sexController.value.text.isNotEmpty;
+  bool get valid => _nameController.value.text.isNotEmpty;
 
   void save() {
     if (_formKey.currentState!.validate()) {
       if (valid) {
         Partner partner = Partner(
           id: _new ? const Uuid().v4() : widget.partner.id,
-          sex: _sexController.value.text,
-          gender: _genderController.value.text,
+          sex: _sex,
+          gender: _gender,
           name: _nameController.value.text,
           meetingDate: widget.partner.meetingDate,
           notes: _notesController.value.text,
-          activity: [],
         );
         if (!_common.isLoggedIn) {
           List<Partner> partners = [..._common.partners];
@@ -138,31 +126,50 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     }
   }
 
-  List<DropdownMenuItem> get genderDropdownMenuEntries {
-    genderTranslation(String gender) {
-      if (gender == 'M') {
-        return AppLocalizations.of(context)!.male;
-      } else if (gender == 'F') {
-        return AppLocalizations.of(context)!.female;
-      }
-      return AppLocalizations.of(context)!.nonBinary;
-    }
-
-    return _common.genders
-        .map(
-          (e) => DropdownMenuItem(
-            value: e.id,
-            child: Text(genderTranslation(e.id)),
-          ),
-        )
-        .toList();
+  List<DropdownMenuItem> get biologicalSexDropdownMenuEntries {
+    return [
+      DropdownMenuItem(
+        value: BiologicalSex.female,
+        child: Text(AppLocalizations.of(context)!.female),
+      ),
+      DropdownMenuItem(
+        value: BiologicalSex.male,
+        child: Text(AppLocalizations.of(context)!.male),
+      )
+    ];
   }
 
-  Icon iconByGender(String gender) {
-    if (gender == 'M' || gender == AppLocalizations.of(context)!.male) {
+  List<DropdownMenuItem> get genderDropdownMenuEntries {
+    return [
+      DropdownMenuItem(
+        value: Gender.female,
+        child: Text(AppLocalizations.of(context)!.female),
+      ),
+      DropdownMenuItem(
+        value: Gender.male,
+        child: Text(AppLocalizations.of(context)!.male),
+      ),
+      DropdownMenuItem(
+        value: Gender.nonBinary,
+        child: Text(AppLocalizations.of(context)!.nonBinary),
+      )
+    ];
+  }
+
+  Icon iconByGender(Gender gender) {
+    if (gender == Gender.male) {
       return const Icon(Icons.male);
-    } else if (gender == 'F' ||
-        gender == AppLocalizations.of(context)!.female) {
+    } else if (gender == Gender.female) {
+      return const Icon(Icons.female);
+    } else {
+      return const Icon(Icons.transgender);
+    }
+  }
+
+  Icon iconByBiologicalSex(BiologicalSex gender) {
+    if (gender == BiologicalSex.male) {
+      return const Icon(Icons.male);
+    } else if (gender == BiologicalSex.female) {
       return const Icon(Icons.female);
     } else {
       return const Icon(Icons.transgender);
@@ -218,30 +225,34 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _genderController.text,
+                        value: _gender,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          prefixIcon: iconByGender(_genderController.text),
+                          prefixIcon: iconByGender(_gender),
                           labelText: AppLocalizations.of(context)!.gender,
                         ),
                         items: genderDropdownMenuEntries,
                         onChanged: (value) {
-                          _genderController.text = value;
+                          setState(() {
+                            _gender = value;
+                          });
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: DropdownButtonFormField(
-                        value: _sexController.text,
+                        value: _sex,
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
-                          prefixIcon: iconByGender(_sexController.text),
+                          prefixIcon: iconByBiologicalSex(_sex),
                           labelText: AppLocalizations.of(context)!.sex,
                         ),
-                        items: genderDropdownMenuEntries,
+                        items: biologicalSexDropdownMenuEntries,
                         onChanged: (value) {
-                          _sexController.text = value;
+                          setState(() {
+                            _sex = value;
+                          });
                         },
                       ),
                     ),

@@ -187,11 +187,11 @@ class SharedService extends ChangeNotifier {
   }
 
   ActivitySafety calculateSafety(Activity activity) {
-    if (activity.birthControl == 'CONDOM' ||
-        activity.partnerBirthControl == 'CONDOM') {
+    if (activity.birthControl == Contraceptive.condom ||
+        activity.partnerBirthControl == Contraceptive.condom) {
       return ActivitySafety.safe;
-    } else if (activity.birthControl == null &&
-        activity.partnerBirthControl == null) {
+    }
+    if (activity.birthControl == null && activity.partnerBirthControl == null) {
       return ActivitySafety.unsafe;
     }
     return ActivitySafety.partlySafe;
@@ -223,6 +223,99 @@ class SharedService extends ChangeNotifier {
 
   IdName? getInitiatorById(String id) {
     return initiators.firstWhere((element) => element.id == id);
+  }
+
+  static Contraceptive? getContraceptiveByValue(String? value) {
+    if (value == 'CONDOM') {
+      return Contraceptive.condom;
+    }
+    return null;
+  }
+
+  static String? setValueByContraceptive(Contraceptive? value) {
+    if (value == Contraceptive.condom) {
+      return 'CONDOM';
+    }
+    return null;
+  }
+
+  static Initiator? getInitiatorByValue(String? value) {
+    if (value == 'ME') {
+      return Initiator.me;
+    } else if (value == 'PARTNER') {
+      return Initiator.partner;
+    } else if (value == 'BOTH') {
+      return Initiator.both;
+    }
+    return null;
+  }
+
+  static String? setValueByInitiator(Initiator? value) {
+    if (value == Initiator.me) {
+      return 'ME';
+    } else if (value == Initiator.partner) {
+      return 'PARTNER';
+    } else if (value == Initiator.both) {
+      return 'BOTH';
+    }
+    return null;
+  }
+
+  static Place? getPlaceByValue(String? value) {
+    if (value == 'BEDROOM') {
+      return Place.bedroom;
+    }
+    return null;
+  }
+
+  static ActivityType? getActivityTypeByValue(String? value) {
+    if (value == 'MASTURBATION') {
+      return ActivityType.masturbation;
+    } else if (value == 'SEXUAL_INTERCOURSE') {
+      return ActivityType.sexualIntercourse;
+    }
+    return null;
+  }
+
+  static String setValueByActivityType(ActivityType value) {
+    if (value == ActivityType.masturbation) {
+      return 'MASTURBATION';
+    }
+    return 'SEXUAL_INTERCOURSE';
+  }
+
+  static BiologicalSex getBiologicalSexByValue(String value) {
+    if (value == 'F') {
+      return BiologicalSex.female;
+    }
+    return BiologicalSex.male;
+  }
+
+  static String setValueByBiologicalSex(BiologicalSex value) {
+    if (value == BiologicalSex.female) {
+      return 'F';
+    } else if (value == BiologicalSex.male) {
+      return 'M';
+    }
+    return 'NB';
+  }
+
+  static Gender getGenderByValue(String value) {
+    if (value == 'F') {
+      return Gender.female;
+    } else if (value == 'M') {
+      return Gender.male;
+    }
+    return Gender.nonBinary;
+  }
+
+  static String setValueByGender(Gender value) {
+    if (value == Gender.female) {
+      return 'F';
+    } else if (value == Gender.male) {
+      return 'M';
+    }
+    return 'NB';
   }
 
   String get theme {

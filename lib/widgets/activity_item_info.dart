@@ -2,7 +2,6 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
@@ -36,7 +35,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       });
     }
     setState(() {
-      solo = widget.activity.type == 'MASTURBATION';
+      solo = widget.activity.type == ActivityType.masturbation;
     });
   }
 
@@ -50,7 +49,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   }
 
   Widget get safetyCircle {
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type != ActivityType.masturbation) {
       late IconData icon;
       Color color = Theme.of(context).colorScheme.secondary;
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
@@ -83,7 +82,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
 
   String get place {
     if (widget.activity.place != null) {
-      return widget.activity.place!.capitalize();
+      return widget.activity.place.toString();
     }
 
     return AppLocalizations.of(context)!.unknownPlace;
@@ -103,16 +102,16 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     IconData icon = Icons.bed;
 
     switch (widget.activity.place) {
-      case 'BEDROOM':
+      case Place.bedroom:
         icon = Icons.bed;
         break;
-      case 'PUBLIC':
+      case Place.public:
         icon = Icons.park;
         break;
-      case 'SOFA':
+      case Place.sofa:
         icon = Icons.weekend;
         break;
-      case 'TABLE':
+      case Place.table:
         icon = Icons.table_restaurant;
         break;
       default:
@@ -127,7 +126,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       ),
       widget.activity.place != null
           ? Text(
-              _shared.getPlaceById(widget.activity.place!)!.name,
+              widget.activity.place.toString(),
               style: secondaryTextStyle(),
             )
           : Text(
@@ -193,25 +192,24 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     }
     String text = 'No protection';
     if (widget.activity.birthControl == null ||
-        widget.activity.birthControl == 'NO_BIRTH_CONTROL') {
+        widget.activity.birthControl == Contraceptive.noContraceptive) {
       if (widget.activity.partnerBirthControl != null &&
-          widget.activity.partnerBirthControl != 'NO_BIRTH_CONTROL') {
-        text = _shared
-            .getBirthControlById(widget.activity.partnerBirthControl!)!
-            .name;
+          widget.activity.partnerBirthControl !=
+              Contraceptive.noContraceptive) {
+        text = widget.activity.partnerBirthControl.toString();
       }
     } else if (widget.activity.partnerBirthControl == null ||
-        widget.activity.partnerBirthControl == 'NO_BIRTH_CONTROL') {
+        widget.activity.partnerBirthControl == Contraceptive.noContraceptive) {
       if (widget.activity.birthControl != null &&
-          widget.activity.birthControl != 'NO_BIRTH_CONTROL') {
-        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
+          widget.activity.birthControl != Contraceptive.noContraceptive) {
+        text = widget.activity.birthControl.toString();
       }
     } else {
       if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
-        text = _shared.getBirthControlById(widget.activity.birthControl!)!.name;
+        text = widget.activity.birthControl.toString();
       } else {
         text =
-            '${_shared.getBirthControlById(widget.activity.birthControl!)!.name} + ${_shared.getBirthControlById(widget.activity.partnerBirthControl!)!.name}';
+            '${widget.activity.birthControl.toString()} + ${widget.activity.partnerBirthControl.toString()}';
       }
     }
 
@@ -233,7 +231,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
 
   Widget get partnerName {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type != ActivityType.masturbation) {
       if (partner != null) {
         return _shared.sensitiveText(partner!.name, style: style);
       } else {

@@ -190,15 +190,75 @@ class SharedService extends ChangeNotifier {
   }
 
   static Contraceptive? getContraceptiveByValue(String? value) {
-    if (value == 'CONDOM') {
+    if (value == 'CERVICAL_CAP') {
+      return Contraceptive.cervicalCap;
+    } else if (value == 'CONDOM') {
       return Contraceptive.condom;
+    } else if (value == 'DIAPHRAGM') {
+      return Contraceptive.diaphragm;
+    } else if (value == 'IMPLANT') {
+      return Contraceptive.contraceptiveImplant;
+    } else if (value == 'INFERTILITY') {
+      return Contraceptive.infertility;
+    } else if (value == 'INTERNAL_CONDOM') {
+      return Contraceptive.internalCondom;
+    } else if (value == 'IUD') {
+      return Contraceptive.intrauterineDevice;
+    } else if (value == 'OUTERCOURSE') {
+      return Contraceptive.outercourse;
+    } else if (value == 'PATCH') {
+      return Contraceptive.contraceptivePatch;
+    } else if (value == 'PILL') {
+      return Contraceptive.pill;
+    } else if (value == 'SHOT') {
+      return Contraceptive.contraceptiveShot;
+    } else if (value == 'SPONGE') {
+      return Contraceptive.sponge;
+    } else if (value == 'TUBAL_LIGATION') {
+      return Contraceptive.tubalLigation;
+    } else if (value == 'UNSAFE_BIRTH_CONTROL') {
+      return Contraceptive.unsafeContraceptive;
+    } else if (value == 'VAGINAL_RING') {
+      return Contraceptive.vaginalRing;
+    } else if (value == 'VASECTOMY') {
+      return Contraceptive.vasectomy;
     }
     return null;
   }
 
   static String? setValueByContraceptive(Contraceptive? value) {
-    if (value == Contraceptive.condom) {
+    if (value == Contraceptive.cervicalCap) {
+      return 'CERVICAL_CAP';
+    } else if (value == Contraceptive.condom) {
       return 'CONDOM';
+    } else if (value == Contraceptive.diaphragm) {
+      return 'DIAPHRAGM';
+    } else if (value == Contraceptive.contraceptiveImplant) {
+      return 'IMPLANT';
+    } else if (value == Contraceptive.infertility) {
+      return 'INFERTILITY';
+    } else if (value == Contraceptive.internalCondom) {
+      return 'INTERNAL_CONDOM';
+    } else if (value == Contraceptive.intrauterineDevice) {
+      return 'IUD';
+    } else if (value == Contraceptive.outercourse) {
+      return 'OUTERCOURSE';
+    } else if (value == Contraceptive.contraceptivePatch) {
+      return 'PATCH';
+    } else if (value == Contraceptive.pill) {
+      return 'PILL';
+    } else if (value == Contraceptive.contraceptiveShot) {
+      return 'SHOT';
+    } else if (value == Contraceptive.sponge) {
+      return 'SPONGE';
+    } else if (value == Contraceptive.tubalLigation) {
+      return 'TUBAL_LIGATION';
+    } else if (value == Contraceptive.unsafeContraceptive) {
+      return 'UNSAFE_BIRTH_CONTROL';
+    } else if (value == Contraceptive.vaginalRing) {
+      return 'VAGINAL_RING';
+    } else if (value == Contraceptive.vasectomy) {
+      return 'VASECTOMY';
     }
     return null;
   }

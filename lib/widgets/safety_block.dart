@@ -18,24 +18,14 @@ class _SafetyBlockState extends State<SafetyBlock> {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
     if (widget.safety == ActivitySafety.safe) {
-      Color color =
-          Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Text(
-                AppLocalizations.of(context)!.safe,
+                AppLocalizations.of(context)!.safeSex,
                 style: style,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Icon(
-                  Icons.check_circle,
-                  color: color,
-                  size: size,
-                ),
               ),
             ],
           ),
@@ -54,16 +44,8 @@ class _SafetyBlockState extends State<SafetyBlock> {
           Row(
             children: [
               Text(
-                AppLocalizations.of(context)!.unsafe,
+                AppLocalizations.of(context)!.unsafeSex,
                 style: style.copyWith(color: color),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Icon(
-                  Icons.error,
-                  color: color,
-                  size: size,
-                ),
               ),
             ],
           ),
@@ -82,16 +64,8 @@ class _SafetyBlockState extends State<SafetyBlock> {
           Row(
             children: [
               Text(
-                AppLocalizations.of(context)!.partlyUnsafe,
+                AppLocalizations.of(context)!.partlyUnsafeSex,
                 style: style.copyWith(color: color),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Icon(
-                  Icons.help,
-                  color: color,
-                  size: size,
-                ),
               ),
             ],
           ),
@@ -114,13 +88,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
       elevation: 1,
       shadowColor: Colors.transparent,
       child: ListTile(
-        title: Row(children: [
-          Text(
-            AppLocalizations.of(context)!.safety,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ]),
-        subtitle: safetyNotice,
+        title: safetyNotice,
       ),
     );
   }

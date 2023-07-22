@@ -187,7 +187,14 @@ class SharedService extends ChangeNotifier {
   }
 
   ActivitySafety calculateSafety(Activity activity) {
-    return ActivitySafety.unsafe;
+    if (activity.birthControl == 'CONDOM' ||
+        activity.partnerBirthControl == 'CONDOM') {
+      return ActivitySafety.safe;
+    } else if (activity.birthControl == null &&
+        activity.partnerBirthControl == null) {
+      return ActivitySafety.unsafe;
+    }
+    return ActivitySafety.partlySafe;
   }
 
   Activity? getActivityById(String id) {

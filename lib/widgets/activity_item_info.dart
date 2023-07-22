@@ -56,8 +56,6 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
       if (safety == ActivitySafety.safe) {
         icon = Icons.check;
-        color = Colors.green
-          ..harmonizeWith(Theme.of(context).colorScheme.primary);
       } else if (safety == ActivitySafety.unsafe) {
         icon = Icons.priority_high;
         color = Colors.red
@@ -146,10 +144,10 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       color = Colors.red;
     }
     if (widget.activity.rating > 2) {
-      color = Colors.orange;
+      color = Colors.deepOrangeAccent;
     }
     if (widget.activity.rating > 3) {
-      color = Colors.yellow;
+      color = Colors.amber;
     }
     color = color.harmonizeWith(Theme.of(context).colorScheme.primary);
 

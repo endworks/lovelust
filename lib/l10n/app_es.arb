@@ -52,6 +52,7 @@
   "nameHint": "Escriba nombre...",
   "notes": "Notas",
   "notesHint": "Escriba notas...",
+  "date": "Fecha",
   "gender": "Género",
   "sex": "Sexo",
   "unknownPartner": "Desconocido",

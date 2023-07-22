@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
@@ -32,6 +33,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   final _ratingController = TextEditingController();
 
   ActivityType? _type;
+  DateTime? _date;
   String? _partner;
   Contraceptive? _birthControl;
   Contraceptive? _partnerBirthControl;
@@ -45,6 +47,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     super.initState();
     _new = widget.activity.id.isEmpty;
     _type = widget.activity.type;
+    _date = widget.activity.date;
     _partner = widget.activity.partner;
     _birthControl = widget.activity.birthControl;
     _partnerBirthControl = widget.activity.partnerBirthControl;
@@ -369,6 +372,13 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           });
         },
       ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.date),
+        trailing: _date != null
+            ? Text(DateFormat('EEE, MMM d, HH:mm').format(_date!))
+            : null,
+        onTap: () => _selectDate(context),
+      )
     ];
 
     if (_type == ActivityType.sexualIntercourse) {
@@ -481,6 +491,20 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     return fields;
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialEntryMode: DatePickerEntryMode.calendarOnly,
+        initialDate: _date ?? DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime.now());
+    if (picked != null && picked != _date) {
+      setState(() {
+        _date = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -508,16 +532,12 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               ),
             ],
           ),
-          SliverList.list(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: fields,
-                ),
-              ),
-            ],
+          SliverList.separated(
+            separatorBuilder: (context, index) => const Divider(
+              height: 0,
+            ),
+            itemBuilder: (context, index) => fields[index],
+            itemCount: fields.length,
           ),
         ],
       ),

@@ -6,6 +6,11 @@ const fallbackTextStyle = TextStyle(
   fontFamilyFallback: ['NotoEmoji'],
 );
 
+const defaultTextStyle = TextStyle(
+  fontFamily: 'Inter',
+  fontFamilyFallback: ['NotoEmoji'],
+);
+
 TextTheme fallbackTextTheme = const TextTheme(
   bodyLarge: fallbackTextStyle,
   bodyMedium: fallbackTextStyle,
@@ -22,6 +27,23 @@ TextTheme fallbackTextTheme = const TextTheme(
   titleSmall: fallbackTextStyle,
 );
 
+TextTheme defaultTextTheme = const TextTheme(
+  bodyLarge: defaultTextStyle,
+  bodyMedium: defaultTextStyle,
+  labelLarge: defaultTextStyle,
+  bodySmall: defaultTextStyle,
+  labelSmall: defaultTextStyle,
+  displayLarge: defaultTextStyle,
+  displayMedium: defaultTextStyle,
+  displaySmall: defaultTextStyle,
+  headlineLarge: defaultTextStyle,
+  headlineMedium: defaultTextStyle,
+  headlineSmall: defaultTextStyle,
+  titleLarge: defaultTextStyle,
+  titleMedium: defaultTextStyle,
+  titleSmall: defaultTextStyle,
+);
+
 ThemeData defaultTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.light,
@@ -33,7 +55,7 @@ ThemeData defaultTheme = ThemeData(
   navigationBarTheme: const NavigationBarThemeData(
     labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
-  textTheme: Typography.material2021().black.merge(fallbackTextTheme),
+  textTheme: Typography.material2021().black.merge(defaultTextTheme),
 );
 
 ThemeData defaultDarkTheme = ThemeData(
@@ -47,7 +69,7 @@ ThemeData defaultDarkTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
-  textTheme: Typography.material2021().white.merge(fallbackTextTheme),
+  textTheme: Typography.material2021().white.merge(defaultTextTheme),
 );
 
 ColorScheme experimentalColorScheme = ColorScheme.fromSeed(

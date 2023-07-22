@@ -116,6 +116,8 @@ class _AppState extends State<App> {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
+          debugShowCheckedModeBanner: false,
+          debugShowMaterialGrid: false,
         );
       }),
     );

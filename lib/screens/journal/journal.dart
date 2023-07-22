@@ -156,12 +156,12 @@ class _JournalPageState extends State<JournalPage> {
           ? FloatingActionButton.extended(
               onPressed: addActivity,
               label: Text(AppLocalizations.of(context)!.logActivity),
-              icon: const Icon(Icons.post_add),
+              icon: const Icon(Icons.post_add_outlined),
             )
           : FloatingActionButton(
               onPressed: addActivity,
               tooltip: AppLocalizations.of(context)!.logActivity,
-              child: const Icon(Icons.post_add),
+              child: const Icon(Icons.post_add_outlined),
             ),
     );
   }

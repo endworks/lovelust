@@ -6,7 +6,7 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
-import 'package:lovelust/widgets/partner_item.dart';
+import 'package:lovelust/widgets/partner_item_alt.dart';
 
 class PartnersPage extends StatefulWidget {
   const PartnersPage({super.key});
@@ -72,7 +72,7 @@ class _PartnersPageState extends State<PartnersPage> {
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) => PartnerItem(
+                (BuildContext context, int index) => PartnerItemAlt(
                   key: Key(_common.partners[index].id),
                   partner: _common.partners[index],
                 ),
@@ -86,12 +86,12 @@ class _PartnersPageState extends State<PartnersPage> {
           ? FloatingActionButton.extended(
               onPressed: _addPartner,
               label: Text(AppLocalizations.of(context)!.addPartner),
-              icon: const Icon(Icons.person_add_alt),
+              icon: const Icon(Icons.person_add_alt_outlined),
             )
           : FloatingActionButton(
               onPressed: _addPartner,
               tooltip: AppLocalizations.of(context)!.addPartner,
-              child: const Icon(Icons.person_add_alt),
+              child: const Icon(Icons.person_add_alt_outlined),
             ),
     );
   }

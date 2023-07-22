@@ -49,12 +49,12 @@ class _ActivityBlockState extends State<ActivityBlock> {
 
     return Row(
       children: [
+        Text(label, style: style),
         Icon(
           icon,
-          color: color,
+          color: Theme.of(context).colorScheme.secondary,
           size: style.fontSize,
         ),
-        Text(label, style: style),
       ],
     );
   }

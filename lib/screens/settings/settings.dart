@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:lovelust/forms/login_form.dart';
+import 'package:lovelust/screens/settings/login_dialog.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -19,11 +19,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   reload() {
     Phoenix.rebirth(context);
-  }
-
-  signOut() {
-    _common.signOut();
-    reload();
   }
 
   changeTheme(String? value) {
@@ -82,7 +77,12 @@ class _SettingsPageState extends State<SettingsPage> {
     DropdownMenuItem value = dropdownColorSchemeItems.firstWhere((element) =>
         element.value == _common.colorScheme ||
         (element.value == "default" && _common.colorScheme == null));
-    return value.child;
+    return Text(
+      (value.child as Text).data!,
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+    );
   }
 
   List<DropdownMenuItem<String>> get dropdownThemeItems {
@@ -100,7 +100,12 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget get themeName {
     DropdownMenuItem value = dropdownThemeItems
         .firstWhere((element) => element.value == _common.theme);
-    return value.child;
+    return Text(
+      (value.child as Text).data!,
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+    );
   }
 
   Future<void> _askTheme() async {
@@ -203,13 +208,33 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  _handleLogin() {
+    if (_common.isLoggedIn) {
+      _common.signOut();
+      reload();
+    } else {
+      showModalBottomSheet<void>(
+        context: context,
+        useSafeArea: true,
+        builder: (BuildContext context) {
+          return const SizedBox(
+            height: 300,
+            child: LoginDialog(),
+          );
+        },
+      );
+    }
+  }
+
   List<Widget> get items {
     List<Widget> list = [
       SwitchListTile(
         title: Text(AppLocalizations.of(context)!.requireAuth),
         subtitle: Text(
           AppLocalizations.of(context)!.requireAuthDescription,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
         ),
         value: _common.requireAuth,
         onChanged: (bool value) {
@@ -217,13 +242,18 @@ class _SettingsPageState extends State<SettingsPage> {
             _common.requireAuth = value;
           });
         },
-        secondary: const Icon(Icons.fingerprint),
+        secondary: Icon(
+          Icons.fingerprint,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       SwitchListTile(
         title: Text(AppLocalizations.of(context)!.privacyMode),
         subtitle: Text(
           AppLocalizations.of(context)!.privacyModeDescription,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
         ),
         value: _common.privacyMode,
         onChanged: (bool value) {
@@ -231,68 +261,88 @@ class _SettingsPageState extends State<SettingsPage> {
             _common.privacyMode = value;
           });
         },
-        secondary: const Icon(Icons.visibility_off),
+        secondary: Icon(
+          Icons.visibility_off,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.appearance),
         subtitle: themeName,
         onTap: _askTheme,
-        leading: const Icon(Icons.dark_mode),
+        leading: Icon(
+          Icons.dark_mode,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.colorScheme),
         subtitle: colorSchemeName,
         onTap: _askColorScheme,
-        leading: const Icon(Icons.color_lens),
+        leading: Icon(
+          Icons.color_lens,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.clearPersonalData),
         subtitle: Text(
           AppLocalizations.of(context)!.clearPersonalDataDescription,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
         ),
         onTap: _askClearPersonalData,
-        leading: const Icon(Icons.delete),
+        leading: Icon(
+          Icons.delete,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.clearData),
         subtitle: Text(
           AppLocalizations.of(context)!.clearDataDescription,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
         ),
         onTap: _askClearData,
-        leading: const Icon(Icons.delete_forever),
+        leading: Icon(
+          Icons.delete_forever,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.version),
         subtitle: Text(
           "${_common.packageInfo?.version ?? '1.0.0'} (${_common.packageInfo?.buildNumber ?? 1}) ${_common.packageInfo?.installerStore ?? 'store'}",
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        leading: const Icon(Icons.app_settings_alt),
-      ),
-      _common.isLoggedIn
-          ? ListTile(
-              title: Text(AppLocalizations.of(context)!.loggedIn),
-              leading: const Icon(Icons.person),
-              trailing: FilledButton.tonal(
-                onPressed: signOut,
-                child: Text(AppLocalizations.of(context)!.signOut),
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
-            )
-          : const LoginForm(),
+        ),
+        leading: Icon(
+          Icons.app_settings_alt,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
     ];
     if (kDebugMode) {
       list.addAll(
         [
           ListTile(
             title: Text(AppLocalizations.of(context)!.initialFetch),
-            leading: const Icon(Icons.download),
+            leading: Icon(
+              Icons.download,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
             onTap: _common.initialFetch,
           ),
           ListTile(
             title: Text(AppLocalizations.of(context)!.fetchStaticData),
-            leading: const Icon(Icons.download),
+            leading: Icon(
+              Icons.download,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
             onTap: _common.fetchStaticData,
           ),
         ],
@@ -309,6 +359,12 @@ class _SettingsPageState extends State<SettingsPage> {
         slivers: <Widget>[
           GenericHeader(
             title: Text(AppLocalizations.of(context)!.settings),
+            actions: [
+              IconButton(
+                onPressed: _handleLogin,
+                icon: Icon(_common.isLoggedIn ? Icons.logout : Icons.login),
+              )
+            ],
           ),
           SliverList.list(
             children: items,

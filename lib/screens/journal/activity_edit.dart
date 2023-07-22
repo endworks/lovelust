@@ -361,6 +361,10 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     List<Widget> fields = [
       SwitchListTile(
         title: Text(AppLocalizations.of(context)!.masturbation),
+        secondary: Icon(
+          Icons.back_hand,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
         value: _type == ActivityType.masturbation,
         onChanged: (value) {
           setState(() {
@@ -374,6 +378,10 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.date),
+        leading: Icon(
+          Icons.access_time,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
         trailing: _date != null
             ? Text(DateFormat('EEE, MMM d, HH:mm').format(_date!))
             : null,

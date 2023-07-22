@@ -53,6 +53,7 @@
   "notes": "Notas",
   "notesHint": "Escriba notas...",
   "date": "Fecha",
+  "meetingDate": "Fecha de encuentro",
   "gender": "Género",
   "sex": "Sexo",
   "unknownPartner": "Desconocido",

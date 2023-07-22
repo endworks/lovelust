@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
@@ -27,11 +28,13 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   late BiologicalSex _sex;
   final _notesController = TextEditingController();
   bool _new = true;
+  DateTime? _meetingDate;
 
   @override
   void initState() {
     super.initState();
     _new = widget.partner.id.isEmpty;
+    _meetingDate = widget.partner.meetingDate;
     _nameController.value = TextEditingValue(
       text: widget.partner.name,
       selection: TextSelection.fromPosition(
@@ -176,6 +179,20 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     }
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialEntryMode: DatePickerEntryMode.calendarOnly,
+        initialDate: _meetingDate ?? DateTime.now(),
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime.now());
+    if (picked != null && picked != _meetingDate) {
+      setState(() {
+        _meetingDate = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,69 +223,72 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           ),
           SliverList.list(
             children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.person),
-                          labelText: AppLocalizations.of(context)!.name,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _gender,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: iconByGender(_gender),
-                          labelText: AppLocalizations.of(context)!.gender,
-                        ),
-                        items: genderDropdownMenuEntries,
-                        onChanged: (value) {
-                          setState(() {
-                            _gender = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _sex,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: iconByBiologicalSex(_sex),
-                          labelText: AppLocalizations.of(context)!.sex,
-                        ),
-                        items: biologicalSexDropdownMenuEntries,
-                        onChanged: (value) {
-                          setState(() {
-                            _sex = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        controller: _notesController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.note_alt),
-                          labelText: AppLocalizations.of(context)!.notes,
-                        ),
-                      ),
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.person),
+                    labelText: AppLocalizations.of(context)!.name,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: DropdownButtonFormField(
+                  value: _gender,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    prefixIcon: iconByGender(_gender),
+                    labelText: AppLocalizations.of(context)!.gender,
+                  ),
+                  items: genderDropdownMenuEntries,
+                  onChanged: (value) {
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: DropdownButtonFormField(
+                  value: _sex,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    prefixIcon: iconByBiologicalSex(_sex),
+                    labelText: AppLocalizations.of(context)!.sex,
+                  ),
+                  items: biologicalSexDropdownMenuEntries,
+                  onChanged: (value) {
+                    setState(() {
+                      _sex = value;
+                    });
+                  },
+                ),
+              ),
+              ListTile(
+                title: Text(AppLocalizations.of(context)!.meetingDate),
+                leading: Icon(
+                  Icons.access_time,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                trailing: _meetingDate != null
+                    ? Text(DateFormat('EEE, MMM d').format(_meetingDate!))
+                    : null,
+                onTap: () => _selectDate(context),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: TextField(
+                  controller: _notesController,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.note_alt),
+                    labelText: AppLocalizations.of(context)!.notes,
+                  ),
                 ),
               ),
             ],

@@ -37,6 +37,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   }
 
   Widget? get encounters {
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
     int count = _common.getActivityByPartner(widget.partner.id).length;
     if (count == 0) {
       return null;
@@ -49,13 +50,15 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(Icons.favorite, color: color),
+        Icon(
+          Icons.favorite,
+          color: color,
+          size: style.fontSize,
+        ),
         _common.sensitiveText(
           count.toString(),
-          style: TextStyle(
+          style: style.copyWith(
             color: color,
-            fontSize: 19,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ],

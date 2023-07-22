@@ -141,10 +141,22 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
 
   Widget get rating {
     List<Widget> container = [];
+    Color color = Theme.of(context).colorScheme.secondary;
+    if (widget.activity.rating > 0) {
+      color = Colors.red;
+    }
+    if (widget.activity.rating > 2) {
+      color = Colors.orange;
+    }
+    if (widget.activity.rating > 3) {
+      color = Colors.yellow;
+    }
+    color = color.harmonizeWith(Theme.of(context).colorScheme.primary);
+
     Icon star = Icon(
       Icons.star,
       size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-      color: Theme.of(context).colorScheme.secondary,
+      color: color,
     );
     Icon starEmpty = Icon(
       Icons.star_border,
@@ -244,20 +256,20 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     String title;
 
     if (solo) {
-      title = 'Self gratification';
+      title = AppLocalizations.of(context)!.masturbation;
     } else {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
       switch (safety) {
         case ActivitySafety.safe:
-          title = 'Safe sex';
+          title = AppLocalizations.of(context)!.safeSex;
 
           break;
         case ActivitySafety.unsafe:
-          title = 'Unsafe sex';
+          title = AppLocalizations.of(context)!.unsafeSex;
 
           break;
         default:
-          title = 'Partly unsafe sex';
+          title = AppLocalizations.of(context)!.partlyUnsafeSex;
       }
     }
     return title;

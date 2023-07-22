@@ -36,50 +36,25 @@ class SharedService extends ChangeNotifier {
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
-    var futures = <Future>[
-      _storage.getTheme(),
-      _storage.getColorScheme(),
-      _storage.getAccessToken(),
-      _storage.getRefreshToken(),
-      _storage.getActivity(),
-      _storage.getPartners(),
-      _storage.getPrivacyMode(),
-      _storage.getRequireAuth(),
-      _storage.getCalendarView(),
-      _storage.getActivityFilter(),
-      loadStaticData(),
-      findSystemLocale(),
-      PackageInfo.fromPlatform(),
-    ];
-
-    List result = await Future.wait(futures);
-    _theme = result[0];
-    _colorScheme = result[1];
-    _accessToken = result[2];
-    _refreshToken = result[3];
-    _activity = result[4];
-    _partners = result[5];
-    _privacyMode = result[6];
-    _requireAuth = result[7];
-    _calendarView = result[8];
-    _activityFilter = result[9];
-    Intl.systemLocale = result[11];
-    packageInfo = result[12];
-    return Future.value(null);
+    _theme = await _storage.getTheme();
+    _colorScheme = await _storage.getColorScheme();
+    _accessToken = await _storage.getAccessToken();
+    _refreshToken = await _storage.getRefreshToken();
+    _activity = await _storage.getActivity();
+    _partners = await _storage.getPartners();
+    _privacyMode = await _storage.getPrivacyMode();
+    _requireAuth = await _storage.getRequireAuth();
+    _calendarView = await _storage.getCalendarView();
+    _activityFilter = await _storage.getActivityFilter();
+    Intl.systemLocale = await findSystemLocale();
+    packageInfo = await PackageInfo.fromPlatform();
   }
 
   Future<void> initialFetch() async {
     debugPrint('initialFetch');
-    var futures = <Future>[
-      _api.getActivity(),
-      _api.getPartners(),
-      fetchStaticData()
-    ];
-
-    List result = await Future.wait(futures);
-    activity = result[0];
-    partners = result[1];
-    return Future.value(null);
+    activity = await _api.getActivity();
+    partners = await _api.getPartners();
+    // await fetchStaticData();
   }
 
   Future<void> loadStaticData() async {
@@ -113,23 +88,12 @@ class SharedService extends ChangeNotifier {
 
   fetchStaticData() async {
     debugPrint('fetchStaticData');
-    var futures = <Future>[
-      _api.getGenders(),
-      _api.getInitiators(),
-      _api.getPractices(),
-      _api.getPlaces(),
-      _api.getBirthControls(),
-      _api.getActivityTypes(),
-    ];
-
-    List result = await Future.wait(futures);
-    genders = result[0];
-    initiators = result[1];
-    practices = result[2];
-    places = result[3];
-    birthControls = result[4];
-    activityTypes = result[5];
-    return Future.value(null);
+    genders = await _api.getGenders();
+    initiators = await _api.getInitiators();
+    practices = await _api.getPractices();
+    places = await _api.getPlaces();
+    birthControls = await _api.getBirthControls();
+    activityTypes = await _api.getActivityTypes();
   }
 
   bool get isLoggedIn {

@@ -64,10 +64,13 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
 
     if (widget.initiator != null) {
       String initiatorString = AppLocalizations.of(context)!.both;
+      String initiatorValue = 'both';
       if (widget.initiator == Initiator.me) {
         initiatorString = AppLocalizations.of(context)!.me;
+        initiatorValue = 'me';
       } else if (widget.initiator == Initiator.partner) {
         initiatorString = AppLocalizations.of(context)!.partner;
+        initiatorValue = 'partner';
       }
       list.add(
         Row(
@@ -78,7 +81,8 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
               initiatorString,
               style: style,
             ),
-            Text(' ${AppLocalizations.of(context)!.initiatedIt}',
+            Text(
+                ' ${AppLocalizations.of(context)!.initiatedIt(initiatorValue)}',
                 style: Theme.of(context).textTheme.bodyMedium),
           ],
         ),

@@ -27,7 +27,16 @@
   "orgasmsByPartner": "{count, plural, =1{orgasmo de pareja} other{orgasmos de pareja}}",
   "practices": "Practicas",
   "sexualActivity": "Actividad sexual",
-  "initiatedIt": "lo ha iniciado",
+  "initiatedIt": "es el inidaor",
+  "initiatedIt": "{initiator, select, me{lo he iniciado} both{lo hemos iniciado} other{lo ha iniciado}}",
+  "@initiatedIt": {
+    "description": "Who initiated it",
+    "placeholders": {
+      "initiator": {
+        "type": "String"
+      }
+    }
+  },
   "editActivity": "Editar actividad",
   "addPartner": "Añadir pareja",
   "createPartner": "Crear pareja",

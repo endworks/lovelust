@@ -230,7 +230,9 @@ class _SettingsPageState extends State<SettingsPage> {
     if (_common.packageInfo?.installerStore == 'com.apple.simulator') {
       return 'Simulator';
     } else if (_common.packageInfo?.installerStore == 'com.apple.testflight') {
-      return 'Testflight';
+      return 'TestFlight';
+    } else if (_common.packageInfo?.installerStore == 'com.apple.appstore') {
+      return 'AppStore';
     } else if (_common.packageInfo?.installerStore == 'com.android.vending') {
       return 'Play Store';
     }

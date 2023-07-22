@@ -354,6 +354,133 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     }
   }
 
+  List<Widget> get fields {
+    List<Widget> fields = [
+      SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.masturbation),
+        value: _type == ActivityType.masturbation,
+        onChanged: (value) {
+          setState(() {
+            if (value) {
+              _type = ActivityType.masturbation;
+            } else {
+              _type = ActivityType.sexualIntercourse;
+            }
+          });
+        },
+      ),
+    ];
+
+    if (_type == ActivityType.sexualIntercourse) {
+      fields.addAll([
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: DropdownButtonFormField(
+            value: _partner,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.person),
+              labelText: AppLocalizations.of(context)!.partner,
+            ),
+            items: partnerDropdownMenuEntries,
+            onChanged: (value) {
+              _partner = value;
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: DropdownButtonFormField(
+            value: _birthControl,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.medication),
+              labelText: AppLocalizations.of(context)!.birthControl,
+            ),
+            items: birthControlDropdownMenuEntries,
+            onChanged: (value) {
+              _birthControl = value;
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: DropdownButtonFormField(
+            value: _partnerBirthControl,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.medication),
+              labelText: AppLocalizations.of(context)!.partnerBirthControl,
+            ),
+            items: birthControlDropdownMenuEntries,
+            onChanged: (value) {
+              _partnerBirthControl = value;
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: DropdownButtonFormField(
+            value: _initiator,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.start),
+              labelText: AppLocalizations.of(context)!.initiator,
+            ),
+            items: initiatorDropdownMenuEntries,
+            onChanged: (value) {
+              _initiator = value;
+            },
+          ),
+        ),
+      ]);
+    }
+
+    fields.addAll([
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: DropdownButtonFormField(
+          value: _place,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(Icons.place),
+            labelText: AppLocalizations.of(context)!.place,
+          ),
+          items: placeDropdownMenuEntries,
+          onChanged: (value) {
+            _place = value;
+          },
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextField(
+          controller: _locationController,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(Icons.map),
+            labelText: AppLocalizations.of(context)!.location,
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextField(
+          controller: _notesController,
+          maxLines: null,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            prefixIcon: const Icon(Icons.note_alt),
+            labelText: AppLocalizations.of(context)!.notes,
+          ),
+        ),
+      ),
+    ]);
+
+    return fields;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -387,123 +514,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _type,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.favorite),
-                          labelText: AppLocalizations.of(context)!.activityType,
-                        ),
-                        items: typeDropdownMenuEntries,
-                        onChanged: (value) {
-                          _type = value;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _partner,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.person),
-                          labelText: AppLocalizations.of(context)!.partner,
-                        ),
-                        items: partnerDropdownMenuEntries,
-                        onChanged: (value) {
-                          _partner = value;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _birthControl,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.medication),
-                          labelText: AppLocalizations.of(context)!.birthControl,
-                        ),
-                        items: birthControlDropdownMenuEntries,
-                        onChanged: (value) {
-                          _birthControl = value;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _partnerBirthControl,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.medication),
-                          labelText:
-                              AppLocalizations.of(context)!.partnerBirthControl,
-                        ),
-                        items: birthControlDropdownMenuEntries,
-                        onChanged: (value) {
-                          _partnerBirthControl = value;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _initiator,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.start),
-                          labelText: AppLocalizations.of(context)!.initiator,
-                        ),
-                        items: initiatorDropdownMenuEntries,
-                        onChanged: (value) {
-                          _initiator = value;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: DropdownButtonFormField(
-                        value: _place,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.place),
-                          labelText: AppLocalizations.of(context)!.place,
-                        ),
-                        items: placeDropdownMenuEntries,
-                        onChanged: (value) {
-                          _place = value;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        controller: _locationController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.map),
-                          labelText: AppLocalizations.of(context)!.location,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextField(
-                        controller: _notesController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          prefixIcon: const Icon(Icons.note_alt),
-                          labelText: AppLocalizations.of(context)!.notes,
-                        ),
-                      ),
-                    ),
-                  ],
+                  children: fields,
                 ),
               ),
             ],

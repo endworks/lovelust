@@ -47,7 +47,15 @@
   },
   "practices": "Practices",
   "sexualActivity": "Sexual activity",
-  "initiatedIt": "initiated it",
+  "initiatedIt": "{initiator, select, other{initiated it}}",
+  "@initiatedIt": {
+    "description": "Who initiated it",
+    "placeholders": {
+      "initiator": {
+        "type": "String"
+      }
+    }
+  },
   "editActivity": "Edit activity",
   "addPartner": "Add partner",
   "createPartner": "Create partner",

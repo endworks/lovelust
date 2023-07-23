@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
@@ -44,8 +43,7 @@ class _PracticesBlockState extends State<PracticesBlock> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           child: Icon(
             Icons.task_alt,
-            color: Colors.blue
-                .harmonizeWith(Theme.of(context).colorScheme.primary),
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         titleAlignment: ListTileTitleAlignment.top,

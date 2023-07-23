@@ -46,21 +46,24 @@ class _AppState extends State<App> {
             if (lightDynamic != null && darkDynamic != null) {
               theme = ThemeData(
                 colorScheme: lightDynamic.harmonized(),
-                useMaterial3: defaultTheme.useMaterial3,
-                visualDensity: defaultTheme.visualDensity,
                 navigationBarTheme: NavigationBarThemeData(
                   labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
                 ),
+                cardTheme: defaultTheme.cardTheme,
                 textTheme: defaultTheme.textTheme,
+                useMaterial3: defaultTheme.useMaterial3,
+                visualDensity: defaultTheme.visualDensity,
               );
               darkTheme = ThemeData(
                 colorScheme: darkDynamic.harmonized(),
-                useMaterial3: defaultTheme.useMaterial3,
-                visualDensity: defaultTheme.visualDensity,
                 navigationBarTheme: NavigationBarThemeData(
-                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+                  labelBehavior:
+                      defaultDarkTheme.navigationBarTheme.labelBehavior,
                 ),
+                cardTheme: defaultDarkTheme.cardTheme,
                 textTheme: defaultDarkTheme.textTheme,
+                useMaterial3: defaultDarkTheme.useMaterial3,
+                visualDensity: defaultDarkTheme.visualDensity,
                 brightness: Brightness.dark,
               );
             } else if (!kIsWeb && Platform.isIOS) {

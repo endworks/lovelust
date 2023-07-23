@@ -90,8 +90,7 @@ class _SafetyBlockState extends State<SafetyBlock> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           child: Icon(
             Icons.health_and_safety,
-            color: Colors.pink
-                .harmonizeWith(Theme.of(context).colorScheme.primary),
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         titleAlignment: ListTileTitleAlignment.top,

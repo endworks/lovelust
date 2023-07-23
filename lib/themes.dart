@@ -152,6 +152,10 @@ ThemeData experimentalDarkTheme = ThemeData(
     ),
     backgroundColor: defaultDarkTheme.colorScheme.surface,
   ),
+  navigationRailTheme: NavigationRailThemeData(
+    backgroundColor: defaultDarkTheme.colorScheme.surface,
+    elevation: 0,
+  ),
   textTheme: defaultDarkTheme.textTheme,
   useMaterial3: experimentalTheme.useMaterial3,
   visualDensity: experimentalTheme.visualDensity,

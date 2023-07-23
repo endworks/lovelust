@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
@@ -113,8 +112,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
           backgroundColor: Theme.of(context).colorScheme.surface,
           child: Icon(
             Icons.whatshot,
-            color: Colors.deepOrange
-                .harmonizeWith(Theme.of(context).colorScheme.primary),
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         titleAlignment: ListTileTitleAlignment.top,

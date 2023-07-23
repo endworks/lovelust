@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
@@ -99,8 +100,6 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 1,
-      shadowColor: Colors.transparent,
       child: ListTile(
         title: Text(
           AppLocalizations.of(context)!.performance,
@@ -110,6 +109,15 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: performance,
         ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.whatshot,
+            color: Colors.deepOrange
+                .harmonizeWith(Theme.of(context).colorScheme.primary),
+          ),
+        ),
+        titleAlignment: ListTileTitleAlignment.top,
       ),
     );
   }

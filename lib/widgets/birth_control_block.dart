@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
@@ -119,8 +120,6 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 1,
-      shadowColor: Colors.transparent,
       child: ListTile(
         title: Text(
           AppLocalizations.of(context)!.birthControl,
@@ -130,6 +129,15 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: birthControl,
         ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.medication,
+            color: Colors.cyan
+                .harmonizeWith(Theme.of(context).colorScheme.primary),
+          ),
+        ),
+        titleAlignment: ListTileTitleAlignment.top,
       ),
     );
   }

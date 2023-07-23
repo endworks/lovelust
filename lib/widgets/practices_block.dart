@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/id_name.dart';
@@ -23,23 +24,31 @@ class _PracticesBlockState extends State<PracticesBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 1,
-      shadowColor: Colors.transparent,
       child: ListTile(
         title: Text(
           AppLocalizations.of(context)!.practices,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Wrap(
+          spacing: 4,
+          runSpacing: 4,
           children: [
             ...widget.practices.map(
-              (e) => Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 8, 4),
-                child: _shared.sensitiveText(e.name),
+              (e) => Chip(
+                label: _shared.sensitiveText(e.name),
               ),
             )
           ],
         ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.task_alt,
+            color: Colors.blue
+                .harmonizeWith(Theme.of(context).colorScheme.primary),
+          ),
+        ),
+        titleAlignment: ListTileTitleAlignment.top,
       ),
     );
   }

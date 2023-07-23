@@ -15,9 +15,6 @@ class _ActivityCardState extends State<ActivityCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
-      // color: Theme.of(context).colorScheme.surfaceVariant,
-      shadowColor: Colors.transparent,
       margin:
           const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
       clipBehavior: Clip.antiAlias,

@@ -84,10 +84,17 @@ class _SafetyBlockState extends State<SafetyBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 1,
-      shadowColor: Colors.transparent,
       child: ListTile(
         title: safetyNotice,
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.health_and_safety,
+            color: Colors.pink
+                .harmonizeWith(Theme.of(context).colorScheme.primary),
+          ),
+        ),
+        titleAlignment: ListTileTitleAlignment.top,
       ),
     );
   }

@@ -87,9 +87,6 @@ class _ActivityBlockState extends State<ActivityBlock> {
         horizontal: 16,
         vertical: 4,
       ),
-      elevation: 1,
-      shadowColor: Colors.transparent,
-      clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: openActivity,
         title: Row(children: [

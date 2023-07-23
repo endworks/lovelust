@@ -55,6 +55,11 @@ ThemeData defaultTheme = ThemeData(
   navigationBarTheme: const NavigationBarThemeData(
     labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
   ),
+  cardTheme: const CardTheme(
+    elevation: 1,
+    shadowColor: Colors.transparent,
+    clipBehavior: Clip.antiAlias,
+  ),
   textTheme: Typography.material2021().black.merge(defaultTextTheme),
 );
 
@@ -66,14 +71,13 @@ ThemeData defaultDarkTheme = ThemeData(
   useMaterial3: defaultTheme.useMaterial3,
   brightness: Brightness.dark,
   visualDensity: defaultTheme.visualDensity,
-  navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-  ),
+  navigationBarTheme: defaultTheme.navigationBarTheme,
+  cardTheme: defaultTheme.cardTheme,
   textTheme: Typography.material2021().white.merge(defaultTextTheme),
 );
 
 ColorScheme experimentalColorScheme = ColorScheme.fromSeed(
-  seedColor: loveColor,
+  seedColor: lustColor,
   background: whiteColor[900],
   brightness: Brightness.light,
 );
@@ -86,18 +90,36 @@ ColorScheme experimentalDarkColorScheme = ColorScheme.fromSeed(
 
 ThemeData experimentalTheme = ThemeData(
   colorScheme: experimentalColorScheme,
-  appBarTheme: AppBarTheme(
+  appBarTheme: defaultTheme.appBarTheme.copyWith(
     backgroundColor: experimentalColorScheme.background,
     surfaceTintColor: experimentalColorScheme.surfaceVariant,
-    elevation: 1,
-  ),
-  navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-    surfaceTintColor: experimentalColorScheme.surfaceVariant,
-    elevation: 1,
-  ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
     elevation: 0,
+  ),
+  navigationBarTheme: defaultTheme.navigationBarTheme.copyWith(
+    labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+    // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+    elevation: 0,
+    indicatorColor: experimentalColorScheme.primaryContainer,
+    backgroundColor: experimentalColorScheme.surface,
+    height: 56,
+  ),
+  floatingActionButtonTheme: defaultTheme.floatingActionButtonTheme.copyWith(
+    elevation: 0,
+    backgroundColor: experimentalColorScheme.primaryContainer,
+    foregroundColor: experimentalColorScheme.onPrimaryContainer,
+  ),
+  cardTheme: defaultTheme.cardTheme.copyWith(
+    color: experimentalColorScheme.surface,
+    // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+  ),
+  chipTheme: ChipThemeData(
+    labelStyle: defaultTheme.textTheme.labelSmall!.copyWith(
+      color: defaultTheme.colorScheme.onSurface,
+    ),
+    backgroundColor: defaultTheme.colorScheme.surface,
+    side: BorderSide.none,
+    shape: const StadiumBorder(),
+    labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
   ),
   textTheme: defaultTheme.textTheme,
   useMaterial3: true,
@@ -106,17 +128,30 @@ ThemeData experimentalTheme = ThemeData(
 
 ThemeData experimentalDarkTheme = ThemeData(
   colorScheme: experimentalDarkColorScheme,
-  appBarTheme: AppBarTheme(
+  appBarTheme: experimentalTheme.appBarTheme.copyWith(
     backgroundColor: experimentalDarkColorScheme.background,
     surfaceTintColor: experimentalDarkColorScheme.surfaceVariant,
-    elevation: experimentalTheme.appBarTheme.elevation,
   ),
-  navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: experimentalTheme.navigationBarTheme.labelBehavior,
+  navigationBarTheme: experimentalTheme.navigationBarTheme.copyWith(
     surfaceTintColor: experimentalDarkColorScheme.surfaceVariant,
-    elevation: experimentalTheme.navigationBarTheme.elevation,
+    indicatorColor: experimentalDarkColorScheme.primaryContainer,
+    backgroundColor: experimentalDarkColorScheme.surface,
   ),
-  floatingActionButtonTheme: experimentalTheme.floatingActionButtonTheme,
+  floatingActionButtonTheme:
+      experimentalTheme.floatingActionButtonTheme.copyWith(
+    backgroundColor: experimentalDarkColorScheme.primaryContainer,
+    foregroundColor: experimentalDarkColorScheme.onPrimaryContainer,
+  ),
+  cardTheme: experimentalTheme.cardTheme.copyWith(
+    color: experimentalDarkColorScheme.surface,
+    // surfaceTintColor: experimentalDarkColorScheme.surfaceVariant,
+  ),
+  chipTheme: experimentalTheme.chipTheme.copyWith(
+    labelStyle: defaultDarkTheme.textTheme.labelSmall!.copyWith(
+      color: defaultDarkTheme.colorScheme.onSurface,
+    ),
+    backgroundColor: defaultDarkTheme.colorScheme.surface,
+  ),
   textTheme: defaultDarkTheme.textTheme,
   useMaterial3: experimentalTheme.useMaterial3,
   visualDensity: experimentalTheme.visualDensity,
@@ -130,6 +165,7 @@ ThemeData lovelustTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -141,11 +177,12 @@ ThemeData lovelustDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -156,6 +193,7 @@ ThemeData lustfulLoveTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -167,11 +205,12 @@ ThemeData lustfulLoveDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -182,6 +221,7 @@ ThemeData lovefulLustTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -193,11 +233,12 @@ ThemeData lovefulLustDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -208,6 +249,7 @@ ThemeData loveTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -219,11 +261,12 @@ ThemeData loveDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -234,6 +277,7 @@ ThemeData lustTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -245,11 +289,12 @@ ThemeData lustDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -260,6 +305,7 @@ ThemeData redlightTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -271,11 +317,12 @@ ThemeData redlightDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -286,6 +333,7 @@ ThemeData appleTheme = ThemeData(
   navigationBarTheme: NavigationBarThemeData(
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
   useMaterial3: defaultTheme.useMaterial3,
   visualDensity: defaultTheme.visualDensity,
@@ -297,11 +345,12 @@ ThemeData appleDarkTheme = ThemeData(
     brightness: Brightness.dark,
   ),
   navigationBarTheme: NavigationBarThemeData(
-    labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+    labelBehavior: defaultDarkTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
-  useMaterial3: defaultTheme.useMaterial3,
-  visualDensity: defaultTheme.visualDensity,
+  useMaterial3: defaultDarkTheme.useMaterial3,
+  visualDensity: defaultDarkTheme.visualDensity,
   brightness: Brightness.dark,
 );
 
@@ -326,6 +375,7 @@ ThemeData monochromeTheme = ThemeData(
     surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
 );
 
@@ -351,5 +401,6 @@ ThemeData monochromeDarkTheme = ThemeData(
     surfaceTintColor: MaterialColor(0xFF000000, blackColor),
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,
 );

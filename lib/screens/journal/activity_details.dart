@@ -155,7 +155,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               color: Theme.of(context).colorScheme.secondary,
             ),
             const Padding(padding: EdgeInsets.only(left: 4)),
-            Text(
+            _shared.sensitiveText(
               SharedService.getPlaceTranslation(context, widget.activity.place),
             ),
             const Padding(padding: EdgeInsets.only(left: 16)),
@@ -164,8 +164,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               color: Theme.of(context).colorScheme.secondary,
             ),
             const Padding(padding: EdgeInsets.only(left: 4)),
-            Text(
-                "${widget.activity.duration.toString()} ${AppLocalizations.of(context)!.min}")
+            _shared.sensitiveText(widget.activity.duration.toString()),
+            Text(' ${AppLocalizations.of(context)!.min}'),
           ],
         ),
         subtitle: Column(
@@ -177,7 +177,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
-                Text(
+                _shared.sensitiveText(
                   DateFormat('dd MMMM yyyy').format(widget.activity.date),
                 ),
               ],
@@ -189,7 +189,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
-                Text(
+                _shared.sensitiveText(
                   DateFormat('HH:mm').format(widget.activity.date),
                 ),
               ],

@@ -75,7 +75,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
       children: [
         _shared.sensitiveText(widget.activity.duration.toString(),
             style: style),
-        Text('${AppLocalizations.of(context)!.min} '),
+        Text(' ${AppLocalizations.of(context)!.min} '),
         _shared.sensitiveText(place, style: style),
       ],
     );

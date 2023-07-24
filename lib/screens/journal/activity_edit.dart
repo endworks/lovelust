@@ -22,7 +22,6 @@ class ActivityEditPage extends StatefulWidget {
 class _ActivityEditPageState extends State<ActivityEditPage> {
   final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _dateController = TextEditingController();
   final _locationController = TextEditingController();

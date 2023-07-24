@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
@@ -33,7 +34,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
       });
     }
     setState(() {
-      solo = widget.activity.type == 'MASTURBATION';
+      solo = widget.activity.type == ActivityType.masturbation;
     });
   }
 
@@ -47,7 +48,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
   }
 
   Icon? safetyIcon() {
-    if (widget.activity.type != 'MASTURBATION') {
+    if (widget.activity.type != ActivityType.masturbation) {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
       if (safety == ActivitySafety.safe) {
         return Icon(Icons.check_circle,
@@ -118,7 +119,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
               style: secondaryTextStyle(),
             )
           : Text(
-              'Unknown place',
+              AppLocalizations.of(context)!.unknownPlace,
               style: secondaryTextStyle(),
             )
     ]);
@@ -128,7 +129,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
     if (solo) {
       return const Text('');
     }
-    String text = 'No protection';
+    String text = AppLocalizations.of(context)!.noBirthControl;
     if (widget.activity.birthControl == null ||
         widget.activity.birthControl == Contraceptive.noContraceptive) {
       if (widget.activity.partnerBirthControl != null &&
@@ -161,7 +162,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
     return Padding(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
       child: Text(
-        '${widget.activity.duration} min.',
+        '${widget.activity.duration} ${AppLocalizations.of(context)!.min}',
         style: secondaryTextStyle(),
       ),
     );
@@ -183,21 +184,21 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
       switch (safety) {
         case ActivitySafety.safe:
-          title = 'Safe sex';
+          title = AppLocalizations.of(context)!.safeSex;
           if (!_shared.monochrome) {
             color = Colors.green
                 .harmonizeWith(Theme.of(context).colorScheme.primary);
           }
           break;
         case ActivitySafety.unsafe:
-          title = 'Unsafe sex';
+          title = AppLocalizations.of(context)!.unsafeSex;
           if (!_shared.monochrome) {
             color =
                 Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
           }
           break;
         default:
-          title = 'Partly unsafe sex';
+          title = AppLocalizations.of(context)!.partlyUnsafeSex;
           if (!_shared.monochrome) {
             color = Colors.orange
                 .harmonizeWith(Theme.of(context).colorScheme.primary);

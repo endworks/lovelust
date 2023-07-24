@@ -66,7 +66,6 @@ class _PracticesBlockState extends State<PracticesBlock> {
                 label: _shared.sensitiveText(getPracticeName(e)!),
                 selected: true,
                 onSelected: (value) {},
-                showCheckmark: false,
               ),
             )
           ],

@@ -183,7 +183,7 @@ class SharedService extends ChangeNotifier {
     return activity.firstWhere((element) => element.id == id);
   }
 
-  List<Activity> getActivityByPartner(String id) {
+  List<Activity> getActivityByPartner(String? id) {
     return activity.where((element) => element.partner == id).toList();
   }
 

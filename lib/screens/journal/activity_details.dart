@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
@@ -7,10 +8,12 @@ import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:lovelust/widgets/activity_avatar.dart';
 import 'package:lovelust/widgets/birth_control_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
 import 'package:lovelust/widgets/performance_block.dart';
 import 'package:lovelust/widgets/practices_block.dart';
+import 'package:lovelust/widgets/rating.dart';
 import 'package:lovelust/widgets/safety_block.dart';
 
 class ActivityDetailsPage extends StatefulWidget {
@@ -54,27 +57,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     });
   }
 
-  /*String get title {
-    String title;
-    if (solo) {
-      title = 'Solo';
-    } else {
-      switch (widget.activity.safety) {
-        case 'safe':
-          title = 'Safe sex';
-          break;
-        case 'unsafe':
-          title = 'Unsafe sex';
-          break;
-        default:
-          title = 'Partly unsafe sex';
-      }
-    }
-    return title;
-  }*/
-
   String get title {
-    if (widget.activity.type == ActivityType.masturbation) {
+    if (!solo) {
       if (partner != null) {
         return partner!.name;
       } else {
@@ -127,10 +111,101 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     }
   }
 
+  Widget? get encounters {
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
+    int count = _shared.getActivityByPartner(widget.activity.partner).length;
+    if (count == 0) {
+      return null;
+    }
+    Color color = Theme.of(context).colorScheme.onSecondaryContainer;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.favorite,
+          color: color,
+          size: style.fontSize,
+        ),
+        _shared.sensitiveText(
+          count.toString(),
+          style: style.copyWith(
+            color: color,
+          ),
+        ),
+      ],
+    );
+  }
+
   get cards {
-    List<Widget> list = [];
+    List<Widget> list = [
+      ListTile(
+        leading: ActivityAvatar(
+          partnerId: widget.activity.partner,
+          masturbation: solo,
+        ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+          child: encounters,
+        ),
+        title: Row(
+          children: [
+            Icon(
+              Icons.location_pin,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const Padding(padding: EdgeInsets.only(left: 4)),
+            Text(
+              SharedService.getPlaceTranslation(context, widget.activity.place),
+            ),
+            const Padding(padding: EdgeInsets.only(left: 16)),
+            Icon(
+              Icons.timer,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const Padding(padding: EdgeInsets.only(left: 4)),
+            Text(
+                "${widget.activity.duration.toString()} ${AppLocalizations.of(context)!.min}")
+          ],
+        ),
+        subtitle: Column(
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.calendar_today,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 4)),
+                Text(
+                  DateFormat('dd MMMM yyyy').format(widget.activity.date),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.access_time,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 4)),
+                Text(
+                  DateFormat('HH:mm').format(widget.activity.date),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Rating(rating: widget.activity.rating),
+              ],
+            ),
+          ],
+        ),
+        titleAlignment: ListTileTitleAlignment.top,
+      )
+    ];
     if (!solo) {
-      list = [
+      list.addAll([
         SafetyBlock(
           safety: _shared.calculateSafety(widget.activity),
         ),
@@ -138,7 +213,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           birthControl: widget.activity.birthControl,
           partnerBirthControl: widget.activity.partnerBirthControl,
         ),
-      ];
+      ]);
     }
 
     if (widget.activity.orgasms > 0 ||

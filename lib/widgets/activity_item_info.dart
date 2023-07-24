@@ -9,6 +9,7 @@ import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
+import 'package:lovelust/widgets/rating.dart';
 import 'package:relative_time/relative_time.dart';
 
 class ActivityItemInfo extends StatefulWidget {
@@ -135,56 +136,6 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     ]);
   }
 
-  Widget get rating {
-    List<Widget> container = [];
-    Color color = Theme.of(context).colorScheme.secondary;
-    if (widget.activity.rating > 0) {
-      color = Colors.red;
-    }
-    if (widget.activity.rating > 2) {
-      color = Colors.deepOrangeAccent;
-    }
-    if (widget.activity.rating > 3) {
-      color = Colors.amber;
-    }
-    color = color.harmonizeWith(Theme.of(context).colorScheme.primary);
-
-    Icon star = Icon(
-      Icons.star,
-      size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-      color: color,
-    );
-    Icon starEmpty = Icon(
-      Icons.star_border,
-      size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-    );
-    if (widget.activity.rating > 0) {
-      container.add(star);
-    }
-    if (widget.activity.rating > 1) {
-      container.add(star);
-    }
-    if (widget.activity.rating > 2) {
-      container.add(star);
-    }
-    if (widget.activity.rating > 3) {
-      container.add(star);
-    }
-    if (widget.activity.rating > 4) {
-      container.add(star);
-    }
-
-    int needsToBeFilled = 4 - container.length;
-    for (int i = 0; i <= needsToBeFilled; i++) {
-      container.add(starEmpty);
-    }
-
-    return Row(
-      children: container,
-    );
-  }
-
   Widget protection() {
     if (solo) {
       return const Text('');
@@ -222,7 +173,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     return Padding(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
       child: Text(
-        '${widget.activity.duration} min.',
+        '${widget.activity.duration} ${AppLocalizations.of(context)!.min}',
         style: secondaryTextStyle(),
       ),
     );
@@ -313,7 +264,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
             activityTitle,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          rating,
+          Rating(rating: widget.activity.rating),
         ],
       ),
     );

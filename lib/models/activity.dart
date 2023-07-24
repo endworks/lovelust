@@ -17,7 +17,7 @@ class Activity {
   final Initiator? initiator;
   final int rating;
   final ActivityType? type;
-  final List<IdName>? practices;
+  final List<Practice>? practices;
 
   const Activity({
     required this.id,
@@ -58,8 +58,9 @@ class Activity {
       practices: json['practices'] == null
           ? null
           : json['practices']
-              .map<IdName>((map) => IdName.fromJson(map))
-              .toList() as List<IdName>,
+              .map<Practice>((map) =>
+                  SharedService.getPracticeByValue(IdName.fromJson(map).id)!)
+              .toList() as List<Practice>,
     );
   }
 
@@ -75,10 +76,17 @@ class Activity {
         'duration': duration,
         'orgasms': orgasms,
         'partner_orgasms': partnerOrgasms,
-        'place': place,
-        'initiator': initiator,
+        'place': SharedService.setValueByPlace(place),
+        'initiator': SharedService.setValueByInitiator(initiator),
         'rating': rating,
-        'type': type,
-        'practices': practices?.map((e) => e.toJson()).toList(),
+        'type': SharedService.setValueByActivityType(type!),
+        'practices': practices
+            ?.map(
+              (e) => IdName(
+                id: SharedService.setValueByPractice(e)!,
+                name: SharedService.setValueByPractice(e)!,
+              ).toJson(),
+            )
+            .toList(),
       };
 }

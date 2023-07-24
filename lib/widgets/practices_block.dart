@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:lovelust/models/id_name.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class PracticesBlock extends StatefulWidget {
   const PracticesBlock({super.key, required this.practices});
 
-  final List<IdName> practices;
+  final List<Practice> practices;
 
   @override
   State<PracticesBlock> createState() => _PracticesBlockState();
@@ -15,6 +15,35 @@ class PracticesBlock extends StatefulWidget {
 
 class _PracticesBlockState extends State<PracticesBlock> {
   final SharedService _shared = getIt<SharedService>();
+
+  String? getPracticeName(Practice practice) {
+    if (practice == Practice.anal) {
+      return AppLocalizations.of(context)!.anal;
+    } else if (practice == Practice.bdsm) {
+      return AppLocalizations.of(context)!.bdsm;
+    } else if (practice == Practice.bondage) {
+      return AppLocalizations.of(context)!.bondage;
+    } else if (practice == Practice.choking) {
+      return AppLocalizations.of(context)!.choking;
+    } else if (practice == Practice.cuddling) {
+      return AppLocalizations.of(context)!.cuddling;
+    } else if (practice == Practice.domination) {
+      return AppLocalizations.of(context)!.domination;
+    } else if (practice == Practice.finger) {
+      return AppLocalizations.of(context)!.finger;
+    } else if (practice == Practice.handjob) {
+      return AppLocalizations.of(context)!.handjob;
+    } else if (practice == Practice.masturbation) {
+      return AppLocalizations.of(context)!.masturbation;
+    } else if (practice == Practice.oral) {
+      return AppLocalizations.of(context)!.oral;
+    } else if (practice == Practice.toy) {
+      return AppLocalizations.of(context)!.toy;
+    } else if (practice == Practice.vaginal) {
+      return AppLocalizations.of(context)!.vaginal;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +62,11 @@ class _PracticesBlockState extends State<PracticesBlock> {
           runSpacing: 4,
           children: [
             ...widget.practices.map(
-              (e) => Chip(
-                label: _shared.sensitiveText(e.name),
+              (e) => FilterChip(
+                label: _shared.sensitiveText(getPracticeName(e)!),
+                selected: true,
+                onSelected: null,
+                showCheckmark: false,
               ),
             )
           ],

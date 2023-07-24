@@ -34,4 +34,52 @@ enum Contraceptive {
   vasectomy
 }
 
-enum Place { backyard, bar, bathroom, beach, bedroom, public, sofa, table }
+enum Place {
+  backyard,
+  bar,
+  bathroom,
+  beach,
+  bedroom,
+  car,
+  chair,
+  cinema,
+  elevator,
+  forest,
+  garage,
+  home,
+  hotel,
+  jacuzzi,
+  kitchen,
+  livingRoom,
+  museum,
+  other,
+  party,
+  plane,
+  pool,
+  public,
+  restroom,
+  roof,
+  school,
+  ship,
+  shower,
+  sofa,
+  table,
+  theatre,
+  train,
+  work
+}
+
+enum Practice {
+  anal,
+  bdsm,
+  bondage,
+  choking,
+  cuddling,
+  domination,
+  finger,
+  handjob,
+  masturbation,
+  oral,
+  toy,
+  vaginal
+}

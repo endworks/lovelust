@@ -292,6 +292,17 @@ class SharedService extends ChangeNotifier {
     return null;
   }
 
+  static String? setValueByPlace(Place? value) {
+    if (value == Place.bedroom) {
+      return 'BEDROOM';
+    } else if (value == Initiator.partner) {
+      return 'PARTNER';
+    } else if (value == Initiator.both) {
+      return 'BOTH';
+    }
+    return null;
+  }
+
   static ActivityType? getActivityTypeByValue(String? value) {
     if (value == 'MASTURBATION') {
       return ActivityType.masturbation;
@@ -340,6 +351,64 @@ class SharedService extends ChangeNotifier {
       return 'M';
     }
     return 'NB';
+  }
+
+  static Practice? getPracticeByValue(String? value) {
+    if (value == 'ANAL') {
+      return Practice.anal;
+    } else if (value == 'BDSM') {
+      return Practice.bdsm;
+    } else if (value == 'BONDAGE') {
+      return Practice.bondage;
+    } else if (value == 'CHOKING') {
+      return Practice.choking;
+    } else if (value == 'CUDDLING') {
+      return Practice.cuddling;
+    } else if (value == 'DOMINATION') {
+      return Practice.domination;
+    } else if (value == 'FINGER') {
+      return Practice.finger;
+    } else if (value == 'HANDJOB') {
+      return Practice.handjob;
+    } else if (value == 'MASTURBATION') {
+      return Practice.masturbation;
+    } else if (value == 'ORAL') {
+      return Practice.oral;
+    } else if (value == 'TOY') {
+      return Practice.toy;
+    } else if (value == 'VAGINAL') {
+      return Practice.vaginal;
+    }
+    return null;
+  }
+
+  static String? setValueByPractice(Practice? value) {
+    if (value == Practice.anal) {
+      return 'ANAL';
+    } else if (value == Practice.bdsm) {
+      return 'BDSM';
+    } else if (value == Practice.bondage) {
+      return 'BONDAGE';
+    } else if (value == Practice.choking) {
+      return 'CHOKING';
+    } else if (value == Practice.cuddling) {
+      return 'CUDDLING';
+    } else if (value == Practice.domination) {
+      return 'DOMINATION';
+    } else if (value == Practice.finger) {
+      return 'FINGER';
+    } else if (value == Practice.handjob) {
+      return 'HANDJOB';
+    } else if (value == Practice.masturbation) {
+      return 'MASTURBATION';
+    } else if (value == Practice.oral) {
+      return 'ORAL';
+    } else if (value == Practice.toy) {
+      return 'TOY';
+    } else if (value == Practice.vaginal) {
+      return 'VAGINAL';
+    }
+    return null;
   }
 
   String get theme {

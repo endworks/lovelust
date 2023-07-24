@@ -80,6 +80,9 @@ jobs:
 
       - name: Get release name
         run: |
+          file=$(cat pubspec.yaml)
+          BUILD_VERSION=$(echo $file | sed -ne 's/[^0-9]*\(\([0-9]\.\)\{0,4\}[0-9][^.]\).*/\1/p')
+          echo "BUILD_VERSION=$BUILD_VERSION" >> $GITHUB_ENV
           echo "COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
           echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "COMMIT_NUMBER=$(git rev-list --count main)" >> $GITHUB_ENV
@@ -103,7 +106,7 @@ jobs:
           mappingFile: ./build/app/outputs/mapping/release/mapping.txt
           debugSymbols: ./build/app/intermediates/merged_native_libs/release/out/lib
           whatsNewDirectory: whatsnew
-          track: internal
+          track: beta
           status: completed
-          releaseName: "${{ env.COMMIT_BRANCH }} #${{ env.COMMIT_NUMBER }} (${{ env.COMMIT_HASH }})"
-          # changesNotSentForReview: true
+          releaseName: "${{ env.BUILD_VERSION }} (${{ env.COMMIT_NUMBER }})"
+          changesNotSentForReview: true

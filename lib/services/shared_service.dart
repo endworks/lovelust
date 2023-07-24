@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
@@ -151,13 +152,30 @@ class SharedService extends ChangeNotifier {
   }
 
   ActivitySafety calculateSafety(Activity activity) {
-    if (activity.birthControl == Contraceptive.condom ||
-        activity.partnerBirthControl == Contraceptive.condom) {
+    List<Contraceptive> safe = [
+      Contraceptive.condom,
+      Contraceptive.outercourse,
+    ];
+    List<Contraceptive?> unsafe = [
+      null,
+      Contraceptive.pullOut,
+      Contraceptive.unsafeContraceptive
+    ];
+
+    if (safe.contains(activity.birthControl) ||
+        safe.contains(activity.partnerBirthControl)) {
       return ActivitySafety.safe;
     }
+
+    if (unsafe.contains(activity.birthControl) &&
+        unsafe.contains(activity.partnerBirthControl)) {
+      return ActivitySafety.unsafe;
+    }
+
     if (activity.birthControl == null && activity.partnerBirthControl == null) {
       return ActivitySafety.unsafe;
     }
+
     return ActivitySafety.partlySafe;
   }
 
@@ -270,6 +288,8 @@ class SharedService extends ChangeNotifier {
       return Initiator.partner;
     } else if (value == 'BOTH') {
       return Initiator.both;
+    } else if (value == 'OTHER') {
+      return Initiator.other;
     }
     return null;
   }
@@ -281,24 +301,146 @@ class SharedService extends ChangeNotifier {
       return 'PARTNER';
     } else if (value == Initiator.both) {
       return 'BOTH';
+    } else if (value == Initiator.other) {
+      return 'OTHER';
     }
     return null;
   }
 
   static Place? getPlaceByValue(String? value) {
-    if (value == 'BEDROOM') {
+    if (value == 'BACKYARD') {
+      return Place.backyard;
+    } else if (value == 'BAR') {
+      return Place.bar;
+    } else if (value == 'BATHROOM') {
+      return Place.bathroom;
+    } else if (value == 'BEACH') {
+      return Place.beach;
+    } else if (value == 'BEDROOM') {
       return Place.bedroom;
+    } else if (value == 'CAR') {
+      return Place.car;
+    } else if (value == 'CHAIR') {
+      return Place.chair;
+    } else if (value == 'CINEMA') {
+      return Place.cinema;
+    } else if (value == 'ELEVATOR') {
+      return Place.elevator;
+    } else if (value == 'FOREST') {
+      return Place.forest;
+    } else if (value == 'GARAGE') {
+      return Place.garage;
+    } else if (value == 'HOME') {
+      return Place.home;
+    } else if (value == 'HOTEL') {
+      return Place.hotel;
+    } else if (value == 'JACUZZI') {
+      return Place.jacuzzi;
+    } else if (value == 'KITCHEN') {
+      return Place.kitchen;
+    } else if (value == 'LIVING_ROOM') {
+      return Place.livingRoom;
+    } else if (value == 'MUSEUM') {
+      return Place.museum;
+    } else if (value == 'OTHER') {
+      return Place.other;
+    } else if (value == 'PARTY') {
+      return Place.party;
+    } else if (value == 'PLANE') {
+      return Place.plane;
+    } else if (value == 'POOL') {
+      return Place.pool;
+    } else if (value == 'PUBLIC') {
+      return Place.public;
+    } else if (value == 'RESTROOM') {
+      return Place.restroom;
+    } else if (value == 'ROOF') {
+      return Place.roof;
+    } else if (value == 'SCHOOL') {
+      return Place.school;
+    } else if (value == 'SHIP') {
+      return Place.ship;
+    } else if (value == 'SHOWER') {
+      return Place.shower;
+    } else if (value == 'SOFA') {
+      return Place.sofa;
+    } else if (value == 'TABLE') {
+      return Place.table;
+    } else if (value == 'THEATRE') {
+      return Place.theatre;
+    } else if (value == 'TRAIN') {
+      return Place.train;
+    } else if (value == 'WORK') {
+      return Place.work;
     }
     return null;
   }
 
   static String? setValueByPlace(Place? value) {
-    if (value == Place.bedroom) {
+    if (value == Place.backyard) {
+      return 'BACKYARD';
+    } else if (value == Place.bar) {
+      return 'BAR';
+    } else if (value == Place.bathroom) {
+      return 'BATHROOM';
+    } else if (value == Place.beach) {
+      return 'BEACH';
+    } else if (value == Place.bedroom) {
       return 'BEDROOM';
-    } else if (value == Initiator.partner) {
-      return 'PARTNER';
-    } else if (value == Initiator.both) {
-      return 'BOTH';
+    } else if (value == Place.car) {
+      return 'CAR';
+    } else if (value == Place.chair) {
+      return 'CHAIR';
+    } else if (value == Place.cinema) {
+      return 'CINEMA';
+    } else if (value == Place.elevator) {
+      return 'ELEVATOR';
+    } else if (value == Place.forest) {
+      return 'FOREST';
+    } else if (value == Place.garage) {
+      return 'GARAGE';
+    } else if (value == Place.home) {
+      return 'HOME';
+    } else if (value == Place.hotel) {
+      return 'HOTEL';
+    } else if (value == Place.jacuzzi) {
+      return 'JACUZZI';
+    } else if (value == Place.kitchen) {
+      return 'KITCHEN';
+    } else if (value == Place.livingRoom) {
+      return 'LIVING_ROOM';
+    } else if (value == Place.museum) {
+      return 'MUSEUM';
+    } else if (value == Place.other) {
+      return 'OTHER';
+    } else if (value == Place.party) {
+      return 'PARTY';
+    } else if (value == Place.plane) {
+      return 'PLANE';
+    } else if (value == Place.pool) {
+      return 'POOL';
+    } else if (value == Place.public) {
+      return 'PUBLIC';
+    } else if (value == Place.restroom) {
+      return 'RESTROOM';
+    } else if (value == Place.roof) {
+      return 'ROOF';
+    } else if (value == Place.school) {
+      return 'SCHOOL';
+    } else if (value == Place.ship) {
+      return 'SHIP';
+    } else if (value == Place.shower) {
+      return 'SHOWER';
+    } else if (value == Place.sofa) {
+      return 'SOFA';
+    } else if (value == Place.table) {
+      return 'TABLE';
+    } else if (value == Place.theatre) {
+      return 'THEATRE';
+    } else if (value == Place.train) {
+      return 'TRAIN';
+    } else if (value == Place.work) {
+      return 'WORK';
     }
     return null;
   }
@@ -409,6 +551,127 @@ class SharedService extends ChangeNotifier {
       return 'VAGINAL';
     }
     return null;
+  }
+
+  static String getContraceptiveTranslation(context, Contraceptive? value) {
+    if (value == Contraceptive.cervicalCap) {
+      return AppLocalizations.of(context)!.cervicalCap;
+    } else if (value == Contraceptive.condom) {
+      return AppLocalizations.of(context)!.condom;
+    } else if (value == Contraceptive.contraceptiveImplant) {
+      return AppLocalizations.of(context)!.contraceptiveImplant;
+    } else if (value == Contraceptive.contraceptivePatch) {
+      return AppLocalizations.of(context)!.contraceptivePatch;
+    } else if (value == Contraceptive.contraceptiveShot) {
+      return AppLocalizations.of(context)!.contraceptiveShot;
+    } else if (value == Contraceptive.diaphragm) {
+      return AppLocalizations.of(context)!.diaphragm;
+    } else if (value == Contraceptive.infertility) {
+      return AppLocalizations.of(context)!.infertility;
+    } else if (value == Contraceptive.internalCondom) {
+      return AppLocalizations.of(context)!.internalCondom;
+    } else if (value == Contraceptive.intrauterineDevice) {
+      return AppLocalizations.of(context)!.intrauterineDevice;
+    } else if (value == Contraceptive.outercourse) {
+      return AppLocalizations.of(context)!.outercourse;
+    } else if (value == Contraceptive.pill) {
+      return AppLocalizations.of(context)!.pill;
+    } else if (value == Contraceptive.pullOut) {
+      return AppLocalizations.of(context)!.pullOut;
+    } else if (value == Contraceptive.sponge) {
+      return AppLocalizations.of(context)!.sponge;
+    } else if (value == Contraceptive.tubalLigation) {
+      return AppLocalizations.of(context)!.tubalLigation;
+    } else if (value == Contraceptive.unsafeContraceptive) {
+      return AppLocalizations.of(context)!.unsafeContraceptive;
+    } else if (value == Contraceptive.vaginalRing) {
+      return AppLocalizations.of(context)!.vaginalRing;
+    } else if (value == Contraceptive.vasectomy) {
+      return AppLocalizations.of(context)!.vasectomy;
+    }
+    return AppLocalizations.of(context)!.noBirthControl;
+  }
+
+  static String getPlaceTranslation(context, Place? value) {
+    if (value == Place.backyard) {
+      return AppLocalizations.of(context)!.backyard;
+    } else if (value == Place.bar) {
+      return AppLocalizations.of(context)!.bar;
+    } else if (value == Place.bathroom) {
+      return AppLocalizations.of(context)!.bathroom;
+    } else if (value == Place.beach) {
+      return AppLocalizations.of(context)!.beach;
+    } else if (value == Place.bedroom) {
+      return AppLocalizations.of(context)!.bedroom;
+    } else if (value == Place.car) {
+      return AppLocalizations.of(context)!.car;
+    } else if (value == Place.chair) {
+      return AppLocalizations.of(context)!.chair;
+    } else if (value == Place.cinema) {
+      return AppLocalizations.of(context)!.cinema;
+    } else if (value == Place.elevator) {
+      return AppLocalizations.of(context)!.elevator;
+    } else if (value == Place.forest) {
+      return AppLocalizations.of(context)!.forest;
+    } else if (value == Place.garage) {
+      return AppLocalizations.of(context)!.garage;
+    } else if (value == Place.home) {
+      return AppLocalizations.of(context)!.home;
+    } else if (value == Place.hotel) {
+      return AppLocalizations.of(context)!.hotel;
+    } else if (value == Place.jacuzzi) {
+      return AppLocalizations.of(context)!.jacuzzi;
+    } else if (value == Place.kitchen) {
+      return AppLocalizations.of(context)!.kitchen;
+    } else if (value == Place.livingRoom) {
+      return AppLocalizations.of(context)!.livingRoom;
+    } else if (value == Place.museum) {
+      return AppLocalizations.of(context)!.museum;
+    } else if (value == Place.other) {
+      return AppLocalizations.of(context)!.other;
+    } else if (value == Place.party) {
+      return AppLocalizations.of(context)!.party;
+    } else if (value == Place.plane) {
+      return AppLocalizations.of(context)!.plane;
+    } else if (value == Place.pool) {
+      return AppLocalizations.of(context)!.pool;
+    } else if (value == Place.public) {
+      return AppLocalizations.of(context)!.public;
+    } else if (value == Place.restroom) {
+      return AppLocalizations.of(context)!.restroom;
+    } else if (value == Place.roof) {
+      return AppLocalizations.of(context)!.roof;
+    } else if (value == Place.school) {
+      return AppLocalizations.of(context)!.school;
+    } else if (value == Place.ship) {
+      return AppLocalizations.of(context)!.ship;
+    } else if (value == Place.shower) {
+      return AppLocalizations.of(context)!.shower;
+    } else if (value == Place.sofa) {
+      return AppLocalizations.of(context)!.sofa;
+    } else if (value == Place.table) {
+      return AppLocalizations.of(context)!.table;
+    } else if (value == Place.theatre) {
+      return AppLocalizations.of(context)!.theatre;
+    } else if (value == Place.train) {
+      return AppLocalizations.of(context)!.train;
+    } else if (value == Place.work) {
+      return AppLocalizations.of(context)!.work;
+    }
+    return AppLocalizations.of(context)!.unknownPlace;
+  }
+
+  static String getInitiatorTranslation(context, Initiator? value) {
+    if (value == Initiator.me) {
+      return AppLocalizations.of(context)!.me;
+    } else if (value == Initiator.partner) {
+      return AppLocalizations.of(context)!.partner;
+    } else if (value == Initiator.both) {
+      return AppLocalizations.of(context)!.both;
+    } else if (value == Initiator.other) {
+      return AppLocalizations.of(context)!.other;
+    }
+    return AppLocalizations.of(context)!.noInitiator;
   }
 
   String get theme {

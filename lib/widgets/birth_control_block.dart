@@ -21,43 +21,6 @@ class BirthControlBlock extends StatefulWidget {
 class _BirthControlBlockState extends State<BirthControlBlock> {
   final SharedService _shared = getIt<SharedService>();
 
-  String getContraceptiveName(Contraceptive? contraceptive) {
-    if (contraceptive == Contraceptive.condom) {
-      return AppLocalizations.of(context)!.condom;
-    } else if (contraceptive == Contraceptive.cervicalCap) {
-      return AppLocalizations.of(context)!.cervicalCap;
-    } else if (contraceptive == Contraceptive.contraceptiveImplant) {
-      return AppLocalizations.of(context)!.contraceptiveImplant;
-    } else if (contraceptive == Contraceptive.contraceptivePatch) {
-      return AppLocalizations.of(context)!.contraceptivePatch;
-    } else if (contraceptive == Contraceptive.contraceptiveShot) {
-      return AppLocalizations.of(context)!.contraceptiveShot;
-    } else if (contraceptive == Contraceptive.diaphragm) {
-      return AppLocalizations.of(context)!.diaphragm;
-    } else if (contraceptive == Contraceptive.infertility) {
-      return AppLocalizations.of(context)!.infertility;
-    } else if (contraceptive == Contraceptive.internalCondom) {
-      return AppLocalizations.of(context)!.internalCondom;
-    } else if (contraceptive == Contraceptive.intrauterineDevice) {
-      return AppLocalizations.of(context)!.intrauterineDevice;
-    } else if (contraceptive == Contraceptive.outercourse) {
-      return AppLocalizations.of(context)!.outercourse;
-    } else if (contraceptive == Contraceptive.pill) {
-      return AppLocalizations.of(context)!.pill;
-    } else if (contraceptive == Contraceptive.sponge) {
-      return AppLocalizations.of(context)!.sponge;
-    } else if (contraceptive == Contraceptive.tubalLigation) {
-      return AppLocalizations.of(context)!.tubalLigation;
-    } else if (contraceptive == Contraceptive.unsafeContraceptive) {
-      return AppLocalizations.of(context)!.unsafeContraceptive;
-    } else if (contraceptive == Contraceptive.vaginalRing) {
-      return AppLocalizations.of(context)!.vaginalRing;
-    } else if (contraceptive == Contraceptive.vasectomy) {
-      return AppLocalizations.of(context)!.vasectomy;
-    }
-    return AppLocalizations.of(context)!.noBirthControl;
-  }
-
   List<Widget> get birthControl {
     List<Widget> list = [];
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
@@ -68,7 +31,10 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
           textBaseline: TextBaseline.alphabetic,
           children: [
             _shared.sensitiveText(
-              getContraceptiveName(widget.birthControl),
+              SharedService.getContraceptiveTranslation(
+                context,
+                widget.birthControl,
+              ),
               style: style,
             ),
             Text(' ${AppLocalizations.of(context)!.byBoth}',
@@ -84,7 +50,10 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               _shared.sensitiveText(
-                getContraceptiveName(widget.birthControl),
+                SharedService.getContraceptiveTranslation(
+                  context,
+                  widget.birthControl,
+                ),
                 style: style,
               ),
               Text(' ${AppLocalizations.of(context)!.byMe}',
@@ -99,7 +68,10 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             textBaseline: TextBaseline.alphabetic,
             children: [
               _shared.sensitiveText(
-                getContraceptiveName(widget.partnerBirthControl),
+                SharedService.getContraceptiveTranslation(
+                  context,
+                  widget.partnerBirthControl,
+                ),
                 style: style,
               ),
               Text(' ${AppLocalizations.of(context)!.byPartner}',

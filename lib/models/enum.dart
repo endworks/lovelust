@@ -27,6 +27,7 @@ enum Contraceptive {
   outercourse,
   contraceptivePatch,
   pill,
+  pullOut,
   contraceptiveShot,
   sponge,
   tubalLigation,

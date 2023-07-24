@@ -42,10 +42,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     if (count == 0) {
       return null;
     }
-    Color color = Theme.of(context).colorScheme.onSurface;
-    if (!_common.monochrome) {
-      color = Theme.of(context).colorScheme.secondary;
-    }
+    Color color = Theme.of(context).colorScheme.onSecondaryContainer;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,6 +59,20 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget? get encountersCount {
+    TextStyle style = Theme.of(context).textTheme.titleMedium!;
+    int count = _common.getActivityByPartner(widget.partner.id).length;
+    if (count == 0) {
+      return null;
+    }
+    return _common.sensitiveText(
+      count.toString(),
+      style: style.copyWith(
+        color: Theme.of(context).colorScheme.onSecondaryContainer,
+      ),
     );
   }
 
@@ -86,7 +97,10 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
       leading: ActivityAvatar(partnerId: widget.partner.id),
       title: name,
       subtitle: lastEncounterDate,
-      trailing: encounters,
+      trailing: CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+        child: encounters,
+      ),
       onTap: _openPartner,
     );
   }

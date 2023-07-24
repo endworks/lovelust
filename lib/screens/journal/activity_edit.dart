@@ -113,19 +113,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
   bool get valid => true;
 
-  List<DropdownMenuItem<ActivityType>> get typeDropdownMenuEntries {
-    return [
-      DropdownMenuItem(
-        value: ActivityType.sexualIntercourse,
-        child: Text(AppLocalizations.of(context)!.sexualIntercourse),
-      ),
-      DropdownMenuItem(
-        value: ActivityType.masturbation,
-        child: Text(AppLocalizations.of(context)!.masturbation),
-      )
-    ];
-  }
-
   List<DropdownMenuItem<String?>> get partnerDropdownMenuEntries {
     List<DropdownMenuItem<String?>> list = _common.partners
         .map(
@@ -136,147 +123,70 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         )
         .toList();
     list.insert(
-        0,
-        DropdownMenuItem(
-          value: null,
-          child: Text(AppLocalizations.of(context)!.unknownPartner),
-        ));
+      0,
+      DropdownMenuItem(
+        value: null,
+        child: Text(AppLocalizations.of(context)!.unknownPartner),
+      ),
+    );
     return list;
   }
 
   List<DropdownMenuItem<Contraceptive?>> get birthControlDropdownMenuEntries {
-    return [
+    List<DropdownMenuItem<Contraceptive?>> list = Contraceptive.values
+        .map(
+          (e) => DropdownMenuItem<Contraceptive?>(
+            value: e,
+            child: Text(SharedService.getContraceptiveTranslation(context, e)),
+          ),
+        )
+        .toList();
+    list.insert(
+      0,
       DropdownMenuItem(
         value: null,
         child: Text(AppLocalizations.of(context)!.noBirthControl),
       ),
-      DropdownMenuItem(
-        value: Contraceptive.condom,
-        child: Text(AppLocalizations.of(context)!.condom),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.cervicalCap,
-        child: Text(AppLocalizations.of(context)!.cervicalCap),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.contraceptiveImplant,
-        child: Text(AppLocalizations.of(context)!.contraceptiveImplant),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.contraceptivePatch,
-        child: Text(AppLocalizations.of(context)!.contraceptivePatch),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.contraceptiveShot,
-        child: Text(AppLocalizations.of(context)!.contraceptiveShot),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.diaphragm,
-        child: Text(AppLocalizations.of(context)!.diaphragm),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.infertility,
-        child: Text(AppLocalizations.of(context)!.infertility),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.internalCondom,
-        child: Text(AppLocalizations.of(context)!.internalCondom),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.intrauterineDevice,
-        child: Text(AppLocalizations.of(context)!.intrauterineDevice),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.outercourse,
-        child: Text(AppLocalizations.of(context)!.outercourse),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.pill,
-        child: Text(AppLocalizations.of(context)!.pill),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.sponge,
-        child: Text(AppLocalizations.of(context)!.sponge),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.vaginalRing,
-        child: Text(AppLocalizations.of(context)!.vaginalRing),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.tubalLigation,
-        child: Text(AppLocalizations.of(context)!.tubalLigation),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.vasectomy,
-        child: Text(AppLocalizations.of(context)!.vasectomy),
-      ),
-      DropdownMenuItem(
-        value: Contraceptive.unsafeContraceptive,
-        child: Text(AppLocalizations.of(context)!.unsafeContraceptive),
-      ),
-    ];
+    );
+    return list;
   }
 
   List<DropdownMenuItem<Place?>> get placeDropdownMenuEntries {
-    return [
+    List<DropdownMenuItem<Place?>> list = Place.values
+        .map(
+          (e) => DropdownMenuItem<Place?>(
+            value: e,
+            child: Text(SharedService.getPlaceTranslation(context, e)),
+          ),
+        )
+        .toList();
+    list.insert(
+      0,
       DropdownMenuItem(
         value: null,
         child: Text(AppLocalizations.of(context)!.unknownPlace),
       ),
-      DropdownMenuItem(
-        value: Place.bedroom,
-        child: Text(AppLocalizations.of(context)!.bedroom),
-      ),
-      DropdownMenuItem(
-        value: Place.bathroom,
-        child: Text(AppLocalizations.of(context)!.bathroom),
-      ),
-      DropdownMenuItem(
-        value: Place.bar,
-        child: Text(AppLocalizations.of(context)!.bar),
-      ),
-      DropdownMenuItem(
-        value: Place.backyard,
-        child: Text(AppLocalizations.of(context)!.backyard),
-      ),
-      DropdownMenuItem(
-        value: Place.beach,
-        child: Text(AppLocalizations.of(context)!.beach),
-      ),
-      DropdownMenuItem(
-        value: Place.public,
-        child: Text(AppLocalizations.of(context)!.public),
-      ),
-      DropdownMenuItem(
-        value: Place.sofa,
-        child: Text(AppLocalizations.of(context)!.sofa),
-      ),
-      DropdownMenuItem(
-        value: Place.table,
-        child: Text(AppLocalizations.of(context)!.table),
-      ),
-    ];
+    );
+    return list;
   }
 
   List<DropdownMenuItem<Initiator?>> get initiatorDropdownMenuEntries {
-    return [
+    List<DropdownMenuItem<Initiator?>> list = Initiator.values
+        .map(
+          (e) => DropdownMenuItem<Initiator?>(
+            value: e,
+            child: Text(SharedService.getInitiatorTranslation(context, e)),
+          ),
+        )
+        .toList();
+    list.insert(
+      0,
       DropdownMenuItem(
         value: null,
         child: Text(AppLocalizations.of(context)!.noInitiator),
       ),
-      DropdownMenuItem(
-        value: Initiator.me,
-        child: Text(AppLocalizations.of(context)!.me),
-      ),
-      DropdownMenuItem(
-        value: Initiator.partner,
-        child: Text(AppLocalizations.of(context)!.partner),
-      ),
-      DropdownMenuItem(
-        value: Initiator.both,
-        child: Text(AppLocalizations.of(context)!.both),
-      ),
-    ];
+    );
+    return list;
   }
 
   void save() {

@@ -6,6 +6,7 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:relative_time/relative_time.dart';
 
 class ActivityBlock extends StatefulWidget {
   const ActivityBlock({super.key, required this.activity});
@@ -75,9 +76,20 @@ class _ActivityBlockState extends State<ActivityBlock> {
         _shared.sensitiveText(widget.activity.duration.toString(),
             style: style),
         Text('${AppLocalizations.of(context)!.min} '),
-        _shared.sensitiveText(widget.activity.place.toString(), style: style),
+        _shared.sensitiveText(place, style: style),
       ],
     );
+  }
+
+  String get place {
+    if (widget.activity.place != null) {
+      return SharedService.getPlaceTranslation(context, widget.activity.place!);
+    }
+    return '';
+  }
+
+  String get date {
+    return RelativeTime(context).format(widget.activity.date);
   }
 
   @override
@@ -95,6 +107,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const Spacer(),
+          Text(date, style: Theme.of(context).textTheme.labelSmall),
           const Icon(
             Icons.arrow_forward_ios,
             size: 14,

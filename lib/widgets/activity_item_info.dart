@@ -77,7 +77,6 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
 
   String get date {
     return RelativeTime(context).format(widget.activity.date);
-    // return DateFormat('dd MMMM yyyy HH:mm').format(widget.activity.date);
   }
 
   String get place {

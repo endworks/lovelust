@@ -38,6 +38,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Contraceptive? _birthControl;
   Contraceptive? _partnerBirthControl;
   Place? _place;
+  List<Practice> _practices = [];
   Initiator? _initiator;
 
   bool _new = true;
@@ -52,6 +53,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     _birthControl = widget.activity.birthControl;
     _partnerBirthControl = widget.activity.partnerBirthControl;
     _place = widget.activity.place;
+    _practices = widget.activity.practices ?? [];
     _initiator = widget.activity.initiator;
 
     _dateController.value = TextEditingValue(
@@ -278,83 +280,122 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   }
 
   void save() {
-    if (_formKey.currentState!.validate()) {
-      if (valid) {
-        Activity activity = Activity(
-          id: _new ? const Uuid().v4() : widget.activity.id,
-          birthControl: _birthControl,
-          date: DateTime.parse(_dateController.value.text),
-          duration: int.parse(_durationController.value.text),
-          initiator: _initiator,
-          location: _locationController.value.text,
-          orgasms: int.parse(_orgasmsController.value.text),
-          partner: _partner,
-          partnerBirthControl: _partnerBirthControl,
-          partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
-          place: _place,
-          practices: [],
-          rating: int.parse(_ratingController.value.text),
-          notes: _notesController.value.text,
-          type: _type,
-        );
-        if (!_common.isLoggedIn) {
-          if (widget.activity.id.isNotEmpty) {
-            List<Activity> activities = [..._common.activity];
-            Activity element =
-                activities.firstWhere((e) => e.id == activity.id);
-            int index = activities.indexOf(element);
-            activities[index] = activity;
-            setState(() {
-              _common.activity = activities;
-            });
-          } else {
-            List<Activity> activities = [..._common.activity];
-            activities.add(activity);
-            setState(() {
-              _common.activity = activities;
-            });
-          }
-          Navigator.pop(context);
+    if (valid) {
+      Activity activity = Activity(
+        id: _new ? const Uuid().v4() : widget.activity.id,
+        birthControl: _birthControl,
+        date: DateTime.parse(_dateController.value.text),
+        duration: int.parse(_durationController.value.text),
+        initiator: _initiator,
+        location: _locationController.value.text,
+        orgasms: int.parse(_orgasmsController.value.text),
+        partner: _partner,
+        partnerBirthControl: _partnerBirthControl,
+        partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
+        place: _place,
+        practices: _practices,
+        rating: int.parse(_ratingController.value.text),
+        notes: _notesController.value.text,
+        type: _type,
+      );
+      if (!_common.isLoggedIn) {
+        if (widget.activity.id.isNotEmpty) {
+          List<Activity> activities = [..._common.activity];
+          Activity element = activities.firstWhere((e) => e.id == activity.id);
+          int index = activities.indexOf(element);
+          activities[index] = activity;
+          setState(() {
+            _common.activity = activities;
+          });
         } else {
-          try {
-            debugPrint('activity: ${activity.toJson().toString()}');
-            if (_new) {
-              _api
-                  .postActivity(activity)
-                  .then((value) => Navigator.pop(context));
-            } else {
-              _api
-                  .patchActivity(activity)
-                  .then((value) => Navigator.pop(context));
-            }
-          } on SocketException {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('No Internet connection!'),
-              ),
-            );
-          } on HttpException {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Couldn't sign in!"),
-              ),
-            );
-          } on FormatException {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Bad response format!'),
-              ),
-            );
-          } on Exception {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to sign in!'),
-              ),
-            );
+          List<Activity> activities = [..._common.activity];
+          activities.add(activity);
+          setState(() {
+            _common.activity = activities;
+          });
+        }
+        Navigator.pop(context);
+      } else {
+        try {
+          debugPrint('activity: ${activity.toJson().toString()}');
+          if (_new) {
+            _api.postActivity(activity).then((value) => Navigator.pop(context));
+          } else {
+            _api
+                .patchActivity(activity)
+                .then((value) => Navigator.pop(context));
           }
+        } on SocketException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No Internet connection!'),
+            ),
+          );
+        } on HttpException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Couldn't sign in!"),
+            ),
+          );
+        } on FormatException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Bad response format!'),
+            ),
+          );
+        } on Exception {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to sign in!'),
+            ),
+          );
         }
       }
     }
+  }
+
+  String? getPracticeName(Practice practice) {
+    if (practice == Practice.anal) {
+      return AppLocalizations.of(context)!.anal;
+    } else if (practice == Practice.bdsm) {
+      return AppLocalizations.of(context)!.bdsm;
+    } else if (practice == Practice.bondage) {
+      return AppLocalizations.of(context)!.bondage;
+    } else if (practice == Practice.choking) {
+      return AppLocalizations.of(context)!.choking;
+    } else if (practice == Practice.cuddling) {
+      return AppLocalizations.of(context)!.cuddling;
+    } else if (practice == Practice.domination) {
+      return AppLocalizations.of(context)!.domination;
+    } else if (practice == Practice.finger) {
+      return AppLocalizations.of(context)!.finger;
+    } else if (practice == Practice.handjob) {
+      return AppLocalizations.of(context)!.handjob;
+    } else if (practice == Practice.masturbation) {
+      return AppLocalizations.of(context)!.masturbation;
+    } else if (practice == Practice.oral) {
+      return AppLocalizations.of(context)!.oral;
+    } else if (practice == Practice.toy) {
+      return AppLocalizations.of(context)!.toy;
+    } else if (practice == Practice.vaginal) {
+      return AppLocalizations.of(context)!.vaginal;
+    }
+    return null;
+  }
+
+  void togglePractice(Practice practice, bool value) {
+    debugPrint("${practice.toString()}: ${value.toString()}");
+    setState(() {
+      if (value) {
+        _practices.add(practice);
+      } else {
+        _practices.remove(practice);
+      }
+    });
+  }
+
+  bool isPracticeSelected(Practice practice) {
+    return _practices.contains(practice);
   }
 
   List<Widget> get fields {
@@ -481,6 +522,30 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             labelText: AppLocalizations.of(context)!.location,
           ),
         ),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.practices),
+        leading: Icon(
+          Icons.task_alt,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        subtitle: Wrap(
+          spacing: 4,
+          runSpacing: 4,
+          children: [
+            ...Practice.values
+                .map(
+                  (e) => ChoiceChip(
+                    label: Text(getPracticeName(e) ??
+                        AppLocalizations.of(context)!.unknown),
+                    selected: isPracticeSelected(e),
+                    onSelected: (value) => togglePractice(e, value),
+                  ),
+                )
+                .toList()
+          ],
+        ),
+        titleAlignment: ListTileTitleAlignment.top,
       ),
       Padding(
         padding: const EdgeInsets.all(16.0),

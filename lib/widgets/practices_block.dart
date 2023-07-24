@@ -65,7 +65,7 @@ class _PracticesBlockState extends State<PracticesBlock> {
               (e) => FilterChip(
                 label: _shared.sensitiveText(getPracticeName(e)!),
                 selected: true,
-                onSelected: null,
+                onSelected: (value) {},
                 showCheckmark: false,
               ),
             )

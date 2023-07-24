@@ -67,19 +67,25 @@ class Activity {
   Map<String, dynamic> toJson() => {
         'id': id,
         'partner': partner,
-        'birth_control': SharedService.setValueByContraceptive(birthControl),
-        'partner_birth_control':
-            SharedService.setValueByContraceptive(partnerBirthControl),
+        'birth_control': birthControl != null
+            ? SharedService.setValueByContraceptive(birthControl)
+            : null,
+        'partner_birth_control': partnerBirthControl != null
+            ? SharedService.setValueByContraceptive(partnerBirthControl)
+            : null,
         'date': date.toIso8601String(),
         'location': location,
         'notes': notes,
         'duration': duration,
         'orgasms': orgasms,
         'partner_orgasms': partnerOrgasms,
-        'place': SharedService.setValueByPlace(place),
-        'initiator': SharedService.setValueByInitiator(initiator),
+        'place': place != null ? SharedService.setValueByPlace(place) : null,
+        'initiator': initiator != null
+            ? SharedService.setValueByInitiator(initiator)
+            : null,
         'rating': rating,
-        'type': SharedService.setValueByActivityType(type!),
+        'type':
+            type != null ? SharedService.setValueByActivityType(type!) : null,
         'practices': practices
             ?.map(
               (e) => IdName(

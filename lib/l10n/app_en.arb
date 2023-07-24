@@ -75,6 +75,7 @@
   "meetingDate": "Meeting date",
   "gender": "Gender",
   "sex": "Biological sex",
+  "unknown": "Unknown",
   "unknownPartner": "Unknown",
   "unknownPlace": "Unknown place",
   "solo": "Solo",

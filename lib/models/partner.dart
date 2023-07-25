@@ -2,7 +2,7 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class Partner {
-  final String id;
+  final String? id;
   final BiologicalSex sex;
   final Gender gender;
   final String name;
@@ -33,9 +33,9 @@ class Partner {
         'id': id,
         'sex': SharedService.setValueByBiologicalSex(sex),
         'gender': SharedService.setValueByGender(gender),
-        'name': name,
+        'name': name.toString(),
         'meeting_date': meetingDate.toIso8601String(),
-        'notes': notes,
+        'notes': notes ?? '',
       };
 
   @override

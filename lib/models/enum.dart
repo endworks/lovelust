@@ -72,15 +72,21 @@ enum Place {
 
 enum Practice {
   anal,
+  anilingus,
   bdsm,
+  blowjob,
   bondage,
   choking,
+  creampie,
   cuddling,
+  cunnilingus,
   domination,
-  finger,
+  fingering,
   handjob,
   masturbation,
   oral,
+  titjob,
   toy,
-  vaginal
+  vaginal,
+  whiteKiss,
 }

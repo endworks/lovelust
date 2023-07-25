@@ -16,35 +16,6 @@ class PracticesBlock extends StatefulWidget {
 class _PracticesBlockState extends State<PracticesBlock> {
   final SharedService _shared = getIt<SharedService>();
 
-  String? getPracticeName(Practice practice) {
-    if (practice == Practice.anal) {
-      return AppLocalizations.of(context)!.anal;
-    } else if (practice == Practice.bdsm) {
-      return AppLocalizations.of(context)!.bdsm;
-    } else if (practice == Practice.bondage) {
-      return AppLocalizations.of(context)!.bondage;
-    } else if (practice == Practice.choking) {
-      return AppLocalizations.of(context)!.choking;
-    } else if (practice == Practice.cuddling) {
-      return AppLocalizations.of(context)!.cuddling;
-    } else if (practice == Practice.domination) {
-      return AppLocalizations.of(context)!.domination;
-    } else if (practice == Practice.finger) {
-      return AppLocalizations.of(context)!.finger;
-    } else if (practice == Practice.handjob) {
-      return AppLocalizations.of(context)!.handjob;
-    } else if (practice == Practice.masturbation) {
-      return AppLocalizations.of(context)!.masturbation;
-    } else if (practice == Practice.oral) {
-      return AppLocalizations.of(context)!.oral;
-    } else if (practice == Practice.toy) {
-      return AppLocalizations.of(context)!.toy;
-    } else if (practice == Practice.vaginal) {
-      return AppLocalizations.of(context)!.vaginal;
-    }
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -63,7 +34,8 @@ class _PracticesBlockState extends State<PracticesBlock> {
           children: [
             ...widget.practices.map(
               (e) => FilterChip(
-                label: _shared.sensitiveText(getPracticeName(e)!),
+                label: _shared.sensitiveText(
+                    SharedService.getPracticeTranslation(context, e)),
                 selected: true,
                 onSelected: (value) {},
               ),

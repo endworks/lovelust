@@ -3,7 +3,7 @@ import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class Activity {
-  final String id;
+  final String? id;
   final String? partner;
   final Contraceptive? birthControl;
   final Contraceptive? partnerBirthControl;
@@ -65,34 +65,30 @@ class Activity {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'partner': partner,
-        'birth_control': birthControl != null
-            ? SharedService.setValueByContraceptive(birthControl)
-            : null,
-        'partner_birth_control': partnerBirthControl != null
-            ? SharedService.setValueByContraceptive(partnerBirthControl)
-            : null,
+        'id': id ?? '',
+        'partner': partner ?? '',
+        'birth_control':
+            SharedService.setValueByContraceptive(birthControl) ?? '',
+        'partner_birth_control':
+            SharedService.setValueByContraceptive(partnerBirthControl) ?? '',
         'date': date.toIso8601String(),
-        'location': location,
-        'notes': notes,
-        'duration': duration,
-        'orgasms': orgasms,
-        'partner_orgasms': partnerOrgasms,
-        'place': place != null ? SharedService.setValueByPlace(place) : null,
-        'initiator': initiator != null
-            ? SharedService.setValueByInitiator(initiator)
-            : null,
-        'rating': rating,
-        'type':
-            type != null ? SharedService.setValueByActivityType(type!) : null,
+        'location': location ?? '',
+        'notes': notes ?? '',
+        'duration': duration.toString(),
+        'orgasms': orgasms.toString(),
+        'partner_orgasms': partnerOrgasms.toString(),
+        'place': SharedService.setValueByPlace(place) ?? '',
+        'initiator': SharedService.setValueByInitiator(initiator) ?? '',
+        'rating': rating.toString(),
+        'type': SharedService.setValueByActivityType(type) ?? '',
         'practices': practices
             ?.map(
               (e) => IdName(
-                id: SharedService.setValueByPractice(e)!,
-                name: SharedService.setValueByPractice(e)!,
+                id: SharedService.setValueByPractice(e) ?? '',
+                name: SharedService.setValueByPractice(e) ?? '',
               ).toJson(),
             )
-            .toList(),
+            .toList()
+            .toString(),
       };
 }

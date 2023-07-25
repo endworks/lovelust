@@ -71,13 +71,13 @@ class _JournalPageState extends State<JournalPage> {
     if (_common.activityFilter == 'activity') {
       return _common.activity
           .where(
-            (i) => i.type != 'MASTURBATION',
+            (i) => i.type == ActivityType.sexualIntercourse,
           )
           .toList();
     } else if (_common.activityFilter == 'solo') {
       return _common.activity
           .where(
-            (i) => i.type == 'MASTURBATION',
+            (i) => i.type == ActivityType.masturbation,
           )
           .toList();
     } else {
@@ -151,7 +151,7 @@ class _JournalPageState extends State<JournalPage> {
                 : SliverList.builder(
                     itemCount: filteredActivity.length,
                     itemBuilder: (context, index) => ActivityCard(
-                      key: Key(filteredActivity[index].id),
+                      key: Key(filteredActivity[index].id!),
                       activity: filteredActivity[index],
                     ),
                   ),

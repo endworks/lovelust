@@ -22,18 +22,17 @@ class PartnerEditPage extends StatefulWidget {
 class _PartnerEditPageState extends State<PartnerEditPage> {
   final SharedService _common = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   late Gender _gender;
   late BiologicalSex _sex;
   final _notesController = TextEditingController();
   bool _new = true;
-  DateTime? _meetingDate;
+  DateTime? _meetingDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    _new = widget.partner.id.isEmpty;
+    _new = widget.partner.id != null && widget.partner.id!.isEmpty;
     _meetingDate = widget.partner.meetingDate;
     _nameController.value = TextEditingValue(
       text: widget.partner.name,
@@ -62,68 +61,66 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   bool get valid => _nameController.value.text.isNotEmpty;
 
   void save() {
-    if (_formKey.currentState!.validate()) {
-      if (valid) {
-        Partner partner = Partner(
-          id: _new ? const Uuid().v4() : widget.partner.id,
-          sex: _sex,
-          gender: _gender,
-          name: _nameController.value.text,
-          meetingDate: widget.partner.meetingDate,
-          notes: _notesController.value.text,
-        );
-        if (!_common.isLoggedIn) {
-          List<Partner> partners = [..._common.partners];
-          if (widget.partner.id.isNotEmpty) {
-            Partner? element = partners.firstWhere((e) => e.id == partner.id);
-            int index = partners.indexOf(element);
-            partners[index] = partner;
-          } else {
-            partners.add(partner);
-          }
-          partners
-              .sort((a, b) => a.meetingDate.isAfter(b.meetingDate) ? -1 : 1);
-          if (mounted) {
-            setState(() => _common.partners = partners);
-          }
-          Navigator.pop(context);
+    if (valid) {
+      Partner partner = Partner(
+        id: _new ? const Uuid().v4() : widget.partner.id,
+        sex: _sex,
+        gender: _gender,
+        name: _nameController.value.text,
+        meetingDate: widget.partner.meetingDate,
+        notes: _notesController.value.text,
+      );
+      if (!_common.isLoggedIn) {
+        List<Partner> partners = [..._common.partners];
+        if (!_new) {
+          Partner? element = partners.firstWhere((e) => e.id == partner.id);
+          int index = partners.indexOf(element);
+          partners[index] = partner;
         } else {
-          try {
-            Future request =
-                _new ? _api.postPartner(partner) : _api.patchPartner(partner);
-            request.then((value) {
-              _api.getPartners().then((value) {
-                if (mounted) {
-                  setState(() => _common.partners = value);
-                }
-                Navigator.pop(context);
-              });
+          partners.add(partner);
+        }
+        partners.sort((a, b) => a.meetingDate.isAfter(b.meetingDate) ? -1 : 1);
+        if (mounted) {
+          setState(() => _common.partners = partners);
+        }
+
+        Navigator.pop(context);
+      } else {
+        try {
+          Future request =
+              _new ? _api.postPartner(partner) : _api.patchPartner(partner);
+          request.then((value) {
+            _api.getPartners().then((value) {
+              if (mounted) {
+                setState(() => _common.partners = value);
+              }
+              Navigator.pop(context);
             });
-          } on SocketException {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('No Internet connection!'),
-              ),
-            );
-          } on HttpException {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Couldn't sign in!"),
-              ),
-            );
-          } on FormatException {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Bad response format!'),
-              ),
-            );
-          } on Exception {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Failed to sign in!'),
-              ),
-            );
-          }
+          });
+        } on SocketException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No Internet connection!'),
+            ),
+          );
+        } on HttpException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Couldn't sign in!"),
+            ),
+          );
+        } on FormatException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Bad response format!'),
+            ),
+          );
+        } on Exception {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to sign in!'),
+            ),
+          );
         }
       }
     }
@@ -201,7 +198,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           SliverAppBar(
             floating: false,
             pinned: true,
-            title: Text(widget.partner.id.isEmpty
+            title: Text(widget.partner.id!.isEmpty
                 ? AppLocalizations.of(context)!.createPartner
                 : AppLocalizations.of(context)!.editPartner),
             actions: [

@@ -79,7 +79,7 @@ class _PartnersPageState extends State<PartnersPage> {
                 : SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) => PartnerItemAlt(
-                        key: Key(_common.partners[index].id),
+                        key: Key(_common.partners[index].id!),
                         partner: _common.partners[index],
                       ),
                       childCount: _common.partners.length,

@@ -45,7 +45,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   @override
   void initState() {
     super.initState();
-    _new = widget.activity.id.isEmpty;
+    _new = widget.activity.id != null && widget.activity.id!.isEmpty;
     _type = widget.activity.type;
     _date = widget.activity.date;
     _partner = widget.activity.partner;
@@ -208,32 +208,31 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         type: _type,
       );
       if (!_common.isLoggedIn) {
-        if (widget.activity.id.isNotEmpty) {
-          List<Activity> activities = [..._common.activity];
-          Activity element = activities.firstWhere((e) => e.id == activity.id);
-          int index = activities.indexOf(element);
-          activities[index] = activity;
-          setState(() {
-            _common.activity = activities;
-          });
+        List<Activity> journal = [..._common.activity];
+        if (!_new) {
+          Activity? element = journal.firstWhere((e) => e.id == activity.id);
+          int index = journal.indexOf(element);
+          journal[index] = activity;
         } else {
-          List<Activity> activities = [..._common.activity];
-          activities.add(activity);
-          setState(() {
-            _common.activity = activities;
-          });
+          journal.add(activity);
+        }
+        journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
+        if (mounted) {
+          setState(() => _common.activity = journal);
         }
         Navigator.pop(context);
       } else {
         try {
-          debugPrint('activity: ${activity.toJson().toString()}');
-          if (_new) {
-            _api.postActivity(activity).then((value) => Navigator.pop(context));
-          } else {
-            _api
-                .patchActivity(activity)
-                .then((value) => Navigator.pop(context));
-          }
+          Future request =
+              _new ? _api.postActivity(activity) : _api.patchActivity(activity);
+          request.then((value) {
+            _api.getActivity().then((value) {
+              if (mounted) {
+                setState(() => _common.activity = value);
+              }
+              Navigator.pop(context);
+            });
+          });
         } on SocketException {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -263,37 +262,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     }
   }
 
-  String? getPracticeName(Practice practice) {
-    if (practice == Practice.anal) {
-      return AppLocalizations.of(context)!.anal;
-    } else if (practice == Practice.bdsm) {
-      return AppLocalizations.of(context)!.bdsm;
-    } else if (practice == Practice.bondage) {
-      return AppLocalizations.of(context)!.bondage;
-    } else if (practice == Practice.choking) {
-      return AppLocalizations.of(context)!.choking;
-    } else if (practice == Practice.cuddling) {
-      return AppLocalizations.of(context)!.cuddling;
-    } else if (practice == Practice.domination) {
-      return AppLocalizations.of(context)!.domination;
-    } else if (practice == Practice.finger) {
-      return AppLocalizations.of(context)!.finger;
-    } else if (practice == Practice.handjob) {
-      return AppLocalizations.of(context)!.handjob;
-    } else if (practice == Practice.masturbation) {
-      return AppLocalizations.of(context)!.masturbation;
-    } else if (practice == Practice.oral) {
-      return AppLocalizations.of(context)!.oral;
-    } else if (practice == Practice.toy) {
-      return AppLocalizations.of(context)!.toy;
-    } else if (practice == Practice.vaginal) {
-      return AppLocalizations.of(context)!.vaginal;
-    }
-    return null;
-  }
-
   void togglePractice(Practice practice, bool value) {
-    debugPrint("${practice.toString()}: ${value.toString()}");
     setState(() {
       if (value) {
         _practices.add(practice);
@@ -445,8 +414,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             ...Practice.values
                 .map(
                   (e) => ChoiceChip(
-                    label: Text(getPracticeName(e) ??
-                        AppLocalizations.of(context)!.unknown),
+                    label:
+                        Text(SharedService.getPracticeTranslation(context, e)),
                     selected: isPracticeSelected(e),
                     onSelected: (value) => togglePractice(e, value),
                   ),
@@ -495,7 +464,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           SliverAppBar(
             floating: false,
             pinned: true,
-            title: Text(widget.activity.id.isEmpty
+            title: Text(widget.activity.id!.isEmpty
                 ? AppLocalizations.of(context)!.logActivity
                 : AppLocalizations.of(context)!.editActivity),
             actions: [

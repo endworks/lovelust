@@ -80,7 +80,7 @@ class ApiService {
 
   Future<Activity> postActivity(Activity activity) async {
     final response = await http.post(
-      Uri.https(_apiUrl, 'activity/${activity.id}'),
+      Uri.https(_apiUrl, 'activity'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },

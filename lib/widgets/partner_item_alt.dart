@@ -97,10 +97,12 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
       leading: ActivityAvatar(partnerId: widget.partner.id),
       title: name,
       subtitle: lastEncounterDate,
-      trailing: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-        child: encounters,
-      ),
+      trailing: encounters != null
+          ? CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+              child: encounters,
+            )
+          : null,
       onTap: _openPartner,
     );
   }

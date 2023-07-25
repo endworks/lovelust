@@ -21,15 +21,19 @@ class PartnerDetailsPage extends StatefulWidget {
 }
 
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
+  late Partner _partner;
 
   @override
   void initState() {
     super.initState();
-    _common.addListener(() {
+    _partner = widget.partner;
+    _shared.addListener(() {
       if (mounted) {
-        setState(() {});
+        setState(() {
+          _partner = _shared.getPartnerById(_partner.id!)!;
+        });
       }
     });
   }
@@ -40,64 +44,38 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       MaterialPageRoute<Widget>(
           fullscreenDialog: true,
           builder: (BuildContext context) {
-            return PartnerEditPage(partner: widget.partner);
+            return PartnerEditPage(partner: _partner);
           }),
     );
-  }
-
-  Color get headerForegroundColor {
-    return Theme.of(context).colorScheme.inverseSurface;
-  }
-
-  Color get headerBackgroundColor {
-    return Theme.of(context).colorScheme.surface;
-    /*if (!_common.monochrome) {
-      if (widget.partner.sex == 'M') {
-        return Colors.blue
-            .harmonizeWith(Theme.of(context).colorScheme.primary)
-            .withAlpha(_common.alpha);
-      } else {
-        return Colors.red
-            .harmonizeWith(Theme.of(context).colorScheme.primary)
-            .withAlpha(_common.alpha);
-      }
-    } else {
-      return Theme.of(context).colorScheme.surfaceVariant;
-    }*/
   }
 
   Icon get genderIcon {
     IconData icon = Icons.transgender;
     Color color = Theme.of(context).colorScheme.primary;
-    if (widget.partner.gender == 'F') {
+    if (_partner.gender == Gender.female) {
       icon = Icons.female;
-    } else if (widget.partner.gender == 'M') {
+    } else if (_partner.gender == Gender.male) {
       icon = Icons.male;
     }
-    if (!_common.monochrome) {
-      if (widget.partner.sex == 'F') {
-        color = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
-      } else if (widget.partner.sex == 'M') {
-        color =
-            Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
-      }
+
+    if (_partner.sex == BiologicalSex.female) {
+      color = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+    } else if (_partner.sex == BiologicalSex.male) {
+      color = Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
     }
+
     return Icon(icon, color: color);
   }
 
   Widget get encounters {
-    Color color = Theme.of(context).colorScheme.onSurface;
-    if (!_common.monochrome) {
-      color = Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
-    }
+    Color color =
+        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
+
     return Text.rich(
       TextSpan(
         children: [
           TextSpan(
-            text: _common
-                .getActivityByPartner(widget.partner.id)
-                .length
-                .toString(),
+            text: _shared.getActivityByPartner(_partner.id).length.toString(),
             style: TextStyle(
               color: color,
               fontSize: 21,
@@ -114,22 +92,22 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
 
   void menuEntryItemSelected(MenuEntryItem item) {
     if (item.name == 'delete') {
-      if (_common.isLoggedIn) {
-        _api.deletePartner(widget.partner).then(
+      if (_shared.isLoggedIn) {
+        _api.deletePartner(_partner).then(
           (value) {
             _api.getPartners().then((value) {
               setState(() {
-                _common.partners = value;
+                _shared.partners = value;
               });
               Navigator.pop(context);
             });
           },
         );
       } else {
-        List<Partner> partners = [..._common.partners];
-        partners.removeWhere((element) => element.id == widget.partner.id);
+        List<Partner> partners = [..._shared.partners];
+        partners.removeWhere((element) => element.id == _partner.id);
         setState(() {
-          _common.partners = partners;
+          _shared.partners = partners;
         });
         Navigator.pop(context);
       }
@@ -138,17 +116,17 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
 
   get cards {
     List<Widget> list = [
-      PartnerAvatar(partner: widget.partner),
+      PartnerAvatar(partner: _partner),
     ];
-    if (widget.partner.notes != null && widget.partner.notes!.isNotEmpty) {
+    if (_partner.notes != null && _partner.notes!.isNotEmpty) {
       list.add(
         NotesBlock(
-          notes: widget.partner.notes!,
+          notes: _partner.notes!,
         ),
       );
     }
-    List<Widget> activity = _common
-        .getActivityByPartner(widget.partner.id)
+    List<Widget> activity = _shared
+        .getActivityByPartner(_partner.id)
         .map((e) => ActivityBlock(activity: e))
         .toList();
     list = [...list, ...activity];
@@ -163,7 +141,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
           SliverAppBar(
             floating: false,
             pinned: true,
-            // title: Text(widget.partner.name),
+            // title: Text(_partner.name),
             actions: [
               IconButton(onPressed: editPartner, icon: const Icon(Icons.edit)),
               PopupMenuButton(

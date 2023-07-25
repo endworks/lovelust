@@ -28,8 +28,8 @@ class ActivityDetailsPage extends StatefulWidget {
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
-  int alpha = Colors.black26.alpha;
-  Partner? partner;
+  late Activity _activity;
+  Partner? _partner;
   bool solo = false;
 
   void editActivity() {
@@ -38,7 +38,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       MaterialPageRoute<Widget>(
           fullscreenDialog: true,
           builder: (BuildContext context) {
-            return ActivityEditPage(activity: widget.activity);
+            return ActivityEditPage(activity: _activity);
           }),
     );
   }
@@ -46,21 +46,24 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.activity.partner != null) {
-      partner = _shared.getPartnerById(widget.activity.partner!);
-      setState(() {
-        partner = partner;
-      });
+    _activity = widget.activity;
+    solo = _activity.type == ActivityType.masturbation;
+    if (_activity.partner != null) {
+      _partner = _shared.getPartnerById(_activity.partner!)!;
     }
-    setState(() {
-      solo = widget.activity.type == ActivityType.masturbation;
+    _shared.addListener(() {
+      if (mounted) {
+        setState(() {
+          _activity = _shared.getActivityById(_activity.id!)!;
+        });
+      }
     });
   }
 
   String get title {
     if (!solo) {
-      if (partner != null) {
-        return partner!.name;
+      if (_partner != null) {
+        return _partner!.name;
       } else {
         return AppLocalizations.of(context)!.unknownPartner;
       }
@@ -69,13 +72,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     }
   }
 
-  Color get headerForegroundColor {
-    return Theme.of(context).colorScheme.inverseSurface;
-  }
-
   Icon? get safetyIcon {
-    if (widget.activity.type != ActivityType.masturbation) {
-      ActivitySafety safety = _shared.calculateSafety(widget.activity);
+    if (_activity.type != ActivityType.masturbation) {
+      ActivitySafety safety = _shared.calculateSafety(_activity);
       if (safety == ActivitySafety.safe) {
         return const Icon(Icons.check_circle, color: Colors.green);
       } else if (safety == ActivitySafety.unsafe) {
@@ -90,7 +89,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   void menuEntryItemSelected(MenuEntryItem item) {
     if (item.name == 'delete') {
       if (_shared.isLoggedIn) {
-        _api.deleteActivity(widget.activity).then(
+        _api.deleteActivity(_activity).then(
           (value) {
             _api.getActivity().then((value) {
               setState(() {
@@ -102,7 +101,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
         );
       } else {
         List<Activity> activity = [..._shared.activity];
-        activity.removeWhere((element) => element.id == widget.activity.id);
+        activity.removeWhere((element) => element.id == _activity.id);
         setState(() {
           _shared.activity = activity;
         });
@@ -113,7 +112,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
   Widget? get encounters {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
-    int count = _shared.getActivityByPartner(widget.activity.partner).length;
+    int count = _shared.getActivityByPartner(_activity.partner).length;
     if (count == 0) {
       return null;
     }
@@ -141,7 +140,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     List<Widget> list = [
       ListTile(
         leading: ActivityAvatar(
-          partnerId: widget.activity.partner,
+          partnerId: _activity.partner,
           masturbation: solo,
         ),
         trailing: CircleAvatar(
@@ -156,7 +155,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
             ),
             const Padding(padding: EdgeInsets.only(left: 4)),
             _shared.sensitiveText(
-              SharedService.getPlaceTranslation(context, widget.activity.place),
+              SharedService.getPlaceTranslation(context, _activity.place),
             ),
             const Padding(padding: EdgeInsets.only(left: 16)),
             Icon(
@@ -164,7 +163,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               color: Theme.of(context).colorScheme.secondary,
             ),
             const Padding(padding: EdgeInsets.only(left: 4)),
-            _shared.sensitiveText(widget.activity.duration.toString()),
+            _shared.sensitiveText(_activity.duration.toString()),
             Text(' ${AppLocalizations.of(context)!.min}'),
           ],
         ),
@@ -178,7 +177,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
                 _shared.sensitiveText(
-                  DateFormat('dd MMMM yyyy').format(widget.activity.date),
+                  DateFormat('dd MMMM yyyy').format(_activity.date),
                 ),
               ],
             ),
@@ -190,13 +189,13 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
                 _shared.sensitiveText(
-                  DateFormat('HH:mm').format(widget.activity.date),
+                  DateFormat('HH:mm').format(_activity.date),
                 ),
               ],
             ),
             Row(
               children: [
-                Rating(rating: widget.activity.rating),
+                Rating(rating: _activity.rating),
               ],
             ),
           ],
@@ -207,40 +206,39 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     if (!solo) {
       list.addAll([
         SafetyBlock(
-          safety: _shared.calculateSafety(widget.activity),
+          safety: _shared.calculateSafety(_activity),
         ),
         BirthControlBlock(
-          birthControl: widget.activity.birthControl,
-          partnerBirthControl: widget.activity.partnerBirthControl,
+          birthControl: _activity.birthControl,
+          partnerBirthControl: _activity.partnerBirthControl,
         ),
       ]);
     }
 
-    if (widget.activity.orgasms > 0 ||
-        widget.activity.partnerOrgasms > 0 ||
-        widget.activity.initiator != null) {
+    if (_activity.orgasms > 0 ||
+        _activity.partnerOrgasms > 0 ||
+        _activity.initiator != null) {
       list.add(
         PerformanceBlock(
-          orgasms: widget.activity.orgasms,
-          partnerOrgasms: widget.activity.partnerOrgasms,
-          initiator: widget.activity.initiator,
+          orgasms: _activity.orgasms,
+          partnerOrgasms: _activity.partnerOrgasms,
+          initiator: _activity.initiator,
         ),
       );
     }
 
-    if (widget.activity.practices != null &&
-        widget.activity.practices!.isNotEmpty) {
+    if (_activity.practices != null && _activity.practices!.isNotEmpty) {
       list.add(
         PracticesBlock(
-          practices: widget.activity.practices!,
+          practices: _activity.practices!,
         ),
       );
     }
 
-    if (widget.activity.notes != null && widget.activity.notes!.isNotEmpty) {
+    if (_activity.notes != null && _activity.notes!.isNotEmpty) {
       list.add(
         NotesBlock(
-          notes: widget.activity.notes!,
+          notes: _activity.notes!,
         ),
       );
     }

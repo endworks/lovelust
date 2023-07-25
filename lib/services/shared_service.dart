@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
@@ -23,12 +22,6 @@ class SharedService extends ChangeNotifier {
   String? _refreshToken;
   List<Activity> _activity = [];
   List<Partner> _partners = [];
-  List<IdName> _birthControls = [];
-  List<IdName> _practices = [];
-  List<IdName> _places = [];
-  List<IdName> _initiators = [];
-  List<IdName> _genders = [];
-  List<IdName> _activityTypes = [];
   bool _privacyMode = false;
   bool _requireAuth = false;
   bool _calendarView = false;
@@ -37,64 +30,40 @@ class SharedService extends ChangeNotifier {
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
-    _theme = await _storage.getTheme();
-    _colorScheme = await _storage.getColorScheme();
-    _accessToken = await _storage.getAccessToken();
-    _refreshToken = await _storage.getRefreshToken();
-    _activity = await _storage.getActivity();
-    _partners = await _storage.getPartners();
-    _privacyMode = await _storage.getPrivacyMode();
-    _requireAuth = await _storage.getRequireAuth();
-    _calendarView = await _storage.getCalendarView();
-    _activityFilter = await _storage.getActivityFilter();
-    Intl.systemLocale = await findSystemLocale();
-    packageInfo = await PackageInfo.fromPlatform();
+    var futures = <Future>[
+      _storage.getTheme(),
+      _storage.getColorScheme(),
+      _storage.getAccessToken(),
+      _storage.getRefreshToken(),
+      _storage.getActivity(),
+      _storage.getPartners(),
+      _storage.getPrivacyMode(),
+      _storage.getRequireAuth(),
+      _storage.getCalendarView(),
+      _storage.getActivityFilter(),
+      findSystemLocale(),
+      PackageInfo.fromPlatform(),
+    ];
+
+    List result = await Future.wait(futures);
+    _theme = result[0];
+    _colorScheme = result[1];
+    _accessToken = result[2];
+    _refreshToken = result[3];
+    _activity = result[4];
+    _partners = result[5];
+    _privacyMode = result[6];
+    _requireAuth = result[7];
+    _calendarView = result[8];
+    _activityFilter = result[9];
+    Intl.systemLocale = result[11];
+    packageInfo = result[12];
   }
 
   Future<void> initialFetch() async {
     debugPrint('initialFetch');
     activity = await _api.getActivity();
     partners = await _api.getPartners();
-    // await fetchStaticData();
-  }
-
-  Future<void> loadStaticData() async {
-    debugPrint('loadStaticData');
-    var futures = <Future>[
-      _storage.getGenders(),
-      _storage.getInitiators(),
-      _storage.getPractices(),
-      _storage.getPlaces(),
-      _storage.getBirthControls(),
-      _storage.getActivityTypes(),
-    ];
-
-    List result = await Future.wait(futures);
-    _genders = result[0];
-    _initiators = result[1];
-    _practices = result[2];
-    _places = result[3];
-    _birthControls = result[4];
-    _activityTypes = result[5];
-    if (_genders.isEmpty ||
-        _initiators.isEmpty ||
-        _practices.isEmpty ||
-        _places.isEmpty ||
-        _birthControls.isEmpty ||
-        _activityTypes.isEmpty) {
-      await fetchStaticData();
-    }
-    return Future.value(null);
-  }
-
-  fetchStaticData() async {
-    debugPrint('fetchStaticData');
-    genders = await _api.getGenders();
-    initiators = await _api.getInitiators();
-    practices = await _api.getPractices();
-    places = await _api.getPlaces();
-    birthControls = await _api.getBirthControls();
-    activityTypes = await _api.getActivityTypes();
   }
 
   bool get isLoggedIn {
@@ -189,22 +158,6 @@ class SharedService extends ChangeNotifier {
 
   Partner? getPartnerById(String id) {
     return partners.firstWhere((element) => element.id == id);
-  }
-
-  IdName? getPracticeById(String id) {
-    return practices.firstWhere((element) => element.id == id);
-  }
-
-  IdName? getBirthControlById(String id) {
-    return birthControls.firstWhere((element) => element.id == id);
-  }
-
-  IdName? getPlaceById(String id) {
-    return places.firstWhere((element) => element.id == id);
-  }
-
-  IdName? getInitiatorById(String id) {
-    return initiators.firstWhere((element) => element.id == id);
   }
 
   static Contraceptive? getContraceptiveByValue(String? value) {
@@ -454,11 +407,13 @@ class SharedService extends ChangeNotifier {
     return null;
   }
 
-  static String setValueByActivityType(ActivityType value) {
+  static String? setValueByActivityType(ActivityType? value) {
     if (value == ActivityType.masturbation) {
       return 'MASTURBATION';
+    } else if (value == ActivityType.sexualIntercourse) {
+      return 'SEXUAL_INTERCOURSE';
     }
-    return 'SEXUAL_INTERCOURSE';
+    return null;
   }
 
   static BiologicalSex getBiologicalSexByValue(String value) {
@@ -508,8 +463,8 @@ class SharedService extends ChangeNotifier {
       return Practice.cuddling;
     } else if (value == 'DOMINATION') {
       return Practice.domination;
-    } else if (value == 'FINGER') {
-      return Practice.finger;
+    } else if (value == 'FINGERING') {
+      return Practice.fingering;
     } else if (value == 'HANDJOB') {
       return Practice.handjob;
     } else if (value == 'MASTURBATION') {
@@ -520,6 +475,18 @@ class SharedService extends ChangeNotifier {
       return Practice.toy;
     } else if (value == 'VAGINAL') {
       return Practice.vaginal;
+    } else if (value == 'ANILINGUS') {
+      return Practice.anilingus;
+    } else if (value == 'BLOWJOB') {
+      return Practice.blowjob;
+    } else if (value == 'CUNNILINGUS') {
+      return Practice.cunnilingus;
+    } else if (value == 'TITJOB') {
+      return Practice.titjob;
+    } else if (value == 'WHITE_KISS') {
+      return Practice.whiteKiss;
+    } else if (value == 'CREAMPIE') {
+      return Practice.creampie;
     }
     return null;
   }
@@ -537,8 +504,8 @@ class SharedService extends ChangeNotifier {
       return 'CUDDLING';
     } else if (value == Practice.domination) {
       return 'DOMINATION';
-    } else if (value == Practice.finger) {
-      return 'FINGER';
+    } else if (value == Practice.fingering) {
+      return 'FINGERING';
     } else if (value == Practice.handjob) {
       return 'HANDJOB';
     } else if (value == Practice.masturbation) {
@@ -549,6 +516,18 @@ class SharedService extends ChangeNotifier {
       return 'TOY';
     } else if (value == Practice.vaginal) {
       return 'VAGINAL';
+    } else if (value == Practice.anilingus) {
+      return 'ANILINGUS';
+    } else if (value == Practice.blowjob) {
+      return 'BLOWJOB';
+    } else if (value == Practice.cunnilingus) {
+      return 'CUNNILINGUS';
+    } else if (value == Practice.titjob) {
+      return 'TITJOB';
+    } else if (value == Practice.whiteKiss) {
+      return 'WHITE_KISS';
+    } else if (value == Practice.creampie) {
+      return 'CREAMPIE';
     }
     return null;
   }
@@ -674,6 +653,47 @@ class SharedService extends ChangeNotifier {
     return AppLocalizations.of(context)!.noInitiator;
   }
 
+  static String getPracticeTranslation(context, Practice? value) {
+    if (value == Practice.anal) {
+      return AppLocalizations.of(context)!.anal;
+    } else if (value == Practice.bdsm) {
+      return AppLocalizations.of(context)!.bdsm;
+    } else if (value == Practice.bondage) {
+      return AppLocalizations.of(context)!.bondage;
+    } else if (value == Practice.choking) {
+      return AppLocalizations.of(context)!.choking;
+    } else if (value == Practice.cuddling) {
+      return AppLocalizations.of(context)!.cuddling;
+    } else if (value == Practice.domination) {
+      return AppLocalizations.of(context)!.domination;
+    } else if (value == Practice.fingering) {
+      return AppLocalizations.of(context)!.fingering;
+    } else if (value == Practice.handjob) {
+      return AppLocalizations.of(context)!.handjob;
+    } else if (value == Practice.masturbation) {
+      return AppLocalizations.of(context)!.masturbation;
+    } else if (value == Practice.oral) {
+      return AppLocalizations.of(context)!.oral;
+    } else if (value == Practice.toy) {
+      return AppLocalizations.of(context)!.toy;
+    } else if (value == Practice.vaginal) {
+      return AppLocalizations.of(context)!.vaginal;
+    } else if (value == Practice.anilingus) {
+      return AppLocalizations.of(context)!.anilingus;
+    } else if (value == Practice.blowjob) {
+      return AppLocalizations.of(context)!.blowjob;
+    } else if (value == Practice.cunnilingus) {
+      return AppLocalizations.of(context)!.cunnilingus;
+    } else if (value == Practice.titjob) {
+      return AppLocalizations.of(context)!.titjob;
+    } else if (value == Practice.whiteKiss) {
+      return AppLocalizations.of(context)!.whiteKiss;
+    } else if (value == Practice.creampie) {
+      return AppLocalizations.of(context)!.creampie;
+    }
+    return AppLocalizations.of(context)!.unknown;
+  }
+
   String get theme {
     return _theme;
   }
@@ -771,66 +791,6 @@ class SharedService extends ChangeNotifier {
   set activityFilter(String? value) {
     _activityFilter = value;
     _storage.setActivityFilter(value);
-    notifyListeners();
-  }
-
-  List<IdName> get birthControls {
-    return _birthControls;
-  }
-
-  set birthControls(List<IdName> value) {
-    _birthControls = value;
-    _storage.setBirthControls(value);
-    notifyListeners();
-  }
-
-  List<IdName> get practices {
-    return _practices;
-  }
-
-  set practices(List<IdName> value) {
-    _practices = value;
-    _storage.setPractices(value);
-    notifyListeners();
-  }
-
-  List<IdName> get places {
-    return _places;
-  }
-
-  set places(List<IdName> value) {
-    _places = value;
-    _storage.setPlaces(value);
-    notifyListeners();
-  }
-
-  List<IdName> get initiators {
-    return _initiators;
-  }
-
-  set initiators(List<IdName> value) {
-    _initiators = value;
-    _storage.setInitiators(value);
-    notifyListeners();
-  }
-
-  List<IdName> get genders {
-    return _genders;
-  }
-
-  set genders(List<IdName> value) {
-    _genders = value;
-    _storage.setGenders(value);
-    notifyListeners();
-  }
-
-  List<IdName> get activityTypes {
-    return _activityTypes;
-  }
-
-  set activityTypes(List<IdName> value) {
-    _activityTypes = value;
-    _storage.setActivityTypes(value);
     notifyListeners();
   }
 }

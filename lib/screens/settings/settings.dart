@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -339,26 +338,24 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     ];
-    if (kDebugMode) {
-      list.addAll(
-        [
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.initialFetch),
-            leading: Icon(
-              Icons.download,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            onTap: _common.initialFetch,
+    if (_common.isLoggedIn) {
+      list.insert(
+        list.length - 1,
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.initialFetch),
+          subtitle: Text(
+            AppLocalizations.of(context)!.initialFetchDescription,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
           ),
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.fetchStaticData),
-            leading: Icon(
-              Icons.download,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            onTap: _common.fetchStaticData,
+          leading: Icon(
+            Icons.download,
+            color: Theme.of(context).colorScheme.secondary,
           ),
-        ],
+          onTap: _common.initialFetch,
+        ),
       );
     }
 

@@ -774,6 +774,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.surprised;
     } else if (value == Mood.unsafe) {
       return AppLocalizations.of(context)!.unsafeMood;
+    } else if (value == Mood.other) {
+      return AppLocalizations.of(context)!.other;
     }
     return AppLocalizations.of(context)!.noMood;
   }

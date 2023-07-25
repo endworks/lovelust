@@ -282,17 +282,13 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     return _practices.contains(practice);
   }
 
-  void selectMood(Mood mood, bool value) {
+  void selectMood(Mood? mood, bool value) {
     setState(() {
-      if (value) {
-        _mood = mood;
-      } else {
-        _mood = null;
-      }
+      _mood = mood;
     });
   }
 
-  bool isMoodSelected(Mood mood) {
+  bool isMoodSelected(Mood? mood) {
     return _mood == mood;
   }
 
@@ -493,7 +489,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             spacing: 4,
             runSpacing: 4,
             children: [
-              ...Mood.values
+              ...[...Mood.values, null]
                   .map(
                     (e) => FilterChip(
                       label: Text(SharedService.getMoodTranslation(context, e)),

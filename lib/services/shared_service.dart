@@ -179,6 +179,8 @@ class SharedService extends ChangeNotifier {
       return Contraceptive.contraceptivePatch;
     } else if (value == 'PILL') {
       return Contraceptive.pill;
+    } else if (value == 'PULL_OUT') {
+      return Contraceptive.pullOut;
     } else if (value == 'SHOT') {
       return Contraceptive.contraceptiveShot;
     } else if (value == 'SPONGE') {
@@ -216,6 +218,8 @@ class SharedService extends ChangeNotifier {
       return 'PATCH';
     } else if (value == Contraceptive.pill) {
       return 'PILL';
+    } else if (value == Contraceptive.pullOut) {
+      return 'PULL_OUT';
     } else if (value == Contraceptive.contraceptiveShot) {
       return 'SHOT';
     } else if (value == Contraceptive.sponge) {

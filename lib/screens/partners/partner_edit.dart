@@ -157,22 +157,42 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   }
 
   Icon iconByGender(Gender gender) {
+    Color color = Theme.of(context).colorScheme.secondary;
     if (gender == Gender.male) {
-      return const Icon(Icons.male);
+      return Icon(
+        Icons.male,
+        color: color,
+      );
     } else if (gender == Gender.female) {
-      return const Icon(Icons.female);
+      return Icon(
+        Icons.female,
+        color: color,
+      );
     } else {
-      return const Icon(Icons.transgender);
+      return Icon(
+        Icons.transgender,
+        color: color,
+      );
     }
   }
 
   Icon iconByBiologicalSex(BiologicalSex gender) {
+    Color color = Theme.of(context).colorScheme.secondary;
     if (gender == BiologicalSex.male) {
-      return const Icon(Icons.male);
+      return Icon(
+        Icons.male,
+        color: color,
+      );
     } else if (gender == BiologicalSex.female) {
-      return const Icon(Icons.female);
+      return Icon(
+        Icons.female,
+        color: color,
+      );
     } else {
-      return const Icon(Icons.transgender);
+      return Icon(
+        Icons.transgender,
+        color: color,
+      );
     }
   }
 
@@ -188,6 +208,109 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         _meetingDate = picked;
       });
     }
+  }
+
+  List<Widget> get fields {
+    return [
+      ListTile(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.name,
+                ),
+              ),
+            ),
+          ],
+        ),
+        leading: Icon(
+          Icons.person,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      ListTile(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: DropdownButtonFormField(
+                value: _gender,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.gender,
+                ),
+                items: genderDropdownMenuEntries,
+                onChanged: (value) {
+                  setState(() {
+                    _gender = value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        leading: iconByGender(_gender),
+      ),
+      ListTile(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: DropdownButtonFormField(
+                value: _sex,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.sex,
+                ),
+                items: biologicalSexDropdownMenuEntries,
+                onChanged: (value) {
+                  setState(() {
+                    _sex = value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        leading: iconByBiologicalSex(_sex),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.meetingDate),
+        leading: Icon(
+          Icons.calendar_today,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        trailing: _meetingDate != null
+            ? Text(DateFormat.yMMMEd().format(_meetingDate!))
+            : null,
+        onTap: () => _selectDate(context),
+      ),
+      ListTile(
+        subtitle: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _notesController,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: AppLocalizations.of(context)!.notes,
+                ),
+              ),
+            ),
+          ],
+        ),
+        leading: Icon(
+          Icons.text_snippet,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+    ];
   }
 
   @override
@@ -218,77 +341,9 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               ),
             ],
           ),
-          SliverList.list(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.person),
-                    labelText: AppLocalizations.of(context)!.name,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: DropdownButtonFormField(
-                  value: _gender,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    prefixIcon: iconByGender(_gender),
-                    labelText: AppLocalizations.of(context)!.gender,
-                  ),
-                  items: genderDropdownMenuEntries,
-                  onChanged: (value) {
-                    setState(() {
-                      _gender = value;
-                    });
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: DropdownButtonFormField(
-                  value: _sex,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    prefixIcon: iconByBiologicalSex(_sex),
-                    labelText: AppLocalizations.of(context)!.sex,
-                  ),
-                  items: biologicalSexDropdownMenuEntries,
-                  onChanged: (value) {
-                    setState(() {
-                      _sex = value;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: Text(AppLocalizations.of(context)!.meetingDate),
-                leading: Icon(
-                  Icons.access_time,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                trailing: _meetingDate != null
-                    ? Text(DateFormat('EEE, MMM d').format(_meetingDate!))
-                    : null,
-                onTap: () => _selectDate(context),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _notesController,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.note_alt),
-                    labelText: AppLocalizations.of(context)!.notes,
-                  ),
-                ),
-              ),
-            ],
+          SliverList.builder(
+            itemBuilder: (context, index) => fields[index],
+            itemCount: fields.length,
           ),
         ],
       ),

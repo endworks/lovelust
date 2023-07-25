@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
@@ -195,7 +196,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       Activity activity = Activity(
         id: _new ? const Uuid().v4() : widget.activity.id,
         birthControl: _birthControl,
-        date: DateTime.parse(_dateController.value.text),
+        date: _date ?? DateTime.now(),
         duration: int.parse(_durationController.value.text),
         initiator: _initiator,
         location: _locationController.value.text,
@@ -303,9 +304,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           Icons.calendar_today,
           color: Theme.of(context).colorScheme.secondary,
         ),
-        trailing: _date != null
-            ? Text(DateFormat('EEE, MMM d').format(_date!))
-            : null,
+        trailing:
+            _date != null ? Text(DateFormat.yMMMEd().format(_date!)) : null,
         onTap: () => _selectDate(context),
       ),
       ListTile(
@@ -314,8 +314,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           Icons.access_time,
           color: Theme.of(context).colorScheme.secondary,
         ),
-        trailing:
-            _date != null ? Text(DateFormat('HH:mm').format(_date!)) : null,
+        trailing: _date != null ? Text(DateFormat.Hm().format(_date!)) : null,
         onTap: () => _selectTime(context),
       )
     ];
@@ -323,49 +322,83 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     if (_type == ActivityType.sexualIntercourse) {
       fields.addAll(
         [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField(
-              value: _partner,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.person),
-                labelText: AppLocalizations.of(context)!.partner,
-              ),
-              items: partnerDropdownMenuEntries,
-              onChanged: (value) {
-                _partner = value;
-              },
+          ListTile(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField(
+                    value: _partner,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: AppLocalizations.of(context)!.partner,
+                    ),
+                    items: partnerDropdownMenuEntries,
+                    onChanged: (value) {
+                      setState(() {
+                        _partner = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.person,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField(
-              value: _birthControl,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.medication),
-                labelText: AppLocalizations.of(context)!.birthControl,
-              ),
-              items: birthControlDropdownMenuEntries,
-              onChanged: (value) {
-                _birthControl = value;
-              },
+          ListTile(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField(
+                    value: _birthControl,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: AppLocalizations.of(context)!.birthControl,
+                    ),
+                    items: birthControlDropdownMenuEntries,
+                    onChanged: (value) {
+                      setState(() {
+                        _birthControl = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.medication,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField(
-              value: _partnerBirthControl,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.medication),
-                labelText: AppLocalizations.of(context)!.partnerBirthControl,
-              ),
-              items: birthControlDropdownMenuEntries,
-              onChanged: (value) {
-                _partnerBirthControl = value;
-              },
+          ListTile(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: DropdownButtonFormField(
+                    value: _partnerBirthControl,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText:
+                          AppLocalizations.of(context)!.partnerBirthControl,
+                    ),
+                    items: birthControlDropdownMenuEntries,
+                    onChanged: (value) {
+                      setState(() {
+                        _partnerBirthControl = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.medication,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
         ],
@@ -385,51 +418,155 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
     if (_moreFields) {
       if (_type == ActivityType.sexualIntercourse) {
-        fields.add(
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: DropdownButtonFormField(
-              value: _initiator,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.start),
-                labelText: AppLocalizations.of(context)!.initiator,
+        fields.addAll(
+          [
+            ListTile(
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField(
+                      value: _initiator,
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(),
+                        labelText: AppLocalizations.of(context)!.initiator,
+                      ),
+                      items: initiatorDropdownMenuEntries,
+                      onChanged: (value) {
+                        setState(() {
+                          _initiator = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
               ),
-              items: initiatorDropdownMenuEntries,
-              onChanged: (value) {
-                _initiator = value;
-              },
+              leading: Icon(
+                Icons.start,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
-          ),
+          ],
         );
       }
 
       fields.addAll([
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: DropdownButtonFormField(
-            value: _place,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.place),
-              labelText: AppLocalizations.of(context)!.place,
-            ),
-            items: placeDropdownMenuEntries,
-            onChanged: (value) {
-              _place = value;
-            },
+        ListTile(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _durationController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: AppLocalizations.of(context)!.duration,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          leading: Icon(
+            Icons.timer,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _locationController,
-            maxLines: null,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.map),
-              labelText: AppLocalizations.of(context)!.location,
-            ),
+        ListTile(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _orgasmsController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: AppLocalizations.of(context)!.orgasms,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          leading: Icon(
+            Icons.favorite,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        ListTile(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _partnerOrgasmsController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: AppLocalizations.of(context)!.partnerOrgasms,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          leading: Icon(
+            Icons.favorite,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        ListTile(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: DropdownButtonFormField(
+                  value: _place,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: AppLocalizations.of(context)!.place,
+                  ),
+                  items: placeDropdownMenuEntries,
+                  onChanged: (value) {
+                    setState(() {
+                      _place = value;
+                    });
+                  },
+                ),
+              ),
+            ],
+          ),
+          leading: Icon(
+            Icons.place,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+        ListTile(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _locationController,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: AppLocalizations.of(context)!.location,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          leading: Icon(
+            Icons.map,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
         ListTile(
@@ -471,16 +608,25 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           ),
           titleAlignment: ListTileTitleAlignment.top,
         ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            controller: _notesController,
-            maxLines: null,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.note_alt),
-              labelText: AppLocalizations.of(context)!.notes,
-            ),
+        ListTile(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _notesController,
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    labelText: AppLocalizations.of(context)!.notes,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          leading: Icon(
+            Icons.text_snippet,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
       ]);

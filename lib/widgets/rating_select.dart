@@ -38,12 +38,18 @@ class _RatingSelectState extends State<RatingSelect> {
     );
 
     for (int i = 0; i < 5; i++) {
-      container.add(IconButton(
-        onPressed: () => widget.onRatingUpdate(i + 1),
-        icon: widget.rating > i ? star : starEmpty,
-        padding: const EdgeInsets.all(2),
-        constraints: const BoxConstraints(),
-      ));
+      container.add(
+        Container(
+          padding: const EdgeInsets.all(0.0),
+          width: 36, // you can adjust the width as you need
+          child: IconButton(
+            onPressed: () => widget.onRatingUpdate(i + 1),
+            icon: widget.rating > i ? star : starEmpty,
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(minHeight: 36, minWidth: 36),
+          ),
+        ),
+      );
     }
 
     return Row(

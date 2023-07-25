@@ -41,6 +41,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Place? _place;
   List<Practice> _practices = [];
   Initiator? _initiator;
+  Mood? _mood;
 
   bool _new = true;
   bool _moreFields = false;
@@ -57,6 +58,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     _place = widget.activity.place;
     _practices = widget.activity.practices ?? [];
     _initiator = widget.activity.initiator;
+    _mood = widget.activity.mood;
 
     _dateController.value = TextEditingValue(
       text: widget.activity.date.toIso8601String(),
@@ -209,6 +211,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         rating: int.parse(_ratingController.value.text),
         notes: _notesController.value.text,
         type: _type,
+        mood: _mood,
       );
       if (!_common.isLoggedIn) {
         List<Activity> journal = [..._common.activity];
@@ -279,25 +282,22 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     return _practices.contains(practice);
   }
 
+  void selectMood(Mood mood, bool value) {
+    setState(() {
+      if (value) {
+        _mood = mood;
+      } else {
+        _mood = null;
+      }
+    });
+  }
+
+  bool isMoodSelected(Mood mood) {
+    return _mood == mood;
+  }
+
   List<Widget> get fields {
     List<Widget> fields = [
-      SwitchListTile(
-        title: Text(AppLocalizations.of(context)!.masturbation),
-        secondary: Icon(
-          Icons.back_hand,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        value: _type == ActivityType.masturbation,
-        onChanged: (value) {
-          setState(() {
-            if (value) {
-              _type = ActivityType.masturbation;
-            } else {
-              _type = ActivityType.sexualIntercourse;
-            }
-          });
-        },
-      ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.date),
         leading: Icon(
@@ -316,7 +316,24 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         ),
         trailing: _date != null ? Text(DateFormat.Hm().format(_date!)) : null,
         onTap: () => _selectTime(context),
-      )
+      ),
+      SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.masturbation),
+        secondary: Icon(
+          Icons.back_hand,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        value: _type == ActivityType.masturbation,
+        onChanged: (value) {
+          setState(() {
+            if (value) {
+              _type = ActivityType.masturbation;
+            } else {
+              _type = ActivityType.sexualIntercourse;
+            }
+          });
+        },
+      ),
     ];
 
     if (_type == ActivityType.sexualIntercourse) {
@@ -452,6 +469,68 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
       fields.addAll([
         ListTile(
+          title: Text(AppLocalizations.of(context)!.rating),
+          leading: Icon(
+            Icons.star_half,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          trailing: RatingSelect(
+            rating: int.parse(_ratingController.value.text),
+            onRatingUpdate: (value) => setState(
+              () => _ratingController.value = TextEditingValue(
+                text: value.toString(),
+              ),
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.mood),
+          leading: Icon(
+            Icons.tag_faces,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          subtitle: Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: [
+              ...Mood.values
+                  .map(
+                    (e) => FilterChip(
+                      label: Text(SharedService.getMoodTranslation(context, e)),
+                      selected: isMoodSelected(e),
+                      onSelected: (value) => selectMood(e, value),
+                    ),
+                  )
+                  .toList()
+            ],
+          ),
+          titleAlignment: ListTileTitleAlignment.top,
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.practices),
+          leading: Icon(
+            Icons.task_alt,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          subtitle: Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: [
+              ...Practice.values
+                  .map(
+                    (e) => ChoiceChip(
+                      label: Text(
+                          SharedService.getPracticeTranslation(context, e)),
+                      selected: isPracticeSelected(e),
+                      onSelected: (value) => togglePractice(e, value),
+                    ),
+                  )
+                  .toList()
+            ],
+          ),
+          titleAlignment: ListTileTitleAlignment.top,
+        ),
+        ListTile(
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -568,45 +647,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             Icons.map,
             color: Theme.of(context).colorScheme.secondary,
           ),
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.rating),
-          leading: Icon(
-            Icons.star_half,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          trailing: RatingSelect(
-            rating: int.parse(_ratingController.value.text),
-            onRatingUpdate: (value) => setState(
-              () => _ratingController.value = TextEditingValue(
-                text: value.toString(),
-              ),
-            ),
-          ),
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.practices),
-          leading: Icon(
-            Icons.task_alt,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          subtitle: Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: [
-              ...Practice.values
-                  .map(
-                    (e) => ChoiceChip(
-                      label: Text(
-                          SharedService.getPracticeTranslation(context, e)),
-                      selected: isPracticeSelected(e),
-                      onSelected: (value) => togglePractice(e, value),
-                    ),
-                  )
-                  .toList()
-            ],
-          ),
-          titleAlignment: ListTileTitleAlignment.top,
         ),
         ListTile(
           title: Row(

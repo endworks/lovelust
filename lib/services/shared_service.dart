@@ -531,6 +531,64 @@ class SharedService extends ChangeNotifier {
     return null;
   }
 
+  static Mood? getMoodByValue(String? value) {
+    if (value == 'ADVENTUROUS') {
+      return Mood.adventurous;
+    } else if (value == 'COMFORTABLE') {
+      return Mood.comfortable;
+    } else if (value == 'CRAZY') {
+      return Mood.crazy;
+    } else if (value == 'HORNY') {
+      return Mood.horny;
+    } else if (value == 'LAZY') {
+      return Mood.lazy;
+    } else if (value == 'PLAYFUL') {
+      return Mood.playful;
+    } else if (value == 'RELAXED') {
+      return Mood.relaxed;
+    } else if (value == 'SAFE') {
+      return Mood.safe;
+    } else if (value == 'SCARED') {
+      return Mood.scared;
+    } else if (value == 'SURPRISED') {
+      return Mood.surprised;
+    } else if (value == 'UNSAFE') {
+      return Mood.unsafe;
+    } else if (value == 'OTHER') {
+      return Mood.other;
+    }
+    return null;
+  }
+
+  static String? setValueByMood(Mood? value) {
+    if (value == Mood.adventurous) {
+      return 'ADVENTUROUS';
+    } else if (value == Mood.comfortable) {
+      return 'COMFORTABLE';
+    } else if (value == Mood.crazy) {
+      return 'CRAZY';
+    } else if (value == Mood.horny) {
+      return 'HORNY';
+    } else if (value == Mood.lazy) {
+      return 'LAZY';
+    } else if (value == Mood.playful) {
+      return 'PLAYFUL';
+    } else if (value == Mood.relaxed) {
+      return 'RELAXED';
+    } else if (value == Mood.safe) {
+      return 'SAFE';
+    } else if (value == Mood.scared) {
+      return 'SCARED';
+    } else if (value == Mood.surprised) {
+      return 'SURPRISED';
+    } else if (value == Mood.unsafe) {
+      return 'UNSAFE';
+    } else if (value == Mood.other) {
+      return 'OTHER';
+    }
+    return null;
+  }
+
   static String getContraceptiveTranslation(context, Contraceptive? value) {
     if (value == Contraceptive.cervicalCap) {
       return AppLocalizations.of(context)!.cervicalCap;
@@ -691,6 +749,33 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.creampie;
     }
     return AppLocalizations.of(context)!.unknown;
+  }
+
+  static String getMoodTranslation(context, Mood? value) {
+    if (value == Mood.adventurous) {
+      return AppLocalizations.of(context)!.adventurous;
+    } else if (value == Mood.comfortable) {
+      return AppLocalizations.of(context)!.comfortable;
+    } else if (value == Mood.crazy) {
+      return AppLocalizations.of(context)!.crazy;
+    } else if (value == Mood.horny) {
+      return AppLocalizations.of(context)!.horny;
+    } else if (value == Mood.lazy) {
+      return AppLocalizations.of(context)!.lazy;
+    } else if (value == Mood.playful) {
+      return AppLocalizations.of(context)!.playful;
+    } else if (value == Mood.relaxed) {
+      return AppLocalizations.of(context)!.relaxed;
+    } else if (value == Mood.safe) {
+      return AppLocalizations.of(context)!.safeMood;
+    } else if (value == Mood.scared) {
+      return AppLocalizations.of(context)!.scared;
+    } else if (value == Mood.surprised) {
+      return AppLocalizations.of(context)!.surprised;
+    } else if (value == Mood.unsafe) {
+      return AppLocalizations.of(context)!.unsafeMood;
+    }
+    return AppLocalizations.of(context)!.noMood;
   }
 
   static String? emptyStringToNull(String? value) {

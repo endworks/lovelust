@@ -4,22 +4,25 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
-class PerformanceBlock extends StatefulWidget {
-  const PerformanceBlock(
-      {super.key,
-      required this.orgasms,
-      required this.partnerOrgasms,
-      required this.initiator});
+class HighlightsBlock extends StatefulWidget {
+  const HighlightsBlock({
+    super.key,
+    required this.orgasms,
+    required this.partnerOrgasms,
+    required this.initiator,
+    required this.mood,
+  });
 
   final int orgasms;
   final int partnerOrgasms;
   final Initiator? initiator;
+  final Mood? mood;
 
   @override
-  State<PerformanceBlock> createState() => _PerformanceBlockState();
+  State<HighlightsBlock> createState() => _HighlightsBlockState();
 }
 
-class _PerformanceBlockState extends State<PerformanceBlock> {
+class _HighlightsBlockState extends State<HighlightsBlock> {
   final SharedService _shared = getIt<SharedService>();
 
   List<Widget> get performance {
@@ -89,6 +92,19 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
       );
     }
 
+    if (widget.mood != null) {
+      list.add(
+        FilterChip(
+          label: _shared.sensitiveText(
+            SharedService.getMoodTranslation(context, widget.mood),
+          ),
+          selected: true,
+          onSelected: (value) {},
+          showCheckmark: false,
+        ),
+      );
+    }
+
     return list;
   }
 
@@ -101,7 +117,7 @@ class _PerformanceBlockState extends State<PerformanceBlock> {
       ),
       child: ListTile(
         title: Text(
-          AppLocalizations.of(context)!.performance,
+          AppLocalizations.of(context)!.highlights,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Column(

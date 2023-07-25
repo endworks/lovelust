@@ -18,6 +18,7 @@ class Activity {
   final int rating;
   final ActivityType? type;
   final List<Practice>? practices;
+  final Mood? mood;
 
   const Activity({
     required this.id,
@@ -35,6 +36,7 @@ class Activity {
     required this.rating,
     required this.type,
     required this.practices,
+    required this.mood,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -60,7 +62,9 @@ class Activity {
         json['initiator'],
       ),
       rating: json['rating'],
-      type: SharedService.getActivityTypeByValue(json['type']),
+      type: SharedService.getActivityTypeByValue(
+        json['type'],
+      ),
       practices: json['practices'] == null
           ? null
           : json['practices']
@@ -69,26 +73,37 @@ class Activity {
                     SharedService.getPracticeByValue(IdName.fromJson(map).id)!,
               )
               .toList() as List<Practice>,
+      mood: SharedService.getMoodByValue(
+        json['mood'],
+      ),
     );
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id ?? '',
-        'partner': partner ?? '',
-        'birth_control':
-            SharedService.setValueByContraceptive(birthControl) ?? '',
-        'partner_birth_control':
-            SharedService.setValueByContraceptive(partnerBirthControl) ?? '',
+        'id': id,
+        'partner': partner,
+        'birth_control': SharedService.setValueByContraceptive(
+          birthControl,
+        ),
+        'partner_birth_control': SharedService.setValueByContraceptive(
+          partnerBirthControl,
+        ),
         'date': date.toIso8601String(),
-        'location': location ?? '',
-        'notes': notes ?? '',
+        'location': location,
+        'notes': notes,
         'duration': duration,
         'orgasms': orgasms,
         'partner_orgasms': partnerOrgasms,
-        'place': SharedService.setValueByPlace(place) ?? '',
-        'initiator': SharedService.setValueByInitiator(initiator) ?? '',
+        'place': SharedService.setValueByPlace(
+          place,
+        ),
+        'initiator': SharedService.setValueByInitiator(
+          initiator,
+        ),
         'rating': rating,
-        'type': SharedService.setValueByActivityType(type) ?? '',
+        'type': SharedService.setValueByActivityType(
+          type,
+        ),
         'practices': practices
             ?.map(
               (e) => IdName(
@@ -96,5 +111,8 @@ class Activity {
               ).toJson(),
             )
             .toList(),
+        'mood': SharedService.setValueByMood(
+          mood,
+        ),
       };
 }

@@ -10,8 +10,8 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 import 'package:lovelust/widgets/birth_control_block.dart';
+import 'package:lovelust/widgets/highlights_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
-import 'package:lovelust/widgets/performance_block.dart';
 import 'package:lovelust/widgets/practices_block.dart';
 import 'package:lovelust/widgets/rating.dart';
 import 'package:lovelust/widgets/safety_block.dart';
@@ -220,10 +220,11 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
         _activity.partnerOrgasms > 0 ||
         _activity.initiator != null) {
       list.add(
-        PerformanceBlock(
+        HighlightsBlock(
           orgasms: _activity.orgasms,
           partnerOrgasms: _activity.partnerOrgasms,
           initiator: _activity.initiator,
+          mood: _activity.mood,
         ),
       );
     }

@@ -32,6 +32,7 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
       rating: 0,
       type: ActivityType.sexualIntercourse,
       practices: null,
+      mood: null,
     );
   }
 

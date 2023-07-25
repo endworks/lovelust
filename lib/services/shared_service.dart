@@ -115,6 +115,7 @@ class SharedService extends ChangeNotifier {
   ActivitySafety calculateSafety(Activity activity) {
     List<Contraceptive> safe = [
       Contraceptive.condom,
+      Contraceptive.internalCondom,
       Contraceptive.outercourse,
     ];
     List<Contraceptive?> unsafe = [
@@ -130,10 +131,6 @@ class SharedService extends ChangeNotifier {
 
     if (unsafe.contains(activity.birthControl) &&
         unsafe.contains(activity.partnerBirthControl)) {
-      return ActivitySafety.unsafe;
-    }
-
-    if (activity.birthControl == null && activity.partnerBirthControl == null) {
       return ActivitySafety.unsafe;
     }
 

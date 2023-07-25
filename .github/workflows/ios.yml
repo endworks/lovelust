@@ -125,11 +125,6 @@ jobs:
       - name: Install CocoaPods dependencies
         run: find . -name "Podfile" -execdir pod install \;
 
-      - name: Upload Provisioning Profiles artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Build the Flutter iOS project
         run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-options-plist=ios/exportOptions.plist
 

@@ -133,11 +133,6 @@ jobs:
       - name: Install CocoaPods dependencies
         run: find . -name "Podfile" -execdir pod install \;
 
-      - name: Upload Provisioning Profiles artifact
-        uses: actions/upload-artifact@v3
-        with:
-          path: ~/Library/MobileDevice/Provisioning\ Profiles
-
       - name: Build the Flutter macOS project
         run: flutter build macos --release --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/
 

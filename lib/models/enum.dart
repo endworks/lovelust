@@ -14,6 +14,21 @@ enum ActivityType { masturbation, sexualIntercourse }
 
 enum Initiator { me, partner, both, other }
 
+enum Mood {
+  safe,
+  unsafe,
+  horny,
+  comfortable,
+  scared,
+  surprised,
+  crazy,
+  relaxed,
+  playful,
+  lazy,
+  adventurous,
+  other
+}
+
 enum Contraceptive {
   condom,
   internalCondom,

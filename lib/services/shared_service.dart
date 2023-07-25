@@ -30,7 +30,7 @@ class SharedService extends ChangeNotifier {
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
-    var futures = <Future>[
+    List<Future> futures = <Future>[
       _storage.getTheme(),
       _storage.getColorScheme(),
       _storage.getAccessToken(),
@@ -68,14 +68,6 @@ class SharedService extends ChangeNotifier {
 
   bool get isLoggedIn {
     return accessToken != null;
-  }
-
-  bool get monochrome {
-    return colorScheme == 'monochrome';
-  }
-
-  int get alpha {
-    return Colors.black38.alpha;
   }
 
   void signOut() {

@@ -56,7 +56,7 @@ class ApiService {
       return AuthTokens.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
-      throw Exception('Failed to login');
+      throw Exception('Failed to signup');
     }
   }
 
@@ -82,8 +82,9 @@ class ApiService {
       Uri.https(_apiUrl, 'activity'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+        HttpHeaders.contentTypeHeader: 'application/json'
       },
-      body: activity.toJson(),
+      body: jsonEncode(activity),
     );
 
     if (response.statusCode == 201) {
@@ -100,7 +101,6 @@ class ApiService {
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
       },
-      body: activity.toJson(),
     );
   }
 
@@ -109,8 +109,9 @@ class ApiService {
       Uri.https(_apiUrl, 'activity/${activity.id}'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+        HttpHeaders.contentTypeHeader: 'application/json'
       },
-      body: activity.toJson(),
+      body: jsonEncode(activity),
     );
 
     if (response.statusCode == 200) {
@@ -143,8 +144,9 @@ class ApiService {
       Uri.https(_apiUrl, 'partner'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+        HttpHeaders.contentTypeHeader: 'application/json'
       },
-      body: partner.toJson(),
+      body: jsonEncode(partner),
     );
 
     if (response.statusCode == 201) {
@@ -170,8 +172,9 @@ class ApiService {
       Uri.https(_apiUrl, 'partner/${partner.id}'),
       headers: {
         HttpHeaders.authorizationHeader: 'Bearer ${await getAccessToken()}',
+        HttpHeaders.contentTypeHeader: 'application/json'
       },
-      body: partner.toJson(),
+      body: jsonEncode(partner),
     );
 
     if (response.statusCode == 200) {

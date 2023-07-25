@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/services/shared_service.dart';
@@ -43,33 +41,33 @@ class Activity {
     return Activity(
       id: json['id'],
       partner: json['partner'],
-      birthControl:
-          SharedService.getContraceptiveByValue(json['birth_control']),
-      partnerBirthControl:
-          SharedService.getContraceptiveByValue(json['partner_birth_control']),
+      birthControl: SharedService.getContraceptiveByValue(
+        json['birth_control'],
+      ),
+      partnerBirthControl: SharedService.getContraceptiveByValue(
+        json['partner_birth_control'],
+      ),
       date: DateTime.parse(json['date']),
       location: json['location'],
       notes: json['notes'],
-      duration: json['duration'] is int
-          ? json['duration']
-          : int.parse(json['duration']),
-      orgasms:
-          json['orgasms'] is int ? json['orgasms'] : int.parse(json['orgasms']),
-      partnerOrgasms: json['partner_orgasms'] is int
-          ? json['partner_orgasms']
-          : int.parse(json['partner_orgasms']),
-      place: SharedService.getPlaceByValue(json['place']),
-      initiator: SharedService.getInitiatorByValue(json['initiator']),
-      rating:
-          json['rating'] is int ? json['rating'] : int.parse(json['rating']),
+      duration: json['duration'],
+      orgasms: json['orgasms'],
+      partnerOrgasms: json['partner_orgasms'],
+      place: SharedService.getPlaceByValue(
+        json['place'],
+      ),
+      initiator: SharedService.getInitiatorByValue(
+        json['initiator'],
+      ),
+      rating: json['rating'],
       type: SharedService.getActivityTypeByValue(json['type']),
       practices: json['practices'] == null
           ? null
-          : (json['practices'] is String
-                  ? jsonDecode(json['practices'])
-                  : json['practices'])
-              .map<Practice>((map) =>
-                  SharedService.getPracticeByValue(IdName.fromJson(map).id)!)
+          : json['practices']
+              .map<Practice>(
+                (map) =>
+                    SharedService.getPracticeByValue(IdName.fromJson(map).id)!,
+              )
               .toList() as List<Practice>,
     );
   }
@@ -84,21 +82,19 @@ class Activity {
         'date': date.toIso8601String(),
         'location': location ?? '',
         'notes': notes ?? '',
-        'duration': duration.toString(),
-        'orgasms': orgasms.toString(),
-        'partner_orgasms': partnerOrgasms.toString(),
+        'duration': duration,
+        'orgasms': orgasms,
+        'partner_orgasms': partnerOrgasms,
         'place': SharedService.setValueByPlace(place) ?? '',
         'initiator': SharedService.setValueByInitiator(initiator) ?? '',
-        'rating': rating.toString(),
+        'rating': rating,
         'type': SharedService.setValueByActivityType(type) ?? '',
         'practices': practices
             ?.map(
               (e) => IdName(
-                id: SharedService.setValueByPractice(e) ?? '',
-                name: SharedService.setValueByPractice(e) ?? '',
+                id: SharedService.setValueByPractice(e)!,
               ).toJson(),
             )
-            .toList()
-            .toString(),
+            .toList(),
       };
 }

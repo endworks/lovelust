@@ -180,24 +180,23 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
       switch (safety) {
         case ActivitySafety.safe:
           title = AppLocalizations.of(context)!.safeSex;
-          if (!_shared.monochrome) {
-            color = Colors.green
-                .harmonizeWith(Theme.of(context).colorScheme.primary);
-          }
+
+          color =
+              Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
+
           break;
         case ActivitySafety.unsafe:
           title = AppLocalizations.of(context)!.unsafeSex;
-          if (!_shared.monochrome) {
-            color =
-                Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
-          }
+
+          color =
+              Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+
           break;
         default:
           title = AppLocalizations.of(context)!.partlyUnsafeSex;
-          if (!_shared.monochrome) {
-            color = Colors.orange
-                .harmonizeWith(Theme.of(context).colorScheme.primary);
-          }
+
+          color = Colors.orange
+              .harmonizeWith(Theme.of(context).colorScheme.primary);
       }
     }
     return Text(

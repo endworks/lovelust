@@ -2,6 +2,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
 import 'package:lovelust/service_locator.dart';
@@ -38,14 +39,14 @@ class _PartnerItemState extends State<PartnerItem> {
 
   Text get gender {
     String gender = AppLocalizations.of(context)!.nonBinary;
-    if (widget.partner.gender == 'M') {
-      if (widget.partner.sex == 'M') {
+    if (widget.partner.gender == Gender.male) {
+      if (widget.partner.sex == BiologicalSex.male) {
         gender = AppLocalizations.of(context)!.man;
       } else {
         gender = AppLocalizations.of(context)!.transMan;
       }
-    } else if (widget.partner.gender == 'F') {
-      if (widget.partner.sex == 'F') {
+    } else if (widget.partner.gender == Gender.female) {
+      if (widget.partner.sex == BiologicalSex.female) {
         gender = AppLocalizations.of(context)!.woman;
       } else {
         gender = AppLocalizations.of(context)!.transWoman;
@@ -64,10 +65,9 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Widget get encounters {
-    Color color = Theme.of(context).colorScheme.onSurface;
-    if (!_common.monochrome) {
-      color = Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
-    }
+    Color color =
+        Colors.pink.harmonizeWith(Theme.of(context).colorScheme.primary);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,

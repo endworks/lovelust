@@ -37,12 +37,12 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   }
 
   Widget? get encounters {
-    TextStyle style = Theme.of(context).textTheme.titleMedium!;
+    TextStyle style = Theme.of(context).textTheme.titleLarge!;
     int count = _common.getActivityByPartner(widget.partner.id).length;
     if (count == 0) {
       return null;
     }
-    Color color = Theme.of(context).colorScheme.onSecondaryContainer;
+    Color color = Theme.of(context).colorScheme.secondary;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,7 +63,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   }
 
   Widget? get encountersCount {
-    TextStyle style = Theme.of(context).textTheme.titleMedium!;
+    TextStyle style = Theme.of(context).textTheme.titleLarge!;
     int count = _common.getActivityByPartner(widget.partner.id).length;
     if (count == 0) {
       return null;
@@ -71,7 +71,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     return _common.sensitiveText(
       count.toString(),
       style: style.copyWith(
-        color: Theme.of(context).colorScheme.onSecondaryContainer,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
@@ -97,12 +97,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
       leading: ActivityAvatar(partnerId: widget.partner.id),
       title: name,
       subtitle: lastEncounterDate,
-      trailing: encounters != null
-          ? CircleAvatar(
-              backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-              child: encounters,
-            )
-          : null,
+      trailing: encounters,
       onTap: _openPartner,
     );
   }

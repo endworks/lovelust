@@ -41,6 +41,8 @@ class _RatingSelectState extends State<RatingSelect> {
       container.add(IconButton(
         onPressed: () => widget.onRatingUpdate(i + 1),
         icon: widget.rating > i ? star : starEmpty,
+        padding: const EdgeInsets.all(2),
+        constraints: const BoxConstraints(),
       ));
     }
 

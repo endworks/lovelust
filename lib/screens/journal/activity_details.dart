@@ -115,12 +115,12 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   Widget? get encounters {
-    TextStyle style = Theme.of(context).textTheme.titleMedium!;
+    TextStyle style = Theme.of(context).textTheme.titleLarge!;
     int count = _shared.getActivityByPartner(_activity.partner).length;
     if (count == 0) {
       return null;
     }
-    Color color = Theme.of(context).colorScheme.onSecondaryContainer;
+    Color color = Theme.of(context).colorScheme.secondary;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,10 +147,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           partnerId: _activity.partner,
           masturbation: _solo,
         ),
-        trailing: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
-          child: encounters,
-        ),
+        trailing: encounters,
         title: Row(
           children: [
             Icon(

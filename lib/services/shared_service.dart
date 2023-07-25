@@ -56,8 +56,8 @@ class SharedService extends ChangeNotifier {
     _requireAuth = result[7];
     _calendarView = result[8];
     _activityFilter = result[9];
-    Intl.systemLocale = result[11];
-    packageInfo = result[12];
+    Intl.systemLocale = result[10];
+    packageInfo = result[11];
   }
 
   Future<void> initialFetch() async {

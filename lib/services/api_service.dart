@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/auth_tokens.dart';
-import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/storage_service.dart';
@@ -87,11 +86,11 @@ class ApiService {
       body: activity.toJson(),
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return Activity.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
-      throw Exception('Failed to load activity');
+      throw Exception('Failed to create activity');
     }
   }
 
@@ -105,7 +104,7 @@ class ApiService {
     );
   }
 
-  Future<List<Activity>> patchActivity(Activity activity) async {
+  Future<Activity> patchActivity(Activity activity) async {
     final response = await http.patch(
       Uri.https(_apiUrl, 'activity/${activity.id}'),
       headers: {
@@ -115,11 +114,10 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<Activity>((map) => Activity.fromJson(map)).toList();
+      return Activity.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
-      throw Exception('Failed to load activity');
+      throw Exception('Failed to update activity');
     }
   }
 
@@ -153,7 +151,7 @@ class ApiService {
       return Partner.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
-      throw Exception('Failed to load partner');
+      throw Exception('Failed to create partner');
     }
   }
 
@@ -180,79 +178,7 @@ class ApiService {
       return Partner.fromJson(jsonDecode(response.body));
     } else {
       debugPrint(response.body);
-      throw Exception('Failed to load partner');
-    }
-  }
-
-  Future<List<IdName>> getBirthControls() async {
-    final response = await http.get(Uri.https(_apiUrl, 'data/birth-controls'));
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<IdName>((map) => IdName.fromJson(map)).toList();
-    } else {
-      debugPrint(response.body);
-      throw Exception('Failed to load birth controls');
-    }
-  }
-
-  Future<List<IdName>> getActivityTypes() async {
-    final response = await http.get(Uri.https(_apiUrl, 'data/activity-types'));
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<IdName>((map) => IdName.fromJson(map)).toList();
-    } else {
-      debugPrint(response.body);
-      throw Exception('Failed to load activity types');
-    }
-  }
-
-  Future<List<IdName>> getGenders() async {
-    final response = await http.get(Uri.https(_apiUrl, 'data/genders'));
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<IdName>((map) => IdName.fromJson(map)).toList();
-    } else {
-      debugPrint(response.body);
-      throw Exception('Failed to load genders');
-    }
-  }
-
-  Future<List<IdName>> getPlaces() async {
-    final response = await http.get(Uri.https(_apiUrl, 'data/places'));
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<IdName>((map) => IdName.fromJson(map)).toList();
-    } else {
-      debugPrint(response.body);
-      throw Exception('Failed to load places');
-    }
-  }
-
-  Future<List<IdName>> getPractices() async {
-    final response = await http.get(Uri.https(_apiUrl, 'data/practices'));
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<IdName>((map) => IdName.fromJson(map)).toList();
-    } else {
-      debugPrint(response.body);
-      throw Exception('Failed to load practices');
-    }
-  }
-
-  Future<List<IdName>> getInitiators() async {
-    final response = await http.get(Uri.https(_apiUrl, 'data/initiators'));
-
-    if (response.statusCode == 200) {
-      List json = jsonDecode(response.body);
-      return json.map<IdName>((map) => IdName.fromJson(map)).toList();
-    } else {
-      debugPrint(response.body);
-      throw Exception('Failed to load initiators');
+      throw Exception('Failed to update partner');
     }
   }
 }

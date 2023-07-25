@@ -136,39 +136,6 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     ]);
   }
 
-  Widget protection() {
-    if (solo) {
-      return const Text('');
-    }
-    String text = 'No protection';
-    if (widget.activity.birthControl == null ||
-        widget.activity.birthControl == Contraceptive.noContraceptive) {
-      if (widget.activity.partnerBirthControl != null &&
-          widget.activity.partnerBirthControl !=
-              Contraceptive.noContraceptive) {
-        text = widget.activity.partnerBirthControl.toString();
-      }
-    } else if (widget.activity.partnerBirthControl == null ||
-        widget.activity.partnerBirthControl == Contraceptive.noContraceptive) {
-      if (widget.activity.birthControl != null &&
-          widget.activity.birthControl != Contraceptive.noContraceptive) {
-        text = widget.activity.birthControl.toString();
-      }
-    } else {
-      if (widget.activity.birthControl == widget.activity.partnerBirthControl) {
-        text = widget.activity.birthControl.toString();
-      } else {
-        text =
-            '${widget.activity.birthControl.toString()} + ${widget.activity.partnerBirthControl.toString()}';
-      }
-    }
-
-    return Padding(
-      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-      child: Text(text, style: secondaryTextStyle()),
-    );
-  }
-
   Widget duration() {
     return Padding(
       padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),

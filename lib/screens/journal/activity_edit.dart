@@ -41,6 +41,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Initiator? _initiator;
 
   bool _new = true;
+  bool _moreFields = false;
 
   @override
   void initState() {
@@ -298,146 +299,176 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       ListTile(
         title: Text(AppLocalizations.of(context)!.date),
         leading: Icon(
-          Icons.access_time,
+          Icons.calendar_today,
           color: Theme.of(context).colorScheme.secondary,
         ),
         trailing: _date != null
-            ? Text(DateFormat('EEE, MMM d, HH:mm').format(_date!))
+            ? Text(DateFormat('EEE, MMM d').format(_date!))
             : null,
         onTap: () => _selectDate(context),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.time),
+        leading: Icon(
+          Icons.access_time,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        trailing:
+            _date != null ? Text(DateFormat('HH:mm').format(_date!)) : null,
+        onTap: () => _selectTime(context),
       )
     ];
 
     if (_type == ActivityType.sexualIntercourse) {
+      fields.addAll(
+        [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DropdownButtonFormField(
+              value: _partner,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.person),
+                labelText: AppLocalizations.of(context)!.partner,
+              ),
+              items: partnerDropdownMenuEntries,
+              onChanged: (value) {
+                _partner = value;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DropdownButtonFormField(
+              value: _birthControl,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.medication),
+                labelText: AppLocalizations.of(context)!.birthControl,
+              ),
+              items: birthControlDropdownMenuEntries,
+              onChanged: (value) {
+                _birthControl = value;
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DropdownButtonFormField(
+              value: _partnerBirthControl,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.medication),
+                labelText: AppLocalizations.of(context)!.partnerBirthControl,
+              ),
+              items: birthControlDropdownMenuEntries,
+              onChanged: (value) {
+                _partnerBirthControl = value;
+              },
+            ),
+          ),
+        ],
+      );
+    }
+
+    if (!_moreFields) {
+      fields.add(
+        TextButton(
+          onPressed: () => setState(() => _moreFields = !_moreFields),
+          child: Text(_moreFields
+              ? AppLocalizations.of(context)!.lessFields
+              : AppLocalizations.of(context)!.moreFields),
+        ),
+      );
+    }
+
+    if (_moreFields) {
+      if (_type == ActivityType.sexualIntercourse) {
+        fields.add(
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: DropdownButtonFormField(
+              value: _initiator,
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.start),
+                labelText: AppLocalizations.of(context)!.initiator,
+              ),
+              items: initiatorDropdownMenuEntries,
+              onChanged: (value) {
+                _initiator = value;
+              },
+            ),
+          ),
+        );
+      }
+
       fields.addAll([
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: DropdownButtonFormField(
-            value: _partner,
+            value: _place,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.person),
-              labelText: AppLocalizations.of(context)!.partner,
+              prefixIcon: const Icon(Icons.place),
+              labelText: AppLocalizations.of(context)!.place,
             ),
-            items: partnerDropdownMenuEntries,
+            items: placeDropdownMenuEntries,
             onChanged: (value) {
-              _partner = value;
+              _place = value;
             },
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: DropdownButtonFormField(
-            value: _birthControl,
+          child: TextField(
+            controller: _locationController,
+            maxLines: null,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.medication),
-              labelText: AppLocalizations.of(context)!.birthControl,
+              prefixIcon: const Icon(Icons.map),
+              labelText: AppLocalizations.of(context)!.location,
             ),
-            items: birthControlDropdownMenuEntries,
-            onChanged: (value) {
-              _birthControl = value;
-            },
           ),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.practices),
+          leading: Icon(
+            Icons.task_alt,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          subtitle: Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: [
+              ...Practice.values
+                  .map(
+                    (e) => ChoiceChip(
+                      label: Text(
+                          SharedService.getPracticeTranslation(context, e)),
+                      selected: isPracticeSelected(e),
+                      onSelected: (value) => togglePractice(e, value),
+                    ),
+                  )
+                  .toList()
+            ],
+          ),
+          titleAlignment: ListTileTitleAlignment.top,
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
-          child: DropdownButtonFormField(
-            value: _partnerBirthControl,
+          child: TextField(
+            controller: _notesController,
+            maxLines: null,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.medication),
-              labelText: AppLocalizations.of(context)!.partnerBirthControl,
+              prefixIcon: const Icon(Icons.note_alt),
+              labelText: AppLocalizations.of(context)!.notes,
             ),
-            items: birthControlDropdownMenuEntries,
-            onChanged: (value) {
-              _partnerBirthControl = value;
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: DropdownButtonFormField(
-            value: _initiator,
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.start),
-              labelText: AppLocalizations.of(context)!.initiator,
-            ),
-            items: initiatorDropdownMenuEntries,
-            onChanged: (value) {
-              _initiator = value;
-            },
           ),
         ),
       ]);
     }
-
-    fields.addAll([
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: DropdownButtonFormField(
-          value: _place,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            prefixIcon: const Icon(Icons.place),
-            labelText: AppLocalizations.of(context)!.place,
-          ),
-          items: placeDropdownMenuEntries,
-          onChanged: (value) {
-            _place = value;
-          },
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: TextField(
-          controller: _locationController,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            prefixIcon: const Icon(Icons.map),
-            labelText: AppLocalizations.of(context)!.location,
-          ),
-        ),
-      ),
-      ListTile(
-        title: Text(AppLocalizations.of(context)!.practices),
-        leading: Icon(
-          Icons.task_alt,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        subtitle: Wrap(
-          spacing: 4,
-          runSpacing: 4,
-          children: [
-            ...Practice.values
-                .map(
-                  (e) => ChoiceChip(
-                    label:
-                        Text(SharedService.getPracticeTranslation(context, e)),
-                    selected: isPracticeSelected(e),
-                    onSelected: (value) => togglePractice(e, value),
-                  ),
-                )
-                .toList()
-          ],
-        ),
-        titleAlignment: ListTileTitleAlignment.top,
-      ),
-      Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: TextField(
-          controller: _notesController,
-          maxLines: null,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            prefixIcon: const Icon(Icons.note_alt),
-            labelText: AppLocalizations.of(context)!.notes,
-          ),
-        ),
-      ),
-    ]);
 
     return fields;
   }
@@ -447,12 +478,43 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         context: context,
         initialEntryMode: DatePickerEntryMode.calendarOnly,
         initialDate: _date ?? DateTime.now(),
-        firstDate: DateTime(2015, 8),
+        firstDate: DateTime(2000),
         lastDate: DateTime.now());
-    if (picked != null && picked != _date) {
-      setState(() {
-        _date = picked;
-      });
+    if (picked != null) {
+      DateTime pickedDate = DateTime(
+        picked.year,
+        picked.month,
+        picked.day,
+        _date!.hour,
+        _date!.minute,
+      );
+      if (pickedDate != _date) {
+        setState(() {
+          _date = pickedDate;
+        });
+      }
+    }
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialEntryMode: TimePickerEntryMode.dialOnly,
+      initialTime: TimeOfDay.fromDateTime(_date!),
+    );
+    if (picked != null) {
+      DateTime pickedDate = DateTime(
+        _date!.year,
+        _date!.month,
+        _date!.day,
+        picked.hour,
+        picked.minute,
+      );
+      if (pickedDate != _date) {
+        setState(() {
+          _date = pickedDate;
+        });
+      }
     }
   }
 
@@ -483,10 +545,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               ),
             ],
           ),
-          SliverList.separated(
-            separatorBuilder: (context, index) => const Divider(
-              height: 0,
-            ),
+          SliverList.builder(
             itemBuilder: (context, index) => fields[index],
             itemCount: fields.length,
           ),

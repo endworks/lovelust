@@ -15,24 +15,23 @@ enum ActivityType { masturbation, sexualIntercourse }
 enum Initiator { me, partner, both, other }
 
 enum Contraceptive {
-  noContraceptive,
-  unsafeContraceptive,
   condom,
+  internalCondom,
   cervicalCap,
   diaphragm,
   contraceptiveImplant,
+  contraceptivePatch,
+  contraceptiveShot,
   infertility,
-  internalCondom,
   intrauterineDevice,
   outercourse,
-  contraceptivePatch,
   pill,
   pullOut,
-  contraceptiveShot,
   sponge,
   tubalLigation,
   vaginalRing,
-  vasectomy
+  vasectomy,
+  unsafeContraceptive,
 }
 
 enum Place {

@@ -62,8 +62,6 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
       if (partner != null) {
         return partner!.sex == BiologicalSex.male ? blue : red;
       }
-    } else {
-      // return pink;
     }
 
     return Theme.of(context).colorScheme.primary;

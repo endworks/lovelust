@@ -30,7 +30,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final ApiService _api = getIt<ApiService>();
   late Activity _activity;
   Partner? _partner;
-  bool solo = false;
+  bool _solo = false;
 
   void editActivity() {
     Navigator.push(
@@ -47,21 +47,23 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   void initState() {
     super.initState();
     _activity = widget.activity;
-    solo = _activity.type == ActivityType.masturbation;
-    if (_activity.partner != null) {
-      _partner = _shared.getPartnerById(_activity.partner!)!;
-    }
     _shared.addListener(() {
       if (mounted) {
         setState(() {
           _activity = _shared.getActivityById(_activity.id!)!;
+          _partner = _shared.getPartnerById(_activity.partner!)!;
+          _solo = _activity.type == ActivityType.masturbation;
         });
       }
     });
+    _solo = _activity.type == ActivityType.masturbation;
+    if (_activity.partner != null) {
+      _partner = _shared.getPartnerById(_activity.partner!)!;
+    }
   }
 
   String get title {
-    if (!solo) {
+    if (!_solo) {
       if (_partner != null) {
         return _partner!.name;
       } else {
@@ -141,7 +143,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       ListTile(
         leading: ActivityAvatar(
           partnerId: _activity.partner,
-          masturbation: solo,
+          masturbation: _solo,
         ),
         trailing: CircleAvatar(
           backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -157,14 +159,6 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
             _shared.sensitiveText(
               SharedService.getPlaceTranslation(context, _activity.place),
             ),
-            const Padding(padding: EdgeInsets.only(left: 16)),
-            Icon(
-              Icons.timer,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            const Padding(padding: EdgeInsets.only(left: 4)),
-            _shared.sensitiveText(_activity.duration.toString()),
-            Text(' ${AppLocalizations.of(context)!.min}'),
           ],
         ),
         subtitle: Column(
@@ -191,6 +185,14 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                 _shared.sensitiveText(
                   DateFormat('HH:mm').format(_activity.date),
                 ),
+                const Padding(padding: EdgeInsets.only(left: 16)),
+                Icon(
+                  Icons.timer,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 4)),
+                _shared.sensitiveText(_activity.duration.toString()),
+                Text(' ${AppLocalizations.of(context)!.min}'),
               ],
             ),
             Row(
@@ -203,7 +205,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
         titleAlignment: ListTileTitleAlignment.top,
       )
     ];
-    if (!solo) {
+    if (!_solo) {
       list.addAll([
         SafetyBlock(
           safety: _shared.calculateSafety(_activity),

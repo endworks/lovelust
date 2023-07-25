@@ -130,17 +130,12 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
       return const Text('');
     }
     String text = AppLocalizations.of(context)!.noBirthControl;
-    if (widget.activity.birthControl == null ||
-        widget.activity.birthControl == Contraceptive.noContraceptive) {
-      if (widget.activity.partnerBirthControl != null &&
-          widget.activity.partnerBirthControl !=
-              Contraceptive.noContraceptive) {
+    if (widget.activity.birthControl == null) {
+      if (widget.activity.partnerBirthControl != null) {
         text = widget.activity.partnerBirthControl.toString();
       }
-    } else if (widget.activity.partnerBirthControl == null ||
-        widget.activity.partnerBirthControl == Contraceptive.noContraceptive) {
-      if (widget.activity.birthControl != null &&
-          widget.activity.birthControl != Contraceptive.noContraceptive) {
+    } else if (widget.activity.partnerBirthControl == null) {
+      if (widget.activity.birthControl != null) {
         text = widget.activity.birthControl.toString();
       }
     } else {

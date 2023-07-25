@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/id_name.dart';
 import 'package:lovelust/services/shared_service.dart';
@@ -48,16 +50,24 @@ class Activity {
       date: DateTime.parse(json['date']),
       location: json['location'],
       notes: json['notes'],
-      duration: json['duration'],
-      orgasms: json['orgasms'],
-      partnerOrgasms: json['partner_orgasms'],
+      duration: json['duration'] is int
+          ? json['duration']
+          : int.parse(json['duration']),
+      orgasms:
+          json['orgasms'] is int ? json['orgasms'] : int.parse(json['orgasms']),
+      partnerOrgasms: json['partner_orgasms'] is int
+          ? json['partner_orgasms']
+          : int.parse(json['partner_orgasms']),
       place: SharedService.getPlaceByValue(json['place']),
       initiator: SharedService.getInitiatorByValue(json['initiator']),
-      rating: json['rating'],
+      rating:
+          json['rating'] is int ? json['rating'] : int.parse(json['rating']),
       type: SharedService.getActivityTypeByValue(json['type']),
       practices: json['practices'] == null
           ? null
-          : json['practices']
+          : (json['practices'] is String
+                  ? jsonDecode(json['practices'])
+                  : json['practices'])
               .map<Practice>((map) =>
                   SharedService.getPracticeByValue(IdName.fromJson(map).id)!)
               .toList() as List<Practice>,

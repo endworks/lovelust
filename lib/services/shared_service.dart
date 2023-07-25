@@ -141,6 +141,9 @@ class SharedService extends ChangeNotifier {
   }
 
   Activity? getActivityById(String id) {
+    if (id.isEmpty) {
+      return null;
+    }
     return activity.firstWhere((element) => element.id == id);
   }
 
@@ -149,6 +152,9 @@ class SharedService extends ChangeNotifier {
   }
 
   Partner? getPartnerById(String id) {
+    if (id.isEmpty) {
+      return null;
+    }
     return partners.firstWhere((element) => element.id == id);
   }
 
@@ -684,6 +690,13 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.creampie;
     }
     return AppLocalizations.of(context)!.unknown;
+  }
+
+  static String? emptyStringToNull(String? value) {
+    if (value != null) {
+      return value.isEmpty ? null : value;
+    }
+    return null;
   }
 
   String get theme {

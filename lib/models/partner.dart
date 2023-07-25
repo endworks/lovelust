@@ -25,7 +25,7 @@ class Partner {
       gender: SharedService.getGenderByValue(json['gender']),
       name: json['name'],
       meetingDate: DateTime.parse(json['meeting_date']),
-      notes: json['notes'],
+      notes: SharedService.emptyStringToNull(json['notes']),
     );
   }
 

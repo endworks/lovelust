@@ -51,14 +51,16 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       if (mounted) {
         setState(() {
           _activity = _shared.getActivityById(_activity.id!)!;
-          _partner = _shared.getPartnerById(_activity.partner!)!;
+          if (_activity.partner != null) {
+            _partner = _shared.getPartnerById(_activity.partner!);
+          }
           _solo = _activity.type == ActivityType.masturbation;
         });
       }
     });
     _solo = _activity.type == ActivityType.masturbation;
     if (_activity.partner != null) {
-      _partner = _shared.getPartnerById(_activity.partner!)!;
+      _partner = _shared.getPartnerById(_activity.partner!);
     }
   }
 

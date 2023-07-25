@@ -40,7 +40,7 @@ class Activity {
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
       id: json['id'],
-      partner: json['partner'],
+      partner: SharedService.emptyStringToNull(json['partner']),
       birthControl: SharedService.getContraceptiveByValue(
         json['birth_control'],
       ),
@@ -48,8 +48,8 @@ class Activity {
         json['partner_birth_control'],
       ),
       date: DateTime.parse(json['date']),
-      location: json['location'],
-      notes: json['notes'],
+      location: SharedService.emptyStringToNull(json['location']),
+      notes: SharedService.emptyStringToNull(json['notes']),
       duration: json['duration'],
       orgasms: json['orgasms'],
       partnerOrgasms: json['partner_orgasms'],

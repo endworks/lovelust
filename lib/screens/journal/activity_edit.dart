@@ -8,6 +8,7 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:lovelust/widgets/rating_select.dart';
 import 'package:uuid/uuid.dart';
 
 class ActivityEditPage extends StatefulWidget {
@@ -428,6 +429,21 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               border: const OutlineInputBorder(),
               prefixIcon: const Icon(Icons.map),
               labelText: AppLocalizations.of(context)!.location,
+            ),
+          ),
+        ),
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.rating),
+          leading: Icon(
+            Icons.star_half,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          trailing: RatingSelect(
+            rating: int.parse(_ratingController.value.text),
+            onRatingUpdate: (value) => setState(
+              () => _ratingController.value = TextEditingValue(
+                text: value.toString(),
+              ),
             ),
           ),
         ),

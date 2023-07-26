@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_icon/flutter_dynamic_icon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/screens/settings/login_dialog.dart';
@@ -107,6 +110,29 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  List<DropdownMenuItem<String>> get dropdownAppIconItems {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(
+          value: "system", child: Text(AppLocalizations.of(context)!.system)),
+      DropdownMenuItem(
+          value: "light", child: Text(AppLocalizations.of(context)!.light)),
+      DropdownMenuItem(
+          value: "dark", child: Text(AppLocalizations.of(context)!.dark)),
+    ];
+    return menuItems;
+  }
+
+  Widget get appIconName {
+    DropdownMenuItem value = dropdownAppIconItems
+        .firstWhere((element) => element.value == _common.currentIconName);
+    return Text(
+      (value.child as Text).data!,
+      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+    );
+  }
+
   Future<void> _askTheme() async {
     String? value = await showDialog<String>(
       context: context,
@@ -207,6 +233,33 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
+  Future<void> _askAppIcon() async {
+    String? value = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(AppLocalizations.of(context)!.appIcon),
+          children: dropdownAppIconItems
+              .map(
+                (e) => SimpleDialogOption(
+                  onPressed: () {
+                    Navigator.pop(context, e.value);
+                  },
+                  child: e.child,
+                ),
+              )
+              .toList(),
+        );
+      },
+    );
+
+    if (value != null && _common.currentIconName != value) {
+      setState(() {
+        _common.currentIconName = value;
+      });
+    }
+  }
+
   _handleLogin() {
     if (_common.isLoggedIn) {
       _common.signOut();
@@ -221,6 +274,36 @@ class _SettingsPageState extends State<SettingsPage> {
             child: LoginDialog(),
           );
         },
+      );
+    }
+  }
+
+  _changeIcon() {
+    try {
+      FlutterDynamicIcon.supportsAlternateIcons.then((value) {
+        if (value) {
+          FlutterDynamicIcon.setAlternateIconName("teamfortress",
+                  showAlert: true)
+              .then((value) => null);
+        }
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("App icon change successful"),
+          ),
+        );
+        FlutterDynamicIcon.getAlternateIconName().then((v) {
+          setState(() {
+            _common.currentIconName = v ?? "`primary`";
+          });
+        });
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Failed to change app icon"),
+        ),
       );
     }
   }
@@ -355,6 +438,21 @@ class _SettingsPageState extends State<SettingsPage> {
             color: Theme.of(context).colorScheme.secondary,
           ),
           onTap: _common.initialFetch,
+        ),
+      );
+    }
+
+    if (Platform.isIOS) {
+      list.insert(
+        4,
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.appIcon),
+          subtitle: appIconName,
+          onTap: _askAppIcon,
+          leading: Icon(
+            Icons.app_shortcut,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
       );
     }

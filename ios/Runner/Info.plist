@@ -62,5 +62,56 @@
 		<false/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
+		<key>CFBundleIcons</key>
+		<dict>
+		<key>CFBundleAlternateIcons</key>
+		<dict>
+			<key>Beta</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Beta</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>White</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>White</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>Pride</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>Pride</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+			<key>PrideAlt</key>
+			<dict>
+				<key>CFBundleIconFiles</key>
+				<array>
+					<string>PrideAlt</string>
+				</array>
+				<key>UIPrerenderedIcon</key>
+				<false/>
+			</dict>
+		</dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>chills</string>
+			</array>
+			<key>UIPrerenderedIcon</key>
+			<false/>
+		</dict>
+	</dict>
 	</dict>
 </plist>

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_icon/flutter_dynamic_icon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
@@ -27,6 +28,7 @@ class SharedService extends ChangeNotifier {
   bool _calendarView = false;
   String? _activityFilter;
   PackageInfo? packageInfo;
+  String currentIconName = "?";
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -58,6 +60,10 @@ class SharedService extends ChangeNotifier {
     _activityFilter = result[9];
     Intl.systemLocale = result[10];
     packageInfo = result[11];
+
+    FlutterDynamicIcon.getAlternateIconName().then((v) {
+      currentIconName = v ?? "`primary`";
+    });
   }
 
   Future<void> initialFetch() async {

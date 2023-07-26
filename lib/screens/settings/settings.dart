@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_icon/flutter_dynamic_icon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -113,11 +115,25 @@ class _SettingsPageState extends State<SettingsPage> {
   List<DropdownMenuItem<String>> get dropdownAppIconItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
-          value: "system", child: Text(AppLocalizations.of(context)!.system)),
+        value: null,
+        child: Text(AppLocalizations.of(context)!.defaultAppIcon),
+      ),
       DropdownMenuItem(
-          value: "light", child: Text(AppLocalizations.of(context)!.light)),
+        value: "Beta",
+        child: Text(AppLocalizations.of(context)!.beta),
+      ),
       DropdownMenuItem(
-          value: "dark", child: Text(AppLocalizations.of(context)!.dark)),
+        value: "White",
+        child: Text(AppLocalizations.of(context)!.white),
+      ),
+      DropdownMenuItem(
+        value: "Pride",
+        child: Text(AppLocalizations.of(context)!.pride),
+      ),
+      DropdownMenuItem(
+        value: "PrideAlt",
+        child: Text(AppLocalizations.of(context)!.prideAlt),
+      ),
     ];
     return menuItems;
   }
@@ -257,6 +273,15 @@ class _SettingsPageState extends State<SettingsPage> {
       setState(() {
         _common.currentIconName = value;
       });
+      try {
+        if (await FlutterDynamicIcon.supportsAlternateIcons) {
+          await FlutterDynamicIcon.setAlternateIconName(value);
+        }
+      } on PlatformException {
+        debugPrint("Platform interaction failed");
+      } catch (e) {
+        debugPrint("Failed to change app icon");
+      }
     }
   }
 
@@ -442,7 +467,7 @@ class _SettingsPageState extends State<SettingsPage> {
       );
     }
 
-    if (Platform.isIOS) {
+    if (!kIsWeb && Platform.isIOS) {
       list.insert(
         4,
         ListTile(

@@ -28,7 +28,7 @@ class SharedService extends ChangeNotifier {
   bool _calendarView = false;
   String? _activityFilter;
   PackageInfo? packageInfo;
-  String currentIconName = "?";
+  String? currentIconName;
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -62,7 +62,7 @@ class SharedService extends ChangeNotifier {
     packageInfo = result[11];
 
     FlutterDynamicIcon.getAlternateIconName().then((v) {
-      currentIconName = v ?? "`primary`";
+      currentIconName = v;
     });
   }
 

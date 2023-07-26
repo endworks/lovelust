@@ -119,7 +119,6 @@ ThemeData experimentalTheme = ThemeData(
     backgroundColor: defaultTheme.colorScheme.surface,
     side: BorderSide.none,
     shape: const StadiumBorder(),
-    labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
   ),
   textTheme: defaultTheme.textTheme,
   useMaterial3: true,
@@ -379,6 +378,14 @@ ThemeData monochromeTheme = ThemeData(
     surfaceTintColor: MaterialColor(0xFFFFFFFF, whiteColor),
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
   ),
+  chipTheme: ChipThemeData(
+    labelStyle: TextStyle(
+      color: MaterialColor(0xFFFFFFFF, whiteColor),
+    ),
+    secondaryLabelStyle: TextStyle(
+      color: MaterialColor(0xFF000000, blackColor),
+    ),
+  ),
   cardTheme: defaultTheme.cardTheme,
   textTheme: defaultTheme.textTheme,
 );
@@ -404,6 +411,15 @@ ThemeData monochromeDarkTheme = ThemeData(
     elevation: 1,
     surfaceTintColor: MaterialColor(0xFF000000, blackColor),
     labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
+  ),
+  chipTheme: ChipThemeData(
+    brightness: Brightness.dark,
+    labelStyle: TextStyle(
+      color: MaterialColor(0xFFFFFFFF, whiteColor),
+    ),
+    secondaryLabelStyle: TextStyle(
+      color: MaterialColor(0xFFFFFFFF, whiteColor),
+    ),
   ),
   cardTheme: defaultDarkTheme.cardTheme,
   textTheme: defaultDarkTheme.textTheme,

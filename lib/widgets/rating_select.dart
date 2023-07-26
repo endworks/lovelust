@@ -1,4 +1,3 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 
 class RatingSelect extends StatefulWidget {
@@ -16,21 +15,9 @@ class _RatingSelectState extends State<RatingSelect> {
   @override
   Widget build(BuildContext context) {
     List<Widget> container = [];
-    Color color = Theme.of(context).colorScheme.secondary;
-    if (widget.rating > 0) {
-      color = Colors.red;
-    }
-    if (widget.rating > 2) {
-      color = Colors.deepOrangeAccent;
-    }
-    if (widget.rating > 3) {
-      color = Colors.amber;
-    }
-    color = color.harmonizeWith(Theme.of(context).colorScheme.primary);
-
     Icon star = Icon(
       Icons.star,
-      color: color,
+      color: Theme.of(context).colorScheme.secondary,
     );
     Icon starEmpty = Icon(
       Icons.star_border,

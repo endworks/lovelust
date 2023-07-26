@@ -38,6 +38,7 @@ class _PracticesBlockState extends State<PracticesBlock> {
                   SharedService.getPracticeTranslation(context, e),
                 ),
                 selected: true,
+                showCheckmark: false,
                 onSelected: (value) {},
               ),
             )

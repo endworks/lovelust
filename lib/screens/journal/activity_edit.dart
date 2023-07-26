@@ -495,6 +495,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       label: Text(SharedService.getMoodTranslation(context, e)),
                       selected: isMoodSelected(e),
                       onSelected: (value) => selectMood(e, value),
+                      showCheckmark: false,
                     ),
                   )
                   .toList()
@@ -514,11 +515,12 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             children: [
               ...Practice.values
                   .map(
-                    (e) => ChoiceChip(
+                    (e) => FilterChip(
                       label: Text(
                           SharedService.getPracticeTranslation(context, e)),
                       selected: isPracticeSelected(e),
                       onSelected: (value) => togglePractice(e, value),
+                      showCheckmark: false,
                     ),
                   )
                   .toList()

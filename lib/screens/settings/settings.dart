@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dynamic_icon/flutter_dynamic_icon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/screens/settings/login_dialog.dart';
@@ -125,6 +125,10 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
         value: "White",
         child: Text(AppLocalizations.of(context)!.white),
+      ),
+      DropdownMenuItem(
+        value: "Black",
+        child: Text(AppLocalizations.of(context)!.black),
       ),
       DropdownMenuItem(
         value: "Monochrome",
@@ -286,8 +290,15 @@ class _SettingsPageState extends State<SettingsPage> {
         _common.currentIconName = value;
       });
       try {
-        if (await FlutterDynamicIcon.supportsAlternateIcons) {
-          await FlutterDynamicIcon.setAlternateIconName(value);
+        if (Platform.isIOS) {
+          if (await DynamicIconFlutter.supportsAlternateIcons) {
+            await DynamicIconFlutter.setAlternateIconName(value);
+          }
+        } else if (Platform.isAndroid) {
+          List<String> list = dropdownAppIconItems
+              .map((e) => e.value ?? 'MainActivity')
+              .toList();
+          DynamicIconFlutter.setIcon(icon: value, listAvailableIcon: list);
         }
       } on PlatformException {
         debugPrint("Platform interaction failed");
@@ -311,36 +322,6 @@ class _SettingsPageState extends State<SettingsPage> {
             child: LoginDialog(),
           );
         },
-      );
-    }
-  }
-
-  _changeIcon() {
-    try {
-      FlutterDynamicIcon.supportsAlternateIcons.then((value) {
-        if (value) {
-          FlutterDynamicIcon.setAlternateIconName("teamfortress",
-                  showAlert: true)
-              .then((value) => null);
-        }
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("App icon change successful"),
-          ),
-        );
-        FlutterDynamicIcon.getAlternateIconName().then((v) {
-          setState(() {
-            _common.currentIconName = v ?? "`primary`";
-          });
-        });
-      });
-    } catch (e) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Failed to change app icon"),
-        ),
       );
     }
   }
@@ -479,7 +460,7 @@ class _SettingsPageState extends State<SettingsPage> {
       );
     }
 
-    if (!kIsWeb && Platform.isIOS) {
+    if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
       list.insert(
         4,
         ListTile(

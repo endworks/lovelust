@@ -10,48 +10,6 @@
 	<string>LoveLust</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
-	<key>CFBundleIcons</key>
-	<dict>
-		<key>CFBundleAlternateIcons</key>
-		<dict>
-			<key>Beta</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>beta</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>Pride</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>pride</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>PrideAlt</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>prideAlt</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-			<key>White</key>
-			<dict>
-				<key>CFBundleIconFiles</key>
-				<array>
-					<string>Assets/White</string>
-				</array>
-				<key>UIPrerenderedIcon</key>
-				<false/>
-			</dict>
-		</dict>
-	</dict>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -78,9 +36,9 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Why is my app authenticating using face id?</string>
 	<key>NSHealthShareUsageDescription</key>
-	<string>Why is my app using health data?</string>
+	<string>Why is my app sharing health data?</string>
 	<key>NSHealthUpdateUsageDescription</key>
-	<string>Why is my app using health data?</string>
+	<string>Why is my app updating health data?</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

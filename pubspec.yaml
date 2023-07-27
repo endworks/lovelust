@@ -26,7 +26,7 @@ dependencies:
   local_auth: ^2.1.6
   package_info_plus: ^4.0.2
   relative_time: ^4.0.1
-  flutter_dynamic_icon: ^2.1.0
+  dynamic_icon_flutter: ^0.0.7
 
 dev_dependencies:
   flutter_test:

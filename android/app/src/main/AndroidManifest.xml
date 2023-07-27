@@ -17,12 +17,12 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize"
-            android:enabled="true">
+            android:windowSoftInputMode="adjustResize">
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -38,7 +38,6 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <intent-filter>
@@ -47,11 +46,25 @@
         </activity>
 
         <activity-alias
+            android:enabled="true"
+            android:name=".Default"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
             android:enabled="false"
             android:label="LoveLust Beta"
             android:name=".Beta"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_beta">
+            android:icon="@mipmap/ic_launcher_beta"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,7 +76,8 @@
             android:enabled="false"
             android:name=".White"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_white">
+            android:icon="@mipmap/ic_launcher_white"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -75,7 +89,8 @@
             android:enabled="false"
             android:name=".Black"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_black">
+            android:icon="@mipmap/ic_launcher_black"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,7 +102,8 @@
             android:enabled="false"
             android:name=".Monochrome"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_monochrome">
+            android:icon="@mipmap/ic_launcher_monochrome"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -99,7 +115,8 @@
             android:enabled="false"
             android:name=".Neon"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_neon">
+            android:icon="@mipmap/ic_launcher_neon"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -111,7 +128,8 @@
             android:enabled="false"
             android:name=".Pride"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_pride">
+            android:icon="@mipmap/ic_launcher_pride"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -123,7 +141,8 @@
             android:enabled="false"
             android:name=".PrideAlt"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_pride_alt">
+            android:icon="@mipmap/ic_launcher_pride_alt"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -136,7 +155,8 @@
             android:label="Sexapill"
             android:name=".Sexapill"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_sexapill">
+            android:icon="@mipmap/ic_launcher_sexapill"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

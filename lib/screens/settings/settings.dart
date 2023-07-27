@@ -297,11 +297,10 @@ class _SettingsPageState extends State<SettingsPage> {
           }
         } else if (Platform.isAndroid) {
           List<String> list = dropdownAppIconItems
-              .map<String>(
-                  (DropdownMenuItem<String> e) => e.value ?? 'MainActivity')
+              .map<String>((DropdownMenuItem<String> e) => e.value ?? 'Default')
               .toList();
           DynamicIconFlutter.setIcon(
-              icon: value ?? 'MainActivity', listAvailableIcon: list);
+              icon: value ?? 'Default', listAvailableIcon: list);
         }
       } on PlatformException {
         ScaffoldMessenger.of(context).showSnackBar(

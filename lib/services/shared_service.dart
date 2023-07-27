@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -61,9 +63,11 @@ class SharedService extends ChangeNotifier {
     Intl.systemLocale = result[10];
     packageInfo = result[11];
 
-    DynamicIconFlutter.getAlternateIconName().then((v) {
-      currentIconName = v;
-    });
+    if (!kIsWeb && Platform.isIOS) {
+      DynamicIconFlutter.getAlternateIconName().then((v) {
+        currentIconName = v;
+      });
+    }
   }
 
   Future<void> initialFetch() async {

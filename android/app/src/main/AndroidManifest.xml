@@ -43,6 +43,32 @@
 
         <activity-alias
             android:enabled="false"
+            android:name=".Beta"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_beta"
+            android:exported="true">
+
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <meta-data
+              android:name="io.flutter.embedding.android.SplashScreenDrawable"
+              android:resource="@drawable/launch_background"
+              />
+
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
             android:name=".White"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_white"

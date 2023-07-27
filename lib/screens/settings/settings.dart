@@ -265,8 +265,8 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  Future<void> _askAppIcon() async {
-    String? value = await showDialog<String>(
+  Future<void> _askAppIcon() {
+    return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -283,29 +283,53 @@ class _SettingsPageState extends State<SettingsPage> {
               .toList(),
         );
       },
-    );
-
-    if (value != null && _common.currentIconName != value) {
-      setState(() {
-        _common.currentIconName = value;
-      });
-      try {
-        if (Platform.isIOS) {
-          if (await DynamicIconFlutter.supportsAlternateIcons) {
-            await DynamicIconFlutter.setAlternateIconName(value);
+    ).then((String? value) {
+      if (_common.currentIconName != value) {
+        setState(() {
+          _common.currentIconName = value;
+        });
+        try {
+          if (Platform.isIOS) {
+            DynamicIconFlutter.supportsAlternateIcons.then((supported) {
+              DynamicIconFlutter.setAlternateIconName(value)
+                  .then((value) => null);
+            });
+          } else if (Platform.isAndroid) {
+            /*List<String> list = dropdownAppIconItems
+                .map<String>(
+                    (DropdownMenuItem<String> e) => e.value ?? 'MainActivity')
+                .toList();*/
+            const List<String> list = [
+              "MainActivity",
+              "Beta",
+              "White",
+              "Black",
+              "Monochrome",
+              "Neon",
+              "Pride",
+              "PrideAlt",
+              "Sexapill",
+            ];
+            debugPrint((value ?? 'MainActivity').toString());
+            debugPrint(list.toString());
+            DynamicIconFlutter.setIcon(
+                icon: value ?? 'MainActivity', listAvailableIcon: list);
           }
-        } else if (Platform.isAndroid) {
-          List<String> list = dropdownAppIconItems
-              .map((e) => e.value ?? 'MainActivity')
-              .toList();
-          DynamicIconFlutter.setIcon(icon: value, listAvailableIcon: list);
+        } on PlatformException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Platform not supported"),
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Failed to change app icon"),
+            ),
+          );
         }
-      } on PlatformException {
-        debugPrint("Platform interaction failed");
-      } catch (e) {
-        debugPrint("Failed to change app icon");
       }
-    }
+    });
   }
 
   _handleLogin() {

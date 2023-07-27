@@ -17,10 +17,10 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with RestorationMixin {
   final SharedService _shared = getIt<SharedService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
-  int _selectedIndex = 0;
+  final RestorableInt _selectedIndex = RestorableInt(0);
   bool _showDesktopNavigation = false;
   bool _centerDesktopNavigation = false;
 
@@ -43,8 +43,8 @@ class _HomeState extends State<Home> {
   }
 
   Widget get _selectedPage {
-    if (_selectedIndex > -1) {
-      return pages[_selectedIndex];
+    if (_selectedIndex.value > -1) {
+      return pages[_selectedIndex.value];
     }
     return const Text('loading');
   }
@@ -127,12 +127,12 @@ class _HomeState extends State<Home> {
           ? Row(
               children: <Widget>[
                 NavigationRail(
-                  selectedIndex: _selectedIndex,
+                  selectedIndex: _selectedIndex.value,
                   labelType: labelTypeFromTheme,
                   groupAlignment: _centerDesktopNavigation ? 0 : -1,
                   onDestinationSelected: (int index) {
                     setState(() {
-                      _selectedIndex = index;
+                      _selectedIndex.value = index;
                     });
                   },
                   destinations: _navigationRailDestinations,
@@ -147,15 +147,23 @@ class _HomeState extends State<Home> {
           : _selectedPage,
       bottomNavigationBar: !_showDesktopNavigation
           ? NavigationBar(
-              selectedIndex: _selectedIndex,
+              selectedIndex: _selectedIndex.value,
               onDestinationSelected: (int index) {
                 setState(() {
-                  _selectedIndex = index;
+                  _selectedIndex.value = index;
                 });
               },
               destinations: _navigationDestinations,
             )
           : null,
     );
+  }
+
+  @override
+  String get restorationId => 'home_page';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_selectedIndex, 'nav_bar_index');
   }
 }

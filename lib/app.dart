@@ -125,6 +125,7 @@ class _AppState extends State<App> {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: AppLocalizations.supportedLocales,
+          restorationScopeId: 'root',
           debugShowCheckedModeBanner: false,
           debugShowMaterialGrid: false,
         );

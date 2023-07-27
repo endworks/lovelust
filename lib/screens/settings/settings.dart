@@ -284,50 +284,37 @@ class _SettingsPageState extends State<SettingsPage> {
         );
       },
     ).then((String? value) {
-      if (_common.currentIconName != value) {
-        setState(() {
-          _common.currentIconName = value;
-        });
-        try {
-          if (Platform.isIOS) {
+      try {
+        if (Platform.isIOS) {
+          if (_common.currentIconName != value) {
+            setState(() {
+              _common.currentIconName = value;
+            });
             DynamicIconFlutter.supportsAlternateIcons.then((supported) {
               DynamicIconFlutter.setAlternateIconName(value)
                   .then((value) => null);
             });
-          } else if (Platform.isAndroid) {
-            /*List<String> list = dropdownAppIconItems
-                .map<String>(
-                    (DropdownMenuItem<String> e) => e.value ?? 'MainActivity')
-                .toList();*/
-            const List<String> list = [
-              "MainActivity",
-              "Beta",
-              "White",
-              "Black",
-              "Monochrome",
-              "Neon",
-              "Pride",
-              "PrideAlt",
-              "Sexapill",
-            ];
-            debugPrint((value ?? 'MainActivity').toString());
-            debugPrint(list.toString());
-            DynamicIconFlutter.setIcon(
-                icon: value ?? 'MainActivity', listAvailableIcon: list);
           }
-        } on PlatformException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Platform not supported"),
-            ),
-          );
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Failed to change app icon"),
-            ),
-          );
+        } else if (Platform.isAndroid) {
+          List<String> list = dropdownAppIconItems
+              .map<String>(
+                  (DropdownMenuItem<String> e) => e.value ?? 'MainActivity')
+              .toList();
+          DynamicIconFlutter.setIcon(
+              icon: value ?? 'MainActivity', listAvailableIcon: list);
         }
+      } on PlatformException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Platform not supported"),
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Failed to change app icon"),
+          ),
+        );
       }
     });
   }

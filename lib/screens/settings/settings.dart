@@ -123,18 +123,6 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Text(AppLocalizations.of(context)!.beta),
       ),
       DropdownMenuItem(
-        value: "White",
-        child: Text(AppLocalizations.of(context)!.white),
-      ),
-      DropdownMenuItem(
-        value: "Black",
-        child: Text(AppLocalizations.of(context)!.black),
-      ),
-      DropdownMenuItem(
-        value: "Monochrome",
-        child: Text(AppLocalizations.of(context)!.monochrome),
-      ),
-      DropdownMenuItem(
         value: "Neon",
         child: Text(AppLocalizations.of(context)!.neon),
       ),
@@ -145,6 +133,18 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
         value: "PrideAlt",
         child: Text(AppLocalizations.of(context)!.prideAlt),
+      ),
+      DropdownMenuItem(
+        value: "White",
+        child: Text(AppLocalizations.of(context)!.white),
+      ),
+      DropdownMenuItem(
+        value: "Black",
+        child: Text(AppLocalizations.of(context)!.black),
+      ),
+      DropdownMenuItem(
+        value: "Monochrome",
+        child: Text(AppLocalizations.of(context)!.monochrome),
       ),
       DropdownMenuItem(
         value: "Sexapill",

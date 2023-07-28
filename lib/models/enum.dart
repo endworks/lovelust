@@ -16,17 +16,18 @@ enum Initiator { me, partner, both, other }
 
 enum Mood {
   safe,
-  unsafe,
   horny,
   comfortable,
-  scared,
-  surprised,
   crazy,
   relaxed,
   playful,
-  lazy,
+  surprised,
   adventurous,
-  other
+  lazy,
+  scared,
+  angry,
+  unsafe,
+  other,
 }
 
 enum Contraceptive {

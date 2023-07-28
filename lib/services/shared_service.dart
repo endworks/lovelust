@@ -544,6 +544,8 @@ class SharedService extends ChangeNotifier {
   static Mood? getMoodByValue(String? value) {
     if (value == 'ADVENTUROUS') {
       return Mood.adventurous;
+    } else if (value == 'ANGRY') {
+      return Mood.angry;
     } else if (value == 'COMFORTABLE') {
       return Mood.comfortable;
     } else if (value == 'CRAZY') {
@@ -573,6 +575,8 @@ class SharedService extends ChangeNotifier {
   static String? setValueByMood(Mood? value) {
     if (value == Mood.adventurous) {
       return 'ADVENTUROUS';
+    } else if (value == Mood.angry) {
+      return 'ANGRY';
     } else if (value == Mood.comfortable) {
       return 'COMFORTABLE';
     } else if (value == Mood.crazy) {
@@ -764,6 +768,8 @@ class SharedService extends ChangeNotifier {
   static String getMoodTranslation(context, Mood? value) {
     if (value == Mood.adventurous) {
       return AppLocalizations.of(context)!.adventurous;
+    } else if (value == Mood.angry) {
+      return AppLocalizations.of(context)!.angry;
     } else if (value == Mood.comfortable) {
       return AppLocalizations.of(context)!.comfortable;
     } else if (value == Mood.crazy) {
@@ -788,6 +794,37 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.other;
     }
     return AppLocalizations.of(context)!.noMood;
+  }
+
+  static String getMoodEmoji(context, Mood? value) {
+    if (value == Mood.adventurous) {
+      return '🤩';
+    } else if (value == Mood.angry) {
+      return '😡';
+    } else if (value == Mood.comfortable) {
+      return '😊';
+    } else if (value == Mood.crazy) {
+      return '🤪';
+    } else if (value == Mood.horny) {
+      return '🥵';
+    } else if (value == Mood.lazy) {
+      return '🥱';
+    } else if (value == Mood.playful) {
+      return '😏';
+    } else if (value == Mood.relaxed) {
+      return '😌';
+    } else if (value == Mood.safe) {
+      return '🥰';
+    } else if (value == Mood.scared) {
+      return '😨';
+    } else if (value == Mood.surprised) {
+      return '😮';
+    } else if (value == Mood.unsafe) {
+      return '🤔';
+    } else if (value == Mood.other) {
+      return '😶';
+    }
+    return '😐';
   }
 
   static String? emptyStringToNull(String? value) {

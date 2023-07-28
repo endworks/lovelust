@@ -62,12 +62,15 @@ jobs:
 
       - name: Get release name
         run: |
+          "BUILD_VERSION=$(Get-Content pubspec.yaml | Select-String '^version:[^^]*' | ForEach-Object { $_.ToString().Split(":")[1].Split("+")[0].Trim() })" >> $env:GITHUB_ENV
           "COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $env:GITHUB_ENV
           "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $env:GITHUB_ENV
           "COMMIT_NUMBER=$(git rev-list --count main)" >> $env:GITHUB_ENV
           "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
-          "BUILD_VERSION=$(Get-Content pubspec.yaml | Select-String '^version:[^^]*' | ForEach-Object { $_.ToString().Split(":")[1].Split("+")[0].Trim() })" >> $env:GITHUB_ENV
-          "BUILD_FULL_VERSION=$BUILD_VERSION.$COMMIT_NUMBER" >> $env:GITHUB_ENV
+
+      - name: Get full version number
+        run: |
+          "BUILD_FULL_VERSION=$env:BUILD_VERSION.$env:COMMIT_NUMBER" >> $env:GITHUB_ENV
 
       - name: Refresh environment
         run: |
@@ -76,12 +79,6 @@ jobs:
 
       - name: Build windows app
         run: flutter build windows --release --build-number=$env:COMMIT_NUMBER --obfuscate --split-debug-info=out/windows/
-
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: build/windows/runner/Release
 
       - uses: microsoft/setup-msstore-cli@v1
 

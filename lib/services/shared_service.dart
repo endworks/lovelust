@@ -798,7 +798,7 @@ class SharedService extends ChangeNotifier {
 
   static String getMoodEmoji(context, Mood? value) {
     if (value == Mood.adventurous) {
-      return '🤩';
+      return '🤠';
     } else if (value == Mood.angry) {
       return '😡';
     } else if (value == Mood.comfortable) {

@@ -128,6 +128,7 @@
   "pride": "Pride",
   "prideAlt": "Rainbow",
   "sexapill": "Sexapill",
+  "health": "Health",
   "requireAuth": "Require authentication",
   "requireAuthDescription": "Require fingerprint or face to unlock the app",
   "privacyMode": "Privacy mode",

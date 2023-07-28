@@ -127,6 +127,10 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Text(AppLocalizations.of(context)!.neon),
       ),
       DropdownMenuItem(
+        value: "Health",
+        child: Text(AppLocalizations.of(context)!.health),
+      ),
+      DropdownMenuItem(
         value: "Pride",
         child: Text(AppLocalizations.of(context)!.pride),
       ),

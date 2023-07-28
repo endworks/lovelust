@@ -80,19 +80,21 @@ jobs:
       - name: Build windows app
         run: flutter build windows --release --build-number=$env:COMMIT_NUMBER --obfuscate --split-debug-info=out/windows/
 
-      - uses: microsoft/setup-msstore-cli@v1
+      - name: Upload msix artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: msix
+          path: build/windows/runner/Release/*.msix
 
-      - name: Configure the Microsoft Store CLI
-        run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
+      # - uses: microsoft/setup-msstore-cli@v1
 
-      - name: Create MSIX
-        run: msstore package --version $env:BUILD_FULL_VERSION
+      # - name: Configure the Microsoft Store CLI
+      #   run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
 
-      # - name: Upload msix artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: msix
-      #     path: build/windows/runner/Release/*.msix
+      # - run: msstore apps list
 
-      - name: Publish MSIX to the Microsoft Store
-        run: msstore publish
+      # - name: Create MSIX
+      #   run: msstore package --version $env:BUILD_FULL_VERSION
+
+      # - name: Publish MSIX to the Microsoft Store
+      #   run: msstore publish

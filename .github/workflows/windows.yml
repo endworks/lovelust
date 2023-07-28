@@ -68,9 +68,9 @@ jobs:
           "COMMIT_NUMBER=$(git rev-list --count main)" >> $env:GITHUB_ENV
           "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
 
-      - name: Get full version number
+      - name: Get MSIX version number
         run: |
-          "BUILD_FULL_VERSION=$env:BUILD_VERSION.$env:COMMIT_NUMBER" >> $env:GITHUB_ENV
+          "MSIX_VERSION=$env:BUILD_VERSION.0" >> $env:GITHUB_ENV
 
       - name: Refresh environment
         run: |
@@ -80,7 +80,7 @@ jobs:
       - name: Build windows app
         run: flutter build windows --release --build-number=$env:COMMIT_NUMBER --obfuscate --split-debug-info=out/windows/
 
-      - name: Upload msix artifact
+      - name: Upload MSIX artifact
         uses: actions/upload-artifact@v3
         with:
           name: msix
@@ -92,7 +92,7 @@ jobs:
         run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
 
       - name: Create MSIX
-        run: msstore package --version $env:BUILD_FULL_VERSION -v
+        run: msstore package --version $env:MSIX_VERSION
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v3
@@ -101,9 +101,6 @@ jobs:
           path: build/windows/runner/Release/*.msix
 
       # - run: msstore apps list
-
-      # - name: Create MSIX
-      #   run: msstore package --version $env:BUILD_FULL_VERSION
 
       # - name: Publish MSIX to the Microsoft Store
       #   run: msstore publish

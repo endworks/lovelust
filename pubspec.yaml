@@ -79,10 +79,10 @@ msix_config:
   display_name: LoveLust
   publisher_display_name: end.works
   store: false
-  # publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
-  publisher: CN=FluffyChat, O=Head of bad integration tests, L=Matrix, S=Internet, C=EU
+  publisher: CN=E2B04482-A46E-40D9-BF38-4AFE3DD27617
+  # publisher: CN=LoveLust, O=end.works, L=the end, S=end ville, C=EU
   identity_name: 15896end.works.LoveLust
-  # msix_version: 1.0.0.0
+  msix_version: 1.0.0.0
 
   certificate_path: winstore.pfx
   certificate_password: make me feel again

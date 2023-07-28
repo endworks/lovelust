@@ -86,10 +86,19 @@ jobs:
           name: msix
           path: build/windows/runner/Release/*.msix
 
-      # - uses: microsoft/setup-msstore-cli@v1
+      - uses: microsoft/setup-msstore-cli@v1
 
-      # - name: Configure the Microsoft Store CLI
-      #   run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
+      - name: Configure the Microsoft Store CLI
+        run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
+
+      - name: Create MSIX
+        run: msstore package --version $env:BUILD_FULL_VERSION -v
+
+      - name: Upload MSIX artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: msix
+          path: build/windows/runner/Release/*.msix
 
       # - run: msstore apps list
 

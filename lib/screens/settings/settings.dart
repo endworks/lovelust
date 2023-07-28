@@ -20,9 +20,26 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final SharedService _common = getIt<SharedService>();
+  bool isiOSAppOnMac = false;
+
+  @override
+  void initState() {
+    super.initState();
+    checkIfiOSAppOnMac();
+  }
 
   reload() {
     Phoenix.rebirth(context);
+  }
+
+  Future<void> checkIfiOSAppOnMac() async {
+    const platform = MethodChannel('works.end.Lovelust/isiOSAppOnMac');
+    try {
+      isiOSAppOnMac = await platform.invokeMethod('isiOSAppOnMacChannel');
+    } on PlatformException {
+      isiOSAppOnMac = false;
+    }
+    setState(() => isiOSAppOnMac = isiOSAppOnMac);
   }
 
   changeTheme(String? value) {
@@ -474,7 +491,7 @@ class _SettingsPageState extends State<SettingsPage> {
       );
     }
 
-    if (!kIsWeb && (Platform.isIOS || Platform.isAndroid)) {
+    if (!kIsWeb && (Platform.isIOS || Platform.isAndroid) && !isiOSAppOnMac) {
       list.insert(
         4,
         ListTile(

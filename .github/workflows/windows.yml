@@ -62,9 +62,7 @@ jobs:
 
       - name: Get release name
         run: |
-          FULL_VERSION=$(echo | grep -i -e "version: " pubspec.yaml)
-          BUILD_VERSION=$(echo $FULL_VERSION | cut -d " " -f 2 | cut -d "+" -f 1)
-          "BUILD_VERSION=$BUILD_VERSION" >> $env:GITHUB_ENV
+          "BUILD_VERSION=$(Get-Content pubspec.yaml | Select-String '^version:[^^]*' | ForEach-Object { $_.ToString().Split(":")[1].Split("+")[0].Trim() })" >> $env:GITHUB_ENV
           "COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $env:GITHUB_ENV
           "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $env:GITHUB_ENV
           "COMMIT_NUMBER=$(git rev-list --count main)" >> $env:GITHUB_ENV

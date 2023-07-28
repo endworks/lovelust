@@ -62,11 +62,12 @@ jobs:
 
       - name: Get release name
         run: |
-          "BUILD_VERSION=$(Get-Content pubspec.yaml | Select-String '^version:[^^]*' | ForEach-Object { $_.ToString().Split(":")[1].Split("+")[0].Trim() })" >> $env:GITHUB_ENV
           "COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $env:GITHUB_ENV
           "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $env:GITHUB_ENV
           "COMMIT_NUMBER=$(git rev-list --count main)" >> $env:GITHUB_ENV
           "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $env:GITHUB_ENV
+          "BUILD_VERSION=$(Get-Content pubspec.yaml | Select-String '^version:[^^]*' | ForEach-Object { $_.ToString().Split(":")[1].Split("+")[0].Trim() })" >> $env:GITHUB_ENV
+          "BUILD_FULL_VERSION=$BUILD_VERSION.$COMMIT_NUMBER" >> $env:GITHUB_ENV
 
       - name: Refresh environment
         run: |
@@ -88,13 +89,13 @@ jobs:
         run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
 
       - name: Create MSIX
-        run: msstore package --version $env:BUILD_VERSION.$env:COMMIT_NUMBER
+        run: msstore package --version $env:BUILD_FULL_VERSION
 
-      - name: Upload msix artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: msix
-          path: build/windows/runner/Release/*.msix
+      # - name: Upload msix artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: msix
+      #     path: build/windows/runner/Release/*.msix
 
       - name: Publish MSIX to the Microsoft Store
         run: msstore publish

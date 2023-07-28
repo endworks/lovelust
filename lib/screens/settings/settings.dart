@@ -25,7 +25,9 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    checkIfiOSAppOnMac();
+    if (!kIsWeb && Platform.isIOS) {
+      checkIfiOSAppOnMac();
+    }
   }
 
   reload() {
@@ -109,11 +111,11 @@ class _SettingsPageState extends State<SettingsPage> {
   List<DropdownMenuItem<String>> get dropdownThemeItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
-          value: "system", child: Text(AppLocalizations.of(context)!.system)),
-      DropdownMenuItem(
           value: "light", child: Text(AppLocalizations.of(context)!.light)),
       DropdownMenuItem(
           value: "dark", child: Text(AppLocalizations.of(context)!.dark)),
+      DropdownMenuItem(
+          value: "system", child: Text(AppLocalizations.of(context)!.system)),
     ];
     return menuItems;
   }
@@ -191,7 +193,7 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Text(AppLocalizations.of(context)!.appearance),
+          title: Text(AppLocalizations.of(context)!.chooseTheme),
           children: dropdownThemeItems
               .map(
                 (e) => SimpleDialogOption(
@@ -411,11 +413,11 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       ListTile(
-        title: Text(AppLocalizations.of(context)!.appearance),
+        title: Text(AppLocalizations.of(context)!.theme),
         subtitle: themeName,
         onTap: _askTheme,
         leading: Icon(
-          Icons.dark_mode,
+          Icons.brightness_4,
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),
@@ -424,7 +426,7 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: colorSchemeName,
         onTap: _askColorScheme,
         leading: Icon(
-          Icons.color_lens,
+          Icons.palette,
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:lovelust/screens/settings/login_dialog.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/local_auth_service.dart';
@@ -62,6 +63,49 @@ class _SettingsPageState extends State<SettingsPage> {
       });
       reload();
     }
+  }
+
+  String get authMethodName {
+    if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+      if (Platform.isIOS) {
+        return AppLocalizations.of(context)!.requireFaceID;
+      } else {
+        return AppLocalizations.of(context)!.requireFace;
+      }
+    } else if (_localAuth.availableBiometrics?[0] ==
+        BiometricType.fingerprint) {
+      if (Platform.isIOS) {
+        return AppLocalizations.of(context)!.requireTouchID;
+      } else {
+        return AppLocalizations.of(context)!.requireFingerprint;
+      }
+    }
+    return AppLocalizations.of(context)!.requireAuth;
+  }
+
+  String get authMethodDescription {
+    if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+      if (Platform.isIOS) {
+        return AppLocalizations.of(context)!.requireFaceIDDescription;
+      } else {
+        return AppLocalizations.of(context)!.requireFaceDescription;
+      }
+    } else if (_localAuth.availableBiometrics?[0] ==
+        BiometricType.fingerprint) {
+      if (Platform.isIOS) {
+        return AppLocalizations.of(context)!.requireTouchIDDescription;
+      } else {
+        return AppLocalizations.of(context)!.requireFingerprintDescription;
+      }
+    }
+    return AppLocalizations.of(context)!.requireAuthDescription;
+  }
+
+  IconData get authMethodIcon {
+    if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+      return Icons.face;
+    }
+    return Icons.fingerprint;
   }
 
   List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
@@ -392,23 +436,6 @@ class _SettingsPageState extends State<SettingsPage> {
   List<Widget> get items {
     List<Widget> list = [
       SwitchListTile(
-        title: Text(AppLocalizations.of(context)!.requireAuth),
-        subtitle: Text(
-          AppLocalizations.of(context)!.requireAuthDescription,
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
-        ),
-        value: _shared.requireAuth,
-        onChanged: (bool value) {
-          toggleRequireAuth(value);
-        },
-        secondary: Icon(
-          Icons.fingerprint,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      SwitchListTile(
         title: Text(AppLocalizations.of(context)!.privacyMode),
         subtitle: Text(
           AppLocalizations.of(context)!.privacyModeDescription,
@@ -487,6 +514,31 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     ];
+
+    if (_localAuth.availableBiometrics != null) {
+      list.insert(
+        0,
+        SwitchListTile(
+          title: Text(authMethodName),
+          subtitle: Text(
+            authMethodDescription,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
+          ),
+          value: _shared.requireAuth,
+          onChanged: (bool value) {
+            toggleRequireAuth(value);
+          },
+          secondary: Icon(
+            authMethodIcon,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      );
+    }
+
     if (_shared.isLoggedIn) {
       list.insert(
         list.length - 1,

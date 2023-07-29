@@ -301,7 +301,7 @@ ThemeData lustDarkTheme = ThemeData(
   brightness: Brightness.dark,
 );
 
-ThemeData redlightTheme = ThemeData(
+ThemeData lipstickTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: redlightColor,
   ),
@@ -314,7 +314,7 @@ ThemeData redlightTheme = ThemeData(
   visualDensity: defaultTheme.visualDensity,
 );
 
-ThemeData redlightDarkTheme = ThemeData(
+ThemeData lipstickDarkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: redlightColor,
     brightness: Brightness.dark,

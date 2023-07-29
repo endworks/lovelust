@@ -73,27 +73,27 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "dynamic",
           child: Text(AppLocalizations.of(context)!.dynamicColorScheme)),
       DropdownMenuItem(
-          value: "experimental",
-          child: Text(AppLocalizations.of(context)!.experimental)),
-      DropdownMenuItem(
-          value: "lovelust",
-          child: Text(AppLocalizations.of(context)!.lovelust)),
-      DropdownMenuItem(
-          value: "love", child: Text(AppLocalizations.of(context)!.love)),
-      DropdownMenuItem(
           value: "lust", child: Text(AppLocalizations.of(context)!.lust)),
       DropdownMenuItem(
+          value: "love", child: Text(AppLocalizations.of(context)!.love)),
+      /*DropdownMenuItem(
+          value: "lovelust",
+          child: Text(AppLocalizations.of(context)!.lovelust)),*/
+      DropdownMenuItem(
+          value: "lipstick",
+          child: Text(AppLocalizations.of(context)!.lipstick)),
+      /*DropdownMenuItem(
           value: "lustfullove",
           child: Text(AppLocalizations.of(context)!.lustfullove)),
       DropdownMenuItem(
           value: "lovefullust",
-          child: Text(AppLocalizations.of(context)!.lovefullust)),
-      DropdownMenuItem(
-          value: "redlight",
-          child: Text(AppLocalizations.of(context)!.redlight)),
+          child: Text(AppLocalizations.of(context)!.lovefullust)),*/
       DropdownMenuItem(
           value: "monochrome",
           child: Text(AppLocalizations.of(context)!.monochrome)),
+      DropdownMenuItem(
+          value: "experimental",
+          child: Text(AppLocalizations.of(context)!.experimental)),
     ];
     return menuItems;
   }
@@ -283,6 +283,9 @@ class _SettingsPageState extends State<SettingsPage> {
     );
 
     if (value != null && _shared.colorScheme != value) {
+      if (value == 'default' && _shared.colorScheme == null) {
+        return;
+      }
       setState(() {
         _shared.colorScheme = value != 'default' ? value : null;
       });

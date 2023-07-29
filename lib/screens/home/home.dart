@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
 
   Widget get title {
     Color color1 = loveColor;
@@ -44,10 +44,10 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      '${AppLocalizations.of(context)!.journal}: ${_common.activity.length}',
+                      '${AppLocalizations.of(context)!.journal}: ${_shared.activity.length}',
                     ),
                     Text(
-                      '${AppLocalizations.of(context)!.partners}: ${_common.partners.length}',
+                      '${AppLocalizations.of(context)!.partners}: ${_shared.partners.length}',
                     ),
                   ],
                 ),

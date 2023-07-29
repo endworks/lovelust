@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lovelust/models/destination.dart';
+import 'package:lovelust/screens/home/auth.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class Home extends StatefulWidget {
@@ -17,21 +18,19 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with RestorationMixin {
+class _HomeState extends State<Home>
+    with RestorationMixin, WidgetsBindingObserver {
   final SharedService _shared = getIt<SharedService>();
-  final LocalAuthService _localAuth = getIt<LocalAuthService>();
   final RestorableInt _selectedIndex = RestorableInt(0);
   bool _showDesktopNavigation = false;
   bool _centerDesktopNavigation = false;
+  bool _authorized = false;
 
   @override
   void initState() {
     super.initState();
-    if (_shared.requireAuth) {
-      _localAuth.init();
-      _localAuth.getAvailableBiometrics();
-      _localAuth.authenticate();
-    }
+    WidgetsBinding.instance.addObserver(this);
+    _shared.addListener(updateSharedState);
   }
 
   @override
@@ -40,6 +39,31 @@ class _HomeState extends State<Home> with RestorationMixin {
     _showDesktopNavigation =
         MediaQuery.of(context).orientation == Orientation.landscape;
     _centerDesktopNavigation = MediaQuery.of(context).size.height > 450;
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    debugPrint(state.toString());
+    if (state == AppLifecycleState.paused) {
+      setState(() {
+        _shared.authorized = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _shared.removeListener(updateSharedState);
+    super.dispose();
+  }
+
+  void updateSharedState() {
+    if (mounted) {
+      setState(() {
+        _authorized = _shared.authorized;
+      });
+    }
   }
 
   Widget get _selectedPage {
@@ -119,9 +143,14 @@ class _HomeState extends State<Home> with RestorationMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (!widget.initialLoadDone) {
-      return const SizedBox.shrink();
+    if (widget.initialLoadDone) {
+      if (_shared.requireAuth && !_authorized) {
+        return const LocalAuthPage();
+      } else {
+        FlutterNativeSplash.remove();
+      }
     }
+
     return Scaffold(
       body: _showDesktopNavigation
           ? Row(

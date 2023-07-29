@@ -22,7 +22,7 @@ class ActivityEditPage extends StatefulWidget {
 }
 
 class _ActivityEditPageState extends State<ActivityEditPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
 
   final _dateController = TextEditingController();
@@ -118,7 +118,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   bool get valid => true;
 
   List<DropdownMenuItem<String?>> get partnerDropdownMenuEntries {
-    List<DropdownMenuItem<String?>> list = _common.partners
+    List<DropdownMenuItem<String?>> list = _shared.partners
         .map(
           (e) => DropdownMenuItem<String?>(
             value: e.id,
@@ -213,8 +213,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         type: _type,
         mood: _mood,
       );
-      if (!_common.isLoggedIn) {
-        List<Activity> journal = [..._common.activity];
+      if (!_shared.isLoggedIn) {
+        List<Activity> journal = [..._shared.activity];
         if (!_new) {
           Activity? element = journal.firstWhere((e) => e.id == activity.id);
           int index = journal.indexOf(element);
@@ -224,7 +224,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         }
         journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
         if (mounted) {
-          setState(() => _common.activity = journal);
+          setState(() => _shared.activity = journal);
         }
         Navigator.pop(context);
       } else {
@@ -234,7 +234,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           request.then((value) {
             _api.getActivity().then((value) {
               if (mounted) {
-                setState(() => _common.activity = value);
+                setState(() => _shared.activity = value);
               }
               Navigator.pop(context);
             });

@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lovelust/screens/settings/login_dialog.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 
@@ -19,7 +20,8 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
+  final LocalAuthService _localAuth = getIt<LocalAuthService>();
   bool isiOSAppOnMac = false;
 
   @override
@@ -45,18 +47,18 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   changeTheme(String? value) {
-    if (_common.theme != value) {
+    if (_shared.theme != value) {
       setState(() {
-        _common.theme = value ?? 'system';
+        _shared.theme = value ?? 'system';
       });
       reload();
     }
   }
 
   changeColorScheme(String? value) {
-    if (_common.colorScheme != value) {
+    if (_shared.colorScheme != value) {
       setState(() {
-        _common.colorScheme = value;
+        _shared.colorScheme = value;
       });
       reload();
     }
@@ -98,8 +100,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget get colorSchemeName {
     DropdownMenuItem value = dropdownColorSchemeItems.firstWhere((element) =>
-        element.value == _common.colorScheme ||
-        (element.value == "default" && _common.colorScheme == null));
+        element.value == _shared.colorScheme ||
+        (element.value == "default" && _shared.colorScheme == null));
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -122,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget get themeName {
     DropdownMenuItem value = dropdownThemeItems
-        .firstWhere((element) => element.value == _common.theme);
+        .firstWhere((element) => element.value == _shared.theme);
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -134,7 +136,7 @@ class _SettingsPageState extends State<SettingsPage> {
   List<DropdownMenuItem<String>> get dropdownAppIconItems {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
-        value: null,
+        value: "Default",
         child: Text(AppLocalizations.of(context)!.defaultAppIcon),
       ),
       DropdownMenuItem(
@@ -179,7 +181,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget get appIconName {
     DropdownMenuItem value = dropdownAppIconItems
-        .firstWhere((element) => element.value == _common.currentIconName);
+        .firstWhere((element) => element.value == _shared.appIcon);
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -208,9 +210,9 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     );
 
-    if (value != null && _common.theme != value) {
+    if (value != null && _shared.theme != value) {
       setState(() {
-        _common.theme = value;
+        _shared.theme = value;
       });
       reload();
     }
@@ -244,7 +246,7 @@ class _SettingsPageState extends State<SettingsPage> {
       AppLocalizations.of(context)!.confirmClearDataDescription,
     );
     if (result != null && result) {
-      _common.clearPersonalData();
+      _shared.clearPersonalData();
       reload();
     }
   }
@@ -255,7 +257,7 @@ class _SettingsPageState extends State<SettingsPage> {
       AppLocalizations.of(context)!.confirmClearDataDescription,
     );
     if (result != null && result) {
-      _common.clearData();
+      _shared.clearData();
       reload();
     }
   }
@@ -280,9 +282,9 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     );
 
-    if (value != null && _common.colorScheme != value) {
+    if (value != null && _shared.colorScheme != value) {
       setState(() {
-        _common.colorScheme = value != 'default' ? value : null;
+        _shared.colorScheme = value != 'default' ? value : null;
       });
       reload();
     }
@@ -307,43 +309,43 @@ class _SettingsPageState extends State<SettingsPage> {
         );
       },
     ).then((String? value) {
-      try {
-        if (Platform.isIOS) {
-          if (_common.currentIconName != value) {
+      if (value != null && _shared.appIcon != value) {
+        try {
+          if (Platform.isIOS) {
             setState(() {
-              _common.currentIconName = value;
+              _shared.appIcon = value;
             });
             DynamicIconFlutter.supportsAlternateIcons.then((supported) {
               DynamicIconFlutter.setAlternateIconName(value)
                   .then((value) => null);
             });
+          } else if (Platform.isAndroid) {
+            List<String> list = dropdownAppIconItems
+                .map<String>(
+                    (DropdownMenuItem<String> e) => e.value ?? 'Default')
+                .toList();
+            DynamicIconFlutter.setIcon(icon: value, listAvailableIcon: list);
           }
-        } else if (Platform.isAndroid) {
-          List<String> list = dropdownAppIconItems
-              .map<String>((DropdownMenuItem<String> e) => e.value ?? 'Default')
-              .toList();
-          DynamicIconFlutter.setIcon(
-              icon: value ?? 'Default', listAvailableIcon: list);
+        } on PlatformException {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Platform not supported"),
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Failed to change app icon"),
+            ),
+          );
         }
-      } on PlatformException {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Platform not supported"),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Failed to change app icon"),
-          ),
-        );
       }
     });
   }
 
   _handleLogin() {
-    if (_common.isLoggedIn) {
-      _common.signOut();
+    if (_shared.isLoggedIn) {
+      _shared.signOut();
       reload();
     } else {
       showModalBottomSheet<void>(
@@ -360,16 +362,22 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String? get installerStore {
-    if (_common.packageInfo?.installerStore == 'com.apple.simulator') {
+    if (_shared.packageInfo?.installerStore == 'com.apple.simulator') {
       return 'Simulator';
-    } else if (_common.packageInfo?.installerStore == 'com.apple.testflight') {
+    } else if (_shared.packageInfo?.installerStore == 'com.apple.testflight') {
       return 'TestFlight';
-    } else if (_common.packageInfo?.installerStore == 'com.apple.appstore') {
+    } else if (_shared.packageInfo?.installerStore == 'com.apple.appstore') {
       return 'AppStore';
-    } else if (_common.packageInfo?.installerStore == 'com.android.vending') {
+    } else if (_shared.packageInfo?.installerStore == 'com.android.vending') {
       return 'Play Store';
     }
-    return _common.packageInfo?.installerStore;
+    return _shared.packageInfo?.installerStore;
+  }
+
+  void toggleRequireAuth(bool value) {
+    setState(() {
+      _shared.requireAuth = value;
+    });
   }
 
   List<Widget> get items {
@@ -382,11 +390,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
         ),
-        value: _common.requireAuth,
+        value: _shared.requireAuth,
         onChanged: (bool value) {
-          setState(() {
-            _common.requireAuth = value;
-          });
+          toggleRequireAuth(value);
         },
         secondary: Icon(
           Icons.fingerprint,
@@ -401,10 +407,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
         ),
-        value: _common.privacyMode,
+        value: _shared.privacyMode,
         onChanged: (bool value) {
           setState(() {
-            _common.privacyMode = value;
+            _shared.privacyMode = value;
           });
         },
         secondary: Icon(
@@ -461,7 +467,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ListTile(
         title: Text(AppLocalizations.of(context)!.version),
         subtitle: Text(
-          "${_common.packageInfo?.version ?? '1.0.0'} (${_common.packageInfo?.buildNumber ?? 1}) ${installerStore ?? 'store'}",
+          "${_shared.packageInfo?.version ?? '1.0.0'} (${_shared.packageInfo?.buildNumber ?? 1}) ${installerStore ?? 'store'}",
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
@@ -472,7 +478,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     ];
-    if (_common.isLoggedIn) {
+    if (_shared.isLoggedIn) {
       list.insert(
         list.length - 1,
         ListTile(
@@ -488,7 +494,7 @@ class _SettingsPageState extends State<SettingsPage> {
             Icons.download,
             color: Theme.of(context).colorScheme.secondary,
           ),
-          onTap: _common.initialFetch,
+          onTap: _shared.initialFetch,
         ),
       );
     }
@@ -521,7 +527,7 @@ class _SettingsPageState extends State<SettingsPage> {
             actions: [
               IconButton(
                 onPressed: _handleLogin,
-                icon: Icon(_common.isLoggedIn ? Icons.logout : Icons.login),
+                icon: Icon(_shared.isLoggedIn ? Icons.logout : Icons.login),
               )
             ],
           ),

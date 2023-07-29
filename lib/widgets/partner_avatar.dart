@@ -15,7 +15,7 @@ class PartnerAvatar extends StatefulWidget {
 }
 
 class _PartnerAvatarState extends State<PartnerAvatar> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
 
   Icon get icon {
     return Icon(
@@ -44,7 +44,7 @@ class _PartnerAvatarState extends State<PartnerAvatar> {
             backgroundColor: backgroundColor,
             child: icon,
           ),
-          _common.sensitiveText(
+          _shared.sensitiveText(
             widget.partner.name,
             style: Theme.of(context).textTheme.displayMedium,
           )

@@ -133,6 +133,7 @@
   "health": "Health",
   "requireAuth": "Require authentication",
   "requireAuthDescription": "Require fingerprint or face to unlock the app",
+  "authFailed": "Authentication failed",
   "privacyMode": "Privacy mode",
   "privacyModeDescription": "Hides sensitive data like partner names",
   "username": "Username",

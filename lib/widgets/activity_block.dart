@@ -21,7 +21,6 @@ class _ActivityBlockState extends State<ActivityBlock> {
   final SharedService _shared = getIt<SharedService>();
 
   void openActivity() {
-    debugPrint('tap activity');
     Navigator.push(context,
         MaterialPageRoute<Widget>(builder: (BuildContext context) {
       return ActivityDetailsPage(

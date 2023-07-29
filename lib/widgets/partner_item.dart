@@ -19,7 +19,7 @@ class PartnerItem extends StatefulWidget {
 }
 
 class _PartnerItemState extends State<PartnerItem> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
 
   void _openPartner() {
     Navigator.push(context,
@@ -31,7 +31,7 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Widget get title {
-    return _common.sensitiveText(
+    return _shared.sensitiveText(
       widget.partner.name,
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -73,8 +73,8 @@ class _PartnerItemState extends State<PartnerItem> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(Icons.favorite, color: color),
-        _common.sensitiveText(
-          _common.getActivityByPartner(widget.partner.id).length.toString(),
+        _shared.sensitiveText(
+          _shared.getActivityByPartner(widget.partner.id).length.toString(),
           style: TextStyle(
             color: color,
             fontSize: 19,

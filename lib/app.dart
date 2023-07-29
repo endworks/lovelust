@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
@@ -108,8 +107,6 @@ class _AppState extends State<App> {
           statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.transparent,
         ));
-
-        FlutterNativeSplash.remove();
 
         return MaterialApp(
           title: 'LoveLust',

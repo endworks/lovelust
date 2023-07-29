@@ -114,6 +114,7 @@
   "health": "Salud",
   "requireAuth": "Requerir autenticación",
   "requireAuthDescription": "Requerir huella o cara para desbloquear",
+  "authFailed": "Autenticación ha fallado",
   "privacyMode": "Modo privacidad",
   "privacyModeDescription": "Oculta información sensible como nombres de parejas",
   "username": "Usuario",

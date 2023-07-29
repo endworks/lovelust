@@ -29,8 +29,9 @@ class SharedService extends ChangeNotifier {
   bool _requireAuth = false;
   bool _calendarView = false;
   String? _activityFilter;
+  bool _authorized = false;
+  String _appIcon = 'Default';
   PackageInfo? packageInfo;
-  String? currentIconName;
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -46,6 +47,7 @@ class SharedService extends ChangeNotifier {
       _storage.getCalendarView(),
       _storage.getActivityFilter(),
       findSystemLocale(),
+      getAlternateIconName(),
       PackageInfo.fromPlatform(),
     ];
 
@@ -61,19 +63,21 @@ class SharedService extends ChangeNotifier {
     _calendarView = result[8];
     _activityFilter = result[9];
     Intl.systemLocale = result[10];
-    packageInfo = result[11];
-
-    if (!kIsWeb && Platform.isIOS) {
-      DynamicIconFlutter.getAlternateIconName().then((v) {
-        currentIconName = v;
-      });
-    }
+    _appIcon = result[11] ?? 'Default';
+    packageInfo = result[12];
   }
 
   Future<void> initialFetch() async {
     debugPrint('initialFetch');
     activity = await _api.getActivity();
     partners = await _api.getPartners();
+  }
+
+  Future<String?> getAlternateIconName() async {
+    if (!kIsWeb && Platform.isIOS) {
+      return DynamicIconFlutter.getAlternateIconName();
+    }
+    return Future.value(null);
   }
 
   bool get isLoggedIn {
@@ -931,6 +935,24 @@ class SharedService extends ChangeNotifier {
   set activityFilter(String? value) {
     _activityFilter = value;
     _storage.setActivityFilter(value);
+    notifyListeners();
+  }
+
+  String get appIcon {
+    return _appIcon;
+  }
+
+  set appIcon(String value) {
+    _appIcon = value;
+    notifyListeners();
+  }
+
+  bool get authorized {
+    return _authorized;
+  }
+
+  set authorized(bool value) {
+    _authorized = value;
     notifyListeners();
   }
 }

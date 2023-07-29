@@ -17,14 +17,14 @@ class ActivityAvatar extends StatefulWidget {
 }
 
 class _ActivityAvatarState extends State<ActivityAvatar> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   Partner? partner;
 
   @override
   void initState() {
     super.initState();
     if (widget.partnerId != null) {
-      partner = _common.getPartnerById(widget.partnerId!);
+      partner = _shared.getPartnerById(widget.partnerId!);
       setState(() {
         partner = partner;
       });

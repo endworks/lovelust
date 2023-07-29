@@ -19,7 +19,7 @@ class JournalPage extends StatefulWidget {
 }
 
 class _JournalPageState extends State<JournalPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
@@ -34,7 +34,7 @@ class _JournalPageState extends State<JournalPage> {
       });
     });
 
-    _common.addListener(() {
+    _shared.addListener(() {
       if (mounted) {
         setState(() {});
       }
@@ -53,35 +53,35 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> refresh() async {
-    if (_common.isLoggedIn) {
-      _common.activity = await _api.getActivity();
+    if (_shared.isLoggedIn) {
+      _shared.activity = await _api.getActivity();
     } else {
-      _common.activity = await _storage.getActivity();
+      _shared.activity = await _storage.getActivity();
     }
   }
 
   void menuEntryItemSelected(FilterEntryItem item) {
     setState(() {
-      _common.activityFilter = item.name;
+      _shared.activityFilter = item.name;
     });
     _scrollController.jumpTo(0);
   }
 
   List<Activity> get filteredActivity {
-    if (_common.activityFilter == 'activity') {
-      return _common.activity
+    if (_shared.activityFilter == 'activity') {
+      return _shared.activity
           .where(
             (i) => i.type == ActivityType.sexualIntercourse,
           )
           .toList();
-    } else if (_common.activityFilter == 'solo') {
-      return _common.activity
+    } else if (_shared.activityFilter == 'solo') {
+      return _shared.activity
           .where(
             (i) => i.type == ActivityType.masturbation,
           )
           .toList();
     } else {
-      return _common.activity;
+      return _shared.activity;
     }
   }
 

@@ -18,7 +18,7 @@ class PartnerItemAlt extends StatefulWidget {
 }
 
 class _PartnerItemAltState extends State<PartnerItemAlt> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
 
   void _openPartner() {
     Navigator.push(context,
@@ -30,7 +30,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   }
 
   Widget get name {
-    return _common.sensitiveText(
+    return _shared.sensitiveText(
       widget.partner.name,
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -38,7 +38,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
 
   Widget? get encounters {
     TextStyle style = Theme.of(context).textTheme.titleLarge!;
-    int count = _common.getActivityByPartner(widget.partner.id).length;
+    int count = _shared.getActivityByPartner(widget.partner.id).length;
     if (count == 0) {
       return null;
     }
@@ -52,7 +52,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
           color: color,
           size: style.fontSize,
         ),
-        _common.sensitiveText(
+        _shared.sensitiveText(
           count.toString(),
           style: style.copyWith(
             color: color,
@@ -64,11 +64,11 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
 
   Widget? get encountersCount {
     TextStyle style = Theme.of(context).textTheme.titleLarge!;
-    int count = _common.getActivityByPartner(widget.partner.id).length;
+    int count = _shared.getActivityByPartner(widget.partner.id).length;
     if (count == 0) {
       return null;
     }
-    return _common.sensitiveText(
+    return _shared.sensitiveText(
       count.toString(),
       style: style.copyWith(
         color: Theme.of(context).colorScheme.secondary,
@@ -78,7 +78,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
 
   Widget? get lastEncounterDate {
     Activity? lastEncounter =
-        _common.getActivityByPartner(widget.partner.id).firstOrNull;
+        _shared.getActivityByPartner(widget.partner.id).firstOrNull;
     String text = AppLocalizations.of(context)!.noSexualActivity;
     if (lastEncounter != null) {
       text = RelativeTime(context).format(lastEncounter.date);

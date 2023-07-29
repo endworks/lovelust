@@ -20,7 +20,7 @@ class PartnerEditPage extends StatefulWidget {
 }
 
 class _PartnerEditPageState extends State<PartnerEditPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   final ApiService _api = getIt<ApiService>();
   final _nameController = TextEditingController();
   late Gender _gender;
@@ -70,8 +70,8 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         meetingDate: widget.partner.meetingDate,
         notes: _notesController.value.text,
       );
-      if (!_common.isLoggedIn) {
-        List<Partner> partners = [..._common.partners];
+      if (!_shared.isLoggedIn) {
+        List<Partner> partners = [..._shared.partners];
         if (!_new) {
           Partner? element = partners.firstWhere((e) => e.id == partner.id);
           int index = partners.indexOf(element);
@@ -81,7 +81,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         }
         partners.sort((a, b) => a.meetingDate.isAfter(b.meetingDate) ? -1 : 1);
         if (mounted) {
-          setState(() => _common.partners = partners);
+          setState(() => _shared.partners = partners);
         }
 
         Navigator.pop(context);
@@ -92,7 +92,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           request.then((value) {
             _api.getPartners().then((value) {
               if (mounted) {
-                setState(() => _common.partners = value);
+                setState(() => _shared.partners = value);
               }
               Navigator.pop(context);
             });

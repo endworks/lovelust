@@ -17,7 +17,7 @@ class PartnersPage extends StatefulWidget {
 }
 
 class _PartnersPageState extends State<PartnersPage> {
-  final SharedService _common = getIt<SharedService>();
+  final SharedService _shared = getIt<SharedService>();
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
@@ -32,7 +32,7 @@ class _PartnersPageState extends State<PartnersPage> {
       });
     });
 
-    _common.addListener(() {
+    _shared.addListener(() {
       if (mounted) {
         setState(() {});
       }
@@ -51,10 +51,10 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   Future<void> refresh() async {
-    if (_common.isLoggedIn) {
-      _common.partners = await _api.getPartners();
+    if (_shared.isLoggedIn) {
+      _shared.partners = await _api.getPartners();
     } else {
-      _common.partners = await _storage.getPartners();
+      _shared.partners = await _storage.getPartners();
     }
   }
 
@@ -71,7 +71,7 @@ class _PartnersPageState extends State<PartnersPage> {
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.partners),
             ),
-            _common.partners.isEmpty
+            _shared.partners.isEmpty
                 ? SliverFillRemaining(
                     child: NoContent(
                         message: AppLocalizations.of(context)!.noPartners),
@@ -79,10 +79,10 @@ class _PartnersPageState extends State<PartnersPage> {
                 : SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) => PartnerItemAlt(
-                        key: Key(_common.partners[index].id!),
-                        partner: _common.partners[index],
+                        key: Key(_shared.partners[index].id!),
+                        partner: _shared.partners[index],
                       ),
-                      childCount: _common.partners.length,
+                      childCount: _shared.partners.length,
                     ),
                   ),
           ],

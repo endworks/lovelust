@@ -8,6 +8,8 @@ PODS:
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
+  - flutter_widgetkit (0.0.1):
+    - Flutter
   - health (1.0.4):
     - Flutter
   - local_auth_ios (0.0.1):
@@ -23,6 +25,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - flutter_widgetkit (from `.symlinks/plugins/flutter_widgetkit/ios`)
   - health (from `.symlinks/plugins/health/ios`)
   - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -39,6 +42,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  flutter_widgetkit:
+    :path: ".symlinks/plugins/flutter_widgetkit/ios"
   health:
     :path: ".symlinks/plugins/health/ios"
   local_auth_ios:
@@ -54,6 +59,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
   flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
+  flutter_widgetkit: a0e9b0d50ee9bec366dad36c639509daaafc397a
   health: 5a380c0f6c4f619535845992993964293962e99e
   local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7

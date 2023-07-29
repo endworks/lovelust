@@ -47,6 +47,7 @@ class _HomeState extends State<Home>
     if (state == AppLifecycleState.paused) {
       setState(() {
         _shared.authorized = false;
+        _shared.updateWidgets();
       });
     }
   }

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
@@ -5,10 +6,12 @@ import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
+import 'package:lovelust/models/flutter_widget_data.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
@@ -78,6 +81,19 @@ class SharedService extends ChangeNotifier {
       return DynamicIconFlutter.getAlternateIconName();
     }
     return Future.value(null);
+  }
+
+  updateWidgets() {
+    if (!kIsWeb) {
+      if (Platform.isIOS) {
+        WidgetKit.setItem(
+          'widgetData',
+          jsonEncode(FlutterWidgetData('Journal entries: ${activity.length}')),
+          'group.LoveLust',
+        );
+        WidgetKit.reloadAllTimelines();
+      }
+    }
   }
 
   bool get isLoggedIn {

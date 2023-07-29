@@ -66,44 +66,53 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   String get authMethodName {
-    if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
-      if (Platform.isIOS) {
-        return AppLocalizations.of(context)!.requireFaceID;
-      } else {
-        return AppLocalizations.of(context)!.requireFace;
-      }
-    } else if (_localAuth.availableBiometrics?[0] ==
-        BiometricType.fingerprint) {
-      if (Platform.isIOS) {
-        return AppLocalizations.of(context)!.requireTouchID;
-      } else {
-        return AppLocalizations.of(context)!.requireFingerprint;
+    if (_localAuth.availableBiometrics != null &&
+        _localAuth.availableBiometrics!.isNotEmpty) {
+      if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+        if (Platform.isIOS) {
+          return AppLocalizations.of(context)!.requireFaceID;
+        } else {
+          return AppLocalizations.of(context)!.requireFace;
+        }
+      } else if (_localAuth.availableBiometrics?[0] ==
+          BiometricType.fingerprint) {
+        if (Platform.isIOS) {
+          return AppLocalizations.of(context)!.requireTouchID;
+        } else {
+          return AppLocalizations.of(context)!.requireFingerprint;
+        }
       }
     }
     return AppLocalizations.of(context)!.requireAuth;
   }
 
   String get authMethodDescription {
-    if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
-      if (Platform.isIOS) {
-        return AppLocalizations.of(context)!.requireFaceIDDescription;
-      } else {
-        return AppLocalizations.of(context)!.requireFaceDescription;
-      }
-    } else if (_localAuth.availableBiometrics?[0] ==
-        BiometricType.fingerprint) {
-      if (Platform.isIOS) {
-        return AppLocalizations.of(context)!.requireTouchIDDescription;
-      } else {
-        return AppLocalizations.of(context)!.requireFingerprintDescription;
+    if (_localAuth.availableBiometrics != null &&
+        _localAuth.availableBiometrics!.isNotEmpty) {
+      if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+        if (Platform.isIOS) {
+          return AppLocalizations.of(context)!.requireFaceIDDescription;
+        } else {
+          return AppLocalizations.of(context)!.requireFaceDescription;
+        }
+      } else if (_localAuth.availableBiometrics?[0] ==
+          BiometricType.fingerprint) {
+        if (Platform.isIOS) {
+          return AppLocalizations.of(context)!.requireTouchIDDescription;
+        } else {
+          return AppLocalizations.of(context)!.requireFingerprintDescription;
+        }
       }
     }
     return AppLocalizations.of(context)!.requireAuthDescription;
   }
 
   IconData get authMethodIcon {
-    if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
-      return Icons.face;
+    if (_localAuth.availableBiometrics != null &&
+        _localAuth.availableBiometrics!.isNotEmpty) {
+      if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+        return Icons.face;
+      }
     }
     return Icons.fingerprint;
   }
@@ -363,7 +372,8 @@ class _SettingsPageState extends State<SettingsPage> {
               _shared.appIcon = value;
             });
             DynamicIconFlutter.supportsAlternateIcons.then((supported) {
-              DynamicIconFlutter.setAlternateIconName(value)
+              String? appIcon = value != 'Default' ? value : null;
+              DynamicIconFlutter.setAlternateIconName(appIcon)
                   .then((value) => null);
             });
           } else if (Platform.isAndroid) {

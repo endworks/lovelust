@@ -38,7 +38,9 @@ class _LocalAuthPageState extends State<LocalAuthPage> {
 
     return Scaffold(
       body: NoContent(
-        message: AppLocalizations.of(context)!.authFailed,
+        message: _authenticationFailed
+            ? AppLocalizations.of(context)!.authFailed
+            : '',
       ),
     );
   }

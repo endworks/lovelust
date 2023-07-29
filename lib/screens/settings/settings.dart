@@ -375,9 +375,15 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void toggleRequireAuth(bool value) {
-    setState(() {
-      _shared.requireAuth = value;
-    });
+    _localAuth.authenticate().then(
+      (_) {
+        if (_localAuth.authorized) {
+          setState(() {
+            _shared.requireAuth = value;
+          });
+        }
+      },
+    );
   }
 
   List<Widget> get items {

@@ -123,7 +123,7 @@ jobs:
         run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'
 
       - name: Update the Xcode project settings to use fetched code signing profiles
-        run: xcode-project use-profiles --export-options-plist=ios/
+        run: xcode-project use-profiles --export-options-plist=ios/ -v
 
       - uses: actions/cache@v3
         with:

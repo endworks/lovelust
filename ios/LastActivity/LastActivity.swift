@@ -1,25 +1,26 @@
 //
-//  Status.swift
-//  Status
+//  LastActivity.swift
+//  LastActivity
 //
-//  Created by ender on 29/7/23.
+//  Created by ender on 31/7/23.
 //
 
 import WidgetKit
 import SwiftUI
+import Intents
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SexualIntercourseEntry {
-        SexualIntercourseEntry(date: Date(), widgetData: nil)
+struct Provider: IntentTimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry {
+        SimpleEntry(date: Date(), widgetData: nil, configuration: ConfigurationIntent())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SexualIntercourseEntry) -> ()) {
-        let entry = SexualIntercourseEntry(date: Date(), widgetData: nil)
+    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+        let entry = SimpleEntry(date: Date(), widgetData: nil, configuration: configuration)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SexualIntercourseEntry] = []
+    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+        var entries: [SimpleEntry] = []
         
         let sharedDefaults = UserDefaults.init(suiteName: "group.LoveLust")
         
@@ -65,7 +66,7 @@ struct Provider: TimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SexualIntercourseEntry(date: entryDate, widgetData: widgetData)
+            let entry = SimpleEntry(date: entryDate, widgetData: widgetData, configuration: configuration)
             entries.append(entry)
         }
 
@@ -120,16 +121,17 @@ struct IdName: Decodable, Hashable {
     let id: String
 }
 
-struct SexualIntercourseEntry: TimelineEntry {
+struct SimpleEntry: TimelineEntry {
     let date: Date
     let widgetData: ActivityWidgetData?
+    let configuration: ConfigurationIntent
 }
 
 enum DateError: String, Error {
     case invalidDate
 }
 
-struct StatusEntryView : View {
+struct SimpleEntryView : View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var widgetFamily
     
@@ -175,55 +177,18 @@ struct StatusEntryView : View {
     }
     
     private var SexualIntercourseView: some View {
-        var partnerColor: Color
-        var safetyColor: Color
-        
-        if entry.widgetData!.partner != nil {
-            if entry.widgetData!.partner?.sex == "M" {
-                partnerColor = .blue
-            } else {
-                partnerColor = .red
-            }
-        } else {
-            partnerColor = .purple
-        }
-        
+        var safetyColor: Color = .primary
 
         if entry.widgetData!.safety == "UNSAFE" {
             safetyColor = .red
-        } else if entry.widgetData!.safety == "SAFE" {
-            safetyColor = .primary
-        } else {
+        } else if entry.widgetData!.safety == "PARTIALLY_UNSAFE" {
             safetyColor = .orange
         }
 
         
        return VStack {
             HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(entry.widgetData!.partnerString).font(.headline)
-                        .foregroundColor(partnerColor)
-                        .privacySensitive()
-                    if (entry.widgetData!.activity.rating > 0) {
-                        if widgetFamily == .systemSmall {
-                            HStack(spacing: 2) {
-                                Text(entry.widgetData!.activity.rating.description)
-                                    .privacySensitive()
-                                Image(systemName: "star.fill")
-                                    .resizable()
-                                    .foregroundColor(.yellow)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 16, height: 16)
-                            }
-                        } else {
-                            Rating(rating: entry.widgetData!.activity.rating)
-                                .privacySensitive()
-                        }
-                    }
-                    Spacer()
-                }
-                Spacer()
-                VStack(alignment: .trailing, spacing: 0) {
+                VStack(alignment: .leading, spacing: -2) {
                     Text(entry.widgetData!.weekdayString)
                         .font(.caption2)
                         .fontDesign(.rounded)
@@ -233,6 +198,31 @@ struct StatusEntryView : View {
                     Text(entry.widgetData!.dayString)
                         .font(.largeTitle)
                         .fontWeight(.light)
+                    Spacer()
+                }
+                Spacer()
+                VStack(alignment: .trailing, spacing: 0) {
+                    Text(entry.widgetData!.partnerString).font(.headline)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .privacySensitive()
+                    if (entry.widgetData!.activity.rating > 0) {
+                        if widgetFamily == .systemSmall {
+                            HStack(spacing: 2) {
+                                Text(entry.widgetData!.activity.rating.description)
+                                    .privacySensitive()
+                                Image(systemName: "star.fill")
+                                    .resizable()
+                                    .foregroundColor(.orange)
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 16, height: 16)
+                            }
+                        } else {
+                            Rating(rating: entry.widgetData!.activity.rating)
+                                .privacySensitive()
+                        }
+                    }
+                    
                 }
             }
             Spacer()
@@ -243,10 +233,14 @@ struct StatusEntryView : View {
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
+                        .foregroundColor(.purple)
                 }
                 Text(entry.widgetData!.dateString)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                     .font(.caption)
                     .fontDesign(.rounded)
+                    .textCase(.uppercase)
                     .foregroundColor(.gray)
                 Spacer()
             }
@@ -263,6 +257,31 @@ struct StatusEntryView : View {
                 }
                 Spacer()
             }
+           if entry.widgetData?.activity.birthControl != nil || entry.widgetData?.activity.partnerBirthControl != nil {
+               HStack(alignment: .top) {
+                   if entry.widgetData?.activity.birthControl != nil {
+                       Text(entry.widgetData!.contraceptiveString)
+                           .lineLimit(1)
+                           .truncationMode(.tail)
+                           .font(.caption)
+                           .fontDesign(.rounded)
+                           .fontWeight(.semibold)
+                           .textCase(.uppercase)
+                           .foregroundColor(.cyan)
+                   }
+                   if entry.widgetData?.activity.partnerBirthControl != nil && entry.widgetData?.activity.partnerBirthControl != entry.widgetData?.activity.birthControl{
+                       Text(entry.widgetData!.partnerContraceptiveString)
+                           .lineLimit(1)
+                           .truncationMode(.tail)
+                           .font(.caption)
+                           .fontDesign(.rounded)
+                           .fontWeight(.semibold)
+                           .textCase(.uppercase)
+                           .foregroundColor(.cyan)
+                   }
+                   Spacer()
+               }
+           }
         }
         .privacySensitive()
         .padding()
@@ -345,12 +364,12 @@ struct StatusEntryView : View {
     }
 }
 
-struct Status: Widget {
-    let kind: String = "Status"
+struct LastActivity: Widget {
+    let kind: String = "LastActivity"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            StatusEntryView(entry: entry)
+        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+            SimpleEntryView(entry: entry)
         }
         .configurationDisplayName("Sexual intercourse")
         .description("Shows data of last sexual intercourse")
@@ -358,7 +377,7 @@ struct Status: Widget {
     }
 }
 
-struct Status_Previews: PreviewProvider {
+struct LastActivity_Previews: PreviewProvider {
     static var lastSexualIntercourse = Activity(
         id: "1d934cb5-efe0-41d6-a0bc-6d6c6f567843",
         partner: nil,
@@ -380,9 +399,9 @@ struct Status_Previews: PreviewProvider {
     
     static var widgetData = ActivityWidgetData(
         activity: lastSexualIntercourse, partner: nil, safety: "PARTIALLY", partnerString: "Barbie", safetyString: "Partially unsafe sex", dateString: "a day ago", dayString: "30", weekdayString: "Sunday", placeString: "Bedroom", contraceptiveString: "Condom", partnerContraceptiveString: "Pill")
-
+    
     static var previews: some View {
-        StatusEntryView(entry: SexualIntercourseEntry(date: Date(), widgetData: widgetData))
-                    .previewContext(WidgetPreviewContext(family: .systemMedium))
+        SimpleEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: ConfigurationIntent()))
+            .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

@@ -125,6 +125,10 @@ jobs:
       - name: Update the Xcode project settings to use fetched code signing profiles
         run: xcode-project use-profiles --export-options-plist=ios/exportOptions.plist
 
+      - run: rm ios/Podfile.lock
+
+      - run: sudo gem install ffi
+
       - name: Install Flutter dependencies
         run: flutter packages pub get
 

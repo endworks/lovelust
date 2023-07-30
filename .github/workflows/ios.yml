@@ -10,8 +10,8 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: macos-latest
-    # runs-on: [self-hosted, macOS]
+    # runs-on: macos-latest
+    runs-on: [self-hosted, macOS]
 
     steps:
       - name: Checkout repository
@@ -131,7 +131,7 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-            
+
       - name: Install Ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
@@ -139,8 +139,12 @@ jobs:
 
       - name: Install Flutter dependencies
         run: flutter packages pub get
-          
-      - run: find . -name "Podfile" -execdir pod install \;
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Install Pods
+        run: find . -name "Podfile" -execdir pod install \;
 
       - name: Build the Flutter iOS project
         run: |

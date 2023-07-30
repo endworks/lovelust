@@ -10,7 +10,8 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: [self-hosted, macOS]
+    runs-on: macos-latest
+    # runs-on: [self-hosted, macOS]
 
     steps:
       - name: Checkout repository
@@ -128,10 +129,10 @@ jobs:
         run: flutter packages pub get
 
       - name: Install CocoaPods dependencies
-        run: find . -name "Podfile" -execdir pod install \;
+        run: cd ios && pod install
 
       - name: Build the Flutter iOS project
-        run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --obfuscate --split-debug-info=out/ios/ --export-options-plist=ios/exportOptions.plist
+        run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --export-options-plist=ios/exportOptions.plist
 
       - name: Publish the app to App Store Connect
         run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")

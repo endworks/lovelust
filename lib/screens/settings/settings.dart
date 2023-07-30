@@ -68,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage> {
   String get authMethodName {
     if (_localAuth.availableBiometrics != null &&
         _localAuth.availableBiometrics!.isNotEmpty) {
-      if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
+      if (_localAuth.availableBiometrics!.contains(BiometricType.face)) {
         if (Platform.isIOS) {
           return AppLocalizations.of(context)!.requireFaceID;
         } else {
@@ -81,9 +81,11 @@ class _SettingsPageState extends State<SettingsPage> {
         } else {
           return AppLocalizations.of(context)!.requireFingerprint;
         }
+      } else {
+        return AppLocalizations.of(context)!.requireAuth;
       }
     }
-    return AppLocalizations.of(context)!.requireAuth;
+    return AppLocalizations.of(context)!.requirePasscode;
   }
 
   String get authMethodDescription {
@@ -103,8 +105,11 @@ class _SettingsPageState extends State<SettingsPage> {
           return AppLocalizations.of(context)!.requireFingerprintDescription;
         }
       }
+
+      return AppLocalizations.of(context)!.requireAuthDescription;
+    } else {
+      return AppLocalizations.of(context)!.requirePasscodeDescription;
     }
-    return AppLocalizations.of(context)!.requireAuthDescription;
   }
 
   IconData get authMethodIcon {
@@ -112,7 +117,12 @@ class _SettingsPageState extends State<SettingsPage> {
         _localAuth.availableBiometrics!.isNotEmpty) {
       if (_localAuth.availableBiometrics?[0] == BiometricType.face) {
         return Icons.face;
+      } else if (_localAuth.availableBiometrics?[0] ==
+          BiometricType.fingerprint) {
+        return Icons.fingerprint;
       }
+    } else {
+      return Icons.password;
     }
     return Icons.fingerprint;
   }
@@ -525,29 +535,26 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     ];
 
-    if (_localAuth.availableBiometrics != null) {
-      list.insert(
-        0,
-        SwitchListTile(
-          title: Text(authMethodName),
-          subtitle: Text(
-            authMethodDescription,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-          ),
-          value: _shared.requireAuth,
-          onChanged: (bool value) {
-            toggleRequireAuth(value);
-          },
-          secondary: Icon(
-            authMethodIcon,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
+    list.insert(
+      0,
+      SwitchListTile(
+        title: Text(authMethodName),
+        subtitle: Text(
+          authMethodDescription,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
         ),
-      );
-    }
+        value: _shared.requireAuth,
+        onChanged: (bool value) {
+          toggleRequireAuth(value);
+        },
+        secondary: Icon(
+          authMethodIcon,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+    );
 
     if (_shared.isLoggedIn) {
       list.insert(

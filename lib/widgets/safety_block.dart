@@ -63,13 +63,13 @@ class _SafetyBlockState extends State<SafetyBlock> {
           Row(
             children: [
               Text(
-                AppLocalizations.of(context)!.partlyUnsafeSex,
+                AppLocalizations.of(context)!.partiallyUnsafeSex,
                 style: style.copyWith(color: color),
               ),
             ],
           ),
           Text(
-            AppLocalizations.of(context)!.partlyUnsafeMsg,
+            AppLocalizations.of(context)!.partiallyUnsafeMsg,
             style: Theme.of(context).textTheme.bodyMedium,
           )
         ],

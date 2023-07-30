@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_widgetkit/flutter_widgetkit.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
@@ -15,12 +16,15 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:relative_time/relative_time.dart';
 
 class SharedService extends ChangeNotifier {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
+  final NavigationService _navigator = getIt<NavigationService>();
 
   String _theme = 'system';
   String? _colorScheme;
@@ -88,36 +92,64 @@ class SharedService extends ChangeNotifier {
   updateWidgets() {
     if (!kIsWeb) {
       if (Platform.isIOS) {
-        Activity? lastSexualIntercourse = activity.firstWhere(
-            (element) => element.type == ActivityType.sexualIntercourse);
-        Partner? partner = null;
-        if (lastSexualIntercourse.partner != null) {
-          partner = getPartnerById(lastSexualIntercourse.partner!);
-        }
-        ActivitySafety safety = calculateSafety(lastSexualIntercourse);
-        String safetyValue;
-        switch (safety) {
-          case ActivitySafety.safe:
-            safetyValue = "SAFE";
-            break;
-          case ActivitySafety.unsafe:
-            safetyValue = "UNSAFE";
-            break;
-          default:
-            safetyValue = "PARTIALLY_UNSAFE";
-        }
+        BuildContext context = _navigator.navigatorKey.currentContext!;
 
-        ActivityWidgetData widgetData = ActivityWidgetData(
-          activity: lastSexualIntercourse,
-          partner: partner,
-          safety: safetyValue,
-        );
+        try {
+          Activity? lastSexualIntercourse = activity.firstWhere(
+              (element) => element.type == ActivityType.sexualIntercourse);
+          Partner? partner = null;
+          if (lastSexualIntercourse.partner != null) {
+            partner = getPartnerById(lastSexualIntercourse.partner!);
+          }
+          ActivitySafety safety = calculateSafety(lastSexualIntercourse);
+          String safetyValue;
+          String safetyString;
+          switch (safety) {
+            case ActivitySafety.safe:
+              safetyValue = "SAFE";
+              safetyString = AppLocalizations.of(context)!.safeSex;
+              break;
+            case ActivitySafety.unsafe:
+              safetyValue = "UNSAFE";
+              safetyString = AppLocalizations.of(context)!.unsafeSex;
+              break;
+            default:
+              safetyValue = "PARTIALLY_UNSAFE";
+              safetyString = AppLocalizations.of(context)!.partiallyUnsafeSex;
+          }
 
-        WidgetKit.setItem(
-          'lastSexualIntercourse',
-          jsonEncode(widgetData),
-          'group.LoveLust',
-        );
+          ActivityWidgetData widgetData = ActivityWidgetData(
+            activity: lastSexualIntercourse,
+            partner: partner,
+            safety: safetyValue,
+            partnerString: partner != null
+                ? partner.name
+                : AppLocalizations.of(context)!.unknownPartner,
+            safetyString: safetyString,
+            dateString: RelativeTime(context, numeric: true)
+                .format(lastSexualIntercourse.date),
+            dayString:
+                DateFormat(DateFormat.DAY).format(lastSexualIntercourse.date),
+            weekdayString: DateFormat(DateFormat.WEEKDAY)
+                .format(lastSexualIntercourse.date),
+            placeString: getPlaceTranslation(lastSexualIntercourse.place),
+            contraceptiveString:
+                getContraceptiveTranslation(lastSexualIntercourse.birthControl),
+            partnerContraceptiveString: getContraceptiveTranslation(
+                lastSexualIntercourse.partnerBirthControl),
+          );
+
+          WidgetKit.setItem(
+            'lastSexualIntercourse',
+            jsonEncode(widgetData),
+            'group.LoveLust',
+          );
+        } catch (e) {
+          WidgetKit.removeItem(
+            'lastSexualIntercourse',
+            'group.LoveLust',
+          );
+        }
 
         WidgetKit.reloadAllTimelines();
       }
@@ -192,7 +224,7 @@ class SharedService extends ChangeNotifier {
       return ActivitySafety.unsafe;
     }
 
-    return ActivitySafety.partlySafe;
+    return ActivitySafety.partiallyUnsafe;
   }
 
   Activity? getActivityById(String id) {
@@ -651,7 +683,11 @@ class SharedService extends ChangeNotifier {
     return null;
   }
 
-  static String getContraceptiveTranslation(context, Contraceptive? value) {
+  static String getContraceptiveTranslation(Contraceptive? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
     if (value == Contraceptive.cervicalCap) {
       return AppLocalizations.of(context)!.cervicalCap;
     } else if (value == Contraceptive.condom) {
@@ -690,7 +726,11 @@ class SharedService extends ChangeNotifier {
     return AppLocalizations.of(context)!.noBirthControl;
   }
 
-  static String getPlaceTranslation(context, Place? value) {
+  static String getPlaceTranslation(Place? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
     if (value == Place.backyard) {
       return AppLocalizations.of(context)!.backyard;
     } else if (value == Place.bar) {
@@ -759,7 +799,11 @@ class SharedService extends ChangeNotifier {
     return AppLocalizations.of(context)!.unknownPlace;
   }
 
-  static String getInitiatorTranslation(context, Initiator? value) {
+  static String getInitiatorTranslation(Initiator? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
     if (value == Initiator.me) {
       return AppLocalizations.of(context)!.me;
     } else if (value == Initiator.partner) {
@@ -772,7 +816,11 @@ class SharedService extends ChangeNotifier {
     return AppLocalizations.of(context)!.noInitiator;
   }
 
-  static String getPracticeTranslation(context, Practice? value) {
+  static String getPracticeTranslation(Practice? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
     if (value == Practice.anal) {
       return AppLocalizations.of(context)!.anal;
     } else if (value == Practice.bdsm) {
@@ -814,6 +862,10 @@ class SharedService extends ChangeNotifier {
   }
 
   static String getMoodTranslation(context, Mood? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
     if (value == Mood.adventurous) {
       return AppLocalizations.of(context)!.adventurous;
     } else if (value == Mood.angry) {

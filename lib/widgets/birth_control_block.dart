@@ -32,7 +32,6 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
           children: [
             _shared.sensitiveText(
               SharedService.getContraceptiveTranslation(
-                context,
                 widget.birthControl,
               ),
               style: style,
@@ -51,7 +50,6 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             children: [
               _shared.sensitiveText(
                 SharedService.getContraceptiveTranslation(
-                  context,
                   widget.birthControl,
                 ),
                 style: style,
@@ -69,7 +67,6 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             children: [
               _shared.sensitiveText(
                 SharedService.getContraceptiveTranslation(
-                  context,
                   widget.partnerBirthControl,
                 ),
                 style: style,

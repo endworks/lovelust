@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/themes.dart';
 import 'package:relative_time/relative_time.dart';
@@ -22,6 +23,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final SharedService _shared = getIt<SharedService>();
+  final NavigationService _navigator = getIt<NavigationService>();
 
   @override
   void initState() {
@@ -123,6 +125,7 @@ class _AppState extends State<App> {
           ],
           supportedLocales: AppLocalizations.supportedLocales,
           restorationScopeId: 'root',
+          navigatorKey: _navigator.navigatorKey,
           debugShowCheckedModeBanner: false,
           debugShowMaterialGrid: false,
         );

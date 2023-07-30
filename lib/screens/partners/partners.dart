@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -18,6 +19,7 @@ class PartnersPage extends StatefulWidget {
 
 class _PartnersPageState extends State<PartnersPage> {
   final SharedService _shared = getIt<SharedService>();
+  final NavigationService _navigator = getIt<NavigationService>();
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
@@ -40,8 +42,7 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   void _addPartner() {
-    Navigator.push(
-      context,
+    _navigator.navigateTo(
       MaterialPageRoute<Widget>(
           fullscreenDialog: true,
           builder: (BuildContext context) {

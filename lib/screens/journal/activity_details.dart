@@ -7,6 +7,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 import 'package:lovelust/widgets/birth_control_block.dart';
@@ -27,14 +28,14 @@ class ActivityDetailsPage extends StatefulWidget {
 
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
+  final NavigationService _navigator = getIt<NavigationService>();
   final ApiService _api = getIt<ApiService>();
   late Activity _activity;
   Partner? _partner;
   bool _solo = false;
 
   void editActivity() {
-    Navigator.push(
-      context,
+    _navigator.navigateTo(
       MaterialPageRoute<Widget>(
           fullscreenDialog: true,
           builder: (BuildContext context) {
@@ -156,7 +157,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
             ),
             const Padding(padding: EdgeInsets.only(left: 4)),
             _shared.sensitiveText(
-              SharedService.getPlaceTranslation(context, _activity.place),
+              SharedService.getPlaceTranslation(_activity.place),
             ),
           ],
         ),

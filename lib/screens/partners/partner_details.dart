@@ -6,6 +6,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
@@ -22,6 +23,7 @@ class PartnerDetailsPage extends StatefulWidget {
 
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
+  final NavigationService _navigator = getIt<NavigationService>();
   final ApiService _api = getIt<ApiService>();
   late Partner _partner;
 
@@ -39,8 +41,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   void editPartner() {
-    Navigator.push(
-      context,
+    _navigator.navigateTo(
       MaterialPageRoute<Widget>(
           fullscreenDialog: true,
           builder: (BuildContext context) {

@@ -141,7 +141,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         .map(
           (e) => DropdownMenuItem<Contraceptive?>(
             value: e,
-            child: Text(SharedService.getContraceptiveTranslation(context, e)),
+            child: Text(SharedService.getContraceptiveTranslation(e)),
           ),
         )
         .toList();
@@ -160,7 +160,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         .map(
           (e) => DropdownMenuItem<Place?>(
             value: e,
-            child: Text(SharedService.getPlaceTranslation(context, e)),
+            child: Text(SharedService.getPlaceTranslation(e)),
           ),
         )
         .toList();
@@ -179,7 +179,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         .map(
           (e) => DropdownMenuItem<Initiator?>(
             value: e,
-            child: Text(SharedService.getInitiatorTranslation(context, e)),
+            child: Text(SharedService.getInitiatorTranslation(e)),
           ),
         )
         .toList();
@@ -519,8 +519,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               ...Practice.values
                   .map(
                     (e) => FilterChip(
-                      label: Text(
-                          SharedService.getPracticeTranslation(context, e)),
+                      label: Text(SharedService.getPracticeTranslation(e)),
                       selected: isPracticeSelected(e),
                       onSelected: (value) => togglePractice(e, value),
                       showCheckmark: false,

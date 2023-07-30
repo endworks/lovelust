@@ -36,11 +36,11 @@ class _ActivityBlockState extends State<ActivityBlock> {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
     ActivitySafety safety = _shared.calculateSafety(widget.activity);
-    if (safety == ActivitySafety.partlySafe) {
+    if (safety == ActivitySafety.partiallyUnsafe) {
       icon = Icons.help;
       color = Colors.orange;
       style = style.copyWith(color: color);
-      label = AppLocalizations.of(context)!.partlyUnsafe;
+      label = AppLocalizations.of(context)!.partiallyUnsafe;
     } else if (safety == ActivitySafety.unsafe) {
       icon = Icons.error;
       color = Colors.red;
@@ -82,7 +82,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
 
   String get place {
     if (widget.activity.place != null) {
-      return SharedService.getPlaceTranslation(context, widget.activity.place!);
+      return SharedService.getPlaceTranslation(widget.activity.place!);
     }
     return '';
   }

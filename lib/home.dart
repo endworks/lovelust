@@ -44,7 +44,7 @@ class _HomeState extends State<Home>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     debugPrint(state.toString());
-    if (state == AppLifecycleState.paused) {
+    if (state == AppLifecycleState.inactive) {
       setState(() {
         _shared.authorized = false;
         _shared.updateWidgets();

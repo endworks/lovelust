@@ -4,7 +4,7 @@ enum FilterEntryItem { all, activity, solo }
 
 enum AuthSupportState { unknown, supported, unsupported }
 
-enum ActivitySafety { safe, unsafe, partlySafe }
+enum ActivitySafety { safe, unsafe, partiallyUnsafe }
 
 enum Gender { male, female, nonBinary }
 

@@ -193,7 +193,7 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
 
           break;
         default:
-          title = AppLocalizations.of(context)!.partlyUnsafeSex;
+          title = AppLocalizations.of(context)!.partiallyUnsafeSex;
 
           color = Colors.orange
               .harmonizeWith(Theme.of(context).colorScheme.primary);

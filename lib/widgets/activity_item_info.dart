@@ -72,7 +72,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   }
 
   String get date {
-    return RelativeTime(context).format(widget.activity.date);
+    return RelativeTime(context, numeric: true).format(widget.activity.date);
   }
 
   String get place {
@@ -177,7 +177,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
 
           break;
         default:
-          title = AppLocalizations.of(context)!.partlyUnsafeSex;
+          title = AppLocalizations.of(context)!.partiallyUnsafeSex;
       }
     }
     return title;

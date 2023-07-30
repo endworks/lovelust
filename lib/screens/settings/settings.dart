@@ -520,19 +520,6 @@ class _SettingsPageState extends State<SettingsPage> {
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),
-      ListTile(
-        title: Text(AppLocalizations.of(context)!.version),
-        subtitle: Text(
-          "${_shared.packageInfo?.version ?? '1.0.0'} (${_shared.packageInfo?.buildNumber ?? 1}) ${installerStore ?? 'store'}",
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
-        ),
-        leading: Icon(
-          Icons.app_settings_alt,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
     ];
 
     list.insert(
@@ -586,6 +573,25 @@ class _SettingsPageState extends State<SettingsPage> {
           onTap: _askAppIcon,
           leading: Icon(
             Icons.app_shortcut,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      );
+    }
+
+    if (_shared.packageInfo != null) {
+      list.add(
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.version),
+          subtitle: Text(
+            "${_shared.packageInfo?.version ?? '1.0.0'} (${_shared.packageInfo?.buildNumber ?? 1}) ${installerStore ?? 'store'}",
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
+          ),
+          leading: Icon(
+            Icons.app_settings_alt,
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),

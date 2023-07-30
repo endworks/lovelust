@@ -195,11 +195,13 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                 Text(' ${AppLocalizations.of(context)!.min}'),
               ],
             ),
-            Row(
-              children: [
-                Rating(rating: _activity.rating),
-              ],
-            ),
+            widget.activity.rating > 0
+                ? Row(
+                    children: [
+                      Rating(rating: _activity.rating),
+                    ],
+                  )
+                : SizedBox()
           ],
         ),
         titleAlignment: ListTileTitleAlignment.top,

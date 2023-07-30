@@ -226,7 +226,9 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
             activityTitle,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          Rating(rating: widget.activity.rating),
+          widget.activity.rating > 0
+              ? Rating(rating: widget.activity.rating)
+              : SizedBox(),
         ],
       ),
     );

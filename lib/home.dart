@@ -68,23 +68,26 @@ class _HomeState extends State<Home>
   }
 
   Widget get _selectedPage {
-    if (_selectedIndex.value > -1) {
-      return pages[_selectedIndex.value];
-    }
-    return const Text('loading');
-  }
-
-  List<Widget> get pages {
-    return [
-      // const HomePage(),
-      const JournalPage(),
-      const PartnersPage(),
-      const SettingsPage(),
-    ];
+    return IndexedStack(
+      index: _selectedIndex.value,
+      children: const [
+        // HomePage(),
+        JournalPage(),
+        PartnersPage(),
+        SettingsPage(),
+      ],
+    );
   }
 
   List<Destination> get destinations {
     return [
+      /*Destination(
+        AppLocalizations.of(context)!.home,
+        const Icon(Icons.monitor_heart_outlined),
+        const Icon(
+          Icons.monitor_heart,
+        ),
+      ),*/
       Destination(
         AppLocalizations.of(context)!.journal,
         const Icon(Icons.assignment_outlined),

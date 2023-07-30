@@ -131,14 +131,16 @@ jobs:
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
-
-      - name: Install Flutter dependencies
-        run: flutter packages pub get
-
+            
       - name: Install Ccache
         uses: hendrikmuhs/ccache-action@v1.2
         with:
           max-size: 5G
+
+      - name: Install Flutter dependencies
+        run: flutter packages pub get
+          
+      - run: find . -name "Podfile" -execdir pod install \;
 
       - name: Build the Flutter iOS project
         run: |
@@ -148,7 +150,7 @@ jobs:
           export CCACHE_DEPEND=true
           export CCACHE_INODECACHE=true
           ccache -s
-          flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --export-options-plist=ios/exportOptions.plist
+          flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --export-options-plist=ios/exportOptions.plist --verbose
 
       - name: Publish the app to App Store Connect
         run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")

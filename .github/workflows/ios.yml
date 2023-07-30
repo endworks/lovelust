@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: macos-latest-xl
+    runs-on: macos-latest
     # runs-on: [self-hosted, macOS]
 
     steps:
@@ -123,17 +123,17 @@ jobs:
         run: keychain add-certificates --certificate-password='${{ env.P12_PASSWORD }}'
 
       - name: Update the Xcode project settings to use fetched code signing profiles
-        run: xcode-project use-profiles --export-options-plist=ios/exportOptions.plist
+        run: xcode-project use-profiles --export-options-plist=ios/
 
-      - run: rm ios/Podfile.lock
-
-      - run: sudo gem install ffi
+      - uses: actions/cache@v3
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
       - name: Install Flutter dependencies
         run: flutter packages pub get
-
-      # - name: Install CocoaPods dependencies
-      #   run: cd ios && pod install
 
       - name: Build the Flutter iOS project
         run: flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --export-options-plist=ios/exportOptions.plist

@@ -105,7 +105,6 @@
 		BA9B11A72A77246A00368DC2 /* LastActivityExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LastActivityExtension.entitlements; sourceTree = "<group>"; };
 		BAB3CCD52A60A1DB004C151F /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		BAB3CCD62A60A7CF004C151F /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
-		BAB6ACD12A74F35E00D4C66F /* StatusExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StatusExtension.entitlements; sourceTree = "<group>"; };
 		BAF3EF652A45A5E5001697C1 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,7 +187,6 @@
 			isa = PBXGroup;
 			children = (
 				BA9B11A72A77246A00368DC2 /* LastActivityExtension.entitlements */,
-				BAB6ACD12A74F35E00D4C66F /* StatusExtension.entitlements */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				BA9B11952A771F9100368DC2 /* LastActivity */,

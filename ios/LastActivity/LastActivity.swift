@@ -288,68 +288,85 @@ struct SimpleEntryView : View {
     }
     
     private var NoDataView: some View {
-        VStack {
-            HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Barbie")
-                        .font(.headline)
-                        .foregroundColor(.black)
-                    if widgetFamily == .systemSmall {
-                        HStack(spacing: 2) {
-                            Text("4")
-                            Image(systemName: "star.fill")
-                                .resizable()
-                                .foregroundColor(.yellow)
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 16, height: 16)
-                        }
-                    } else {
-                        Rating(rating: 4)
-                    }
-                    Spacer()
-                }
-                Spacer()
-                VStack(alignment: .trailing, spacing: 0) {
-                    Text("sunday")
-                        .font(.caption2)
-                        .fontDesign(.rounded)
-                        .fontWeight(.semibold)
-                        .textCase(.uppercase)
-                        .foregroundColor(.red)
-                    Text("30")
-                        .font(.largeTitle)
-                        .fontWeight(.light)
-                }
-            }
-            Spacer()
-            HStack(spacing: 4) {
-                if widgetFamily != .systemSmall {
-                    Text("Bedroom")
-                        .font(.caption)
-                        .fontDesign(.rounded)
-                        .fontWeight(.semibold)
-                        .textCase(.uppercase)
-                }
-                Text("a day ago")
+        return VStack {
+             HStack(alignment: .top, spacing: 0) {
+                 VStack(alignment: .leading, spacing: -2) {
+                     Text("Saturday")
+                         .font(.caption2)
+                         .fontDesign(.rounded)
+                         .fontWeight(.semibold)
+                         .textCase(.uppercase)
+                         .foregroundColor(.red)
+                     Text("1")
+                         .font(.largeTitle)
+                         .fontWeight(.light)
+                     Spacer()
+                 }
+                 Spacer()
+                 VStack(alignment: .trailing, spacing: 0) {
+                     Text("Flavia").font(.headline)
+                         .lineLimit(1)
+                         .truncationMode(.tail)
+                     
+                         if widgetFamily == .systemSmall {
+                             HStack(spacing: 2) {
+                                 Text("4")
+                                 Image(systemName: "star.fill")
+                                     .resizable()
+                                     .foregroundColor(.orange)
+                                     .aspectRatio(contentMode: .fit)
+                                     .frame(width: 16, height: 16)
+                             }
+                         } else {
+                             Rating(rating: 4)
+                         }
+                     
+                 }
+             }
+             Spacer()
+             HStack(spacing: 4) {
+                 if widgetFamily != .systemSmall {
+                     Text("Bedroom")
+                         .font(.caption)
+                         .fontDesign(.rounded)
+                         .fontWeight(.semibold)
+                         .textCase(.uppercase)
+                         .foregroundColor(.purple)
+                 }
+                 Text("a month ago")
+                     .lineLimit(1)
+                     .truncationMode(.tail)
+                     .font(.caption)
+                     .fontDesign(.rounded)
+                     .textCase(.uppercase)
+                     .foregroundColor(.gray)
+                 Spacer()
+             }
+             HStack(alignment: .bottom, spacing: 0) {
+                 if widgetFamily == .systemSmall {
+                     Text("Protected sex")
+                         .font(.headline)
+                         .foregroundColor(.primary)
+                 } else {
+                     Text("Protected sex")
+                         .font(.title)
+                         .foregroundColor(.primary)
+                     
+                 }
+                 Spacer()
+             }
+             HStack(alignment: .top) {
+                Text(entry.widgetData!.contraceptiveString)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
                     .font(.caption)
                     .fontDesign(.rounded)
-                    .foregroundColor(.gray)
+                    .fontWeight(.semibold)
+                    .textCase(.uppercase)
+                    .foregroundColor(.cyan)
                 Spacer()
-            }
-            HStack(alignment: .bottom, spacing: 0) {
-                if widgetFamily == .systemSmall {
-                    Text("Safe sex")
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                } else {
-                    Text("Safe sex")
-                        .font(.title)
-                        .foregroundColor(.primary)
-                    
-                }
-                Spacer()
-            }
-        }
+             }
+         }
         .redacted(reason: .placeholder)
         .padding()
         
@@ -398,7 +415,7 @@ struct LastActivity_Previews: PreviewProvider {
     )
     
     static var widgetData = ActivityWidgetData(
-        activity: lastSexualIntercourse, partner: nil, safety: "PARTIALLY", partnerString: "Barbie", safetyString: "Partially unsafe sex", dateString: "a day ago", dayString: "30", weekdayString: "Sunday", placeString: "Bedroom", contraceptiveString: "Condom", partnerContraceptiveString: "Pill")
+        activity: lastSexualIntercourse, partner: nil, safety: "SAFE", partnerString: "Flavia", safetyString: "Protected sex", dateString: "a month ago", dayString: "1", weekdayString: "Saturday", placeString: "Bedroom", contraceptiveString: "Condom", partnerContraceptiveString: "No contraceptive")
     
     static var previews: some View {
         SimpleEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: ConfigurationIntent()))

@@ -10,8 +10,8 @@ import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/activity_widget_data.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/models/flutter_widget_data.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
@@ -68,6 +68,8 @@ class SharedService extends ChangeNotifier {
     Intl.systemLocale = result[10];
     _appIcon = result[11] ?? 'Default';
     packageInfo = result[12];
+
+    updateWidgets();
   }
 
   Future<void> initialFetch() async {
@@ -86,11 +88,37 @@ class SharedService extends ChangeNotifier {
   updateWidgets() {
     if (!kIsWeb) {
       if (Platform.isIOS) {
+        Activity? lastSexualIntercourse = activity.firstWhere(
+            (element) => element.type == ActivityType.sexualIntercourse);
+        Partner? partner = null;
+        if (lastSexualIntercourse.partner != null) {
+          partner = getPartnerById(lastSexualIntercourse.partner!);
+        }
+        ActivitySafety safety = calculateSafety(lastSexualIntercourse);
+        String safetyValue;
+        switch (safety) {
+          case ActivitySafety.safe:
+            safetyValue = "SAFE";
+            break;
+          case ActivitySafety.unsafe:
+            safetyValue = "UNSAFE";
+            break;
+          default:
+            safetyValue = "PARTIALLY_UNSAFE";
+        }
+
+        ActivityWidgetData widgetData = ActivityWidgetData(
+          activity: lastSexualIntercourse,
+          partner: partner,
+          safety: safetyValue,
+        );
+
         WidgetKit.setItem(
-          'widgetData',
-          jsonEncode(FlutterWidgetData('Journal entries: ${activity.length}')),
+          'lastSexualIntercourse',
+          jsonEncode(widgetData),
           'group.LoveLust',
         );
+
         WidgetKit.reloadAllTimelines();
       }
     }

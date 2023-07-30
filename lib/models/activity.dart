@@ -88,7 +88,7 @@ class Activity {
         'partner_birth_control': SharedService.setValueByContraceptive(
           partnerBirthControl,
         ),
-        'date': date.toIso8601String(),
+        'date': date.toUtc().toIso8601String(),
         'location': location,
         'notes': notes,
         'duration': duration,

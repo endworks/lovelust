@@ -134,11 +134,11 @@ enum DateError: String, Error {
     case invalidDate
 }
 
-struct SimpleEntryView : View {
+struct LastActivityEntryView : View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var widgetFamily
     
-    private var SexualIntercourseView: some View {
+    private var WidgetView: some View {
         var safetyColor: Color = .primary
 
         if entry.widgetData!.safety == "UNSAFE" {
@@ -329,12 +329,71 @@ struct SimpleEntryView : View {
         .padding()
         
     }
+    
+    private var InlineView: some View {
+        Text("\(entry.widgetData!.safetyString.uppercased()) \(entry.widgetData!.dateString)")
+            .font(.caption)
+            .fontDesign(.rounded)
+            .foregroundColor(.gray)
+    }
+    
+    private var RectangularView: some View {
+        VStack() {
+            HStack{
+                Text(entry.widgetData!.dateString)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.caption)
+                    .fontDesign(.rounded)
+                    .textCase(.uppercase)
+                    .foregroundColor(.gray)
+                Spacer()
+            }
+            HStack{
+                Text(entry.widgetData!.safetyString)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Spacer()
+            }
+            if entry.widgetData?.activity.birthControl != nil || entry.widgetData?.activity.partnerBirthControl != nil {
+                HStack(alignment: .top) {
+                    if entry.widgetData?.activity.birthControl != nil {
+                        Text(entry.widgetData!.contraceptiveString)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .font(.caption)
+                            .fontDesign(.rounded)
+                            .fontWeight(.semibold)
+                            .textCase(.uppercase)
+                    }
+                    if entry.widgetData?.activity.partnerBirthControl != nil && entry.widgetData?.activity.partnerBirthControl != entry.widgetData?.activity.birthControl{
+                        Text(entry.widgetData!.partnerContraceptiveString)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .font(.caption)
+                            .fontDesign(.rounded)
+                            .fontWeight(.semibold)
+                            .textCase(.uppercase)
+                    }
+                    Spacer()
+                }
+            }
+        }
+    }
 
     var body: some View {
-        if(entry.widgetData != nil) {
-            SexualIntercourseView
+        if(widgetFamily == .accessoryInline) {
+            InlineView
+        } else if(widgetFamily == .accessoryRectangular) {
+            RectangularView
         } else {
-            NoDataView
+            if(entry.widgetData != nil) {
+                WidgetView
+            } else {
+                NoDataView
+            }
         }
     }
 }
@@ -344,11 +403,11 @@ struct LastActivity: Widget {
 
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
-            SimpleEntryView(entry: entry)
+            LastActivityEntryView(entry: entry)
         }
         .configurationDisplayName("Sexual intercourse")
         .description("Shows data of last sexual intercourse")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular])
     }
 }
 
@@ -390,7 +449,7 @@ struct LastActivity_Previews: PreviewProvider {
     )
     
     static var previews: some View {
-        SimpleEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: ConfigurationIntent()))
+        LastActivityEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: ConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

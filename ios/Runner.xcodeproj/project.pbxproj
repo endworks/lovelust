@@ -26,6 +26,12 @@
 		BA9B119E2A771F9200368DC2 /* LastActivity.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BA9B119A2A771F9100368DC2 /* LastActivity.intentdefinition */; };
 		BA9B119F2A771F9200368DC2 /* LastActivity.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BA9B119A2A771F9100368DC2 /* LastActivity.intentdefinition */; };
 		BA9B11A22A771F9200368DC2 /* LastActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BA9B11922A771F9100368DC2 /* LastActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BAC09C462A785F3B0070852E /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7859792A459F5A0056B868 /* WidgetKit.framework */; };
+		BAC09C472A785F3B0070852E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7859812A45A0FF0056B868 /* SwiftUI.framework */; };
+		BAC09C4A2A785F3B0070852E /* DaysSinceBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC09C492A785F3B0070852E /* DaysSinceBundle.swift */; };
+		BAC09C4C2A785F3B0070852E /* DaysSince.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC09C4B2A785F3B0070852E /* DaysSince.swift */; };
+		BAC09C4E2A785F3B0070852E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAC09C4D2A785F3B0070852E /* Assets.xcassets */; };
+		BAC09C522A785F3C0070852E /* DaysSinceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BAC09C452A785F3A0070852E /* DaysSinceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +48,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BA9B11912A771F9100368DC2;
 			remoteInfo = LastActivityExtension;
+		};
+		BAC09C502A785F3B0070852E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 97C146E61CF9000F007C117D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BAC09C442A785F3A0070852E;
+			remoteInfo = DaysSinceExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -62,6 +75,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				BAC09C522A785F3C0070852E /* DaysSinceExtension.appex in Embed Foundation Extensions */,
 				BA9B11A22A771F9200368DC2 /* LastActivityExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -105,6 +119,12 @@
 		BA9B11A72A77246A00368DC2 /* LastActivityExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LastActivityExtension.entitlements; sourceTree = "<group>"; };
 		BAB3CCD52A60A1DB004C151F /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		BAB3CCD62A60A7CF004C151F /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
+		BAC09C452A785F3A0070852E /* DaysSinceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DaysSinceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAC09C492A785F3B0070852E /* DaysSinceBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysSinceBundle.swift; sourceTree = "<group>"; };
+		BAC09C4B2A785F3B0070852E /* DaysSince.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysSince.swift; sourceTree = "<group>"; };
+		BAC09C4D2A785F3B0070852E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BAC09C4F2A785F3B0070852E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BAC09C572A7868630070852E /* DaysSinceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DaysSinceExtension.entitlements; sourceTree = "<group>"; };
 		BAF3EF652A45A5E5001697C1 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -133,6 +153,15 @@
 			files = (
 				BA9B11942A771F9100368DC2 /* SwiftUI.framework in Frameworks */,
 				BA9B11932A771F9100368DC2 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAC09C422A785F3A0070852E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAC09C472A785F3B0070852E /* SwiftUI.framework in Frameworks */,
+				BAC09C462A785F3B0070852E /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,10 +215,12 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				BAC09C572A7868630070852E /* DaysSinceExtension.entitlements */,
 				BA9B11A72A77246A00368DC2 /* LastActivityExtension.entitlements */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				BA9B11952A771F9100368DC2 /* LastActivity */,
+				BAC09C482A785F3B0070852E /* DaysSince */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
 				741F6CED2EDC699E8E926861 /* Pods */,
@@ -203,6 +234,7 @@
 				97C146EE1CF9000F007C117D /* Runner.app */,
 				331C8081294A63A400263BE5 /* RunnerTests.xctest */,
 				BA9B11922A771F9100368DC2 /* LastActivityExtension.appex */,
+				BAC09C452A785F3A0070852E /* DaysSinceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,6 +267,17 @@
 				BA9B119D2A771F9200368DC2 /* Info.plist */,
 			);
 			path = LastActivity;
+			sourceTree = "<group>";
+		};
+		BAC09C482A785F3B0070852E /* DaysSince */ = {
+			isa = PBXGroup;
+			children = (
+				BAC09C492A785F3B0070852E /* DaysSinceBundle.swift */,
+				BAC09C4B2A785F3B0070852E /* DaysSince.swift */,
+				BAC09C4D2A785F3B0070852E /* Assets.xcassets */,
+				BAC09C4F2A785F3B0070852E /* Info.plist */,
+			);
+			path = DaysSince;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,6 +320,7 @@
 			);
 			dependencies = (
 				BA9B11A12A771F9200368DC2 /* PBXTargetDependency */,
+				BAC09C512A785F3B0070852E /* PBXTargetDependency */,
 			);
 			name = Runner;
 			productName = Runner;
@@ -298,6 +342,23 @@
 			name = LastActivityExtension;
 			productName = LastActivityExtension;
 			productReference = BA9B11922A771F9100368DC2 /* LastActivityExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BAC09C442A785F3A0070852E /* DaysSinceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BAC09C562A785F3C0070852E /* Build configuration list for PBXNativeTarget "DaysSinceExtension" */;
+			buildPhases = (
+				BAC09C412A785F3A0070852E /* Sources */,
+				BAC09C422A785F3A0070852E /* Frameworks */,
+				BAC09C432A785F3A0070852E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DaysSinceExtension;
+			productName = DaysSinceExtension;
+			productReference = BAC09C452A785F3A0070852E /* DaysSinceExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -322,6 +383,9 @@
 					BA9B11912A771F9100368DC2 = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
+					BAC09C442A785F3A0070852E = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
 				};
 			};
 			buildConfigurationList = 97C146E91CF9000F007C117D /* Build configuration list for PBXProject "Runner" */;
@@ -340,6 +404,7 @@
 				97C146ED1CF9000F007C117D /* Runner */,
 				331C8080294A63A400263BE5 /* RunnerTests */,
 				BA9B11912A771F9100368DC2 /* LastActivityExtension */,
+				BAC09C442A785F3A0070852E /* DaysSinceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -368,6 +433,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA9B119C2A771F9200368DC2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAC09C432A785F3A0070852E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAC09C4E2A785F3B0070852E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +570,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BAC09C412A785F3A0070852E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAC09C4A2A785F3B0070852E /* DaysSinceBundle.swift in Sources */,
+				BAC09C4C2A785F3B0070852E /* DaysSince.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -509,6 +591,11 @@
 			isa = PBXTargetDependency;
 			target = BA9B11912A771F9100368DC2 /* LastActivityExtension */;
 			targetProxy = BA9B11A02A771F9200368DC2 /* PBXContainerItemProxy */;
+		};
+		BAC09C512A785F3B0070852E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BAC09C442A785F3A0070852E /* DaysSinceExtension */;
+			targetProxy = BAC09C502A785F3B0070852E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -967,6 +1054,120 @@
 			};
 			name = Profile;
 		};
+		BAC09C532A785F3C0070852E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DaysSinceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K4G94KUY56;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DaysSince/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DaysSince;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = works.end.LoveLust.DaysSince;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BAC09C542A785F3C0070852E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DaysSinceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K4G94KUY56;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DaysSince/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DaysSince;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = works.end.LoveLust.DaysSince;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BAC09C552A785F3C0070852E /* Profile */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = DaysSinceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K4G94KUY56;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DaysSince/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DaysSince;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = works.end.LoveLust.DaysSince;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Profile;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1006,6 +1207,16 @@
 				BA9B11A32A771F9200368DC2 /* Debug */,
 				BA9B11A42A771F9200368DC2 /* Release */,
 				BA9B11A52A771F9200368DC2 /* Profile */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BAC09C562A785F3C0070852E /* Build configuration list for PBXNativeTarget "DaysSinceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAC09C532A785F3C0070852E /* Debug */,
+				BAC09C542A785F3C0070852E /* Release */,
+				BAC09C552A785F3C0070852E /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

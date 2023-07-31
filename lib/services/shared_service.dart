@@ -137,6 +137,9 @@ class SharedService extends ChangeNotifier {
                 getContraceptiveTranslation(lastSexualIntercourse.birthControl),
             partnerContraceptiveString: getContraceptiveTranslation(
                 lastSexualIntercourse.partnerBirthControl),
+            moodString: getMoodTranslation(lastSexualIntercourse.mood),
+            moodEmoji: getMoodEmoji(lastSexualIntercourse.mood),
+            feelingsStrings: [],
           );
 
           WidgetKit.setItem(
@@ -861,7 +864,7 @@ class SharedService extends ChangeNotifier {
     return AppLocalizations.of(context)!.unknown;
   }
 
-  static String getMoodTranslation(context, Mood? value) {
+  static String getMoodTranslation(Mood? value) {
     GetIt locator = GetIt.instance;
     BuildContext context =
         locator<NavigationService>().navigatorKey.currentContext!;
@@ -896,7 +899,7 @@ class SharedService extends ChangeNotifier {
     return AppLocalizations.of(context)!.noMood;
   }
 
-  static String getMoodEmoji(context, Mood? value) {
+  static String getMoodEmoji(Mood? value) {
     if (value == Mood.adventurous) {
       return '🤠';
     } else if (value == Mood.angry) {

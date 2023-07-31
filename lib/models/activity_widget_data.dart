@@ -13,6 +13,9 @@ class ActivityWidgetData {
   final String placeString;
   final String contraceptiveString;
   final String partnerContraceptiveString;
+  final String moodString;
+  final String moodEmoji;
+  final List<String> feelingsStrings;
 
   const ActivityWidgetData({
     required this.activity,
@@ -26,6 +29,9 @@ class ActivityWidgetData {
     required this.placeString,
     required this.contraceptiveString,
     required this.partnerContraceptiveString,
+    required this.moodString,
+    required this.moodEmoji,
+    required this.feelingsStrings,
   });
 
   factory ActivityWidgetData.fromJson(Map<String, dynamic> json) {
@@ -41,6 +47,9 @@ class ActivityWidgetData {
       placeString: json['placeString'],
       contraceptiveString: json['contraceptiveString'],
       partnerContraceptiveString: json['partnerContraceptiveString'],
+      moodString: json['moodString'],
+      moodEmoji: json['moodEmoji'],
+      feelingsStrings: json['feelingsStrings'],
     );
   }
 
@@ -56,5 +65,8 @@ class ActivityWidgetData {
         'placeString': placeString,
         'contraceptiveString': contraceptiveString,
         'partnerContraceptiveString': partnerContraceptiveString,
+        'moodString': moodString,
+        'moodEmoji': moodEmoji,
+        'feelingsStrings': feelingsStrings,
       };
 }

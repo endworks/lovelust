@@ -492,9 +492,9 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               ...[...Mood.values, null]
                   .map(
                     (e) => FilterChip(
-                      label: Text(SharedService.getMoodTranslation(context, e)),
+                      label: Text(SharedService.getMoodTranslation(e)),
                       avatar: Text(
-                        SharedService.getMoodEmoji(context, e),
+                        SharedService.getMoodEmoji(e),
                       ),
                       selected: isMoodSelected(e),
                       onSelected: (value) => selectMood(e, value),

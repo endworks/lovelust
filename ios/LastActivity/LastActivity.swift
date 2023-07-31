@@ -87,6 +87,9 @@ struct ActivityWidgetData: Decodable, Hashable {
     let placeString: String
     let contraceptiveString: String
     let partnerContraceptiveString: String
+    let moodString: String
+    let moodEmoji: String
+    let feelingsStrings: [String]
 }
 
 struct Activity: Decodable, Hashable {
@@ -135,47 +138,6 @@ struct SimpleEntryView : View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var widgetFamily
     
-    struct Rating: View {
-        var rating: Int
-        private var color: Color
-        
-        init(rating: Int) {
-            self.rating = rating
-            color = .orange
-        }
-        
-        var body: some View {
-            let starIcon = "star"
-            HStack {
-                Image(systemName: rating < 1 ? starIcon : "\(starIcon).fill")
-                    .resizable()
-                    .foregroundColor(color)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-                Image(systemName: rating < 2 ? starIcon : "\(starIcon).fill")
-                    .resizable()
-                    .foregroundColor(color)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-                Image(systemName: rating < 3 ? starIcon : "\(starIcon).fill")
-                    .resizable()
-                    .foregroundColor(color)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-                Image(systemName: rating < 4 ? starIcon : "\(starIcon).fill")
-                    .resizable()
-                    .foregroundColor(color)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-                Image(systemName: rating < 5 ? starIcon : "\(starIcon).fill")
-                    .resizable()
-                    .foregroundColor(color)
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 16, height: 16)
-            }
-        }
-    }
-    
     private var SexualIntercourseView: some View {
         var safetyColor: Color = .primary
 
@@ -195,9 +157,13 @@ struct SimpleEntryView : View {
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
                         .foregroundColor(.red)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
                     Text(entry.widgetData!.dayString)
                         .font(.largeTitle)
                         .fontWeight(.light)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
                     Spacer()
                 }
                 Spacer()
@@ -206,21 +172,16 @@ struct SimpleEntryView : View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .privacySensitive()
-                    if (entry.widgetData!.activity.rating > 0) {
-                        if widgetFamily == .systemSmall {
-                            HStack(spacing: 2) {
-                                Text(entry.widgetData!.activity.rating.description)
-                                    .privacySensitive()
-                                Image(systemName: "star.fill")
-                                    .resizable()
-                                    .foregroundColor(.orange)
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 16, height: 16)
-                            }
-                        } else {
-                            Rating(rating: entry.widgetData!.activity.rating)
-                                .privacySensitive()
-                        }
+
+                    if (widgetFamily != .systemSmall && entry.widgetData!.activity.mood != nil) {
+                        Text(entry.widgetData!.moodString)
+                            .font(.caption2)
+                            .fontDesign(.rounded)
+                            .fontWeight(.semibold)
+                            .textCase(.uppercase)
+                            .foregroundColor(.pink)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                     }
                     
                 }
@@ -304,23 +265,20 @@ struct SimpleEntryView : View {
                  }
                  Spacer()
                  VStack(alignment: .trailing, spacing: 0) {
-                     Text("Flavia").font(.headline)
+                    Text("Flavia").font(.headline)
                          .lineLimit(1)
                          .truncationMode(.tail)
-                     
-                         if widgetFamily == .systemSmall {
-                             HStack(spacing: 2) {
-                                 Text("4")
-                                 Image(systemName: "star.fill")
-                                     .resizable()
-                                     .foregroundColor(.orange)
-                                     .aspectRatio(contentMode: .fit)
-                                     .frame(width: 16, height: 16)
-                             }
-                         } else {
-                             Rating(rating: 4)
-                         }
-                     
+
+                    if widgetFamily != .systemSmall {
+                        Text("Horny")
+                            .font(.caption2)
+                            .fontDesign(.rounded)
+                            .fontWeight(.semibold)
+                            .textCase(.uppercase)
+                            .foregroundColor(.pink)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                    }
                  }
              }
              Spacer()
@@ -410,12 +368,26 @@ struct LastActivity_Previews: PreviewProvider {
         initiator: "ME",
         rating: 4,
         type: "SEXUAL_INTERCOURSE",
-        mood: nil,
+        mood: "HORNY",
         practices: []
     )
     
     static var widgetData = ActivityWidgetData(
-        activity: lastSexualIntercourse, partner: nil, safety: "SAFE", partnerString: "Flavia", safetyString: "Protected sex", dateString: "a month ago", dayString: "1", weekdayString: "Saturday", placeString: "Bedroom", contraceptiveString: "Condom", partnerContraceptiveString: "No contraceptive")
+        activity: lastSexualIntercourse,
+        partner: nil,
+        safety: "SAFE",
+        partnerString: "Flavia",
+        safetyString: "Protected sex",
+        dateString: "a month ago",
+        dayString: "1",
+        weekdayString: "Saturday",
+        placeString: "Bedroom",
+        contraceptiveString: "Condom",
+        partnerContraceptiveString: "No contraceptive",
+        moodString: "Horny",
+        moodEmoji: "🥵",
+        feelingsStrings: ["Safe", "Adventurous"]
+    )
     
     static var previews: some View {
         SimpleEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: ConfigurationIntent()))

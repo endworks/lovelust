@@ -96,10 +96,10 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
       list.add(
         FilterChip(
           label: _shared.sensitiveText(
-            SharedService.getMoodTranslation(context, widget.mood),
+            SharedService.getMoodTranslation(widget.mood),
           ),
           avatar: Text(
-            SharedService.getMoodEmoji(context, widget.mood),
+            SharedService.getMoodEmoji(widget.mood),
           ),
           selected: true,
           onSelected: (value) {},

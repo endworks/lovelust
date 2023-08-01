@@ -39,6 +39,10 @@
 	<string>Why is my app sharing health data?</string>
 	<key>NSHealthUpdateUsageDescription</key>
 	<string>Why is my app updating health data?</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>ConfigurationIntent</string>
+	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

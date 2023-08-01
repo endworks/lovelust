@@ -595,7 +595,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid) && !isiOSAppOnMac) {
       list.insert(
-        5,
+        4,
         ListTile(
           title: Text(AppLocalizations.of(context)!.appIcon),
           subtitle: appIconName,

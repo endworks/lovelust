@@ -35,10 +35,18 @@ ThemeData generateTheme(String? colorSchemeName,
     }
   }
 
-  colorScheme ??= ColorScheme.fromSeed(
-    brightness: darkMode ? Brightness.dark : Brightness.light,
-    seedColor: seedColor,
-  );
+  if (material) {
+    colorScheme ??= ColorScheme.fromSeed(
+      brightness: darkMode ? Brightness.dark : Brightness.light,
+      seedColor: seedColor,
+    );
+  } else {
+    colorScheme ??= ColorScheme.fromSeed(
+      brightness: darkMode ? Brightness.dark : Brightness.light,
+      seedColor: seedColor,
+      background: darkMode ? blackColor[900] : whiteColor[900],
+    );
+  }
 
   const defaultTextStyle = TextStyle(
     fontFamily: 'Inter',
@@ -98,9 +106,10 @@ ThemeData generateTheme(String? colorSchemeName,
     ),
     floatingActionButtonTheme: materialTheme.floatingActionButtonTheme.copyWith(
       elevation: 0,
+      highlightElevation: 0,
       backgroundColor: colorScheme.primaryContainer,
       foregroundColor: colorScheme.onPrimaryContainer,
-      shape: const StadiumBorder(),
+      // shape: const StadiumBorder(),
     ),
     cardTheme: materialTheme.cardTheme.copyWith(
       color: colorScheme.surface,

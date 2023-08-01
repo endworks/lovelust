@@ -39,40 +39,47 @@ class _AppState extends State<App> {
           DynamicColorBuilder(
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         bool initialLoadDone = snapshot.connectionState == ConnectionState.done;
-        ThemeData theme = defaultTheme;
-        ThemeData darkTheme = defaultDarkTheme;
+        ThemeData theme = generateTheme(
+          _shared.colorScheme,
+          darkMode: false,
+          modernUI: _shared.modernUI,
+        );
+        ThemeData darkTheme = generateTheme(
+          _shared.colorScheme,
+          darkMode: true,
+          modernUI: _shared.modernUI,
+        );
         ThemeMode themeMode = ThemeMode.system;
 
         if (initialLoadDone) {
           if (_shared.colorScheme == 'dynamic') {
             if (lightDynamic != null && darkDynamic != null) {
-              theme = ThemeData(
+              theme = generateTheme(
+                null,
+                darkMode: false,
+                modernUI: _shared.modernUI,
                 colorScheme: lightDynamic.harmonized(),
-                navigationBarTheme: NavigationBarThemeData(
-                  labelBehavior: defaultTheme.navigationBarTheme.labelBehavior,
-                ),
-                cardTheme: defaultTheme.cardTheme,
-                textTheme: defaultTheme.textTheme,
-                useMaterial3: defaultTheme.useMaterial3,
-                visualDensity: defaultTheme.visualDensity,
               );
-              darkTheme = ThemeData(
+              darkTheme = generateTheme(
+                null,
+                darkMode: true,
+                modernUI: _shared.modernUI,
                 colorScheme: darkDynamic.harmonized(),
-                navigationBarTheme: NavigationBarThemeData(
-                  labelBehavior:
-                      defaultDarkTheme.navigationBarTheme.labelBehavior,
-                ),
-                cardTheme: defaultDarkTheme.cardTheme,
-                textTheme: defaultDarkTheme.textTheme,
-                useMaterial3: defaultDarkTheme.useMaterial3,
-                visualDensity: defaultDarkTheme.visualDensity,
-                brightness: Brightness.dark,
               );
             } else if (!kIsWeb && Platform.isIOS) {
-              theme = appleTheme;
-              darkTheme = appleDarkTheme;
+              theme = generateTheme(
+                "blue",
+                darkMode: false,
+                modernUI: _shared.modernUI,
+              );
+              darkTheme = generateTheme(
+                "blue",
+                darkMode: true,
+                modernUI: _shared.modernUI,
+              );
             }
-          } else if (_shared.colorScheme == 'experimental') {
+          }
+          /* else if (_shared.colorScheme == 'experimental') {
             theme = experimentalTheme;
             darkTheme = experimentalDarkTheme;
           } else if (_shared.colorScheme == 'lovelust') {
@@ -96,7 +103,7 @@ class _AppState extends State<App> {
           } else if (_shared.colorScheme == 'monochrome') {
             theme = monochromeTheme;
             darkTheme = monochromeDarkTheme;
-          }
+          }*/
 
           if (_shared.theme == 'light') {
             themeMode = ThemeMode.light;

@@ -9,7 +9,6 @@ import 'package:lovelust/screens/journal/activity_details.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
-import 'package:lovelust/widgets/rating.dart';
 import 'package:relative_time/relative_time.dart';
 
 class ActivityItemInfo extends StatefulWidget {
@@ -183,6 +182,15 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     return title;
   }
 
+  String? get mood {
+    if (widget.activity.mood == null) {
+      return null;
+    }
+    String emoji = SharedService.getMoodEmoji(widget.activity.mood);
+    String text = SharedService.getMoodTranslation(widget.activity.mood);
+    return text;
+  }
+
   TextStyle secondaryTextStyle() {
     return Theme.of(context).textTheme.bodySmall!;
   }
@@ -226,9 +234,15 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
             activityTitle,
             style: Theme.of(context).textTheme.titleLarge,
           ),
-          widget.activity.rating > 0
+          mood != null
+              ? Text(
+                  mood!,
+                  style: Theme.of(context).textTheme.labelLarge,
+                )
+              : const SizedBox(),
+          /*widget.activity.rating > 0
               ? Rating(rating: widget.activity.rating)
-              : SizedBox(),
+              : SizedBox(), */
         ],
       ),
     );

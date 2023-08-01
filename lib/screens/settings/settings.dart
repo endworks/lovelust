@@ -145,6 +145,10 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
           value: "lipstick",
           child: Text(AppLocalizations.of(context)!.lipstick)),
+      DropdownMenuItem(
+        value: "blue",
+        child: Text(AppLocalizations.of(context)!.blue),
+      ),
       /*DropdownMenuItem(
           value: "lustfullove",
           child: Text(AppLocalizations.of(context)!.lustfullove)),
@@ -154,9 +158,6 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
           value: "monochrome",
           child: Text(AppLocalizations.of(context)!.monochrome)),
-      DropdownMenuItem(
-          value: "experimental",
-          child: Text(AppLocalizations.of(context)!.experimental)),
     ];
     return menuItems;
   }
@@ -492,6 +493,26 @@ class _SettingsPageState extends State<SettingsPage> {
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),
+      SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.modernUI),
+        subtitle: Text(
+          AppLocalizations.of(context)!.modernUIDescription,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+        ),
+        value: _shared.modernUI,
+        onChanged: (bool value) {
+          setState(() {
+            _shared.modernUI = value;
+          });
+          reload();
+        },
+        secondary: Icon(
+          Icons.new_releases,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.clearPersonalData),
         subtitle: Text(
@@ -566,7 +587,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid) && !isiOSAppOnMac) {
       list.insert(
-        4,
+        5,
         ListTile(
           title: Text(AppLocalizations.of(context)!.appIcon),
           subtitle: appIconName,

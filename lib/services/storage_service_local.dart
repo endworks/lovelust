@@ -174,4 +174,20 @@ class StorageServiceLocal extends StorageService {
       return await _storage.delete(key: 'activity_filter');
     }
   }
+
+  @override
+  Future<bool> getModernUI() async {
+    debugPrint('getModernUI');
+    final persisted = await _storage.read(key: 'modern_ui');
+    if (persisted != null) {
+      return jsonDecode(persisted);
+    }
+    return true;
+  }
+
+  @override
+  Future<void> setModernUI(bool value) async {
+    debugPrint('setModernUI: ${value.toString()}');
+    return await _storage.write(key: 'modern_ui', value: jsonEncode(value));
+  }
 }

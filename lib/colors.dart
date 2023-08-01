@@ -11,14 +11,13 @@ get lovelustColor {
   return Color.fromARGB(255, red, green, blue);
 }
 
-const redlightColor = Color.fromARGB(255, 203, 0, 0);
+const lipstickColor = Color.fromARGB(255, 203, 0, 0);
 
 get lovelustMonoColor {
   return HSLColor.fromColor(lovelustColor).withSaturation(0).toColor();
 }
 
-const appleBlueColor = Color.fromARGB(255, 0, 122, 255);
-const appleBlueDarkColor = Color.fromARGB(255, 10, 132, 255);
+const blueColor = Color.fromARGB(255, 0, 122, 255);
 
 final Map<int, Color> blackColor = {
   50: const Color.fromRGBO(0, 0, 0, .1),

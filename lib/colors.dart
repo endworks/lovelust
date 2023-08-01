@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
-const loveColor =
-    Color.fromARGB(255, 246, 30, 109); // Color.fromARGB(255, 251, 35, 150);
-const lustColor =
-    Color.fromARGB(255, 185, 82, 197); // Color.fromARGB(255, 106, 47, 208);
+const loveColor = Color.fromARGB(255, 246, 30, 109);
+// Color.fromARGB(255, 251, 35, 150);
+const lustColor = Color.fromARGB(255, 185, 82, 197);
+// Color.fromARGB(255, 106, 47, 208);
+const lipstickColor = Color.fromARGB(255, 203, 0, 0);
+const blueColor = Color.fromARGB(255, 0, 122, 255);
+const shimapanColor = Color.fromARGB(255, 0, 176, 196);
+
 get lovelustColor {
   int red = ((loveColor.red + lustColor.red) / 2).floor();
   int green = ((loveColor.green + lustColor.green) / 2).floor();
@@ -11,13 +15,9 @@ get lovelustColor {
   return Color.fromARGB(255, red, green, blue);
 }
 
-const lipstickColor = Color.fromARGB(255, 203, 0, 0);
-
 get lovelustMonoColor {
   return HSLColor.fromColor(lovelustColor).withSaturation(0).toColor();
 }
-
-const blueColor = Color.fromARGB(255, 0, 122, 255);
 
 final Map<int, Color> blackColor = {
   50: const Color.fromRGBO(0, 0, 0, .1),

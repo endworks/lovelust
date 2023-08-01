@@ -133,9 +133,6 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "default",
           child: Text(AppLocalizations.of(context)!.defaultColorScheme)),
       DropdownMenuItem(
-          value: "dynamic",
-          child: Text(AppLocalizations.of(context)!.dynamicColorScheme)),
-      DropdownMenuItem(
           value: "lust", child: Text(AppLocalizations.of(context)!.lust)),
       DropdownMenuItem(
           value: "love", child: Text(AppLocalizations.of(context)!.love)),
@@ -145,6 +142,9 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
           value: "lipstick",
           child: Text(AppLocalizations.of(context)!.lipstick)),
+      DropdownMenuItem(
+          value: "shimapan",
+          child: Text(AppLocalizations.of(context)!.shimapan)),
       DropdownMenuItem(
         value: "blue",
         child: Text(AppLocalizations.of(context)!.blue),
@@ -159,6 +159,14 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "monochrome",
           child: Text(AppLocalizations.of(context)!.monochrome)),
     ];
+    if (!kIsWeb && Platform.isAndroid) {
+      menuItems.insert(
+        1,
+        DropdownMenuItem(
+            value: "dynamic",
+            child: Text(AppLocalizations.of(context)!.dynamicColorScheme)),
+      );
+    }
     return menuItems;
   }
 
@@ -494,22 +502,22 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       SwitchListTile(
-        title: Text(AppLocalizations.of(context)!.modernUI),
+        title: Text(AppLocalizations.of(context)!.material),
         subtitle: Text(
-          AppLocalizations.of(context)!.modernUIDescription,
+          AppLocalizations.of(context)!.materialDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
         ),
-        value: _shared.modernUI,
+        value: _shared.material,
         onChanged: (bool value) {
           setState(() {
-            _shared.modernUI = value;
+            _shared.material = value;
           });
           reload();
         },
         secondary: Icon(
-          Icons.new_releases,
+          Icons.android,
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),

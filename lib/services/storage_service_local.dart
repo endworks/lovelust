@@ -176,18 +176,18 @@ class StorageServiceLocal extends StorageService {
   }
 
   @override
-  Future<bool> getModernUI() async {
-    debugPrint('getModernUI');
-    final persisted = await _storage.read(key: 'modern_ui');
+  Future<bool> getMaterial() async {
+    debugPrint('getMaterial');
+    final persisted = await _storage.read(key: 'material');
     if (persisted != null) {
       return jsonDecode(persisted);
     }
-    return true;
+    return false;
   }
 
   @override
-  Future<void> setModernUI(bool value) async {
-    debugPrint('setModernUI: ${value.toString()}');
-    return await _storage.write(key: 'modern_ui', value: jsonEncode(value));
+  Future<void> setMaterial(bool value) async {
+    debugPrint('setMaterial: ${value.toString()}');
+    return await _storage.write(key: 'material', value: jsonEncode(value));
   }
 }

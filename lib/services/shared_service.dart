@@ -28,7 +28,7 @@ class SharedService extends ChangeNotifier {
 
   String _theme = 'system';
   String? _colorScheme;
-  bool _modernUI = true;
+  bool _material = false;
   String? _accessToken;
   String? _refreshToken;
   List<Activity> _activity = [];
@@ -54,7 +54,7 @@ class SharedService extends ChangeNotifier {
       _storage.getRequireAuth(),
       _storage.getCalendarView(),
       _storage.getActivityFilter(),
-      _storage.getModernUI(),
+      _storage.getMaterial(),
       findSystemLocale(),
       getAlternateIconName(),
       PackageInfo.fromPlatform(),
@@ -71,7 +71,7 @@ class SharedService extends ChangeNotifier {
     _requireAuth = result[7];
     _calendarView = result[8];
     _activityFilter = result[9];
-    _modernUI = result[10];
+    _material = result[10];
     Intl.systemLocale = result[11];
     _appIcon = result[12] ?? 'Default';
     packageInfo = result[13];
@@ -1058,13 +1058,13 @@ class SharedService extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool get modernUI {
-    return _modernUI;
+  bool get material {
+    return _material;
   }
 
-  set modernUI(bool value) {
-    _modernUI = value;
-    _storage.setModernUI(value);
+  set material(bool value) {
+    _material = value;
+    _storage.setMaterial(value);
     notifyListeners();
   }
 }

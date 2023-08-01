@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lovelust/colors.dart';
 
 ThemeData generateTheme(String? colorSchemeName,
-    {bool darkMode = false, bool modernUI = false, ColorScheme? colorScheme}) {
+    {bool darkMode = false, bool material = false, ColorScheme? colorScheme}) {
   Color seedColor = lovelustColor;
   if (colorSchemeName == "love") {
     seedColor = loveColor;
@@ -10,6 +10,8 @@ ThemeData generateTheme(String? colorSchemeName,
     seedColor = lustColor;
   } else if (colorSchemeName == "lipstick") {
     seedColor = lipstickColor;
+  } else if (colorSchemeName == "shimapan") {
+    seedColor = shimapanColor;
   } else if (colorSchemeName == "blue") {
     seedColor = blueColor;
   } else if (colorSchemeName == "monochrome") {
@@ -60,7 +62,7 @@ ThemeData generateTheme(String? colorSchemeName,
     titleSmall: defaultTextStyle,
   );
 
-  ThemeData defaultTheme = ThemeData(
+  ThemeData materialTheme = ThemeData(
     colorScheme: colorScheme,
     useMaterial3: true,
     brightness: darkMode ? Brightness.dark : Brightness.light,
@@ -79,14 +81,14 @@ ThemeData generateTheme(String? colorSchemeName,
         .merge(defaultTextTheme),
   );
 
-  ThemeData modernTheme = ThemeData(
+  ThemeData defaultTheme = ThemeData(
     colorScheme: colorScheme,
-    appBarTheme: defaultTheme.appBarTheme.copyWith(
+    appBarTheme: materialTheme.appBarTheme.copyWith(
       backgroundColor: colorScheme.background,
       surfaceTintColor: colorScheme.surfaceVariant,
       elevation: 0,
     ),
-    navigationBarTheme: defaultTheme.navigationBarTheme.copyWith(
+    navigationBarTheme: materialTheme.navigationBarTheme.copyWith(
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       // surfaceTintColor: experimentalColorScheme.surfaceVariant,
       elevation: 0,
@@ -94,29 +96,29 @@ ThemeData generateTheme(String? colorSchemeName,
       backgroundColor: colorScheme.surface,
       height: 56,
     ),
-    floatingActionButtonTheme: defaultTheme.floatingActionButtonTheme.copyWith(
+    floatingActionButtonTheme: materialTheme.floatingActionButtonTheme.copyWith(
       elevation: 0,
       backgroundColor: colorScheme.primaryContainer,
       foregroundColor: colorScheme.onPrimaryContainer,
       shape: const StadiumBorder(),
     ),
-    cardTheme: defaultTheme.cardTheme.copyWith(
+    cardTheme: materialTheme.cardTheme.copyWith(
       color: colorScheme.surface,
       // surfaceTintColor: experimentalColorScheme.surfaceVariant,
     ),
     chipTheme: ChipThemeData(
-      labelStyle: defaultTheme.textTheme.labelSmall!.copyWith(
-        color: defaultTheme.colorScheme.onSurface,
+      labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
+        color: materialTheme.colorScheme.onSurface,
       ),
-      backgroundColor: defaultTheme.colorScheme.surface,
+      backgroundColor: materialTheme.colorScheme.surface,
       side: BorderSide.none,
       shape: const StadiumBorder(),
     ),
-    textTheme: defaultTheme.textTheme,
+    textTheme: materialTheme.textTheme,
     useMaterial3: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
-  return modernUI ? modernTheme : defaultTheme;
+  return material ? materialTheme : defaultTheme;
 }
 /*
 ThemeData monochromeTheme = ThemeData(

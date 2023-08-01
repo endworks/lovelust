@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,12 +39,12 @@ class _AppState extends State<App> {
         ThemeData theme = generateTheme(
           _shared.colorScheme,
           darkMode: false,
-          modernUI: _shared.modernUI,
+          material: _shared.material,
         );
         ThemeData darkTheme = generateTheme(
           _shared.colorScheme,
           darkMode: true,
-          modernUI: _shared.modernUI,
+          material: _shared.material,
         );
         ThemeMode themeMode = ThemeMode.system;
 
@@ -57,25 +54,14 @@ class _AppState extends State<App> {
               theme = generateTheme(
                 null,
                 darkMode: false,
-                modernUI: _shared.modernUI,
+                material: _shared.material,
                 colorScheme: lightDynamic.harmonized(),
               );
               darkTheme = generateTheme(
                 null,
                 darkMode: true,
-                modernUI: _shared.modernUI,
+                material: _shared.material,
                 colorScheme: darkDynamic.harmonized(),
-              );
-            } else if (!kIsWeb && Platform.isIOS) {
-              theme = generateTheme(
-                "blue",
-                darkMode: false,
-                modernUI: _shared.modernUI,
-              );
-              darkTheme = generateTheme(
-                "blue",
-                darkMode: true,
-                modernUI: _shared.modernUI,
               );
             }
           }

@@ -23,6 +23,6 @@ abstract class StorageService {
   Future<void> setCalendarView(bool value);
   Future<String?> getActivityFilter();
   Future<void> setActivityFilter(String? value);
-  Future<bool> getModernUI();
-  Future<void> setModernUI(bool value);
+  Future<bool> getMaterial();
+  Future<void> setMaterial(bool value);
 }

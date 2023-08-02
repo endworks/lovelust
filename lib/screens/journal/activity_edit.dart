@@ -343,7 +343,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   child: DropdownButtonFormField(
                     value: _partner,
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
                       labelText: AppLocalizations.of(context)!.partner,
                     ),
                     items: partnerDropdownMenuEntries,
@@ -369,7 +368,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   child: DropdownButtonFormField(
                     value: _birthControl,
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
                       labelText: AppLocalizations.of(context)!.birthControl,
                     ),
                     items: birthControlDropdownMenuEntries,
@@ -395,7 +393,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   child: DropdownButtonFormField(
                     value: _partnerBirthControl,
                     decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
                       labelText:
                           AppLocalizations.of(context)!.partnerBirthControl,
                     ),
@@ -441,7 +438,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     child: DropdownButtonFormField(
                       value: _initiator,
                       decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
                         labelText: AppLocalizations.of(context)!.initiator,
                       ),
                       items: initiatorDropdownMenuEntries,
@@ -464,21 +460,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       }
 
       fields.addAll([
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.rating),
-          leading: Icon(
-            Icons.star_half,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          trailing: RatingSelect(
-            rating: int.parse(_ratingController.value.text),
-            onRatingUpdate: (value) => setState(
-              () => _ratingController.value = TextEditingValue(
-                text: value.toString(),
-              ),
-            ),
-          ),
-        ),
         ListTile(
           title: Text(AppLocalizations.of(context)!.mood),
           leading: Icon(
@@ -531,6 +512,21 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           titleAlignment: ListTileTitleAlignment.top,
         ),
         ListTile(
+          title: Text(AppLocalizations.of(context)!.rating),
+          leading: Icon(
+            Icons.star_half,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+          trailing: RatingSelect(
+            rating: int.parse(_ratingController.value.text),
+            onRatingUpdate: (value) => setState(
+              () => _ratingController.value = TextEditingValue(
+                text: value.toString(),
+              ),
+            ),
+          ),
+        ),
+        ListTile(
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -542,7 +538,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.duration,
                   ),
                 ),
@@ -566,7 +561,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.orgasms,
                   ),
                 ),
@@ -590,7 +584,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     FilteringTextInputFormatter.digitsOnly
                   ],
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.partnerOrgasms,
                   ),
                 ),
@@ -610,7 +603,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 child: DropdownButtonFormField(
                   value: _place,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.place,
                   ),
                   items: placeDropdownMenuEntries,
@@ -636,7 +628,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 child: TextField(
                   controller: _locationController,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.location,
                   ),
                 ),
@@ -657,7 +648,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   controller: _notesController,
                   maxLines: 1,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.notes,
                   ),
                 ),

@@ -220,7 +220,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               child: TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
                   labelText: AppLocalizations.of(context)!.name,
                 ),
               ),
@@ -240,7 +239,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               child: DropdownButtonFormField(
                 value: _gender,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
                   labelText: AppLocalizations.of(context)!.gender,
                 ),
                 items: genderDropdownMenuEntries,
@@ -263,7 +261,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
               child: DropdownButtonFormField(
                 value: _sex,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
                   labelText: AppLocalizations.of(context)!.sex,
                 ),
                 items: biologicalSexDropdownMenuEntries,
@@ -298,7 +295,6 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 controller: _notesController,
                 maxLines: 1,
                 decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
                   labelText: AppLocalizations.of(context)!.notes,
                 ),
               ),

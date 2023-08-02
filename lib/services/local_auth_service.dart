@@ -10,6 +10,7 @@ class LocalAuthService {
   List<BiometricType>? availableBiometrics;
   String authorizedMsg = 'Not Authorized';
   bool isAuthenticating = false;
+  bool authenticationFailed = false;
   bool authorized = false;
 
   void init() {
@@ -18,6 +19,11 @@ class LocalAuthService {
               ? AuthSupportState.supported
               : AuthSupportState.unsupported,
         );
+    checkBiometrics().then(
+      (value) => getAvailableBiometrics().then(
+        (value) => null,
+      ),
+    );
   }
 
   Future<void> checkBiometrics() async {
@@ -38,25 +44,25 @@ class LocalAuthService {
     }
   }
 
-  Future<void> authenticate() async {
+  Future<void> authenticate(String localizedReason) async {
     bool authenticated = false;
     try {
       isAuthenticating = true;
       authorizedMsg = 'Authenticating';
 
       authenticated = await auth.authenticate(
-        localizedReason: 'Let OS determine authentication method',
+        localizedReason: localizedReason,
         options: const AuthenticationOptions(
           stickyAuth: true,
         ),
       );
 
+      authenticationFailed = false;
       isAuthenticating = false;
     } on PlatformException catch (e) {
-      debugPrint(e.toString());
-
       isAuthenticating = false;
-      authorizedMsg = 'Error - ${e.message}';
+      authenticationFailed = true;
+      authorizedMsg = e.message!;
       authorized = false;
       return;
     }

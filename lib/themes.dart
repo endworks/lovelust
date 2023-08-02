@@ -83,6 +83,9 @@ ThemeData generateTheme(String? colorSchemeName,
       shadowColor: Colors.transparent,
       clipBehavior: Clip.antiAlias,
     ),
+    inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(),
+    ),
     textTheme: (darkMode
             ? Typography.material2021().white
             : Typography.material2021().black)
@@ -112,16 +115,42 @@ ThemeData generateTheme(String? colorSchemeName,
       // shape: const StadiumBorder(),
     ),
     cardTheme: materialTheme.cardTheme.copyWith(
-      color: colorScheme.surface,
-      // surfaceTintColor: experimentalColorScheme.surfaceVariant,
-    ),
+        color: colorScheme.surface,
+        elevation: 1,
+        shape: const OutlineInputBorder(
+          borderSide: BorderSide.none,
+          borderRadius: BorderRadius.all(
+            Radius.circular(16),
+          ),
+        )
+        // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+        ),
     chipTheme: ChipThemeData(
       labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
-        color: materialTheme.colorScheme.onSurface,
+        color: colorScheme.onSurface,
       ),
-      backgroundColor: materialTheme.colorScheme.surface,
-      side: BorderSide.none,
+      secondaryLabelStyle: materialTheme.textTheme.labelSmall!.copyWith(
+        color: colorScheme.onSurface,
+      ),
+      backgroundColor: colorScheme.surface,
+      //selectedColor: colorScheme.primary,
+      // secondarySelectedColor: colorScheme.onPrimary,
+      // side: BorderSide.none,
       shape: const StadiumBorder(),
+    ),
+    inputDecorationTheme: materialTheme.inputDecorationTheme.copyWith(
+      border: const UnderlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
+      fillColor: colorScheme.onInverseSurface,
+      filled: true,
+      isDense: true,
+    ),
+    switchTheme: materialTheme.switchTheme.copyWith(
+      trackOutlineColor: const MaterialStatePropertyAll(Colors.transparent),
     ),
     textTheme: materialTheme.textTheme,
     useMaterial3: true,

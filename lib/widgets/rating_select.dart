@@ -17,7 +17,7 @@ class _RatingSelectState extends State<RatingSelect> {
     List<Widget> container = [];
     Icon star = Icon(
       Icons.star,
-      color: Theme.of(context).colorScheme.secondary,
+      color: Theme.of(context).colorScheme.primary,
     );
     Icon starEmpty = Icon(
       Icons.star_border,

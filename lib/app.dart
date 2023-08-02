@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:lovelust/home.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/themes.dart';
@@ -20,12 +21,14 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   final SharedService _shared = getIt<SharedService>();
+  final LocalAuthService _localAuth = getIt<LocalAuthService>();
   final NavigationService _navigator = getIt<NavigationService>();
 
   @override
   void initState() {
     super.initState();
     initializeDateFormatting();
+    _localAuth.init();
   }
 
   @override
@@ -65,31 +68,6 @@ class _AppState extends State<App> {
               );
             }
           }
-          /* else if (_shared.colorScheme == 'experimental') {
-            theme = experimentalTheme;
-            darkTheme = experimentalDarkTheme;
-          } else if (_shared.colorScheme == 'lovelust') {
-            theme = lovelustTheme;
-            darkTheme = lovelustDarkTheme;
-          } else if (_shared.colorScheme == 'lustfullove') {
-            theme = lustfulLoveTheme;
-            darkTheme = lustfulLoveDarkTheme;
-          } else if (_shared.colorScheme == 'lovefullust') {
-            theme = lovefulLustTheme;
-            darkTheme = lovefulLustDarkTheme;
-          } else if (_shared.colorScheme == 'love') {
-            theme = loveTheme;
-            darkTheme = loveDarkTheme;
-          } else if (_shared.colorScheme == 'lust') {
-            theme = lustTheme;
-            darkTheme = lustDarkTheme;
-          } else if (_shared.colorScheme == 'lipstick') {
-            theme = lipstickTheme;
-            darkTheme = lipstickDarkTheme;
-          } else if (_shared.colorScheme == 'monochrome') {
-            theme = monochromeTheme;
-            darkTheme = monochromeDarkTheme;
-          }*/
 
           if (_shared.theme == 'light') {
             themeMode = ThemeMode.light;

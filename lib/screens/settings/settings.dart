@@ -451,7 +451,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void toggleRequireAuth(bool value) {
-    _localAuth.authenticate().then(
+    _localAuth
+        .authenticate(AppLocalizations.of(context)!.requireAuthToConfirm)
+        .then(
       (_) {
         if (_localAuth.authorized) {
           setState(() {

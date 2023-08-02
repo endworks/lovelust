@@ -16,6 +16,7 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -24,6 +25,7 @@ import 'package:relative_time/relative_time.dart';
 class SharedService extends ChangeNotifier {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
+  final LocalAuthService _localAuth = getIt<LocalAuthService>();
   final NavigationService _navigator = getIt<NavigationService>();
 
   String _theme = 'system';
@@ -37,9 +39,10 @@ class SharedService extends ChangeNotifier {
   bool _requireAuth = false;
   bool _calendarView = false;
   String? _activityFilter;
-  bool _authorized = false;
+  bool _protected = false;
   String _appIcon = 'Default';
   PackageInfo? packageInfo;
+  AppLifecycleState appLifecycleState = AppLifecycleState.inactive;
 
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
@@ -160,6 +163,30 @@ class SharedService extends ChangeNotifier {
         WidgetKit.reloadAllTimelines();
       }
     }
+  }
+
+  appLifecycleStateChanged(AppLifecycleState state) {
+    debugPrint(state.name);
+    appLifecycleState = state;
+    if (state == AppLifecycleState.inactive) {
+      if (requireAuth || privacyMode) {
+        if (!isAuthenticating) {
+          protected = true;
+        }
+      }
+    }
+    if (state == AppLifecycleState.resumed) {
+      if (!requireAuth || privacyMode) {
+        protected = false;
+      }
+    }
+    if (state == AppLifecycleState.paused) {
+      if (requireAuth) {
+        authorized = false;
+        _localAuth.authenticationFailed = false;
+      }
+    }
+    updateWidgets();
   }
 
   bool get isLoggedIn {
@@ -1050,11 +1077,29 @@ class SharedService extends ChangeNotifier {
   }
 
   bool get authorized {
-    return _authorized;
+    return _localAuth.authorized;
   }
 
   set authorized(bool value) {
-    _authorized = value;
+    _localAuth.authorized = value;
+    notifyListeners();
+  }
+
+  bool get isAuthenticating {
+    return _localAuth.isAuthenticating;
+  }
+
+  set isAuthenticating(bool value) {
+    _localAuth.isAuthenticating = value;
+    notifyListeners();
+  }
+
+  bool get protected {
+    return _protected;
+  }
+
+  set protected(bool value) {
+    _protected = value;
     notifyListeners();
   }
 

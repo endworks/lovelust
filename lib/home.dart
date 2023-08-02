@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lovelust/models/destination.dart';
-import 'package:lovelust/screens/home/auth.dart';
+import 'package:lovelust/screens/home/protected.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
 import 'package:lovelust/screens/settings/settings.dart';
@@ -22,9 +22,9 @@ class _HomeState extends State<Home>
     with RestorationMixin, WidgetsBindingObserver {
   final SharedService _shared = getIt<SharedService>();
   final RestorableInt _selectedIndex = RestorableInt(0);
+  bool _protected = false;
   bool _showDesktopNavigation = false;
   bool _centerDesktopNavigation = false;
-  bool _authorized = false;
 
   @override
   void initState() {
@@ -43,13 +43,7 @@ class _HomeState extends State<Home>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    debugPrint(state.toString());
-    if (state == AppLifecycleState.inactive) {
-      setState(() {
-        _shared.authorized = false;
-        _shared.updateWidgets();
-      });
-    }
+    _shared.appLifecycleStateChanged(state);
   }
 
   @override
@@ -62,7 +56,7 @@ class _HomeState extends State<Home>
   void updateSharedState() {
     if (mounted) {
       setState(() {
-        _authorized = _shared.authorized;
+        _protected = _shared.protected;
       });
     }
   }
@@ -147,48 +141,56 @@ class _HomeState extends State<Home>
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> stacked = [];
+
+    stacked.add(
+      Scaffold(
+        body: _showDesktopNavigation
+            ? Row(
+                children: <Widget>[
+                  NavigationRail(
+                    selectedIndex: _selectedIndex.value,
+                    labelType: labelTypeFromTheme,
+                    groupAlignment: _centerDesktopNavigation ? 0 : -1,
+                    onDestinationSelected: (int index) {
+                      setState(() {
+                        _selectedIndex.value = index;
+                      });
+                    },
+                    destinations: _navigationRailDestinations,
+                  ),
+                  const VerticalDivider(thickness: 1, width: 1),
+                  // This is the main content.
+                  Expanded(
+                    child: _selectedPage,
+                  ),
+                ],
+              )
+            : _selectedPage,
+        bottomNavigationBar: !_showDesktopNavigation
+            ? NavigationBar(
+                selectedIndex: _selectedIndex.value,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    _selectedIndex.value = index;
+                  });
+                },
+                destinations: _navigationDestinations,
+              )
+            : null,
+      ),
+    );
+
     if (widget.initialLoadDone) {
-      if (_shared.requireAuth && !_authorized) {
-        return const LocalAuthPage();
+      if (_protected) {
+        stacked.add(const ProtectedPage());
       } else {
         FlutterNativeSplash.remove();
       }
     }
 
-    return Scaffold(
-      body: _showDesktopNavigation
-          ? Row(
-              children: <Widget>[
-                NavigationRail(
-                  selectedIndex: _selectedIndex.value,
-                  labelType: labelTypeFromTheme,
-                  groupAlignment: _centerDesktopNavigation ? 0 : -1,
-                  onDestinationSelected: (int index) {
-                    setState(() {
-                      _selectedIndex.value = index;
-                    });
-                  },
-                  destinations: _navigationRailDestinations,
-                ),
-                const VerticalDivider(thickness: 1, width: 1),
-                // This is the main content.
-                Expanded(
-                  child: _selectedPage,
-                ),
-              ],
-            )
-          : _selectedPage,
-      bottomNavigationBar: !_showDesktopNavigation
-          ? NavigationBar(
-              selectedIndex: _selectedIndex.value,
-              onDestinationSelected: (int index) {
-                setState(() {
-                  _selectedIndex.value = index;
-                });
-              },
-              destinations: _navigationDestinations,
-            )
-          : null,
+    return Stack(
+      children: stacked,
     );
   }
 

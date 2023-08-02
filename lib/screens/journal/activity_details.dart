@@ -201,7 +201,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                       Rating(rating: _activity.rating),
                     ],
                   )
-                : SizedBox()
+                : const SizedBox()
           ],
         ),
         titleAlignment: ListTileTitleAlignment.top,

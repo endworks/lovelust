@@ -186,9 +186,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     if (widget.activity.mood == null) {
       return null;
     }
-    String emoji = SharedService.getMoodEmoji(widget.activity.mood);
-    String text = SharedService.getMoodTranslation(widget.activity.mood);
-    return text;
+    return SharedService.getMoodTranslation(widget.activity.mood);
   }
 
   TextStyle secondaryTextStyle() {

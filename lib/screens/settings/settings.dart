@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lovelust/screens/settings/login_dialog.dart';
+import 'package:lovelust/screens/settings/select_app_icon.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/shared_service.dart';
@@ -366,7 +366,15 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _askAppIcon() {
-    return showDialog<String>(
+    Navigator.of(context).push(
+      MaterialPageRoute<Widget>(
+        fullscreenDialog: true,
+        builder: (BuildContext context) => const SelectAppIconPage(),
+      ),
+    );
+    return Future.value(null);
+
+    /*return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -416,7 +424,7 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         }
       }
-    });
+    });*/
   }
 
   _handleLogin() {

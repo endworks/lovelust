@@ -103,7 +103,7 @@ class SharedService extends ChangeNotifier {
         try {
           Activity? lastSexualIntercourse = activity.firstWhere(
               (element) => element.type == ActivityType.sexualIntercourse);
-          Partner? partner = null;
+          Partner? partner;
           if (lastSexualIntercourse.partner != null) {
             partner = getPartnerById(lastSexualIntercourse.partner!);
           }

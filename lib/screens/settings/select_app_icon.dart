@@ -121,8 +121,23 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
           (e) => ListTile(
             title: e.child,
             onTap: () => onChanged(e.value),
-            leading: Image(
-              image: AssetImage("assets/AppIcons/${e.value}.png"),
+            leading: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: Theme.of(context).colorScheme.outlineVariant,
+                  ),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(11.0),
+                  child: Image(
+                    image: AssetImage("assets/AppIcons/${e.value}.png"),
+                  ),
+                ),
+              ),
             ),
             trailing: Radio<String>.adaptive(
               value: e.value!,

@@ -78,7 +78,8 @@ class _ProtectedPageState extends State<ProtectedPage> {
     authenticate();
 
     return Scaffold(
-        backgroundColor: Colors.black54,
+        backgroundColor:
+            Theme.of(context).colorScheme.background.withAlpha(128),
         body: Stack(
           children: [
             BackdropFilter(

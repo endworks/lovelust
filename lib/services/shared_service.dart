@@ -176,7 +176,7 @@ class SharedService extends ChangeNotifier {
       }
     }
     if (state == AppLifecycleState.resumed) {
-      if (!requireAuth || privacyMode) {
+      if (!requireAuth || privacyMode || authorized) {
         protected = false;
       }
     }

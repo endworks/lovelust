@@ -228,8 +228,8 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Text(AppLocalizations.of(context)!.pride),
       ),
       DropdownMenuItem(
-        value: "PrideAlt",
-        child: Text(AppLocalizations.of(context)!.prideAlt),
+        value: "PrideRainbow",
+        child: Text(AppLocalizations.of(context)!.prideRainbow),
       ),
       DropdownMenuItem(
         value: "White",

@@ -41,9 +41,32 @@ class _NoContentState extends State<NoContent> {
               textAlign: TextAlign.center,
             ),
             widget.action != null
-                ? FilledButton.tonal(
-                    onPressed: widget.action,
-                    child: Text(widget.actionLabel ?? 'Retry'),
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 32.0),
+                    child: FilledButton.tonal(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                          Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6),
+                        ),
+                        side: MaterialStateBorderSide.resolveWith(
+                          (states) => BorderSide(
+                            width: 1,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSurface
+                                .withOpacity(0.6),
+                          ),
+                        ),
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.transparent,
+                        ),
+                      ),
+                      onPressed: widget.action,
+                      child: Text(widget.actionLabel ?? 'Retry'),
+                    ),
                   )
                 : const SizedBox()
           ],

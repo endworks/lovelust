@@ -54,7 +54,12 @@ class _ProtectedPageState extends State<ProtectedPage> {
           .then((_) {
         setState(() {
           _icon = Icons.error_outline;
-          _message = _localAuth.authorizedMsg;
+          if (_localAuth.authorizedMsg.endsWith(".")) {
+            _message = _localAuth.authorizedMsg
+                .substring(0, _localAuth.authorizedMsg.length - 1);
+          } else {
+            _message = _localAuth.authorizedMsg;
+          }
           _shared.protected = !_shared.authorized;
         });
       });
@@ -78,25 +83,33 @@ class _ProtectedPageState extends State<ProtectedPage> {
     authenticate();
 
     return Scaffold(
-        backgroundColor:
-            Theme.of(context).colorScheme.background.withAlpha(128),
-        body: Stack(
-          children: [
-            BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 8,
-                sigmaY: 8,
-              ),
-              child: NoContent(
-                icon: _icon ?? Icons.visibility_off_outlined,
-                message:
-                    _message ?? AppLocalizations.of(context)!.contentHidden,
-                action:
-                    _localAuth.authenticationFailed ? retryAuthenticate : null,
-                actionLabel: AppLocalizations.of(context)!.authRetry,
-              ),
-            ),
-          ],
-        ));
+      backgroundColor: Colors
+          .transparent, // Theme.of(context).colorScheme.background.withAlpha(128),
+      body: Stack(
+        children: [
+          TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: 16.0),
+            duration: const Duration(milliseconds: 200),
+            builder: (_, value, child) {
+              return BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: value,
+                  sigmaY: value,
+                ),
+                child: NoContent(
+                  icon: _icon ?? Icons.visibility_off_outlined,
+                  message: _message ??
+                      AppLocalizations.of(context)!.sensitiveContent,
+                  action: _localAuth.authenticationFailed
+                      ? retryAuthenticate
+                      : null,
+                  actionLabel: AppLocalizations.of(context)!.authRetry,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

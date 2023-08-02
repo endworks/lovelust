@@ -29,6 +29,7 @@ class _HomeState extends State<Home>
   @override
   void initState() {
     super.initState();
+    _protected = _shared.protected;
     WidgetsBinding.instance.addObserver(this);
     _shared.addListener(updateSharedState);
   }

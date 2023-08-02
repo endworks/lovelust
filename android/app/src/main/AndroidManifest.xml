@@ -152,9 +152,9 @@
 
         <activity-alias
             android:enabled="false"
-            android:name=".PrideAlt"
+            android:name=".PrideRainbow"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_pride_alt"
+            android:icon="@mipmap/ic_launcher_pride_rainbow"
             android:exported="true">
 
             <intent-filter>

@@ -84,18 +84,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
         child: Text(AppLocalizations.of(context)!.neon),
       ),
       DropdownMenuItem(
-        value: "Health",
-        child: Text(AppLocalizations.of(context)!.health),
-      ),
-      DropdownMenuItem(
-        value: "Pride",
-        child: Text(AppLocalizations.of(context)!.pride),
-      ),
-      DropdownMenuItem(
-        value: "PrideAlt",
-        child: Text(AppLocalizations.of(context)!.prideAlt),
-      ),
-      DropdownMenuItem(
         value: "White",
         child: Text(AppLocalizations.of(context)!.white),
       ),
@@ -108,8 +96,20 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
         child: Text(AppLocalizations.of(context)!.monochrome),
       ),
       DropdownMenuItem(
+        value: "Health",
+        child: Text(AppLocalizations.of(context)!.health),
+      ),
+      DropdownMenuItem(
         value: "Sexapill",
         child: Text(AppLocalizations.of(context)!.sexapill),
+      ),
+      DropdownMenuItem(
+        value: "Pride",
+        child: Text(AppLocalizations.of(context)!.pride),
+      ),
+      DropdownMenuItem(
+        value: "PrideRainbow",
+        child: Text(AppLocalizations.of(context)!.prideRainbow),
       ),
     ];
     return menuItems;
@@ -122,24 +122,24 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
             title: e.child,
             onTap: () => onChanged(e.value),
             leading: Padding(
-              padding: const EdgeInsets.all(1.0),
+              padding: const EdgeInsets.all(2.0),
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 1,
-                    color: Theme.of(context).colorScheme.outlineVariant,
+                    color: const Color.fromARGB(64, 128, 128, 128),
                   ),
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(11.0),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(11.0),
+                  borderRadius: BorderRadius.circular(10.0),
                   child: Image(
                     image: AssetImage("assets/AppIcons/${e.value}.png"),
                   ),
                 ),
               ),
             ),
-            trailing: Radio<String>.adaptive(
+            trailing: Radio<String>(
               value: e.value!,
               groupValue: selectedAppIcon,
               onChanged: onChanged,

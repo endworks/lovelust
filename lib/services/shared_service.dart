@@ -79,6 +79,12 @@ class SharedService extends ChangeNotifier {
     _appIcon = result[12] ?? 'Default';
     packageInfo = result[13];
 
+    debugPrint("_requireAuth: $_requireAuth");
+    if (_requireAuth) {
+      _protected = true;
+      debugPrint("_protected: $_protected");
+    }
+
     updateWidgets();
   }
 

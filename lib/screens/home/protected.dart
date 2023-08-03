@@ -89,7 +89,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
         children: [
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0.0, end: 16.0),
-            duration: const Duration(milliseconds: 100),
+            duration: const Duration(milliseconds: 30),
             builder: (_, value, child) {
               return BackdropFilter(
                 filter: ImageFilter.blur(

@@ -5,5 +5,8 @@
  <color name="black">#000000</color>
  <color name="pink">#f61e6f</color>
  <color name="purple">#b952c5</color>
+ <color name="red">#d10000</color>
+ <color name="blue">#007aff</color>
+ <color name="turquoise">#00b0c4</color>
  <color name="neon">#160f30</color>
 </resources>

@@ -86,10 +86,6 @@ ThemeData generateTheme(String? colorSchemeName,
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
-    textTheme: (darkMode
-            ? Typography.material2021().white
-            : Typography.material2021().black)
-        .merge(defaultTextTheme),
   );
 
   ThemeData defaultTheme = ThemeData(
@@ -164,7 +160,10 @@ ThemeData generateTheme(String? colorSchemeName,
     radioTheme: materialTheme.radioTheme.copyWith(
       fillColor: MaterialStatePropertyAll(colorScheme.primary),
     ),
-    textTheme: materialTheme.textTheme,
+    textTheme: (darkMode
+            ? Typography.material2021().white
+            : Typography.material2021().black)
+        .merge(defaultTextTheme),
     useMaterial3: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );

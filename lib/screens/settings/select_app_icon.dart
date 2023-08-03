@@ -80,15 +80,23 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
       ),
       DropdownMenuItem(
         value: "Pink",
-        child: Text(AppLocalizations.of(context)!.pink),
+        child: Text(AppLocalizations.of(context)!.love),
       ),
       DropdownMenuItem(
         value: "Purple",
-        child: Text(AppLocalizations.of(context)!.purple),
+        child: Text(AppLocalizations.of(context)!.lust),
       ),
       DropdownMenuItem(
-        value: "Neon",
-        child: Text(AppLocalizations.of(context)!.neon),
+        value: "Red",
+        child: Text(AppLocalizations.of(context)!.lipstick),
+      ),
+      DropdownMenuItem(
+        value: "Blue",
+        child: Text(AppLocalizations.of(context)!.blue),
+      ),
+      DropdownMenuItem(
+        value: "Turquoise",
+        child: Text(AppLocalizations.of(context)!.shimapan),
       ),
       DropdownMenuItem(
         value: "White",
@@ -99,16 +107,8 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
         child: Text(AppLocalizations.of(context)!.black),
       ),
       DropdownMenuItem(
-        value: "Monochrome",
-        child: Text(AppLocalizations.of(context)!.monochrome),
-      ),
-      DropdownMenuItem(
-        value: "Health",
-        child: Text(AppLocalizations.of(context)!.health),
-      ),
-      DropdownMenuItem(
-        value: "Sexapill",
-        child: Text(AppLocalizations.of(context)!.sexapill),
+        value: "Neon",
+        child: Text(AppLocalizations.of(context)!.neon),
       ),
       DropdownMenuItem(
         value: "Pride",
@@ -117,6 +117,38 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
       DropdownMenuItem(
         value: "PrideRainbow",
         child: Text(AppLocalizations.of(context)!.prideRainbow),
+      ),
+      DropdownMenuItem(
+        value: "PrideClassic",
+        child: Text(AppLocalizations.of(context)!.prideClassic),
+      ),
+      DropdownMenuItem(
+        value: "PrideBi",
+        child: Text(AppLocalizations.of(context)!.prideBi),
+      ),
+      DropdownMenuItem(
+        value: "PrideTrans",
+        child: Text(AppLocalizations.of(context)!.prideTrans),
+      ),
+      DropdownMenuItem(
+        value: "PrideAce",
+        child: Text(AppLocalizations.of(context)!.prideAce),
+      ),
+      DropdownMenuItem(
+        value: "AltWhite",
+        child: Text(AppLocalizations.of(context)!.altWhite),
+      ),
+      DropdownMenuItem(
+        value: "AltBlack",
+        child: Text(AppLocalizations.of(context)!.altBlack),
+      ),
+      DropdownMenuItem(
+        value: "Health",
+        child: Text(AppLocalizations.of(context)!.health),
+      ),
+      DropdownMenuItem(
+        value: "Sexapill",
+        child: Text(AppLocalizations.of(context)!.sexapill),
       ),
     ];
     return menuItems;

@@ -181,6 +181,7 @@ struct DaysSinceEntryView : View {
             widgetForeground = .orange
         }
         
+
         fontDays = Font.system(size: 64)
         fontTitle = Font.system(size: 24)
         fontSubtitle = Font.system(size: 8)
@@ -214,7 +215,6 @@ struct DaysSinceEntryView : View {
                     .font(fontSubtitle)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
-                    .textCase(.uppercase)
                     .foregroundColor(widgetForegroundSubtitle)
             }
         }

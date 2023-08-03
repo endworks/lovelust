@@ -79,7 +79,7 @@ class SharedService extends ChangeNotifier {
     _appIcon = result[12] ?? 'Default';
     packageInfo = result[13];
 
-    if (_requireAuth) {
+    if (_requireAuth && !authorized) {
       _protected = true;
     }
 

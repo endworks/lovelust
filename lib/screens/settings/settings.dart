@@ -630,7 +630,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (_shared.isLoggedIn) {
       list.insert(
-        list.length - 1,
+        list.length - 2,
         ListTile(
           title: Text(AppLocalizations.of(context)!.initialFetch),
           subtitle: Text(
@@ -651,7 +651,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid) && !isiOSAppOnMac) {
       list.insert(
-        4,
+        list.length - 4,
         ListTile(
           title: Text(AppLocalizations.of(context)!.appIcon),
           subtitle: appIconName,

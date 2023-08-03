@@ -6,8 +6,8 @@ import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_widgetkit/flutter_widgetkit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/models/activity.dart';
@@ -101,71 +101,98 @@ class SharedService extends ChangeNotifier {
 
   updateWidgets() {
     if (!kIsWeb) {
-      if (Platform.isIOS) {
-        BuildContext context = _navigator.navigatorKey.currentContext!;
+      HomeWidget.setAppGroupId('group.LoveLust');
+      BuildContext context = _navigator.navigatorKey.currentContext!;
 
-        try {
-          Activity? lastSexualIntercourse = activity.firstWhere(
-              (element) => element.type == ActivityType.sexualIntercourse);
-          Partner? partner;
-          if (lastSexualIntercourse.partner != null) {
-            partner = getPartnerById(lastSexualIntercourse.partner!);
-          }
-          ActivitySafety safety = calculateSafety(lastSexualIntercourse);
-          String safetyValue;
-          String safetyString;
-          switch (safety) {
-            case ActivitySafety.safe:
-              safetyValue = "SAFE";
-              safetyString = AppLocalizations.of(context)!.safeSex;
-              break;
-            case ActivitySafety.unsafe:
-              safetyValue = "UNSAFE";
-              safetyString = AppLocalizations.of(context)!.unsafeSex;
-              break;
-            default:
-              safetyValue = "PARTIALLY_UNSAFE";
-              safetyString = AppLocalizations.of(context)!.partiallyUnsafeSex;
-          }
-
-          ActivityWidgetData widgetData = ActivityWidgetData(
-            activity: lastSexualIntercourse,
-            partner: partner,
-            safety: safetyValue,
-            partnerString: partner != null
-                ? partner.name
-                : AppLocalizations.of(context)!.unknownPartner,
-            safetyString: safetyString,
-            dateString: RelativeTime(context, numeric: true)
-                .format(lastSexualIntercourse.date),
-            dayString:
-                DateFormat(DateFormat.DAY).format(lastSexualIntercourse.date),
-            weekdayString: DateFormat(DateFormat.WEEKDAY)
-                .format(lastSexualIntercourse.date),
-            placeString: getPlaceTranslation(lastSexualIntercourse.place),
-            contraceptiveString:
-                getContraceptiveTranslation(lastSexualIntercourse.birthControl),
-            partnerContraceptiveString: getContraceptiveTranslation(
-                lastSexualIntercourse.partnerBirthControl),
-            moodString: getMoodTranslation(lastSexualIntercourse.mood),
-            moodEmoji: getMoodEmoji(lastSexualIntercourse.mood),
-            feelingsStrings: [],
-          );
-
-          WidgetKit.setItem(
-            'lastSexualIntercourse',
-            jsonEncode(widgetData),
-            'group.LoveLust',
-          );
-        } catch (e) {
-          WidgetKit.removeItem(
-            'lastSexualIntercourse',
-            'group.LoveLust',
-          );
+      try {
+        Activity? lastSexualIntercourse = activity.firstWhere(
+            (element) => element.type == ActivityType.sexualIntercourse);
+        Partner? partner;
+        if (lastSexualIntercourse.partner != null) {
+          partner = getPartnerById(lastSexualIntercourse.partner!);
+        }
+        ActivitySafety safety = calculateSafety(lastSexualIntercourse);
+        String safetyValue;
+        String safetyString;
+        switch (safety) {
+          case ActivitySafety.safe:
+            safetyValue = "SAFE";
+            safetyString = AppLocalizations.of(context)!.safeSex;
+            break;
+          case ActivitySafety.unsafe:
+            safetyValue = "UNSAFE";
+            safetyString = AppLocalizations.of(context)!.unsafeSex;
+            break;
+          default:
+            safetyValue = "PARTIALLY_UNSAFE";
+            safetyString = AppLocalizations.of(context)!.partiallyUnsafeSex;
         }
 
-        WidgetKit.reloadAllTimelines();
+        ActivityWidgetData widgetData = ActivityWidgetData(
+          activity: lastSexualIntercourse,
+          partner: partner,
+          safety: safetyValue,
+          partnerString: partner != null
+              ? partner.name
+              : AppLocalizations.of(context)!.unknownPartner,
+          safetyString: safetyString,
+          dateString: RelativeTime(context, numeric: true)
+              .format(lastSexualIntercourse.date),
+          dayString:
+              DateFormat(DateFormat.DAY).format(lastSexualIntercourse.date),
+          weekdayString:
+              DateFormat(DateFormat.WEEKDAY).format(lastSexualIntercourse.date),
+          placeString: getPlaceTranslation(lastSexualIntercourse.place),
+          contraceptiveString:
+              getContraceptiveTranslation(lastSexualIntercourse.birthControl),
+          partnerContraceptiveString: getContraceptiveTranslation(
+              lastSexualIntercourse.partnerBirthControl),
+          moodString: getMoodTranslation(lastSexualIntercourse.mood),
+          moodEmoji: getMoodEmoji(lastSexualIntercourse.mood),
+          feelingsStrings: [],
+        );
+
+        HomeWidget.saveWidgetData<String>(
+          'lastSexualIntercourse',
+          jsonEncode(widgetData),
+        ).then((value) {
+          Future.wait([
+            HomeWidget.updateWidget(
+              iOSName: "LastActivity",
+            ),
+            HomeWidget.updateWidget(
+              iOSName: "DaysSince",
+            )
+          ]).then((value) => debugPrint("update widget data"));
+        });
+      } catch (e) {
+        HomeWidget.saveWidgetData(
+          'lastSexualIntercourse',
+          null,
+        ).then((value) {
+          Future.wait([
+            HomeWidget.updateWidget(
+              iOSName: "LastActivity",
+            ),
+            HomeWidget.updateWidget(
+              iOSName: "DaysSince",
+            )
+          ]).then((value) => debugPrint("delete widget data"));
+        });
       }
+    }
+  }
+
+  void launchedFromWidget(Uri? uri) {
+    if (uri != null) {
+      BuildContext context = _navigator.navigatorKey.currentContext!;
+      showDialog(
+        context: context,
+        builder: (buildContext) => AlertDialog(
+          title: const Text('App started from HomeScreenWidget'),
+          content: Text('Here is the URI: $uri'),
+        ),
+      );
     }
   }
 

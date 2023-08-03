@@ -114,6 +114,15 @@ ThemeData generateTheme(String? colorSchemeName,
       backgroundColor: colorScheme.surface,
       height: 56,
     ),
+    navigationRailTheme: materialTheme.navigationRailTheme.copyWith(
+      labelType: NavigationRailLabelType.none,
+      elevation: 0,
+      indicatorColor: Colors.transparent,
+      selectedIconTheme: IconThemeData(
+        color: colorScheme.primary,
+      ),
+      backgroundColor: colorScheme.surface,
+    ),
     floatingActionButtonTheme: materialTheme.floatingActionButtonTheme.copyWith(
       elevation: 0,
       highlightElevation: 0,

@@ -180,10 +180,9 @@ struct DaysSinceEntryView : View {
         } else  if (days >= 7) {
             widgetForeground = .orange
         }
-        
 
-        fontDays = Font.system(size: 64)
-        fontTitle = Font.system(size: 24)
+        fontDays = Font.system(size: 16)
+        fontTitle = Font.system(size: 8)
         fontSubtitle = Font.system(size: 8)
         if (widgetFamily == .systemSmall || widgetFamily == .systemMedium) {
             fontDays = Font.system(size: 64)
@@ -198,24 +197,27 @@ struct DaysSinceEntryView : View {
     }
     
     private var WidgetView: some View {
-        VStack(spacing: 0) {
-            Text(days.description)
-                .font(fontDays)
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-                .foregroundColor(widgetForeground)
-            Text(daysString)
-                .font(fontTitle)
-                .fontDesign(.rounded)
-                .fontWeight(.semibold)
-                .textCase(.uppercase)
-                .foregroundColor(widgetForegroundTitle)
-            if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("without sex")
-                    .font(fontSubtitle)
+        ZStack {
+            widgetBackground
+            VStack(spacing: 0) {
+                Text(days.description)
+                    .font(fontDays)
+                    .fontWeight(.bold)
+                    .fontDesign(.rounded)
+                    .foregroundColor(widgetForeground)
+                Text(daysString)
+                    .font(fontTitle)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
-                    .foregroundColor(widgetForegroundSubtitle)
+                    .textCase(.uppercase)
+                    .foregroundColor(widgetForegroundTitle)
+                if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                    Text("without sex")
+                        .font(fontSubtitle)
+                        .fontDesign(.rounded)
+                        .fontWeight(.semibold)
+                        .foregroundColor(widgetForegroundSubtitle)
+                }
             }
         }
     }
@@ -246,12 +248,52 @@ struct DaysSinceEntryView : View {
         }
     }
     
+    private var AccessoryView: some View {
+        VStack(spacing: 0) {
+            Text(days.description)
+                .font(.title)
+                .fontWeight(.bold)
+                .fontDesign(.rounded)
+            Text(daysString)
+                .font(.caption)
+                .fontDesign(.rounded)
+                .fontWeight(.semibold)
+                .textCase(.uppercase)
+            if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                Text("without sex")
+                    .font(.caption2)
+                    .fontDesign(.rounded)
+                    .fontWeight(.semibold)
+            }
+        }
+    }
+    
+    private var AccessoryNoDataView: some View {
+        VStack(spacing: 0) {
+            Text("7")
+                .font(.title)
+                .fontWeight(.bold)
+                .fontDesign(.rounded)
+            Text("Days")
+                .font(.caption)
+                .fontDesign(.rounded)
+                .fontWeight(.semibold)
+                .textCase(.uppercase)
+            if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                Text("without sex")
+                    .font(.caption2)
+                    .fontDesign(.rounded)
+                    .fontWeight(.semibold)
+            }
+        }
+        .redacted(reason: .placeholder)
+    }
+    
     private var InlineView: some View {
         Text("\(days) \(daysString) without sex")
             .font(fontTitle)
             .fontDesign(.rounded)
             .fontWeight(.semibold)
-            .textCase(.uppercase)
             .privacySensitive()
     }
     
@@ -260,7 +302,6 @@ struct DaysSinceEntryView : View {
             .font(fontTitle)
             .fontDesign(.rounded)
             .fontWeight(.semibold)
-            .textCase(.uppercase)
             .redacted(reason: .placeholder)
     }
     
@@ -270,6 +311,12 @@ struct DaysSinceEntryView : View {
                 InlineView
             } else {
                 InlineNoDataView
+            }
+        } else if(widgetFamily == .accessoryCircular || widgetFamily == .accessoryRectangular) {
+            if(entry.widgetData != nil) {
+                AccessoryView
+            } else {
+                AccessoryNoDataView
             }
         } else {
             if(entry.widgetData != nil) {

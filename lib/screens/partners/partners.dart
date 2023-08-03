@@ -62,7 +62,7 @@ class _PartnersPageState extends State<PartnersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: RefreshIndicator.adaptive(
+      body: RefreshIndicator(
         onRefresh: refresh,
         edgeOffset: 112.0,
         child: CustomScrollView(

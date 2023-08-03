@@ -18,6 +18,7 @@ class _GenericHeaderState extends State<GenericHeader> {
       pinned: true,
       actions: widget.actions,
       title: widget.title,
+      centerTitle: false,
     );
   }
 }

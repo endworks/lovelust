@@ -15,7 +15,7 @@ class NoContent extends StatefulWidget {
 }
 
 class _NoContentState extends State<NoContent> {
-  double alpha = 0.2;
+  double alpha = 0.4;
   Color color = Colors.black;
 
   @override

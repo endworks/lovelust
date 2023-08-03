@@ -45,6 +45,8 @@ ThemeData generateTheme(String? colorSchemeName,
       brightness: darkMode ? Brightness.dark : Brightness.light,
       seedColor: seedColor,
       background: darkMode ? blackColor[900] : whiteColor[900],
+      primary: seedColor,
+      onPrimary: darkMode ? blackColor[900] : whiteColor[900],
     );
   }
 

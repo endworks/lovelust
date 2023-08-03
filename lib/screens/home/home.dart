@@ -4,6 +4,7 @@ import 'package:lovelust/colors.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
+import 'package:lovelust/widgets/no_content.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,22 +38,11 @@ class _HomePageState extends State<HomePage> {
           GenericHeader(
             title: title,
           ),
-          SliverList.list(
-            children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      '${AppLocalizations.of(context)!.journal}: ${_shared.activity.length}',
-                    ),
-                    Text(
-                      '${AppLocalizations.of(context)!.partners}: ${_shared.partners.length}',
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          SliverFillRemaining(
+            child: NoContent(
+              icon: Icons.content_paste_off,
+              message: AppLocalizations.of(context)!.noSummary,
+            ),
           )
         ],
       ),

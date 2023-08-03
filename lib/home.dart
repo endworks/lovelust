@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:lovelust/models/destination.dart';
+import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/home/protected.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
@@ -66,7 +67,7 @@ class _HomeState extends State<Home>
     return IndexedStack(
       index: _selectedIndex.value,
       children: const [
-        // HomePage(),
+        HomePage(),
         JournalPage(),
         PartnersPage(),
         SettingsPage(),
@@ -76,13 +77,13 @@ class _HomeState extends State<Home>
 
   List<Destination> get destinations {
     return [
-      /*Destination(
+      Destination(
         AppLocalizations.of(context)!.home,
-        const Icon(Icons.monitor_heart_outlined),
+        const Icon(Icons.favorite_border),
         const Icon(
-          Icons.monitor_heart,
+          Icons.favorite,
         ),
-      ),*/
+      ),
       Destination(
         AppLocalizations.of(context)!.journal,
         const Icon(Icons.assignment_outlined),
@@ -97,6 +98,13 @@ class _HomeState extends State<Home>
           Icons.group,
         ),
       ),
+      /*Destination(
+        AppLocalizations.of(context)!.learn,
+        const Icon(Icons.book_outlined),
+        const Icon(
+          Icons.book,
+        ),
+      ),*/
       Destination(
         AppLocalizations.of(context)!.settings,
         const Icon(Icons.settings_outlined),

@@ -147,7 +147,9 @@ class _JournalPageState extends State<JournalPage> {
             filteredActivity.isEmpty
                 ? SliverFillRemaining(
                     child: NoContent(
-                        message: AppLocalizations.of(context)!.noActivity),
+                      icon: Icons.no_adult_content,
+                      message: AppLocalizations.of(context)!.noActivity,
+                    ),
                   )
                 : SliverList.builder(
                     itemCount: filteredActivity.length,

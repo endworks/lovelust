@@ -15,8 +15,13 @@ class NoContent extends StatefulWidget {
 }
 
 class _NoContentState extends State<NoContent> {
+  double alpha = 0.2;
+  Color color = Colors.black;
+
   @override
   Widget build(BuildContext context) {
+    color = Theme.of(context).colorScheme.onSurface.withOpacity(alpha);
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Center(
@@ -28,15 +33,12 @@ class _NoContentState extends State<NoContent> {
             Icon(
               widget.icon ?? Icons.hide_source,
               size: 64,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              color: color,
             ),
             Text(
               widget.message ?? AppLocalizations.of(context)!.noContent,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.6),
+                    color: color,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -45,19 +47,11 @@ class _NoContentState extends State<NoContent> {
                     padding: const EdgeInsets.only(top: 32.0),
                     child: FilledButton.tonal(
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(
-                          Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withOpacity(0.6),
-                        ),
+                        foregroundColor: MaterialStateProperty.all(color),
                         side: MaterialStateBorderSide.resolveWith(
                           (states) => BorderSide(
                             width: 1,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withOpacity(0.6),
+                            color: color,
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.resolveWith(

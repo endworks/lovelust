@@ -31,6 +31,12 @@ class _SettingsPageState extends State<SettingsPage> {
     if (!kIsWeb && Platform.isIOS) {
       checkIfiOSAppOnMac();
     }
+
+    _shared.addListener(() {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   reload() {
@@ -218,6 +224,14 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
         value: "Neon",
         child: Text(AppLocalizations.of(context)!.neon),
+      ),
+      DropdownMenuItem(
+        value: "Pink",
+        child: Text(AppLocalizations.of(context)!.pink),
+      ),
+      DropdownMenuItem(
+        value: "Purple",
+        child: Text(AppLocalizations.of(context)!.purple),
       ),
       DropdownMenuItem(
         value: "Health",

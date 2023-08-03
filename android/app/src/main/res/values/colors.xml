@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <color name="transparent">#00000000</color>
+ <color name="white">#ffffff</color>
+ <color name="black">#000000</color>
+ <color name="pink">#f61e6f</color>
+ <color name="purple">#b952c5</color>
+ <color name="neon">#160f30</color>
+</resources>

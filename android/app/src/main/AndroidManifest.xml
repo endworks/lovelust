@@ -126,6 +126,32 @@
 
         <activity-alias
             android:enabled="false"
+            android:name=".Pink"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_pink"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".Purple"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_purple"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
             android:name=".Health"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_health"

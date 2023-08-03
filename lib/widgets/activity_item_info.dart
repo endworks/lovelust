@@ -235,7 +235,12 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
           mood != null
               ? Text(
                   mood!,
-                  style: Theme.of(context).textTheme.labelLarge,
+                  style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.6),
+                      ),
                 )
               : const SizedBox(),
           /*widget.activity.rating > 0

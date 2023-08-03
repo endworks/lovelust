@@ -103,28 +103,37 @@ ThemeData generateTheme(String? colorSchemeName,
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       // surfaceTintColor: experimentalColorScheme.surfaceVariant,
       elevation: 0,
-      indicatorColor: colorScheme.primaryContainer,
+      // indicatorColor: colorScheme.primary,
+      indicatorColor: Colors.transparent,
+      iconTheme: MaterialStateProperty.resolveWith((states) {
+        if (states.contains(MaterialState.selected)) {
+          return IconThemeData(
+            color: colorScheme!.primary,
+          );
+        }
+        return null;
+      }),
       backgroundColor: colorScheme.surface,
       height: 56,
     ),
     floatingActionButtonTheme: materialTheme.floatingActionButtonTheme.copyWith(
       elevation: 0,
       highlightElevation: 0,
-      backgroundColor: colorScheme.primaryContainer,
-      foregroundColor: colorScheme.onPrimaryContainer,
+      backgroundColor: colorScheme.primary,
+      foregroundColor: colorScheme.onPrimary,
       // shape: const StadiumBorder(),
     ),
     cardTheme: materialTheme.cardTheme.copyWith(
-        color: colorScheme.surface,
-        elevation: 1,
-        shape: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(
-            Radius.circular(16),
-          ),
-        )
-        // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+      color: colorScheme.surface,
+      elevation: 1,
+      shape: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(16),
         ),
+      ),
+      // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+    ),
     chipTheme: ChipThemeData(
       labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
         color: colorScheme.onSurface,
@@ -151,6 +160,9 @@ ThemeData generateTheme(String? colorSchemeName,
     ),
     switchTheme: materialTheme.switchTheme.copyWith(
       trackOutlineColor: const MaterialStatePropertyAll(Colors.transparent),
+    ),
+    radioTheme: materialTheme.radioTheme.copyWith(
+      fillColor: MaterialStatePropertyAll(colorScheme.primary),
     ),
     textTheme: materialTheme.textTheme,
     useMaterial3: true,

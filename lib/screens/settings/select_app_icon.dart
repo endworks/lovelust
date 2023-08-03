@@ -29,9 +29,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
     if (_shared.appIcon != selectedAppIcon) {
       try {
         if (Platform.isIOS) {
-          setState(() {
-            _shared.appIcon = selectedAppIcon!;
-          });
           DynamicIconFlutter.supportsAlternateIcons.then((supported) {
             String? appIcon =
                 selectedAppIcon != 'Default' ? selectedAppIcon : null;
@@ -45,6 +42,9 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
           DynamicIconFlutter.setIcon(
               icon: selectedAppIcon, listAvailableIcon: list);
         }
+        setState(() {
+          _shared.appIcon = selectedAppIcon;
+        });
         Navigator.of(context).pop();
       } on PlatformException {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -63,7 +63,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
   }
 
   void onChanged(String? value) {
-    debugPrint('onChanged: $value');
     setState(() {
       selectedAppIcon = value!;
     });
@@ -78,6 +77,14 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
       DropdownMenuItem(
         value: "Beta",
         child: Text(AppLocalizations.of(context)!.beta),
+      ),
+      DropdownMenuItem(
+        value: "Pink",
+        child: Text(AppLocalizations.of(context)!.pink),
+      ),
+      DropdownMenuItem(
+        value: "Purple",
+        child: Text(AppLocalizations.of(context)!.purple),
       ),
       DropdownMenuItem(
         value: "Neon",

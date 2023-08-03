@@ -154,7 +154,7 @@ jobs:
           export CCACHE_DEPEND=true
           export CCACHE_INODECACHE=true
           ccache -s
-          flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --export-options-plist=ios/exportOptions.plist --verbose
+          flutter build ipa --build-number=${{ env.COMMIT_NUMBER }} --export-options-plist=ios/exportOptions.plist
 
       - name: Publish the app to App Store Connect
         run: app-store-connect publish --path $(find $(pwd) -name "*.ipa")

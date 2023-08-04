@@ -8,9 +8,9 @@
 
 "lastActivity.displayName" = "Last activity";
 "lastActivity.displayName" = "Data about last sexual intercourse";
-"daysSince.displayName" = "Days since";
+"daysSince.displayName" = "Days without sex";
 "daysSince.displayName" = "Days since last sexual intercourse";
-"day" = "Day";
-"days" = "Días";
+"day" = "day";
+"days" = "days";
 "withoutSex" = "without sex";
 "%@ %@ withoutSex" = "%@ %@ without sex";

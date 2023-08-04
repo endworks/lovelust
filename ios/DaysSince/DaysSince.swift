@@ -216,6 +216,7 @@ struct DaysSinceEntryView : View {
                         .font(fontSubtitle)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
+                        .textCase(.uppercase)
                         .foregroundColor(widgetForegroundSubtitle)
                 }
             }
@@ -275,7 +276,7 @@ struct DaysSinceEntryView : View {
                 .font(.title)
                 .fontWeight(.bold)
                 .fontDesign(.rounded)
-            Text("Days")
+            Text("days")
                 .font(.caption)
                 .fontDesign(.rounded)
                 .fontWeight(.semibold)

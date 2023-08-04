@@ -212,7 +212,7 @@ struct DaysSinceEntryView : View {
                     .textCase(.uppercase)
                     .foregroundColor(widgetForegroundTitle)
                 if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                    Text("without sex")
+                    Text("withoutSex")
                         .font(fontSubtitle)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
@@ -238,7 +238,7 @@ struct DaysSinceEntryView : View {
                     .fontWeight(.semibold)
                     .textCase(.uppercase)
                     .foregroundColor(widgetForegroundTitle)
-                Text("without sex")
+                Text("withoutSex")
                     .font(fontSubtitle)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
@@ -260,10 +260,11 @@ struct DaysSinceEntryView : View {
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
             if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("without sex")
+                Text("withoutSex")
                     .font(.caption2)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
+                    .textCase(.uppercase)
             }
         }
     }
@@ -280,17 +281,18 @@ struct DaysSinceEntryView : View {
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
             if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("without sex")
+                Text("withoutSex")
                     .font(.caption2)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
+                    .textCase(.uppercase)
             }
         }
         .redacted(reason: .placeholder)
     }
     
     private var InlineView: some View {
-        Text("\(days) \(daysString) without sex")
+        Text("\(days) \(daysString) withoutSex")
             .font(fontTitle)
             .fontDesign(.rounded)
             .fontWeight(.semibold)

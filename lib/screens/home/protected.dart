@@ -85,9 +85,19 @@ class _ProtectedPageState extends State<ProtectedPage> {
     return Scaffold(
       backgroundColor: Colors
           .transparent, // Theme.of(context).colorScheme.background.withAlpha(128),
-      body: Stack(
-        children: [
-          TweenAnimationBuilder<double>(
+      body: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: 16,
+          sigmaY: 16,
+        ),
+        child: NoContent(
+          icon: _icon ?? Icons.visibility_off_outlined,
+          message: _message ?? AppLocalizations.of(context)!.sensitiveContent,
+          action: _localAuth.authenticationFailed ? retryAuthenticate : null,
+          actionLabel: AppLocalizations.of(context)!.authRetry,
+        ),
+      ),
+      /*TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0.0, end: 16.0),
             duration: const Duration(milliseconds: 30),
             builder: (_, value, child) {
@@ -107,9 +117,7 @@ class _ProtectedPageState extends State<ProtectedPage> {
                 ),
               );
             },
-          ),
-        ],
-      ),
+          ),*/
     );
   }
 }

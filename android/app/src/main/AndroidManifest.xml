@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="end.works.LoveLust">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <queries>
         <package android:name="com.google.android.apps.healthdata" />
     </queries>

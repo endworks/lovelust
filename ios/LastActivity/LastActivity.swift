@@ -400,13 +400,15 @@ struct LastActivityEntryView : View {
 
 struct LastActivity: Widget {
     let kind: String = "LastActivity"
+    let displayName:LocalizedStringKey = "lastActivity.displayName"
+    let description:LocalizedStringKey = "lastActivity.description"
 
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
             LastActivityEntryView(entry: entry)
         }
-        .configurationDisplayName("Sexual intercourse")
-        .description("Shows data of last sexual intercourse")
+        .configurationDisplayName(displayName)
+        .description(description)
         .supportedFamilies([.systemSmall, .systemMedium, .accessoryInline, .accessoryRectangular])
     }
 }

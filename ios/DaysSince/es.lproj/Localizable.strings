@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Runner
+
+  Created by ender on 4/8/23.
+  
+*/
+
+"lastActivity.displayName" = "Última actividad";
+"lastActivity.displayName" = "Información de la última relacion sexual";
+"daysSince.displayName" = "Días desde";
+"daysSince.displayName" = "Días desde la última relacion sexual";
+"day" = "Día";
+"days" = "Días";

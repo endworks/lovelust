@@ -5,3 +5,10 @@
   Created by ender on 4/8/23.
   
 */
+
+"lastActivity.displayName" = "Last activity";
+"lastActivity.displayName" = "Data about last sexual intercourse";
+"daysSince.displayName" = "Days since";
+"daysSince.displayName" = "Days since last sexual intercourse";
+"day" = "Day";
+"days" = "Días";

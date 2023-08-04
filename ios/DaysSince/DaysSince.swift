@@ -337,13 +337,15 @@ struct DaysSinceEntryView : View {
 
 struct DaysSince: Widget {
     let kind: String = "DaysSince"
+    let displayName:LocalizedStringKey = "daysSince.displayName"
+    let description:LocalizedStringKey = "daysSince.description"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             DaysSinceEntryView(entry: entry)
         }
-        .configurationDisplayName("Days since")
-        .description("Days since last sexual intercourse")
+        .configurationDisplayName(displayName)
+        .description(description)
         .supportedFamilies([.systemSmall, .accessoryInline, .accessoryRectangular, .accessoryCircular])
     }
 }

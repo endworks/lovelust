@@ -49,8 +49,8 @@ class _GenericHeaderState extends State<GenericHeader> {
             filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
             child: Container(
               color: !_shared.material
-                  ? Theme.of(context).colorScheme.surface.withAlpha(204)
-                  : Theme.of(context).colorScheme.surface,
+                  ? Theme.of(context).colorScheme.background.withAlpha(204)
+                  : Theme.of(context).colorScheme.background,
             ),
           ),
         ),

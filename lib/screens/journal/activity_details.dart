@@ -7,10 +7,10 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 import 'package:lovelust/widgets/birth_control_block.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/highlights_block.dart';
 import 'package:lovelust/widgets/notes_block.dart';
 import 'package:lovelust/widgets/practices_block.dart';
@@ -28,19 +28,20 @@ class ActivityDetailsPage extends StatefulWidget {
 
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
-  final NavigationService _navigator = getIt<NavigationService>();
   final ApiService _api = getIt<ApiService>();
   late Activity _activity;
   Partner? _partner;
   bool _solo = false;
 
   void editActivity() {
-    _navigator.navigateTo(
+    Navigator.push(
+      context,
       MaterialPageRoute<Widget>(
-          fullscreenDialog: true,
-          builder: (BuildContext context) {
-            return ActivityEditPage(activity: _activity);
-          }),
+        fullscreenDialog: true,
+        settings: const RouteSettings(name: 'ActivityEdit'),
+        builder: (BuildContext context) =>
+            ActivityEditPage(activity: _activity),
+      ),
     );
   }
 
@@ -50,19 +51,20 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     _activity = widget.activity;
     _shared.addListener(() {
       if (mounted) {
-        setState(() {
-          _activity = _shared.getActivityById(_activity.id!)!;
-          if (_activity.partner != null) {
-            _partner = _shared.getPartnerById(_activity.partner!);
-          }
-          _solo = _activity.type == ActivityType.masturbation;
-        });
+        refreshActivity();
       }
     });
-    _solo = _activity.type == ActivityType.masturbation;
-    if (_activity.partner != null) {
-      _partner = _shared.getPartnerById(_activity.partner!);
-    }
+    refreshActivity();
+  }
+
+  void refreshActivity() {
+    setState(() {
+      // _activity = _shared.getActivityById(_activity.id!)!;
+      if (_activity.partner != null) {
+        // _partner = _shared.getPartnerById(_activity.partner!);
+      }
+      _solo = _activity.type == ActivityType.masturbation;
+    });
   }
 
   String get title {
@@ -256,11 +258,8 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            floating: false,
-            pinned: true,
+          GenericHeader(
             title: _shared.sensitiveText(title),
-            // backgroundColor: headerBackgroundColor,
             actions: [
               IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
               PopupMenuButton(

@@ -98,9 +98,9 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
           label: _shared.sensitiveText(
             SharedService.getMoodTranslation(widget.mood),
           ),
-          avatar: Text(
+          /* avatar: _shared.sensitiveText(
             SharedService.getMoodEmoji(widget.mood),
-          ),
+          ),*/
           selected: true,
           onSelected: (value) {},
           showCheckmark: false,

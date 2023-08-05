@@ -145,19 +145,19 @@ ThemeData generateTheme(String? colorSchemeName,
       ),
       // surfaceTintColor: experimentalColorScheme.surfaceVariant,
     ),
-    chipTheme: ChipThemeData(
-      labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
+    chipTheme: const ChipThemeData(
+      /*labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
         color: colorScheme.onSurface,
       ),
       secondaryLabelStyle: materialTheme.textTheme.labelSmall!.copyWith(
         color: colorScheme.onSurface,
       ),
       backgroundColor: colorScheme.surface,
-      selectedColor: colorScheme.primary,
       //selectedColor: colorScheme.primary,
       // secondarySelectedColor: colorScheme.onPrimary,
       // side: BorderSide.none,
-      shape: const StadiumBorder(),
+      */
+      shape: StadiumBorder(),
     ),
     inputDecorationTheme: materialTheme.inputDecorationTheme.copyWith(
       border: const UnderlineInputBorder(

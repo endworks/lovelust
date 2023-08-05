@@ -9,6 +9,7 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/rating_select.dart';
 import 'package:uuid/uuid.dart';
 
@@ -487,9 +488,9 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   .map(
                     (e) => FilterChip(
                       label: Text(SharedService.getMoodTranslation(e)),
-                      avatar: Text(
+                      /*avatar: Text(
                         SharedService.getMoodEmoji(e),
-                      ),
+                      ),*/
                       selected: isMoodSelected(e),
                       onSelected: (value) => selectMood(e, value),
                       showCheckmark: false,
@@ -728,9 +729,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            floating: false,
-            pinned: true,
+          GenericHeader(
             title: Text(widget.activity.id!.isEmpty
                 ? AppLocalizations.of(context)!.logActivity
                 : AppLocalizations.of(context)!.editActivity),

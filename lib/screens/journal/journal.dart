@@ -44,12 +44,13 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   void addActivity() {
-    _navigator.navigateTo(
+    Navigator.push(
+      context,
       MaterialPageRoute<Widget>(
-          fullscreenDialog: true,
-          builder: (BuildContext context) {
-            return const ActivityAddPage();
-          }),
+        fullscreenDialog: true,
+        settings: const RouteSettings(name: 'ActivityAdd'),
+        builder: (BuildContext context) => const ActivityAddPage(),
+      ),
     );
   }
 

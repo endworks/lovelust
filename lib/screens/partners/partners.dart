@@ -42,12 +42,13 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   void _addPartner() {
-    _navigator.navigateTo(
+    Navigator.push(
+      context,
       MaterialPageRoute<Widget>(
-          fullscreenDialog: true,
-          builder: (BuildContext context) {
-            return const PartnerAddPage();
-          }),
+        fullscreenDialog: true,
+        settings: const RouteSettings(name: 'PartnerAdd'),
+        builder: (BuildContext context) => const PartnerAddPage(),
+      ),
     );
   }
 

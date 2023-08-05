@@ -39,12 +39,15 @@ class _ActivityItemAltState extends State<ActivityItemAlt> {
   }
 
   void openActivity() {
-    Navigator.push(context,
-        MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return ActivityDetailsPage(
-        activity: widget.activity,
-      );
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(
+        settings: const RouteSettings(name: 'ActivityDetails'),
+        builder: (BuildContext context) => ActivityDetailsPage(
+          activity: widget.activity,
+        ),
+      ),
+    );
   }
 
   Icon? safetyIcon() {

@@ -9,6 +9,7 @@ import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_block.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/notes_block.dart';
 import 'package:lovelust/widgets/partner_avatar.dart';
 
@@ -41,12 +42,13 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   void editPartner() {
-    _navigator.navigateTo(
+    Navigator.push(
+      context,
       MaterialPageRoute<Widget>(
-          fullscreenDialog: true,
-          builder: (BuildContext context) {
-            return PartnerEditPage(partner: _partner);
-          }),
+        fullscreenDialog: true,
+        settings: const RouteSettings(name: 'PartnerEdit'),
+        builder: (BuildContext context) => PartnerEditPage(partner: _partner),
+      ),
     );
   }
 
@@ -139,10 +141,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            floating: false,
-            pinned: true,
-            // title: Text(_partner.name),
+          GenericHeader(
             actions: [
               IconButton(onPressed: editPartner, icon: const Icon(Icons.edit)),
               PopupMenuButton(

@@ -413,9 +413,11 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _askAppIcon() {
-    Navigator.of(context).push(
+    Navigator.push(
+      context,
       MaterialPageRoute<Widget>(
         fullscreenDialog: true,
+        settings: const RouteSettings(name: 'SelectAppIcon'),
         builder: (BuildContext context) => const SelectAppIconPage(),
       ),
     );

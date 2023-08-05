@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 
 class SelectAppIconPage extends StatefulWidget {
   const SelectAppIconPage({super.key});
@@ -194,9 +195,7 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            floating: false,
-            pinned: true,
+          GenericHeader(
             title: Text(AppLocalizations.of(context)!.appIcon),
             actions: [
               FilledButton(

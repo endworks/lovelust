@@ -21,12 +21,15 @@ class _ActivityBlockState extends State<ActivityBlock> {
   final SharedService _shared = getIt<SharedService>();
 
   void openActivity() {
-    Navigator.push(context,
-        MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return ActivityDetailsPage(
-        activity: widget.activity,
-      );
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(
+        settings: const RouteSettings(name: 'ActivityDetails'),
+        builder: (BuildContext context) => ActivityDetailsPage(
+          activity: widget.activity,
+        ),
+      ),
+    );
   }
 
   Widget get safety {

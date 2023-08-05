@@ -21,12 +21,15 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   final SharedService _shared = getIt<SharedService>();
 
   void _openPartner() {
-    Navigator.push(context,
-        MaterialPageRoute<Widget>(builder: (BuildContext context) {
-      return PartnerDetailsPage(
-        partner: widget.partner,
-      );
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(
+        settings: const RouteSettings(name: 'PartnerDetails'),
+        builder: (BuildContext context) => PartnerDetailsPage(
+          partner: widget.partner,
+        ),
+      ),
+    );
   }
 
   Widget get name {

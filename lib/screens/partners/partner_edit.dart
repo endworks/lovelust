@@ -8,6 +8,7 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
+import 'package:lovelust/widgets/generic_header.dart';
 import 'package:uuid/uuid.dart';
 
 class PartnerEditPage extends StatefulWidget {
@@ -314,9 +315,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          SliverAppBar(
-            floating: false,
-            pinned: true,
+          GenericHeader(
             title: Text(widget.partner.id!.isEmpty
                 ? AppLocalizations.of(context)!.createPartner
                 : AppLocalizations.of(context)!.editPartner),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -7,7 +9,6 @@ import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/home/protected.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
-import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
@@ -72,7 +73,6 @@ class _HomeState extends State<Home>
         HomePage(),
         JournalPage(),
         PartnersPage(),
-        SettingsPage(),
       ],
     );
   }
@@ -107,13 +107,6 @@ class _HomeState extends State<Home>
           Icons.book,
         ),
       ),*/
-      Destination(
-        AppLocalizations.of(context)!.settings,
-        const Icon(Icons.settings_outlined),
-        const Icon(
-          Icons.settings,
-        ),
-      ),
     ];
   }
 
@@ -156,6 +149,7 @@ class _HomeState extends State<Home>
 
     stacked.add(
       Scaffold(
+        extendBody: !_shared.material,
         body: _showDesktopNavigation
             ? Row(
                 children: <Widget>[
@@ -179,14 +173,33 @@ class _HomeState extends State<Home>
               )
             : _selectedPage,
         bottomNavigationBar: !_showDesktopNavigation
-            ? NavigationBar(
-                selectedIndex: _selectedIndex.value,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    _selectedIndex.value = index;
-                  });
-                },
-                destinations: _navigationDestinations,
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipRRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                      child: Container(
+                        color: !_shared.material
+                            ? Theme.of(context)
+                                .colorScheme
+                                .surface
+                                .withAlpha(204)
+                            : Theme.of(context).colorScheme.surface,
+                        child: NavigationBar(
+                          selectedIndex: _selectedIndex.value,
+                          onDestinationSelected: (int index) {
+                            setState(() {
+                              _selectedIndex.value = index;
+                            });
+                          },
+                          destinations: _navigationDestinations,
+                          backgroundColor: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               )
             : null,
       ),

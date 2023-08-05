@@ -118,7 +118,9 @@ class _JournalPageState extends State<JournalPage> {
         edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: filteredActivity.isNotEmpty
+              ? const AlwaysScrollableScrollPhysics()
+              : const NeverScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.journal),
@@ -161,19 +163,22 @@ class _JournalPageState extends State<JournalPage> {
           ],
         ),
       ),
-      floatingActionButton: isExtended
-          ? FloatingActionButton.extended(
-              onPressed: addActivity,
-              label: Text(AppLocalizations.of(context)!.logActivity),
-              heroTag: "journalAddExtended",
-              icon: const Icon(Icons.post_add_outlined),
-            )
-          : FloatingActionButton(
-              onPressed: addActivity,
-              tooltip: AppLocalizations.of(context)!.logActivity,
-              heroTag: "journalAdd",
-              child: const Icon(Icons.post_add_outlined),
-            ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        child: isExtended
+            ? FloatingActionButton.extended(
+                onPressed: addActivity,
+                label: Text(AppLocalizations.of(context)!.logActivity),
+                heroTag: "journalAddExtended",
+                icon: const Icon(Icons.post_add_outlined),
+              )
+            : FloatingActionButton(
+                onPressed: addActivity,
+                tooltip: AppLocalizations.of(context)!.logActivity,
+                heroTag: "journalAdd",
+                child: const Icon(Icons.post_add_outlined),
+              ),
+      ),
     );
   }
 }

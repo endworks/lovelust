@@ -67,7 +67,9 @@ class _PartnersPageState extends State<PartnersPage> {
         edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: _shared.partners.isNotEmpty
+              ? const AlwaysScrollableScrollPhysics()
+              : const NeverScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.partners),
@@ -91,19 +93,22 @@ class _PartnersPageState extends State<PartnersPage> {
           ],
         ),
       ),
-      floatingActionButton: _isExtended
-          ? FloatingActionButton.extended(
-              onPressed: _addPartner,
-              label: Text(AppLocalizations.of(context)!.addPartner),
-              heroTag: "partnersAddExtended",
-              icon: const Icon(Icons.person_add_alt_outlined),
-            )
-          : FloatingActionButton(
-              onPressed: _addPartner,
-              tooltip: AppLocalizations.of(context)!.addPartner,
-              heroTag: "partnersAdd",
-              child: const Icon(Icons.person_add_alt_outlined),
-            ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        child: _isExtended
+            ? FloatingActionButton.extended(
+                onPressed: _addPartner,
+                label: Text(AppLocalizations.of(context)!.addPartner),
+                heroTag: "partnersAddExtended",
+                icon: const Icon(Icons.person_add_alt_outlined),
+              )
+            : FloatingActionButton(
+                onPressed: _addPartner,
+                tooltip: AppLocalizations.of(context)!.addPartner,
+                heroTag: "partnersAdd",
+                child: const Icon(Icons.person_add_alt_outlined),
+              ),
+      ),
     );
   }
 }

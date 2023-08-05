@@ -34,11 +34,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        physics: const NeverScrollableScrollPhysics(),
         slivers: [
           GenericHeader(
             title: title,
           ),
           SliverFillRemaining(
+            hasScrollBody: false,
             child: NoContent(
               icon: Icons.content_paste_off,
               message: AppLocalizations.of(context)!.noSummary,

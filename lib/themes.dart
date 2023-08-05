@@ -14,13 +14,15 @@ ThemeData generateTheme(String? colorSchemeName,
     seedColor = shimapanColor;
   } else if (colorSchemeName == "blue") {
     seedColor = blueColor;
-  } else if (colorSchemeName == "monochrome") {
+  } else if (colorSchemeName == "black") {
     if (darkMode) {
       colorScheme ??= ColorScheme.dark(
         primary: MaterialColor(0xFFFFFFFF, whiteColor),
         onPrimary: MaterialColor(0xFF000000, blackColor),
         secondary: MaterialColor(0xFFFFFFFF, whiteColor),
         onSecondary: MaterialColor(0xFF000000, blackColor),
+        surface: MaterialColor(0xFF000000, blackColor),
+        onSurface: MaterialColor(0xFFFFFFFF, whiteColor),
         outlineVariant: Colors.grey[800],
         brightness: Brightness.dark,
       );
@@ -30,6 +32,8 @@ ThemeData generateTheme(String? colorSchemeName,
         onPrimary: MaterialColor(0xFFFFFFFF, whiteColor),
         secondary: MaterialColor(0xFF000000, blackColor),
         onSecondary: MaterialColor(0xFFFFFFFF, whiteColor),
+        surface: MaterialColor(0xFFFFFFFF, whiteColor),
+        onSurface: MaterialColor(0xFF000000, blackColor),
         outlineVariant: Colors.grey[200],
       );
     }
@@ -149,6 +153,7 @@ ThemeData generateTheme(String? colorSchemeName,
         color: colorScheme.onSurface,
       ),
       backgroundColor: colorScheme.surface,
+      selectedColor: colorScheme.primary,
       //selectedColor: colorScheme.primary,
       // secondarySelectedColor: colorScheme.onPrimary,
       // side: BorderSide.none,

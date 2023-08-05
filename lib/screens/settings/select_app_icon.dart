@@ -215,9 +215,17 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
               ),
             ],
           ),
-          SliverList.builder(
-            itemBuilder: (context, index) => fields[index],
-            itemCount: fields.length,
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).padding.left,
+              0,
+              MediaQuery.of(context).padding.right,
+              MediaQuery.of(context).padding.bottom,
+            ),
+            sliver: SliverList.builder(
+              itemBuilder: (context, index) => fields[index],
+              itemCount: fields.length,
+            ),
           ),
         ],
       ),

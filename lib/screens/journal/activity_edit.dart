@@ -101,6 +101,19 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         TextPosition(offset: widget.activity.rating.toString().length),
       ),
     );
+
+    if (_place != null ||
+        _practices.isNotEmpty ||
+        _initiator != null ||
+        _mood != null ||
+        _ratingController.value.text != '0' ||
+        _durationController.value.text != '0' ||
+        _orgasmsController.value.text != '0' ||
+        _partnerOrgasmsController.value.text != '0' ||
+        _locationController.value.text.isNotEmpty ||
+        _notesController.value.text.isNotEmpty) {
+      _moreFields = true;
+    }
   }
 
   @override
@@ -737,9 +750,17 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               ),
             ],
           ),
-          SliverList.builder(
-            itemBuilder: (context, index) => fields[index],
-            itemCount: fields.length,
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).padding.left,
+              0,
+              MediaQuery.of(context).padding.right,
+              MediaQuery.of(context).padding.bottom,
+            ),
+            sliver: SliverList.builder(
+              itemBuilder: (context, index) => fields[index],
+              itemCount: fields.length,
+            ),
           ),
         ],
       ),

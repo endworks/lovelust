@@ -139,9 +139,9 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "default",
           child: Text(AppLocalizations.of(context)!.defaultColorScheme)),
       DropdownMenuItem(
-          value: "lust", child: Text(AppLocalizations.of(context)!.lust)),
-      DropdownMenuItem(
           value: "love", child: Text(AppLocalizations.of(context)!.love)),
+      DropdownMenuItem(
+          value: "lust", child: Text(AppLocalizations.of(context)!.lust)),
       /*DropdownMenuItem(
           value: "lovelust",
           child: Text(AppLocalizations.of(context)!.lovelust)),*/
@@ -149,12 +149,12 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "lipstick",
           child: Text(AppLocalizations.of(context)!.lipstick)),
       DropdownMenuItem(
-          value: "shimapan",
-          child: Text(AppLocalizations.of(context)!.shimapan)),
-      DropdownMenuItem(
         value: "blue",
         child: Text(AppLocalizations.of(context)!.blue),
       ),
+      DropdownMenuItem(
+          value: "shimapan",
+          child: Text(AppLocalizations.of(context)!.shimapan)),
       /*DropdownMenuItem(
           value: "lustfullove",
           child: Text(AppLocalizations.of(context)!.lustfullove)),
@@ -162,8 +162,9 @@ class _SettingsPageState extends State<SettingsPage> {
           value: "lovefullust",
           child: Text(AppLocalizations.of(context)!.lovefullust)),*/
       DropdownMenuItem(
-          value: "monochrome",
-          child: Text(AppLocalizations.of(context)!.monochrome)),
+        value: "black",
+        child: Text(AppLocalizations.of(context)!.black),
+      ),
     ];
     if (!kIsWeb && Platform.isAndroid) {
       menuItems.insert(

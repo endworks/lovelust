@@ -12,5 +12,5 @@
 "daysSince.description" = "Días desde la última relacion sexual";
 "day" = "día";
 "days" = "días";
-"withoutSex" = "sin sexo";
-"%@ %@ withoutSex" = "%@ %@ sin sexo";
+"without sex" = "sin sexo";
+"%d %@ without sex" = "%d %@ sin sexo";

@@ -12,5 +12,5 @@
 "daysSince.displayName" = "Days since last sexual intercourse";
 "day" = "day";
 "days" = "days";
-"withoutSex" = "without sex";
-"%@ %@ withoutSex" = "%@ %@ without sex";
+"without sex" = "without sex";
+"%d %@ without sex" = "%d %@ without sex";

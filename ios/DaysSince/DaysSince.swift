@@ -212,7 +212,7 @@ struct DaysSinceEntryView : View {
                     .textCase(.uppercase)
                     .foregroundColor(widgetForegroundTitle)
                 if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                    Text("withoutSex")
+                    Text("without sex")
                         .font(fontSubtitle)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
@@ -239,7 +239,7 @@ struct DaysSinceEntryView : View {
                     .fontWeight(.semibold)
                     .textCase(.uppercase)
                     .foregroundColor(widgetForegroundTitle)
-                Text("withoutSex")
+                Text("without sex")
                     .font(fontSubtitle)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
@@ -261,7 +261,7 @@ struct DaysSinceEntryView : View {
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
             if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("withoutSex")
+                Text("without sex")
                     .font(.caption2)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
@@ -282,7 +282,7 @@ struct DaysSinceEntryView : View {
                 .fontWeight(.semibold)
                 .textCase(.uppercase)
             if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("withoutSex")
+                Text("without sex")
                     .font(.caption2)
                     .fontDesign(.rounded)
                     .fontWeight(.semibold)
@@ -293,7 +293,7 @@ struct DaysSinceEntryView : View {
     }
     
     private var InlineView: some View {
-        Text("\(days) \(daysString) withoutSex")
+        Text("\(days) \(daysString) without sex")
             .font(fontTitle)
             .fontDesign(.rounded)
             .fontWeight(.semibold)

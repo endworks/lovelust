@@ -81,9 +81,9 @@ class _HomeState extends State<Home>
     return [
       Destination(
         AppLocalizations.of(context)!.home,
-        const Icon(Icons.favorite_border),
+        const Icon(Icons.analytics_outlined),
         const Icon(
-          Icons.favorite,
+          Icons.analytics,
         ),
       ),
       Destination(
@@ -95,9 +95,9 @@ class _HomeState extends State<Home>
       ),
       Destination(
         AppLocalizations.of(context)!.partners,
-        const Icon(Icons.group_outlined),
+        const Icon(Icons.person_outlined),
         const Icon(
-          Icons.group,
+          Icons.person,
         ),
       ),
       /*Destination(

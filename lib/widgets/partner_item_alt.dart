@@ -86,7 +86,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     if (lastEncounter != null) {
       text = RelativeTime(context).format(lastEncounter.date);
     }
-    return Text(
+    return _shared.sensitiveText(
       text,
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),

@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
@@ -17,41 +16,13 @@ class GenericHeader extends StatefulWidget {
 
 class _GenericHeaderState extends State<GenericHeader> {
   final SharedService _shared = getIt<SharedService>();
-  late List<Widget> _actions;
-
-  void _openSettings() {
-    Navigator.push(
-      context,
-      MaterialPageRoute<Widget>(
-        settings: const RouteSettings(name: 'Settings'),
-        builder: (BuildContext context) => const SettingsPage(),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    Navigator.popUntil(context, (route) {
-      _actions = widget.actions ?? [];
-      if (route.settings.name == '/') {
-        _actions.add(
-          IconButton(
-            onPressed: _openSettings,
-            icon: const Icon(Icons.settings),
-          ),
-        );
-      }
-      return true;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       floating: false,
       pinned: true,
-      actions: _actions,
+      actions: widget.actions,
       title: widget.title,
       centerTitle: false,
       forceMaterialTransparency: !_shared.material,

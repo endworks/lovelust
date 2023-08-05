@@ -46,6 +46,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
   bool _new = true;
   bool _moreFields = false;
+  bool _solo = false;
 
   @override
   void initState() {
@@ -115,6 +116,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         _notesController.value.text.isNotEmpty) {
       _moreFields = true;
     }
+
+    _solo = _type == ActivityType.masturbation;
   }
 
   @override
@@ -473,142 +476,150 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         );
       }
 
-      fields.addAll([
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.mood),
-          leading: Icon(
-            Icons.tag_faces,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          subtitle: Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: [
-              ...[...Mood.values, null]
-                  .map(
-                    (e) => FilterChip(
-                      label: Text(SharedService.getMoodTranslation(e)),
-                      /*avatar: Text(
+      fields.addAll(
+        [
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.mood),
+            leading: Icon(
+              Icons.tag_faces,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            subtitle: Wrap(
+              spacing: 4,
+              runSpacing: 4,
+              children: [
+                ...[...Mood.values, null]
+                    .map(
+                      (e) => FilterChip(
+                        label: Text(SharedService.getMoodTranslation(e)),
+                        /*avatar: Text(
                         SharedService.getMoodEmoji(e),
                       ),*/
-                      selected: isMoodSelected(e),
-                      onSelected: (value) => selectMood(e, value),
-                      showCheckmark: false,
-                    ),
-                  )
-                  .toList()
-            ],
+                        selected: isMoodSelected(e),
+                        onSelected: (value) => selectMood(e, value),
+                        showCheckmark: false,
+                      ),
+                    )
+                    .toList()
+              ],
+            ),
+            titleAlignment: ListTileTitleAlignment.top,
           ),
-          titleAlignment: ListTileTitleAlignment.top,
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.practices),
-          leading: Icon(
-            Icons.task_alt,
-            color: Theme.of(context).colorScheme.secondary,
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.practices),
+            leading: Icon(
+              Icons.task_alt,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            subtitle: Wrap(
+              spacing: 4,
+              runSpacing: 4,
+              children: [
+                ...Practice.values
+                    .map(
+                      (e) => FilterChip(
+                        label: Text(SharedService.getPracticeTranslation(e)),
+                        selected: isPracticeSelected(e),
+                        onSelected: (value) => togglePractice(e, value),
+                        showCheckmark: false,
+                      ),
+                    )
+                    .toList()
+              ],
+            ),
+            titleAlignment: ListTileTitleAlignment.top,
           ),
-          subtitle: Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: [
-              ...Practice.values
-                  .map(
-                    (e) => FilterChip(
-                      label: Text(SharedService.getPracticeTranslation(e)),
-                      selected: isPracticeSelected(e),
-                      onSelected: (value) => togglePractice(e, value),
-                      showCheckmark: false,
-                    ),
-                  )
-                  .toList()
-            ],
-          ),
-          titleAlignment: ListTileTitleAlignment.top,
-        ),
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.rating),
-          leading: Icon(
-            Icons.star_half,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          trailing: RatingSelect(
-            rating: int.parse(_ratingController.value.text),
-            onRatingUpdate: (value) => setState(
-              () => _ratingController.value = TextEditingValue(
-                text: value.toString(),
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.rating),
+            leading: Icon(
+              Icons.star_half,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            trailing: RatingSelect(
+              rating: int.parse(_ratingController.value.text),
+              onRatingUpdate: (value) => setState(
+                () => _ratingController.value = TextEditingValue(
+                  text: value.toString(),
+                ),
               ),
             ),
           ),
-        ),
-        ListTile(
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _durationController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.duration,
+          ListTile(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _durationController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.duration,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            leading: Icon(
+              Icons.timer,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
-          leading: Icon(
-            Icons.timer,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        ListTile(
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _orgasmsController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.orgasms,
+          ListTile(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _orgasmsController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.orgasms,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            leading: Icon(
+              Icons.favorite,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
-          leading: Icon(
-            Icons.favorite,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        ListTile(
-          title: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _partnerOrgasmsController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)!.partnerOrgasms,
+        ],
+      );
+      if (!_solo) {
+        fields.add(
+          ListTile(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _partnerOrgasmsController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.partnerOrgasms,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            leading: Icon(
+              Icons.favorite,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
           ),
-          leading: Icon(
-            Icons.favorite,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
+        );
+      }
+      fields.addAll([
         ListTile(
           title: Row(
             mainAxisSize: MainAxisSize.min,
@@ -660,7 +671,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               Expanded(
                 child: TextField(
                   controller: _notesController,
-                  maxLines: 1,
+                  maxLines: 4,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.notes,
                   ),

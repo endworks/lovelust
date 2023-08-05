@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
+import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -16,15 +17,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final SharedService _shared = getIt<SharedService>();
 
-  Widget get title {
-    Color color1 = loveColor;
-    Color color2 = lustColor;
+  void _openSettings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(
+        settings: const RouteSettings(name: 'Settings'),
+        builder: (BuildContext context) => const SettingsPage(),
+      ),
+    );
+  }
 
-    return Text.rich(
+  Widget get title {
+    return const Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: 'Love', style: TextStyle(color: color1)),
-          TextSpan(text: 'Lust', style: TextStyle(color: color2)),
+          TextSpan(text: 'Love', style: TextStyle(color: loveColor)),
+          TextSpan(text: 'Lust', style: TextStyle(color: lustColor)),
         ],
       ),
     );
@@ -38,12 +46,18 @@ class _HomePageState extends State<HomePage> {
         slivers: [
           GenericHeader(
             title: title,
+            actions: [
+              IconButton(
+                onPressed: _openSettings,
+                icon: const Icon(Icons.settings),
+              ),
+            ],
           ),
           SliverFillRemaining(
             hasScrollBody: false,
             child: NoContent(
-              icon: Icons.content_paste_off,
-              message: AppLocalizations.of(context)!.noSummary,
+              icon: Icons.analytics_outlined,
+              message: AppLocalizations.of(context)!.noAnalytics,
             ),
           )
         ],

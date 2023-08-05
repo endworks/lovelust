@@ -59,9 +59,11 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
   void refreshActivity() {
     setState(() {
-      // _activity = _shared.getActivityById(_activity.id!)!;
+      _activity = _shared.getActivityById(_activity.id!)!;
       if (_activity.partner != null) {
-        // _partner = _shared.getPartnerById(_activity.partner!);
+        _partner = _shared.getPartnerById(_activity.partner!);
+      } else {
+        _partner = null;
       }
       _solo = _activity.type == ActivityType.masturbation;
     });

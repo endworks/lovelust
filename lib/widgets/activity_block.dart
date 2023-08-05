@@ -109,7 +109,8 @@ class _ActivityBlockState extends State<ActivityBlock> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const Spacer(),
-          Text(date, style: Theme.of(context).textTheme.labelSmall),
+          _shared.sensitiveText(date,
+              style: Theme.of(context).textTheme.labelSmall),
           const Icon(
             Icons.arrow_forward_ios,
             size: 14,

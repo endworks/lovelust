@@ -700,9 +700,17 @@ class _SettingsPageState extends State<SettingsPage> {
               )
             ],
           ),
-          SliverList.list(
-            children: items,
-          )
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).padding.left,
+              0,
+              MediaQuery.of(context).padding.right,
+              MediaQuery.of(context).padding.bottom,
+            ),
+            sliver: SliverList.list(
+              children: items,
+            ),
+          ),
         ],
       ),
     );

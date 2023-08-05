@@ -8,6 +8,9 @@ import 'package:lovelust/services/storage_service.dart';
 
 class StorageServiceLocal extends StorageService {
   final _storage = const FlutterSecureStorage(
+    aOptions: AndroidOptions(
+      encryptedSharedPreferences: true,
+    ),
     iOptions: IOSOptions(
       synchronizable: true,
     ),

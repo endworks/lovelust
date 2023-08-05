@@ -81,20 +81,32 @@ class _PartnersPageState extends State<PartnersPage> {
                       message: AppLocalizations.of(context)!.noPartners,
                     ),
                   )
-                : SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) => PartnerItemAlt(
-                        key: Key(_shared.partners[index].id!),
-                        partner: _shared.partners[index],
+                : SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).padding.left,
+                      0,
+                      MediaQuery.of(context).padding.right,
+                      MediaQuery.of(context).padding.bottom,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) => PartnerItemAlt(
+                          key: Key(_shared.partners[index].id!),
+                          partner: _shared.partners[index],
+                        ),
+                        childCount: _shared.partners.length,
                       ),
-                      childCount: _shared.partners.length,
                     ),
                   ),
           ],
         ),
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).orientation == Orientation.portrait
+              ? MediaQuery.of(context).padding.bottom
+              : 0,
+        ),
         child: _isExtended
             ? FloatingActionButton.extended(
                 onPressed: _addPartner,

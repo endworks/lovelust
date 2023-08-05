@@ -153,18 +153,30 @@ class _JournalPageState extends State<JournalPage> {
                       message: AppLocalizations.of(context)!.noActivity,
                     ),
                   )
-                : SliverList.builder(
-                    itemCount: filteredActivity.length,
-                    itemBuilder: (context, index) => ActivityCard(
-                      key: Key(filteredActivity[index].id!),
-                      activity: filteredActivity[index],
+                : SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).padding.left,
+                      0,
+                      MediaQuery.of(context).padding.right,
+                      MediaQuery.of(context).padding.bottom,
+                    ),
+                    sliver: SliverList.builder(
+                      itemCount: filteredActivity.length,
+                      itemBuilder: (context, index) => ActivityCard(
+                        key: Key(filteredActivity[index].id!),
+                        activity: filteredActivity[index],
+                      ),
                     ),
                   ),
           ],
         ),
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).orientation == Orientation.portrait
+              ? MediaQuery.of(context).padding.bottom
+              : 0,
+        ),
         child: isExtended
             ? FloatingActionButton.extended(
                 onPressed: addActivity,

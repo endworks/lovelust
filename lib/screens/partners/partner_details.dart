@@ -157,8 +157,16 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
               ),
             ],
           ),
-          SliverList.list(
-            children: cards,
+          SliverPadding(
+            padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).padding.left,
+              0,
+              MediaQuery.of(context).padding.right,
+              MediaQuery.of(context).padding.bottom,
+            ),
+            sliver: SliverList.list(
+              children: cards,
+            ),
           ),
         ],
       ),

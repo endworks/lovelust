@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
             hasScrollBody: false,
             child: NoContent(
               icon: Icons.analytics_outlined,
-              message: AppLocalizations.of(context)!.noAnalytics,
+              message: AppLocalizations.of(context)!.noStatistics,
             ),
           )
         ],

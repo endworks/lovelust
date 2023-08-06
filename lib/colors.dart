@@ -4,9 +4,9 @@ const loveColor = Color.fromARGB(255, 246, 30, 109);
 // Color.fromARGB(255, 251, 35, 150);
 const lustColor = Color.fromARGB(255, 185, 82, 197);
 // Color.fromARGB(255, 106, 47, 208);
-const lipstickColor = Color.fromARGB(255, 203, 0, 0);
+const lipstickColor = Color.fromARGB(255, 223, 0, 32);
 const blueColor = Color.fromARGB(255, 0, 122, 255);
-const shimapanColor = Color.fromARGB(255, 0, 176, 196);
+const shimapanColor = Color.fromARGB(255, 0, 216, 184);
 
 get lovelustColor {
   int red = ((loveColor.red + lustColor.red) / 2).floor();

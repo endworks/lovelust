@@ -159,6 +159,18 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
+            android:name=".Health2"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_health2"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
             android:name=".AltBlack"
             android:enabled="false"
             android:exported="true"
@@ -183,10 +195,10 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".Turquoise"
+            android:name=".Teal"
             android:enabled="false"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher_turquoise"
+            android:icon="@mipmap/ic_launcher_teal"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -247,6 +259,18 @@
             android:enabled="false"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_neon"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".Glow"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_glow"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

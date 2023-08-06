@@ -143,7 +143,9 @@ ThemeData generateTheme(String? colorSchemeName,
           Radius.circular(16),
         ),
       ),
-      // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+      surfaceTintColor: HSLColor.fromColor(colorScheme.surfaceTint)
+          .withSaturation(0)
+          .toColor(),
     ),
     chipTheme: const ChipThemeData(
       /*labelStyle: materialTheme.textTheme.labelSmall!.copyWith(

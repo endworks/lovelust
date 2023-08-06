@@ -239,7 +239,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: Text(AppLocalizations.of(context)!.blue),
       ),
       DropdownMenuItem(
-        value: "Turquoise",
+        value: "Teal",
         child: Text(AppLocalizations.of(context)!.shimapan),
       ),
       DropdownMenuItem(
@@ -249,6 +249,10 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
         value: "Black",
         child: Text(AppLocalizations.of(context)!.black),
+      ),
+      DropdownMenuItem(
+        value: "Glow",
+        child: Text(AppLocalizations.of(context)!.glow),
       ),
       DropdownMenuItem(
         value: "Neon",
@@ -289,6 +293,10 @@ class _SettingsPageState extends State<SettingsPage> {
       DropdownMenuItem(
         value: "Health",
         child: Text(AppLocalizations.of(context)!.health),
+      ),
+      DropdownMenuItem(
+        value: "Health2",
+        child: Text(AppLocalizations.of(context)!.health2),
       ),
       DropdownMenuItem(
         value: "Sexapill",

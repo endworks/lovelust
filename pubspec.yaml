@@ -32,6 +32,7 @@ dependencies:
       url: https://github.com/ender-null/dynamic_icon_flutter.git
       ref: main
   home_widget: ^0.3.0
+  collection: ^1.17.1
 
 dev_dependencies:
   flutter_test:

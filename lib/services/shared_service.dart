@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -105,66 +106,68 @@ class SharedService extends ChangeNotifier {
       BuildContext context = _navigator.navigatorKey.currentContext!;
 
       try {
-        Activity? lastSexualIntercourse = activity.firstWhere(
+        Activity? lastSexualIntercourse = activity.firstWhereOrNull(
             (element) => element.type == ActivityType.sexualIntercourse);
-        Partner? partner;
-        if (lastSexualIntercourse.partner != null) {
-          partner = getPartnerById(lastSexualIntercourse.partner!);
-        }
-        ActivitySafety safety = calculateSafety(lastSexualIntercourse);
-        String safetyValue;
-        String safetyString;
-        switch (safety) {
-          case ActivitySafety.safe:
-            safetyValue = "SAFE";
-            safetyString = AppLocalizations.of(context)!.safeSex;
-            break;
-          case ActivitySafety.unsafe:
-            safetyValue = "UNSAFE";
-            safetyString = AppLocalizations.of(context)!.unsafeSex;
-            break;
-          default:
-            safetyValue = "PARTIALLY_UNSAFE";
-            safetyString = AppLocalizations.of(context)!.partiallyUnsafeSex;
-        }
+        if (lastSexualIntercourse != null) {
+          Partner? partner;
+          if (lastSexualIntercourse.partner != null) {
+            partner = getPartnerById(lastSexualIntercourse.partner!);
+          }
+          ActivitySafety safety = calculateSafety(lastSexualIntercourse);
+          String safetyValue;
+          String safetyString;
+          switch (safety) {
+            case ActivitySafety.safe:
+              safetyValue = "SAFE";
+              safetyString = AppLocalizations.of(context)!.safeSex;
+              break;
+            case ActivitySafety.unsafe:
+              safetyValue = "UNSAFE";
+              safetyString = AppLocalizations.of(context)!.unsafeSex;
+              break;
+            default:
+              safetyValue = "PARTIALLY_UNSAFE";
+              safetyString = AppLocalizations.of(context)!.partiallyUnsafeSex;
+          }
 
-        ActivityWidgetData widgetData = ActivityWidgetData(
-          activity: lastSexualIntercourse,
-          partner: partner,
-          safety: safetyValue,
-          partnerString: partner != null
-              ? partner.name
-              : AppLocalizations.of(context)!.unknownPartner,
-          safetyString: safetyString,
-          dateString: RelativeTime(context, numeric: true)
-              .format(lastSexualIntercourse.date),
-          dayString:
-              DateFormat(DateFormat.DAY).format(lastSexualIntercourse.date),
-          weekdayString:
-              DateFormat(DateFormat.WEEKDAY).format(lastSexualIntercourse.date),
-          placeString: getPlaceTranslation(lastSexualIntercourse.place),
-          contraceptiveString:
-              getContraceptiveTranslation(lastSexualIntercourse.birthControl),
-          partnerContraceptiveString: getContraceptiveTranslation(
-              lastSexualIntercourse.partnerBirthControl),
-          moodString: getMoodTranslation(lastSexualIntercourse.mood),
-          moodEmoji: getMoodEmoji(lastSexualIntercourse.mood),
-          feelingsStrings: [],
-        );
+          ActivityWidgetData widgetData = ActivityWidgetData(
+            activity: lastSexualIntercourse,
+            partner: partner,
+            safety: safetyValue,
+            partnerString: partner != null
+                ? partner.name
+                : AppLocalizations.of(context)!.unknownPartner,
+            safetyString: safetyString,
+            dateString: RelativeTime(context, numeric: true)
+                .format(lastSexualIntercourse.date),
+            dayString:
+                DateFormat(DateFormat.DAY).format(lastSexualIntercourse.date),
+            weekdayString: DateFormat(DateFormat.WEEKDAY)
+                .format(lastSexualIntercourse.date),
+            placeString: getPlaceTranslation(lastSexualIntercourse.place),
+            contraceptiveString:
+                getContraceptiveTranslation(lastSexualIntercourse.birthControl),
+            partnerContraceptiveString: getContraceptiveTranslation(
+                lastSexualIntercourse.partnerBirthControl),
+            moodString: getMoodTranslation(lastSexualIntercourse.mood),
+            moodEmoji: getMoodEmoji(lastSexualIntercourse.mood),
+            feelingsStrings: [],
+          );
 
-        HomeWidget.saveWidgetData<String>(
-          'lastSexualIntercourse',
-          jsonEncode(widgetData),
-        ).then((value) {
-          Future.wait([
-            HomeWidget.updateWidget(
-              iOSName: "LastActivity",
-            ),
-            HomeWidget.updateWidget(
-              iOSName: "DaysSince",
-            )
-          ]).then((value) => debugPrint("update widget data"));
-        });
+          HomeWidget.saveWidgetData<String>(
+            'lastSexualIntercourse',
+            jsonEncode(widgetData),
+          ).then((value) {
+            Future.wait([
+              HomeWidget.updateWidget(
+                iOSName: "LastActivity",
+              ),
+              HomeWidget.updateWidget(
+                iOSName: "DaysSince",
+              )
+            ]).then((value) => debugPrint("update widget data"));
+          });
+        }
       } catch (e) {
         HomeWidget.saveWidgetData(
           'lastSexualIntercourse',

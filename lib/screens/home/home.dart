@@ -1,11 +1,16 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
+import 'package:lovelust/models/activity.dart';
+import 'package:lovelust/models/enum.dart';
+import 'package:lovelust/models/statistics.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/no_content.dart';
+import 'package:lovelust/widgets/statistics/dynamic_statistic.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +21,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final SharedService _shared = getIt<SharedService>();
+  List<Widget> _statistics = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _statistics = generateStatistics();
+  }
 
   void _openSettings() {
     Navigator.push(
@@ -51,29 +63,113 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  List<Widget> generateStatistics() {
+    List<DynamicStatisticData> list = [];
+    Activity? lastRelationship = _shared.activity.firstWhereOrNull(
+        (element) => element.type == ActivityType.sexualIntercourse);
+    if (lastRelationship != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.lastRelationship,
+          date: lastRelationship.date,
+          data: lastRelationship,
+        ),
+      );
+    }
+
+    if (lastRelationship != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.daysWithoutSex,
+          date: lastRelationship.date.add(const Duration(seconds: 1)),
+          data: (DateTime.now().difference(lastRelationship.date).inHours / 24)
+              .floor(),
+        ),
+      );
+    }
+
+    Activity? lastMasturbation = _shared.activity.firstWhereOrNull(
+        (element) => element.type == ActivityType.masturbation);
+    if (lastMasturbation != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.lastMasturbation,
+          date: lastMasturbation.date,
+          data: lastMasturbation,
+        ),
+      );
+    }
+
+    if (lastMasturbation != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.daysWithoutMasturbation,
+          date: lastMasturbation.date.add(const Duration(seconds: 1)),
+          data: (DateTime.now().difference(lastMasturbation.date).inHours / 24)
+              .floor(),
+        ),
+      );
+    }
+
+    list.sort((a, b) => b.date.compareTo(a.date));
+    return list
+        .map(
+          (e) => DynamicStatistic(
+            type: e.type,
+            date: e.date,
+            data: e.data,
+          ),
+        )
+        .toList();
+  }
+
+  Future<void> refresh() async {
+    setState(() {
+      _statistics = generateStatistics();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        slivers: [
-          GenericHeader(
-            title: title,
-            actions: [
-              IconButton(
-                onPressed: _openSettings,
-                icon: const Icon(Icons.settings),
-              ),
-            ],
-          ),
-          SliverFillRemaining(
-            hasScrollBody: false,
-            child: NoContent(
-              icon: Icons.analytics_outlined,
-              message: AppLocalizations.of(context)!.noStatistics,
+      body: RefreshIndicator(
+        onRefresh: refresh,
+        edgeOffset: 112.0,
+        child: CustomScrollView(
+          physics: _statistics.isNotEmpty
+              ? const AlwaysScrollableScrollPhysics()
+              : const NeverScrollableScrollPhysics(),
+          slivers: [
+            GenericHeader(
+              title: title,
+              actions: [
+                IconButton(
+                  onPressed: _openSettings,
+                  icon: const Icon(Icons.settings),
+                ),
+              ],
             ),
-          )
-        ],
+            _statistics.isEmpty
+                ? SliverFillRemaining(
+                    child: NoContent(
+                      icon: Icons.analytics_outlined,
+                      message: AppLocalizations.of(context)!.noStatistics,
+                    ),
+                  )
+                : SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                      MediaQuery.of(context).padding.left,
+                      0,
+                      MediaQuery.of(context).padding.right,
+                      MediaQuery.of(context).padding.bottom,
+                    ),
+                    sliver: SliverList.builder(
+                      itemCount: _statistics.length,
+                      itemBuilder: (context, index) => _statistics[index],
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }

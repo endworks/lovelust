@@ -6,11 +6,10 @@ import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
-import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';
-import 'package:lovelust/widgets/activity_block.dart';
+import 'package:lovelust/widgets/blocks/activity_block.dart';
+import 'package:lovelust/widgets/blocks/notes_block.dart';
 import 'package:lovelust/widgets/generic_header.dart';
-import 'package:lovelust/widgets/notes_block.dart';
 import 'package:lovelust/widgets/partner_avatar.dart';
 
 class PartnerDetailsPage extends StatefulWidget {
@@ -24,7 +23,6 @@ class PartnerDetailsPage extends StatefulWidget {
 
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
-  final NavigationService _navigator = getIt<NavigationService>();
   final ApiService _api = getIt<ApiService>();
   late Partner _partner;
 

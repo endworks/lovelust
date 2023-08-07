@@ -9,13 +9,13 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
-import 'package:lovelust/widgets/birth_control_block.dart';
+import 'package:lovelust/widgets/blocks/birth_control_block.dart';
+import 'package:lovelust/widgets/blocks/highlights_block.dart';
+import 'package:lovelust/widgets/blocks/notes_block.dart';
+import 'package:lovelust/widgets/blocks/practices_block.dart';
+import 'package:lovelust/widgets/blocks/safety_block.dart';
 import 'package:lovelust/widgets/generic_header.dart';
-import 'package:lovelust/widgets/highlights_block.dart';
-import 'package:lovelust/widgets/notes_block.dart';
-import 'package:lovelust/widgets/practices_block.dart';
 import 'package:lovelust/widgets/rating.dart';
-import 'package:lovelust/widgets/safety_block.dart';
 
 class ActivityDetailsPage extends StatefulWidget {
   const ActivityDetailsPage({super.key, required this.activity});

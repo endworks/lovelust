@@ -1,3 +1,4 @@
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,21 +14,24 @@ class DaysWithoutMasturbationStatistic extends StatefulWidget {
 
 class _DaysWithoutMasturbationStatisticState
     extends State<DaysWithoutMasturbationStatistic> {
-  Color? foreground;
-  Color? background;
-
-  @override
-  void initState() {
-    super.initState();
+  Color get foreground {
     if (widget.days >= 30) {
-      foreground = Colors.white;
-      background = Colors.red;
+      return Colors.white..harmonizeWith(Theme.of(context).colorScheme.primary);
     } else if (widget.days >= 14) {
-      foreground = Colors.white;
-      background = Colors.amber;
+      return Colors.white..harmonizeWith(Theme.of(context).colorScheme.primary);
     } else if (widget.days >= 7) {
-      foreground = Colors.amber;
+      return Colors.amber..harmonizeWith(Theme.of(context).colorScheme.primary);
     }
+    return Theme.of(context).colorScheme.secondary;
+  }
+
+  Color get background {
+    if (widget.days >= 30) {
+      return Colors.red..harmonizeWith(Theme.of(context).colorScheme.primary);
+    } else if (widget.days >= 14) {
+      return Colors.amber..harmonizeWith(Theme.of(context).colorScheme.primary);
+    }
+    return Theme.of(context).colorScheme.surface;
   }
 
   @override
@@ -38,11 +42,11 @@ class _DaysWithoutMasturbationStatisticState
         style: Theme.of(context).textTheme.titleMedium,
       ),
       trailing: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: background,
         child: Text(
           widget.days.toString(),
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                color: foreground ?? Theme.of(context).colorScheme.secondary,
+                color: foreground,
                 fontWeight: FontWeight.w700,
               ),
         ),

@@ -27,6 +27,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _statistics = generateStatistics();
+
+    _shared.addListener(() {
+      if (mounted) {
+        setState(() {
+          _statistics = generateStatistics();
+        });
+      }
+    });
   }
 
   void _openSettings() {
@@ -78,14 +86,18 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (lastRelationship != null) {
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.daysWithoutSex,
-          date: lastRelationship.date.add(const Duration(seconds: 1)),
-          data: (DateTime.now().difference(lastRelationship.date).inHours / 24)
-              .floor(),
-        ),
-      );
+      int lastRelationshipDays =
+          (DateTime.now().difference(lastRelationship.date).inHours / 24)
+              .floor();
+      if (lastRelationshipDays > 0) {
+        list.add(
+          DynamicStatisticData(
+            type: StatisticType.daysWithoutSex,
+            date: lastRelationship.date.add(const Duration(seconds: 1)),
+            data: lastRelationshipDays,
+          ),
+        );
+      }
     }
 
     Activity? lastMasturbation = _shared.activity.firstWhereOrNull(
@@ -101,14 +113,18 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (lastMasturbation != null) {
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.daysWithoutMasturbation,
-          date: lastMasturbation.date.add(const Duration(seconds: 1)),
-          data: (DateTime.now().difference(lastMasturbation.date).inHours / 24)
-              .floor(),
-        ),
-      );
+      int lastMasturbationDays =
+          (DateTime.now().difference(lastMasturbation.date).inHours / 24)
+              .floor();
+      if (lastMasturbationDays > 0) {
+        list.add(
+          DynamicStatisticData(
+            type: StatisticType.daysWithoutMasturbation,
+            date: lastMasturbation.date.add(const Duration(seconds: 1)),
+            data: lastMasturbationDays,
+          ),
+        );
+      }
     }
 
     list.sort((a, b) => b.date.compareTo(a.date));

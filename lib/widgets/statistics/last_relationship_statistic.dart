@@ -24,7 +24,9 @@ class _LastRelationshipStatisticState extends State<LastRelationshipStatistic> {
   @override
   void initState() {
     super.initState();
-    _partner = _shared.getPartnerById(widget.activity.partner!);
+    if (widget.activity.partner != null) {
+      _partner = _shared.getPartnerById(widget.activity.partner!);
+    }
   }
 
   void openActivity() {

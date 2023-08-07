@@ -255,6 +255,8 @@
   "unsupportedStatisticDescription": "No hay widget para este tipo de estadística",
   "daysWithoutSex": "Días sin sexo",
   "daysWithoutMasturbation": "Días sin masturbación",
+  "lastRelationship": "Última relacion sexual",
+  "lastMasturbation": "Última masturbación",
   "ok": "OK",
   "cancel": "Cancelar",
   "delete": "Eliminar",

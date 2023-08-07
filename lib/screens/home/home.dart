@@ -27,12 +27,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Color generateAltColor(Color color) {
+    HSLColor hslColor = HSLColor.fromColor(color);
+    return hslColor.withHue(hslColor.hue - 20).toColor();
+  }
+
   Widget get title {
-    return const Text.rich(
+    Color colorLove = generateAltColor(Theme.of(context).colorScheme.primary);
+    Color colorLust = Theme.of(context).colorScheme.primary;
+
+    if (_shared.colorScheme == null) {
+      colorLove = loveColor;
+      colorLust = lustColor;
+    }
+
+    return Text.rich(
       TextSpan(
         children: [
-          TextSpan(text: 'Love', style: TextStyle(color: loveColor)),
-          TextSpan(text: 'Lust', style: TextStyle(color: lustColor)),
+          TextSpan(text: 'Love', style: TextStyle(color: colorLove)),
+          TextSpan(text: 'Lust', style: TextStyle(color: colorLust)),
         ],
       ),
     );

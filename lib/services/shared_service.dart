@@ -29,7 +29,7 @@ class SharedService extends ChangeNotifier {
   final NavigationService _navigator = getIt<NavigationService>();
 
   String _theme = 'system';
-  String? _colorScheme;
+  AppColorScheme? _colorScheme;
   bool _material = false;
   String? _accessToken;
   String? _refreshToken;
@@ -65,7 +65,7 @@ class SharedService extends ChangeNotifier {
 
     List result = await Future.wait(futures);
     _theme = result[0];
-    _colorScheme = result[1];
+    _colorScheme = getAppColorSchemeByValue(result[1]);
     _accessToken = result[2];
     _refreshToken = result[3];
     _activity = result[4];
@@ -841,6 +841,44 @@ class SharedService extends ChangeNotifier {
     return 'Default';
   }
 
+  static AppColorScheme? getAppColorSchemeByValue(String? value) {
+    if (value == 'dynamic') {
+      return AppColorScheme.dynamic;
+    } else if (value == 'black') {
+      return AppColorScheme.black;
+    } else if (value == 'blue') {
+      return AppColorScheme.blue;
+    } else if (value == 'love') {
+      return AppColorScheme.pink;
+    } else if (value == 'lust') {
+      return AppColorScheme.purple;
+    } else if (value == 'lipstick') {
+      return AppColorScheme.red;
+    } else if (value == 'shimapan') {
+      return AppColorScheme.teal;
+    }
+    return null;
+  }
+
+  static String? setValueByAppColorScheme(AppColorScheme? value) {
+    if (value == AppColorScheme.black) {
+      return 'black';
+    } else if (value == AppColorScheme.blue) {
+      return 'blue';
+    } else if (value == AppColorScheme.dynamic) {
+      return 'dynamic';
+    } else if (value == AppColorScheme.pink) {
+      return 'love';
+    } else if (value == AppColorScheme.purple) {
+      return 'lust';
+    } else if (value == AppColorScheme.red) {
+      return 'lipstick';
+    } else if (value == AppColorScheme.teal) {
+      return 'shimapan';
+    }
+    return null;
+  }
+
   static String getContraceptiveTranslation(Contraceptive? value) {
     GetIt locator = GetIt.instance;
     BuildContext context =
@@ -1109,7 +1147,7 @@ class SharedService extends ChangeNotifier {
     } else if (value == AppIcon.neon) {
       return AppLocalizations.of(context)!.neon;
     } else if (value == AppIcon.pink) {
-      return AppLocalizations.of(context)!.pink;
+      return AppLocalizations.of(context)!.love;
     } else if (value == AppIcon.pride) {
       return AppLocalizations.of(context)!.pride;
     } else if (value == AppIcon.prideAce) {
@@ -1123,7 +1161,7 @@ class SharedService extends ChangeNotifier {
     } else if (value == AppIcon.prideTrans) {
       return AppLocalizations.of(context)!.prideTrans;
     } else if (value == AppIcon.purple) {
-      return AppLocalizations.of(context)!.purple;
+      return AppLocalizations.of(context)!.lust;
     } else if (value == AppIcon.red) {
       return AppLocalizations.of(context)!.lipstick;
     } else if (value == AppIcon.sexapill) {
@@ -1134,6 +1172,29 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.white;
     }
     return AppLocalizations.of(context)!.defaultAppIcon;
+  }
+
+  static String getAppColorSchemeTranslation(AppColorScheme? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
+    if (value == AppColorScheme.black) {
+      return AppLocalizations.of(context)!.black;
+    } else if (value == AppColorScheme.dynamic) {
+      return AppLocalizations.of(context)!.dynamicColorScheme;
+    } else if (value == AppColorScheme.blue) {
+      return AppLocalizations.of(context)!.blue;
+    } else if (value == AppColorScheme.pink) {
+      return AppLocalizations.of(context)!.love;
+    } else if (value == AppColorScheme.purple) {
+      return AppLocalizations.of(context)!.lust;
+    } else if (value == AppColorScheme.red) {
+      return AppLocalizations.of(context)!.lipstick;
+    } else if (value == AppColorScheme.teal) {
+      return AppLocalizations.of(context)!.shimapan;
+    }
+    return AppLocalizations.of(context)!.defaultColorScheme;
   }
 
   static String? emptyStringToNull(String? value) {
@@ -1153,13 +1214,13 @@ class SharedService extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? get colorScheme {
+  AppColorScheme? get colorScheme {
     return _colorScheme;
   }
 
-  set colorScheme(String? value) {
+  set colorScheme(AppColorScheme? value) {
     _colorScheme = value;
-    _storage.setColorScheme(value);
+    _storage.setColorScheme(setValueByAppColorScheme(value));
     notifyListeners();
   }
 

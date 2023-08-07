@@ -63,7 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  changeColorScheme(String? value) {
+  changeColorScheme(AppColorScheme? value) {
     if (_shared.colorScheme != value) {
       setState(() {
         _shared.colorScheme = value;
@@ -134,46 +134,24 @@ class _SettingsPageState extends State<SettingsPage> {
     return Icons.fingerprint;
   }
 
-  List<DropdownMenuItem<String>> get dropdownColorSchemeItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(
-          value: "default",
-          child: Text(AppLocalizations.of(context)!.defaultColorScheme)),
-      DropdownMenuItem(
-          value: "love", child: Text(AppLocalizations.of(context)!.love)),
-      DropdownMenuItem(
-          value: "lust", child: Text(AppLocalizations.of(context)!.lust)),
-      /*DropdownMenuItem(
-          value: "lovelust",
-          child: Text(AppLocalizations.of(context)!.lovelust)),*/
-      DropdownMenuItem(
-          value: "lipstick",
-          child: Text(AppLocalizations.of(context)!.lipstick)),
-      DropdownMenuItem(
-        value: "blue",
-        child: Text(AppLocalizations.of(context)!.blue),
+  List<DropdownMenuItem<AppColorScheme?>> get dropdownColorSchemeItems {
+    List<DropdownMenuItem<AppColorScheme?>> menuItems = AppColorScheme.values
+        .map(
+          (e) => DropdownMenuItem<AppColorScheme?>(
+            value: e,
+            child: Text(SharedService.getAppColorSchemeTranslation(e)),
+          ),
+        )
+        .toList();
+    menuItems.insert(
+      0,
+      DropdownMenuItem<AppColorScheme?>(
+        value: null,
+        child: Text(SharedService.getAppColorSchemeTranslation(null)),
       ),
-      DropdownMenuItem(
-          value: "shimapan",
-          child: Text(AppLocalizations.of(context)!.shimapan)),
-      /*DropdownMenuItem(
-          value: "lustfullove",
-          child: Text(AppLocalizations.of(context)!.lustfullove)),
-      DropdownMenuItem(
-          value: "lovefullust",
-          child: Text(AppLocalizations.of(context)!.lovefullust)),*/
-      DropdownMenuItem(
-        value: "black",
-        child: Text(AppLocalizations.of(context)!.black),
-      ),
-    ];
-    if (!kIsWeb && Platform.isAndroid) {
-      menuItems.insert(
-        1,
-        DropdownMenuItem(
-            value: "dynamic",
-            child: Text(AppLocalizations.of(context)!.dynamicColorScheme)),
-      );
+    );
+    if (kIsWeb || !Platform.isAndroid) {
+      menuItems.removeAt(1);
     }
     return menuItems;
   }
@@ -313,7 +291,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _askColorScheme() async {
-    String? value = await showDialog<String>(
+    AppColorScheme? value = await showDialog<AppColorScheme?>(
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
@@ -332,12 +310,9 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     );
 
-    if (value != null && _shared.colorScheme != value) {
-      if (value == 'default' && _shared.colorScheme == null) {
-        return;
-      }
+    if (_shared.colorScheme != value) {
       setState(() {
-        _shared.colorScheme = value != 'default' ? value : null;
+        _shared.colorScheme = value;
       });
       reload();
     }

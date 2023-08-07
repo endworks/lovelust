@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:lovelust/home.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
@@ -39,19 +40,19 @@ class _AppState extends State<App> {
               builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
         bool initialLoadDone = snapshot.connectionState == ConnectionState.done;
         ThemeData theme = generateTheme(
-          _shared.colorScheme,
+          SharedService.setValueByAppColorScheme(_shared.colorScheme),
           darkMode: false,
           material: _shared.material,
         );
         ThemeData darkTheme = generateTheme(
-          _shared.colorScheme,
+          SharedService.setValueByAppColorScheme(_shared.colorScheme),
           darkMode: true,
           material: _shared.material,
         );
         ThemeMode themeMode = ThemeMode.system;
 
         if (initialLoadDone) {
-          if (_shared.colorScheme == 'dynamic') {
+          if (_shared.colorScheme == AppColorScheme.dynamic) {
             if (lightDynamic != null && darkDynamic != null) {
               theme = generateTheme(
                 null,

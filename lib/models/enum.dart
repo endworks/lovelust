@@ -136,6 +136,16 @@ enum Practice {
   whiteKiss,
 }
 
+enum AppColorScheme {
+  dynamic,
+  pink,
+  purple,
+  red,
+  blue,
+  teal,
+  black,
+}
+
 enum AppIcon {
   beta,
   pink,

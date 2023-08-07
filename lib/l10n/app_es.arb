@@ -146,6 +146,7 @@
   "requireAuthToAccess": "Autenticación requerida para acceder",
   "requireAuthToConfirm": "Autenticación requerida para confirmar",
   "authFailed": "Autenticación ha fallado",
+  "authRetry": "Reintentar autenticación",
   "contentHidden": "Contenido oculto",
   "sensitiveContent": "Contenido sensible",
   "privacyMode": "Modo privacidad",

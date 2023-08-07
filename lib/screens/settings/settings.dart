@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/screens/settings/login_dialog.dart';
 import 'package:lovelust/screens/settings/select_app_icon.dart';
 import 'package:lovelust/service_locator.dart';
@@ -212,103 +213,25 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  List<DropdownMenuItem<String>> get dropdownAppIconItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(
-        value: "Default",
-        child: Text(AppLocalizations.of(context)!.defaultAppIcon),
-      ),
-      DropdownMenuItem(
-        value: "Beta",
-        child: Text(AppLocalizations.of(context)!.beta),
-      ),
-      DropdownMenuItem(
-        value: "Pink",
-        child: Text(AppLocalizations.of(context)!.love),
-      ),
-      DropdownMenuItem(
-        value: "Purple",
-        child: Text(AppLocalizations.of(context)!.lust),
-      ),
-      DropdownMenuItem(
-        value: "Red",
-        child: Text(AppLocalizations.of(context)!.lipstick),
-      ),
-      DropdownMenuItem(
-        value: "Blue",
-        child: Text(AppLocalizations.of(context)!.blue),
-      ),
-      DropdownMenuItem(
-        value: "Teal",
-        child: Text(AppLocalizations.of(context)!.shimapan),
-      ),
-      DropdownMenuItem(
-        value: "White",
-        child: Text(AppLocalizations.of(context)!.white),
-      ),
-      DropdownMenuItem(
-        value: "Black",
-        child: Text(AppLocalizations.of(context)!.black),
-      ),
-      DropdownMenuItem(
-        value: "Glow",
-        child: Text(AppLocalizations.of(context)!.glow),
-      ),
-      DropdownMenuItem(
-        value: "Neon",
-        child: Text(AppLocalizations.of(context)!.neon),
-      ),
-      DropdownMenuItem(
-        value: "Pride",
-        child: Text(AppLocalizations.of(context)!.pride),
-      ),
-      DropdownMenuItem(
-        value: "PrideRainbow",
-        child: Text(AppLocalizations.of(context)!.prideRainbow),
-      ),
-      DropdownMenuItem(
-        value: "PrideClassic",
-        child: Text(AppLocalizations.of(context)!.prideClassic),
-      ),
-      DropdownMenuItem(
-        value: "PrideBi",
-        child: Text(AppLocalizations.of(context)!.prideBi),
-      ),
-      DropdownMenuItem(
-        value: "PrideTrans",
-        child: Text(AppLocalizations.of(context)!.prideTrans),
-      ),
-      DropdownMenuItem(
-        value: "PrideAce",
-        child: Text(AppLocalizations.of(context)!.prideAce),
-      ),
-      DropdownMenuItem(
-        value: "AltWhite",
-        child: Text(AppLocalizations.of(context)!.altWhite),
-      ),
-      DropdownMenuItem(
-        value: "AltBlack",
-        child: Text(AppLocalizations.of(context)!.altBlack),
-      ),
-      DropdownMenuItem(
-        value: "Health",
-        child: Text(AppLocalizations.of(context)!.health),
-      ),
-      DropdownMenuItem(
-        value: "Health2",
-        child: Text(AppLocalizations.of(context)!.health2),
-      ),
-      DropdownMenuItem(
-        value: "Sexapill",
-        child: Text(AppLocalizations.of(context)!.sexapill),
-      ),
-    ];
-    return menuItems;
-  }
-
   Widget get appIconName {
-    DropdownMenuItem value = dropdownAppIconItems
-        .firstWhere((element) => element.value == _shared.appIcon);
+    List<DropdownMenuItem<AppIcon?>> list = AppIcon.values
+        .map(
+          (e) => DropdownMenuItem<AppIcon?>(
+            value: e,
+            child: Text(SharedService.getAppIconTranslation(e)),
+          ),
+        )
+        .toList();
+    list.insert(
+      0,
+      DropdownMenuItem<AppIcon?>(
+        value: null,
+        child: Text(SharedService.getAppIconTranslation(null)),
+      ),
+    );
+
+    DropdownMenuItem value =
+        list.firstWhere((element) => element.value == _shared.appIcon);
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(

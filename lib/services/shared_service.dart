@@ -40,7 +40,7 @@ class SharedService extends ChangeNotifier {
   bool _calendarView = false;
   String? _activityFilter;
   bool _protected = false;
-  String _appIcon = 'Default';
+  AppIcon? _appIcon;
   PackageInfo? packageInfo;
   AppLifecycleState appLifecycleState = AppLifecycleState.inactive;
 
@@ -76,7 +76,7 @@ class SharedService extends ChangeNotifier {
     _activityFilter = result[9];
     _material = result[10];
     Intl.systemLocale = result[11];
-    _appIcon = result[12] ?? 'Default';
+    _appIcon = getAppIconByValue(result[12]);
     packageInfo = result[13];
 
     if (_requireAuth && !authorized) {
@@ -747,6 +747,100 @@ class SharedService extends ChangeNotifier {
     return null;
   }
 
+  static AppIcon? getAppIconByValue(String? value) {
+    if (value == 'Beta') {
+      return AppIcon.beta;
+    } else if (value == 'Black') {
+      return AppIcon.black;
+    } else if (value == 'Blue') {
+      return AppIcon.blue;
+    } else if (value == 'AltBlack') {
+      return AppIcon.filledBlack;
+    } else if (value == 'AltWhite') {
+      return AppIcon.filledWhite;
+    } else if (value == 'Glow') {
+      return AppIcon.glow;
+    } else if (value == 'Health') {
+      return AppIcon.health;
+    } else if (value == 'Health2') {
+      return AppIcon.health2;
+    } else if (value == 'Neon') {
+      return AppIcon.neon;
+    } else if (value == 'Pink') {
+      return AppIcon.pink;
+    } else if (value == 'Pride') {
+      return AppIcon.pride;
+    } else if (value == 'PrideAce') {
+      return AppIcon.prideAce;
+    } else if (value == 'PrideBi') {
+      return AppIcon.prideBi;
+    } else if (value == 'PrideClassic') {
+      return AppIcon.prideClassic;
+    } else if (value == 'PrideRainbow') {
+      return AppIcon.prideRainbow;
+    } else if (value == 'PrideTrans') {
+      return AppIcon.prideTrans;
+    } else if (value == 'Purple') {
+      return AppIcon.purple;
+    } else if (value == 'Red') {
+      return AppIcon.red;
+    } else if (value == 'Sexapill') {
+      return AppIcon.sexapill;
+    } else if (value == 'Teal') {
+      return AppIcon.teal;
+    } else if (value == 'White') {
+      return AppIcon.white;
+    }
+    return null;
+  }
+
+  static String setValueByAppIcon(AppIcon? value) {
+    if (value == AppIcon.beta) {
+      return 'Beta';
+    } else if (value == AppIcon.black) {
+      return 'Black';
+    } else if (value == AppIcon.blue) {
+      return 'Blue';
+    } else if (value == AppIcon.filledBlack) {
+      return 'AltBlack';
+    } else if (value == AppIcon.filledWhite) {
+      return 'AltWhite';
+    } else if (value == AppIcon.glow) {
+      return 'Glow';
+    } else if (value == AppIcon.health) {
+      return 'Health';
+    } else if (value == AppIcon.health2) {
+      return 'Health2';
+    } else if (value == AppIcon.neon) {
+      return 'Neon';
+    } else if (value == AppIcon.pink) {
+      return 'Pink';
+    } else if (value == AppIcon.pride) {
+      return 'Pride';
+    } else if (value == AppIcon.prideAce) {
+      return 'PrideAce';
+    } else if (value == AppIcon.prideBi) {
+      return 'PrideBi';
+    } else if (value == AppIcon.prideClassic) {
+      return 'PrideClassic';
+    } else if (value == AppIcon.prideRainbow) {
+      return 'PrideRainbow';
+    } else if (value == AppIcon.prideTrans) {
+      return 'PrideTrans';
+    } else if (value == AppIcon.purple) {
+      return 'Purple';
+    } else if (value == AppIcon.red) {
+      return 'Red';
+    } else if (value == AppIcon.sexapill) {
+      return 'Sexapill';
+    } else if (value == AppIcon.teal) {
+      return 'Teal';
+    } else if (value == AppIcon.white) {
+      return 'White';
+    }
+    return 'Default';
+  }
+
   static String getContraceptiveTranslation(Contraceptive? value) {
     GetIt locator = GetIt.instance;
     BuildContext context =
@@ -991,6 +1085,57 @@ class SharedService extends ChangeNotifier {
     return '😐';
   }
 
+  static String getAppIconTranslation(AppIcon? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
+    if (value == AppIcon.beta) {
+      return AppLocalizations.of(context)!.beta;
+    } else if (value == AppIcon.black) {
+      return AppLocalizations.of(context)!.black;
+    } else if (value == AppIcon.blue) {
+      return AppLocalizations.of(context)!.blue;
+    } else if (value == AppIcon.filledBlack) {
+      return AppLocalizations.of(context)!.altBlack;
+    } else if (value == AppIcon.filledWhite) {
+      return AppLocalizations.of(context)!.altWhite;
+    } else if (value == AppIcon.glow) {
+      return AppLocalizations.of(context)!.glow;
+    } else if (value == AppIcon.health) {
+      return AppLocalizations.of(context)!.health;
+    } else if (value == AppIcon.health2) {
+      return AppLocalizations.of(context)!.health2;
+    } else if (value == AppIcon.neon) {
+      return AppLocalizations.of(context)!.neon;
+    } else if (value == AppIcon.pink) {
+      return AppLocalizations.of(context)!.pink;
+    } else if (value == AppIcon.pride) {
+      return AppLocalizations.of(context)!.pride;
+    } else if (value == AppIcon.prideAce) {
+      return AppLocalizations.of(context)!.prideAce;
+    } else if (value == AppIcon.prideBi) {
+      return AppLocalizations.of(context)!.prideBi;
+    } else if (value == AppIcon.prideClassic) {
+      return AppLocalizations.of(context)!.prideClassic;
+    } else if (value == AppIcon.prideRainbow) {
+      return AppLocalizations.of(context)!.prideRainbow;
+    } else if (value == AppIcon.prideTrans) {
+      return AppLocalizations.of(context)!.prideTrans;
+    } else if (value == AppIcon.purple) {
+      return AppLocalizations.of(context)!.purple;
+    } else if (value == AppIcon.red) {
+      return AppLocalizations.of(context)!.lipstick;
+    } else if (value == AppIcon.sexapill) {
+      return AppLocalizations.of(context)!.sexapill;
+    } else if (value == AppIcon.teal) {
+      return AppLocalizations.of(context)!.shimapan;
+    } else if (value == AppIcon.white) {
+      return AppLocalizations.of(context)!.white;
+    }
+    return AppLocalizations.of(context)!.defaultAppIcon;
+  }
+
   static String? emptyStringToNull(String? value) {
     if (value != null) {
       return value.isEmpty ? null : value;
@@ -1098,11 +1243,11 @@ class SharedService extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get appIcon {
+  AppIcon? get appIcon {
     return _appIcon;
   }
 
-  set appIcon(String value) {
+  set appIcon(AppIcon? value) {
     _appIcon = value;
     notifyListeners();
   }

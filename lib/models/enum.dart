@@ -1,18 +1,48 @@
-enum MenuEntryItem { help, delete }
+enum MenuEntryItem {
+  help,
+  delete,
+}
 
-enum FilterEntryItem { all, activity, solo }
+enum FilterEntryItem {
+  all,
+  activity,
+  solo,
+}
 
-enum AuthSupportState { unknown, supported, unsupported }
+enum AuthSupportState {
+  unknown,
+  supported,
+  unsupported,
+}
 
-enum ActivitySafety { safe, unsafe, partiallyUnsafe }
+enum ActivitySafety {
+  safe,
+  unsafe,
+  partiallyUnsafe,
+}
 
-enum Gender { male, female, nonBinary }
+enum Gender {
+  male,
+  female,
+  nonBinary,
+}
 
-enum BiologicalSex { male, female }
+enum BiologicalSex {
+  male,
+  female,
+}
 
-enum ActivityType { masturbation, sexualIntercourse }
+enum ActivityType {
+  masturbation,
+  sexualIntercourse,
+}
 
-enum Initiator { me, partner, both, other }
+enum Initiator {
+  me,
+  partner,
+  both,
+  other,
+}
 
 enum Mood {
   safe,
@@ -104,4 +134,28 @@ enum Practice {
   toy,
   vaginal,
   whiteKiss,
+}
+
+enum AppIcon {
+  beta,
+  pink,
+  purple,
+  red,
+  blue,
+  teal,
+  white,
+  black,
+  glow,
+  neon,
+  pride,
+  prideClassic,
+  prideRainbow,
+  prideBi,
+  prideTrans,
+  prideAce,
+  filledWhite,
+  filledBlack,
+  health,
+  health2,
+  sexapill
 }

@@ -18,7 +18,7 @@ class SelectAppIconPage extends StatefulWidget {
 
 class _SelectAppIconPageState extends State<SelectAppIconPage> {
   final SharedService _shared = getIt<SharedService>();
-  late String selectedAppIcon;
+  late AppIcon? selectedAppIcon;
 
   @override
   void initState() {
@@ -30,18 +30,26 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
     if (_shared.appIcon != selectedAppIcon) {
       try {
         if (Platform.isIOS) {
-          DynamicIconFlutter.supportsAlternateIcons.then((supported) {
-            String? appIcon =
-                selectedAppIcon != 'Default' ? selectedAppIcon : null;
-            DynamicIconFlutter.setAlternateIconName(appIcon)
-                .then((value) => null);
-          });
+          DynamicIconFlutter.supportsAlternateIcons.then(
+            (supported) {
+              String? appIcon =
+                  SharedService.setValueByAppIcon(selectedAppIcon);
+              DynamicIconFlutter.setAlternateIconName(appIcon).then(
+                (value) => null,
+              );
+            },
+          );
         } else if (Platform.isAndroid) {
           List<String> list = dropdownAppIconItems
-              .map<String>((DropdownMenuItem<String> e) => e.value ?? 'Default')
+              .map<String>(
+                (DropdownMenuItem<AppIcon?> e) =>
+                    SharedService.setValueByAppIcon(e.value),
+              )
               .toList();
           DynamicIconFlutter.setIcon(
-              icon: selectedAppIcon, listAvailableIcon: list);
+            icon: SharedService.setValueByAppIcon(selectedAppIcon),
+            listAvailableIcon: list,
+          );
         }
         setState(() {
           _shared.appIcon = selectedAppIcon;
@@ -63,104 +71,29 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
     }
   }
 
-  void onChanged(String? value) {
+  void onChanged(AppIcon? value) {
     setState(() {
       selectedAppIcon = value!;
     });
   }
 
-  List<DropdownMenuItem<String>> get dropdownAppIconItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(
-        value: "Default",
-        child: Text(AppLocalizations.of(context)!.defaultAppIcon),
+  List<DropdownMenuItem<AppIcon?>> get dropdownAppIconItems {
+    List<DropdownMenuItem<AppIcon?>> list = AppIcon.values
+        .map(
+          (e) => DropdownMenuItem<AppIcon?>(
+            value: e,
+            child: Text(SharedService.getAppIconTranslation(e)),
+          ),
+        )
+        .toList();
+    list.insert(
+      0,
+      DropdownMenuItem<AppIcon?>(
+        value: null,
+        child: Text(SharedService.getAppIconTranslation(null)),
       ),
-      DropdownMenuItem(
-        value: "Beta",
-        child: Text(AppLocalizations.of(context)!.beta),
-      ),
-      DropdownMenuItem(
-        value: "Pink",
-        child: Text(AppLocalizations.of(context)!.love),
-      ),
-      DropdownMenuItem(
-        value: "Purple",
-        child: Text(AppLocalizations.of(context)!.lust),
-      ),
-      DropdownMenuItem(
-        value: "Red",
-        child: Text(AppLocalizations.of(context)!.lipstick),
-      ),
-      DropdownMenuItem(
-        value: "Blue",
-        child: Text(AppLocalizations.of(context)!.blue),
-      ),
-      DropdownMenuItem(
-        value: "Teal",
-        child: Text(AppLocalizations.of(context)!.shimapan),
-      ),
-      DropdownMenuItem(
-        value: "White",
-        child: Text(AppLocalizations.of(context)!.white),
-      ),
-      DropdownMenuItem(
-        value: "Black",
-        child: Text(AppLocalizations.of(context)!.black),
-      ),
-      DropdownMenuItem(
-        value: "Glow",
-        child: Text(AppLocalizations.of(context)!.glow),
-      ),
-      DropdownMenuItem(
-        value: "Neon",
-        child: Text(AppLocalizations.of(context)!.neon),
-      ),
-      DropdownMenuItem(
-        value: "Pride",
-        child: Text(AppLocalizations.of(context)!.pride),
-      ),
-      DropdownMenuItem(
-        value: "PrideRainbow",
-        child: Text(AppLocalizations.of(context)!.prideRainbow),
-      ),
-      DropdownMenuItem(
-        value: "PrideClassic",
-        child: Text(AppLocalizations.of(context)!.prideClassic),
-      ),
-      DropdownMenuItem(
-        value: "PrideBi",
-        child: Text(AppLocalizations.of(context)!.prideBi),
-      ),
-      DropdownMenuItem(
-        value: "PrideTrans",
-        child: Text(AppLocalizations.of(context)!.prideTrans),
-      ),
-      DropdownMenuItem(
-        value: "PrideAce",
-        child: Text(AppLocalizations.of(context)!.prideAce),
-      ),
-      DropdownMenuItem(
-        value: "AltWhite",
-        child: Text(AppLocalizations.of(context)!.altWhite),
-      ),
-      DropdownMenuItem(
-        value: "AltBlack",
-        child: Text(AppLocalizations.of(context)!.altBlack),
-      ),
-      DropdownMenuItem(
-        value: "Health",
-        child: Text(AppLocalizations.of(context)!.health),
-      ),
-      DropdownMenuItem(
-        value: "Health2",
-        child: Text(AppLocalizations.of(context)!.health2),
-      ),
-      DropdownMenuItem(
-        value: "Sexapill",
-        child: Text(AppLocalizations.of(context)!.sexapill),
-      ),
-    ];
-    return menuItems;
+    );
+    return list;
   }
 
   List<Widget> get fields {
@@ -182,13 +115,14 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: Image(
-                    image: AssetImage("assets/AppIcons/${e.value}.png"),
+                    image: AssetImage(
+                        "assets/AppIcons/${SharedService.setValueByAppIcon(e.value)}.png"),
                   ),
                 ),
               ),
             ),
-            trailing: Radio<String>(
-              value: e.value!,
+            trailing: Radio<AppIcon?>(
+              value: e.value,
               groupValue: selectedAppIcon,
               onChanged: onChanged,
             ),

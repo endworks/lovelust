@@ -1,10 +1,7 @@
-import 'package:lovelust/models/activity.dart';
-
 enum StatisticType {
   lastRelationship,
   lastMasturbation,
   daysWithoutSex,
-  daysWithoutMasturbation,
   mostPopularPartner,
   mostPopularPractices,
   mostPopularContraception,
@@ -29,9 +26,12 @@ class StatisticData {
   DateTime date;
 }
 
-class LastRelationshipData extends StatisticData {
-  LastRelationshipData(StatisticType type, DateTime date, this.activity)
-      : super(type, date);
+class DaysWithoutSexData {
+  DaysWithoutSexData(
+    this.daysWithoutRelationship,
+    this.daysWithoutMasturbation,
+  );
 
-  Activity activity;
+  int daysWithoutRelationship;
+  int daysWithoutMasturbation;
 }

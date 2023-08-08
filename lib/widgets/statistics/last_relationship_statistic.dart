@@ -43,32 +43,38 @@ class _LastRelationshipStatisticState extends State<LastRelationshipStatistic> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: openActivity,
-      title: Text(
-        AppLocalizations.of(context)!.lastRelationship,
-        style: Theme.of(context).textTheme.titleMedium,
+    return Card(
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
       ),
-      subtitle: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            _partner != null
-                ? _partner!.name
-                : AppLocalizations.of(context)!.unknownPartner,
-            style: Theme.of(context).textTheme.labelLarge,
+      child: ListTile(
+        onTap: openActivity,
+        title: Text(
+          AppLocalizations.of(context)!.lastRelationship,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              _partner != null
+                  ? _partner!.name
+                  : AppLocalizations.of(context)!.unknownPartner,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            const Text(' '),
+            Text(
+              RelativeTime(context, numeric: true).format(widget.activity.date),
+            ),
+          ],
+        ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.arrow_forward,
+            color: Theme.of(context).colorScheme.secondary,
           ),
-          const Text(' '),
-          Text(
-            RelativeTime(context, numeric: true).format(widget.activity.date),
-          ),
-        ],
-      ),
-      trailing: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        child: Icon(
-          Icons.arrow_forward,
-          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
     );

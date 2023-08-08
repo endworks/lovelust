@@ -16,7 +16,7 @@ class _ActivityCardState extends State<ActivityCard> {
   Widget build(BuildContext context) {
     return Card(
       margin:
-          const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+          const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 4),
       clipBehavior: Clip.antiAlias,
       child: ActivityItemInfo(activity: widget.activity),
     );

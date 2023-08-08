@@ -29,20 +29,26 @@ class _LastMasturbationStatisticState extends State<LastMasturbationStatistic> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: openActivity,
-      title: Text(
-        AppLocalizations.of(context)!.lastMasturbation,
-        style: Theme.of(context).textTheme.titleMedium,
+    return Card(
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
       ),
-      subtitle: Text(
-        RelativeTime(context, numeric: true).format(widget.activity.date),
-      ),
-      trailing: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        child: Icon(
-          Icons.arrow_forward,
-          color: Theme.of(context).colorScheme.secondary,
+      child: ListTile(
+        onTap: openActivity,
+        title: Text(
+          AppLocalizations.of(context)!.lastMasturbation,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Text(
+          RelativeTime(context, numeric: true).format(widget.activity.date),
+        ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.arrow_forward,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
       ),
     );

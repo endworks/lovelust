@@ -85,21 +85,6 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    if (lastRelationship != null) {
-      int lastRelationshipDays =
-          (DateTime.now().difference(lastRelationship.date).inHours / 24)
-              .floor();
-      if (lastRelationshipDays > 0) {
-        list.add(
-          DynamicStatisticData(
-            type: StatisticType.daysWithoutSex,
-            date: lastRelationship.date.add(const Duration(seconds: 1)),
-            data: lastRelationshipDays,
-          ),
-        );
-      }
-    }
-
     Activity? lastMasturbation = _shared.activity.firstWhereOrNull(
         (element) => element.type == ActivityType.masturbation);
     if (lastMasturbation != null) {
@@ -112,19 +97,38 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    DateTime daysWithoutSexDate = DateTime.now();
+    int lastRelationshipDays = -1;
+    if (lastRelationship != null) {
+      lastRelationshipDays =
+          (DateTime.now().difference(lastRelationship.date).inHours / 24)
+              .floor();
+    }
+    int lastMasturbationDays = -1;
     if (lastMasturbation != null) {
-      int lastMasturbationDays =
+      lastMasturbationDays =
           (DateTime.now().difference(lastMasturbation.date).inHours / 24)
               .floor();
-      if (lastMasturbationDays > 0) {
-        list.add(
-          DynamicStatisticData(
-            type: StatisticType.daysWithoutMasturbation,
-            date: lastMasturbation.date.add(const Duration(seconds: 1)),
-            data: lastMasturbationDays,
-          ),
-        );
-      }
+    }
+    if (lastRelationship != null && lastMasturbation != null) {
+      daysWithoutSexDate =
+          lastRelationship.date.difference(lastMasturbation.date).inSeconds > 0
+              ? lastRelationship.date
+              : lastMasturbation.date;
+    } else if (lastRelationship != null) {
+      daysWithoutSexDate = lastRelationship.date;
+    } else if (lastMasturbation != null) {
+      daysWithoutSexDate = lastMasturbation.date;
+    }
+    daysWithoutSexDate = daysWithoutSexDate.add(const Duration(seconds: 1));
+    if (lastRelationshipDays > -1 || lastMasturbationDays > -1) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.daysWithoutSex,
+          date: daysWithoutSexDate,
+          data: DaysWithoutSexData(lastRelationshipDays, lastMasturbationDays),
+        ),
+      );
     }
 
     list.sort((a, b) => b.date.compareTo(a.date));

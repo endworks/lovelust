@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/statistics.dart';
-import 'package:lovelust/widgets/statistics/days_without_masturbation_statistic.dart';
 import 'package:lovelust/widgets/statistics/days_without_sex_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_masturbation_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_relationship_statistic.dart';
@@ -29,21 +28,13 @@ class _DynamicStatisticState extends State<DynamicStatistic> {
     } else if (widget.type == StatisticType.lastMasturbation) {
       return LastMasturbationStatistic(activity: widget.data);
     } else if (widget.type == StatisticType.daysWithoutSex) {
-      return DaysWithoutSexStatistic(days: widget.data);
-    } else if (widget.type == StatisticType.daysWithoutMasturbation) {
-      return DaysWithoutMasturbationStatistic(days: widget.data);
+      return DaysWithoutSexStatistic(data: widget.data);
     }
     return const UnsupportedStatistic();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsetsDirectional.symmetric(
-        horizontal: 16,
-        vertical: 4,
-      ),
-      child: statistic,
-    );
+    return statistic;
   }
 }

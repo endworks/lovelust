@@ -6,20 +6,26 @@ class UnsupportedStatistic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      titleAlignment: ListTileTitleAlignment.center,
-      title: Text(
-        AppLocalizations.of(context)!.unsupportedStatistic,
-        style: Theme.of(context).textTheme.titleMedium,
+    return Card(
+      margin: const EdgeInsetsDirectional.symmetric(
+        horizontal: 16,
+        vertical: 4,
       ),
-      subtitle: Text(
-        AppLocalizations.of(context)!.unsupportedStatisticDescription,
-      ),
-      trailing: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        child: Icon(
-          Icons.question_mark,
-          color: Theme.of(context).colorScheme.secondary,
+      child: ListTile(
+        titleAlignment: ListTileTitleAlignment.center,
+        title: Text(
+          AppLocalizations.of(context)!.unsupportedStatistic,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        subtitle: Text(
+          AppLocalizations.of(context)!.unsupportedStatisticDescription,
+        ),
+        trailing: CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          child: Icon(
+            Icons.question_mark,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
       ),
     );

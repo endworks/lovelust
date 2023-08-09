@@ -227,7 +227,7 @@ class SharedService extends ChangeNotifier {
           LineSeries<WeeklyChartData, String>(
             dataSource: sexChartData,
             color: primary,
-            name: AppLocalizations.of(context)!.sex,
+            name: AppLocalizations.of(context)!.sexualIntercourse,
             xValueMapper: (WeeklyChartData data, _) => data.day,
             yValueMapper: (WeeklyChartData data, _) => data.activityCount,
             markerSettings: const MarkerSettings(isVisible: true),

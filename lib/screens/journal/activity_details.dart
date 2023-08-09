@@ -121,7 +121,26 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
   Widget? get encounters {
     TextStyle style = Theme.of(context).textTheme.titleLarge!;
-    int count = _shared.getActivityByPartner(_activity.partner).length;
+    int count = 0;
+    if (_solo) {
+      count = _shared.activity
+          .where((element) => element.type == ActivityType.masturbation)
+          .length;
+    } else {
+      if (_partner != null) {
+        count = _shared.activity
+            .where((element) =>
+                element.type == ActivityType.sexualIntercourse &&
+                element.partner == _partner!.id)
+            .length;
+      } else {
+        count = _shared.activity
+            .where((element) =>
+                element.type == ActivityType.sexualIntercourse &&
+                element.partner == null)
+            .length;
+      }
+    }
     if (count == 0) {
       return null;
     }
@@ -135,12 +154,19 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           color: color,
           size: style.fontSize,
         ),
-        _shared.sensitiveText(
-          count.toString(),
-          style: style.copyWith(
-            color: color,
-          ),
-        ),
+        _solo
+            ? Text(
+                count.toString(),
+                style: style.copyWith(
+                  color: color,
+                ),
+              )
+            : _shared.sensitiveText(
+                count.toString(),
+                style: style.copyWith(
+                  color: color,
+                ),
+              ),
       ],
     );
   }
@@ -160,7 +186,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               color: Theme.of(context).colorScheme.secondary,
             ),
             const Padding(padding: EdgeInsets.only(left: 4)),
-            _shared.sensitiveText(
+            Text(
               SharedService.getPlaceTranslation(_activity.place),
             ),
           ],
@@ -174,7 +200,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
-                _shared.sensitiveText(
+                Text(
                   DateFormat('dd MMMM yyyy').format(_activity.date),
                 ),
               ],
@@ -186,7 +212,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
-                _shared.sensitiveText(
+                Text(
                   DateFormat('HH:mm').format(_activity.date),
                 ),
                 const Padding(padding: EdgeInsets.only(left: 16)),
@@ -195,7 +221,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   color: Theme.of(context).colorScheme.secondary,
                 ),
                 const Padding(padding: EdgeInsets.only(left: 4)),
-                _shared.sensitiveText(_activity.duration.toString()),
+                Text(_activity.duration.toString()),
                 Text(' ${AppLocalizations.of(context)!.min}'),
               ],
             ),
@@ -261,7 +287,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       body: CustomScrollView(
         slivers: [
           GenericHeader(
-            title: _shared.sensitiveText(title),
+            title: _solo ? Text(title) : _shared.sensitiveText(title),
             actions: [
               IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
               PopupMenuButton(

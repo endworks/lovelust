@@ -75,10 +75,9 @@ class _ActivityBlockState extends State<ActivityBlock> {
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
       children: [
-        _shared.sensitiveText(widget.activity.duration.toString(),
-            style: style),
+        Text(widget.activity.duration.toString(), style: style),
         Text(' ${AppLocalizations.of(context)!.min} '),
-        _shared.sensitiveText(place, style: style),
+        Text(place, style: style),
       ],
     );
   }
@@ -109,8 +108,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const Spacer(),
-          _shared.sensitiveText(date,
-              style: Theme.of(context).textTheme.labelSmall),
+          Text(date, style: Theme.of(context).textTheme.labelSmall),
           const Icon(
             Icons.arrow_forward_ios,
             size: 14,

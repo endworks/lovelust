@@ -34,7 +34,7 @@ class _PracticesBlockState extends State<PracticesBlock> {
           children: [
             ...widget.practices.map(
               (e) => FilterChip(
-                label: _shared.sensitiveText(
+                label: Text(
                   SharedService.getPracticeTranslation(e),
                 ),
                 selected: true,

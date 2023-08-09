@@ -212,7 +212,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 partnerName,
-                _shared.sensitiveText(
+                Text(
                   date,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Theme.of(context)
@@ -236,7 +236,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
           mood != null
-              ? _shared.sensitiveText(
+              ? Text(
                   mood!,
                   style: Theme.of(context).textTheme.labelLarge!.copyWith(
                         color: Theme.of(context)

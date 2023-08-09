@@ -35,7 +35,7 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            _shared.sensitiveText(
+            Text(
               widget.orgasms.toString(),
               style: style,
             ),
@@ -53,7 +53,7 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            _shared.sensitiveText(
+            Text(
               widget.partnerOrgasms.toString(),
               style: style,
             ),
@@ -80,7 +80,7 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            _shared.sensitiveText(
+            Text(
               initiatorString,
               style: style,
             ),
@@ -95,7 +95,7 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
     if (widget.mood != null) {
       list.add(
         FilterChip(
-          label: _shared.sensitiveText(
+          label: Text(
             SharedService.getMoodTranslation(widget.mood),
           ),
           /* avatar: _shared.sensitiveText(

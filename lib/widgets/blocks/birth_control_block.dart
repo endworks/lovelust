@@ -30,7 +30,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
           children: [
-            _shared.sensitiveText(
+            Text(
               SharedService.getContraceptiveTranslation(
                 widget.birthControl,
               ),
@@ -48,7 +48,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              _shared.sensitiveText(
+              Text(
                 SharedService.getContraceptiveTranslation(
                   widget.birthControl,
                 ),
@@ -65,7 +65,7 @@ class _BirthControlBlockState extends State<BirthControlBlock> {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              _shared.sensitiveText(
+              Text(
                 SharedService.getContraceptiveTranslation(
                   widget.partnerBirthControl,
                 ),

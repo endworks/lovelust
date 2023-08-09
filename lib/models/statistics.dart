@@ -9,6 +9,7 @@ enum StatisticType {
   safetyPercent,
   orgasmRatio,
   totalSexByGender,
+  weeklyChart,
 }
 
 class DynamicStatisticData {
@@ -34,4 +35,10 @@ class DaysWithoutSexData {
 
   int daysWithoutRelationship;
   int daysWithoutMasturbation;
+}
+
+class WeeklyChartData {
+  WeeklyChartData({required this.day, required this.activityCount});
+  final String day;
+  final double activityCount;
 }

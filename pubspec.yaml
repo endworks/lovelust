@@ -33,6 +33,7 @@ dependencies:
       ref: main
   home_widget: ^0.3.0
   collection: ^1.17.1
+  syncfusion_flutter_charts: ^22.2.8
 
 dev_dependencies:
   flutter_test:

@@ -51,7 +51,7 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
                 AppLocalizations.of(context)!.daysWithoutSex,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               trailing: CircleAvatar(
                 backgroundColor:
@@ -81,7 +81,7 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
                 AppLocalizations.of(context)!.daysWithoutMasturbation,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               trailing: CircleAvatar(
                 backgroundColor:

@@ -4,6 +4,7 @@ import 'package:lovelust/widgets/statistics/days_without_sex_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_masturbation_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_relationship_statistic.dart';
 import 'package:lovelust/widgets/statistics/unsupported_statistic.dart';
+import 'package:lovelust/widgets/statistics/weekly_chart_statistic.dart';
 
 class DynamicStatistic<DataType> extends StatefulWidget {
   const DynamicStatistic({
@@ -29,6 +30,8 @@ class _DynamicStatisticState extends State<DynamicStatistic> {
       return LastMasturbationStatistic(activity: widget.data);
     } else if (widget.type == StatisticType.daysWithoutSex) {
       return DaysWithoutSexStatistic(data: widget.data);
+    } else if (widget.type == StatisticType.weeklyChart) {
+      return WeeklyChartStatistic(series: widget.data);
     }
     return const UnsupportedStatistic();
   }

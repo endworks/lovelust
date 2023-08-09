@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:lovelust/colors.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
@@ -11,6 +12,7 @@ import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/no_content.dart';
 import 'package:lovelust/widgets/statistics/dynamic_statistic.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -130,6 +132,73 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     }
+
+    List<WeeklyChartData> sexChartData = [];
+    List<WeeklyChartData> masturbationChartData = [];
+
+    final now = DateTime.now();
+    List<Activity> data = _shared.activity
+        .where(
+          (element) =>
+              element.date.compareTo(
+                DateTime(
+                  now.year,
+                  now.month,
+                  now.day - 7,
+                ),
+              ) >
+              0,
+        )
+        .toList();
+
+    List<String> days = DateFormat.EEEE().dateSymbols.NARROWWEEKDAYS;
+
+    for (var i = 0; i < 7; i++) {
+      DateTime currentDate = DateTime(
+        now.year,
+        now.month,
+        now.day - i,
+      );
+      List<Activity> currentDayData = data
+          .where((element) => element.date.weekday == currentDate.weekday)
+          .toList();
+      int countSex = currentDayData
+          .where((element) => element.type == ActivityType.sexualIntercourse)
+          .length;
+      int countMasturbation = currentDayData
+          .where((element) => element.type == ActivityType.masturbation)
+          .length;
+      String weekday = days.elementAt(currentDate.weekday - 1);
+      WeeklyChartData sexChartItem = WeeklyChartData(
+        day: weekday,
+        activityCount: countSex.toDouble(),
+      );
+      sexChartData.add(sexChartItem);
+      WeeklyChartData masturbationChartItem = WeeklyChartData(
+        day: weekday,
+        activityCount: countMasturbation.toDouble(),
+      );
+      masturbationChartData.add(masturbationChartItem);
+    }
+
+    list.add(
+      DynamicStatisticData(
+        type: StatisticType.weeklyChart,
+        date: DateTime.now(),
+        data: <LineSeries<WeeklyChartData, String>>[
+          LineSeries<WeeklyChartData, String>(
+              dataSource: sexChartData,
+              xValueMapper: (WeeklyChartData data, _) => data.day,
+              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+              markerSettings: const MarkerSettings(isVisible: true)),
+          LineSeries<WeeklyChartData, String>(
+              dataSource: masturbationChartData,
+              xValueMapper: (WeeklyChartData data, _) => data.day,
+              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+              markerSettings: const MarkerSettings(isVisible: true)),
+        ],
+      ),
+    );
 
     list.sort((a, b) => b.date.compareTo(a.date));
     return list

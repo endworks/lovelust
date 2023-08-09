@@ -11,17 +11,21 @@ import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
+import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/activity_widget_data.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/models/statistics.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/storage_service.dart';
+import 'package:lovelust/widgets/statistics/dynamic_statistic.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:relative_time/relative_time.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SharedService extends ChangeNotifier {
   final StorageService _storage = getIt<StorageService>();
@@ -40,6 +44,7 @@ class SharedService extends ChangeNotifier {
   bool _requireAuth = false;
   bool _calendarView = false;
   String? _activityFilter;
+  List<Widget> _statistics = [];
   bool _protected = false;
   AppIcon? _appIcon;
   PackageInfo? packageInfo;
@@ -84,6 +89,7 @@ class SharedService extends ChangeNotifier {
       _protected = true;
     }
 
+    statistics = generateStatistics();
     updateWidgets();
   }
 
@@ -98,6 +104,157 @@ class SharedService extends ChangeNotifier {
       return DynamicIconFlutter.getAlternateIconName();
     }
     return Future.value(null);
+  }
+
+  List<Widget> generateStatistics() {
+    debugPrint('generateStatistics');
+    BuildContext context = _navigator.navigatorKey.currentContext!;
+    Color primary = Theme.of(context).colorScheme.primary;
+    Color secondary = Theme.of(context).colorScheme.secondary;
+
+    List<DynamicStatisticData> list = [];
+    Activity? lastRelationship = activity.firstWhereOrNull(
+        (element) => element.type == ActivityType.sexualIntercourse);
+    if (lastRelationship != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.lastRelationship,
+          date: lastRelationship.date,
+          data: lastRelationship,
+        ),
+      );
+    }
+
+    Activity? lastMasturbation = activity.firstWhereOrNull(
+        (element) => element.type == ActivityType.masturbation);
+    if (lastMasturbation != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.lastMasturbation,
+          date: lastMasturbation.date,
+          data: lastMasturbation,
+        ),
+      );
+    }
+
+    DateTime daysWithoutSexDate = DateTime.now();
+    int lastRelationshipDays = -1;
+    if (lastRelationship != null) {
+      lastRelationshipDays =
+          (DateTime.now().difference(lastRelationship.date).inHours / 24)
+              .floor();
+    }
+    int lastMasturbationDays = -1;
+    if (lastMasturbation != null) {
+      lastMasturbationDays =
+          (DateTime.now().difference(lastMasturbation.date).inHours / 24)
+              .floor();
+    }
+    if (lastRelationship != null && lastMasturbation != null) {
+      daysWithoutSexDate =
+          lastRelationship.date.difference(lastMasturbation.date).inSeconds > 0
+              ? lastRelationship.date
+              : lastMasturbation.date;
+    } else if (lastRelationship != null) {
+      daysWithoutSexDate = lastRelationship.date;
+    } else if (lastMasturbation != null) {
+      daysWithoutSexDate = lastMasturbation.date;
+    }
+    daysWithoutSexDate = daysWithoutSexDate.add(const Duration(seconds: 1));
+    if (lastRelationshipDays > -1 || lastMasturbationDays > -1) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.daysWithoutSex,
+          date: daysWithoutSexDate,
+          data: DaysWithoutSexData(lastRelationshipDays, lastMasturbationDays),
+        ),
+      );
+    }
+
+    List<WeeklyChartData> sexChartData = [];
+    List<WeeklyChartData> masturbationChartData = [];
+
+    final now = DateTime.now();
+    List<Activity> data = activity
+        .where(
+          (element) =>
+              element.date.compareTo(
+                DateTime(
+                  now.year,
+                  now.month,
+                  now.day - 7,
+                ),
+              ) >
+              0,
+        )
+        .toList();
+
+    List<String> weekdays = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
+
+    for (var i = 6; i >= 0; i--) {
+      DateTime currentDate = DateTime(
+        now.year,
+        now.month,
+        now.day - i,
+      );
+      List<Activity> currentDayData =
+          data.where((element) => element.date.day == currentDate.day).toList();
+      int countSex = currentDayData
+          .where((element) => element.type == ActivityType.sexualIntercourse)
+          .length;
+      int countMasturbation = currentDayData
+          .where((element) => element.type == ActivityType.masturbation)
+          .length;
+      String weekday = weekdays
+          .elementAt(currentDate.weekday == 7 ? 0 : currentDate.weekday);
+      WeeklyChartData sexChartItem = WeeklyChartData(
+        day: weekday.capitalize(),
+        activityCount: countSex.toDouble(),
+      );
+      sexChartData.add(sexChartItem);
+      WeeklyChartData masturbationChartItem = WeeklyChartData(
+        day: weekday.capitalize(),
+        activityCount: countMasturbation.toDouble(),
+      );
+      masturbationChartData.add(masturbationChartItem);
+    }
+
+    list.add(
+      DynamicStatisticData(
+        type: StatisticType.weeklyChart,
+        date: DateTime.now(),
+        data: <LineSeries<WeeklyChartData, String>>[
+          LineSeries<WeeklyChartData, String>(
+            dataSource: sexChartData,
+            color: primary,
+            name: AppLocalizations.of(context)!.sex,
+            xValueMapper: (WeeklyChartData data, _) => data.day,
+            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+            markerSettings: const MarkerSettings(isVisible: true),
+          ),
+          LineSeries<WeeklyChartData, String>(
+            dataSource: masturbationChartData,
+            color: secondary,
+            name: AppLocalizations.of(context)!.masturbation,
+            xValueMapper: (WeeklyChartData data, _) => data.day,
+            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+            markerSettings: const MarkerSettings(isVisible: true),
+          ),
+        ],
+      ),
+    );
+
+    list.sort((a, b) => b.date.compareTo(a.date));
+
+    return list
+        .map(
+          (e) => DynamicStatistic(
+            type: e.type,
+            date: e.date,
+            data: e.data,
+          ),
+        )
+        .toList();
   }
 
   updateWidgets() {
@@ -757,9 +914,9 @@ class SharedService extends ChangeNotifier {
       return AppIcon.black;
     } else if (value == 'Blue') {
       return AppIcon.blue;
-    } else if (value == 'AltBlack') {
+    } else if (value == 'FilledBlack') {
       return AppIcon.filledBlack;
-    } else if (value == 'AltWhite') {
+    } else if (value == 'FilledWhite') {
       return AppIcon.filledWhite;
     } else if (value == 'Glow') {
       return AppIcon.glow;
@@ -805,9 +962,9 @@ class SharedService extends ChangeNotifier {
     } else if (value == AppIcon.blue) {
       return 'Blue';
     } else if (value == AppIcon.filledBlack) {
-      return 'AltBlack';
+      return 'FilledBlack';
     } else if (value == AppIcon.filledWhite) {
-      return 'AltWhite';
+      return 'FilledWhite';
     } else if (value == AppIcon.glow) {
       return 'Glow';
     } else if (value == AppIcon.health) {
@@ -1138,9 +1295,9 @@ class SharedService extends ChangeNotifier {
     } else if (value == AppIcon.blue) {
       return AppLocalizations.of(context)!.blue;
     } else if (value == AppIcon.filledBlack) {
-      return AppLocalizations.of(context)!.altBlack;
+      return AppLocalizations.of(context)!.filledBlack;
     } else if (value == AppIcon.filledWhite) {
-      return AppLocalizations.of(context)!.altWhite;
+      return AppLocalizations.of(context)!.filledWhite;
     } else if (value == AppIcon.glow) {
       return AppLocalizations.of(context)!.glow;
     } else if (value == AppIcon.health) {
@@ -1331,6 +1488,15 @@ class SharedService extends ChangeNotifier {
 
   set isAuthenticating(bool value) {
     _localAuth.isAuthenticating = value;
+    notifyListeners();
+  }
+
+  List<Widget> get statistics {
+    return _statistics;
+  }
+
+  set statistics(List<Widget> value) {
+    _statistics = value;
     notifyListeners();
   }
 

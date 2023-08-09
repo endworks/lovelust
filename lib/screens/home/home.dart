@@ -1,18 +1,11 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:lovelust/colors.dart';
-import 'package:lovelust/models/activity.dart';
-import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/models/statistics.dart';
 import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/no_content.dart';
-import 'package:lovelust/widgets/statistics/dynamic_statistic.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,18 +16,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final SharedService _shared = getIt<SharedService>();
-  List<Widget> _statistics = [];
 
   @override
   void initState() {
     super.initState();
-    _statistics = generateStatistics();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _shared.statistics = _shared.generateStatistics();
+    });
     _shared.addListener(() {
       if (mounted) {
-        setState(() {
-          _statistics = generateStatistics();
-        });
+        setState(() {});
       }
     });
   }
@@ -73,149 +64,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Widget> generateStatistics() {
-    List<DynamicStatisticData> list = [];
-    Activity? lastRelationship = _shared.activity.firstWhereOrNull(
-        (element) => element.type == ActivityType.sexualIntercourse);
-    if (lastRelationship != null) {
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.lastRelationship,
-          date: lastRelationship.date,
-          data: lastRelationship,
-        ),
-      );
-    }
-
-    Activity? lastMasturbation = _shared.activity.firstWhereOrNull(
-        (element) => element.type == ActivityType.masturbation);
-    if (lastMasturbation != null) {
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.lastMasturbation,
-          date: lastMasturbation.date,
-          data: lastMasturbation,
-        ),
-      );
-    }
-
-    DateTime daysWithoutSexDate = DateTime.now();
-    int lastRelationshipDays = -1;
-    if (lastRelationship != null) {
-      lastRelationshipDays =
-          (DateTime.now().difference(lastRelationship.date).inHours / 24)
-              .floor();
-    }
-    int lastMasturbationDays = -1;
-    if (lastMasturbation != null) {
-      lastMasturbationDays =
-          (DateTime.now().difference(lastMasturbation.date).inHours / 24)
-              .floor();
-    }
-    if (lastRelationship != null && lastMasturbation != null) {
-      daysWithoutSexDate =
-          lastRelationship.date.difference(lastMasturbation.date).inSeconds > 0
-              ? lastRelationship.date
-              : lastMasturbation.date;
-    } else if (lastRelationship != null) {
-      daysWithoutSexDate = lastRelationship.date;
-    } else if (lastMasturbation != null) {
-      daysWithoutSexDate = lastMasturbation.date;
-    }
-    daysWithoutSexDate = daysWithoutSexDate.add(const Duration(seconds: 1));
-    if (lastRelationshipDays > -1 || lastMasturbationDays > -1) {
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.daysWithoutSex,
-          date: daysWithoutSexDate,
-          data: DaysWithoutSexData(lastRelationshipDays, lastMasturbationDays),
-        ),
-      );
-    }
-
-    List<WeeklyChartData> sexChartData = [];
-    List<WeeklyChartData> masturbationChartData = [];
-
-    final now = DateTime.now();
-    List<Activity> data = _shared.activity
-        .where(
-          (element) =>
-              element.date.compareTo(
-                DateTime(
-                  now.year,
-                  now.month,
-                  now.day - 7,
-                ),
-              ) >
-              0,
-        )
-        .toList();
-
-    List<String> days = DateFormat.EEEE().dateSymbols.NARROWWEEKDAYS;
-
-    for (var i = 0; i < 7; i++) {
-      DateTime currentDate = DateTime(
-        now.year,
-        now.month,
-        now.day - i,
-      );
-      List<Activity> currentDayData = data
-          .where((element) => element.date.weekday == currentDate.weekday)
-          .toList();
-      int countSex = currentDayData
-          .where((element) => element.type == ActivityType.sexualIntercourse)
-          .length;
-      int countMasturbation = currentDayData
-          .where((element) => element.type == ActivityType.masturbation)
-          .length;
-      String weekday = days.elementAt(currentDate.weekday - 1);
-      WeeklyChartData sexChartItem = WeeklyChartData(
-        day: weekday,
-        activityCount: countSex.toDouble(),
-      );
-      sexChartData.add(sexChartItem);
-      WeeklyChartData masturbationChartItem = WeeklyChartData(
-        day: weekday,
-        activityCount: countMasturbation.toDouble(),
-      );
-      masturbationChartData.add(masturbationChartItem);
-    }
-
-    list.add(
-      DynamicStatisticData(
-        type: StatisticType.weeklyChart,
-        date: DateTime.now(),
-        data: <LineSeries<WeeklyChartData, String>>[
-          LineSeries<WeeklyChartData, String>(
-              dataSource: sexChartData,
-              xValueMapper: (WeeklyChartData data, _) => data.day,
-              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-              markerSettings: const MarkerSettings(isVisible: true)),
-          LineSeries<WeeklyChartData, String>(
-              dataSource: masturbationChartData,
-              xValueMapper: (WeeklyChartData data, _) => data.day,
-              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-              markerSettings: const MarkerSettings(isVisible: true)),
-        ],
-      ),
-    );
-
-    list.sort((a, b) => b.date.compareTo(a.date));
-    return list
-        .map(
-          (e) => DynamicStatistic(
-            type: e.type,
-            date: e.date,
-            data: e.data,
-          ),
-        )
-        .toList();
-  }
-
   Future<void> refresh() async {
-    setState(() {
-      _statistics = generateStatistics();
-    });
+    _shared.statistics = _shared.generateStatistics();
   }
 
   @override
@@ -225,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         onRefresh: refresh,
         edgeOffset: 112.0,
         child: CustomScrollView(
-          physics: _statistics.isNotEmpty
+          physics: _shared.statistics.isNotEmpty
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           slivers: [
@@ -238,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            _statistics.isEmpty
+            _shared.statistics.isEmpty
                 ? SliverFillRemaining(
                     child: NoContent(
                       icon: Icons.analytics_outlined,
@@ -253,8 +103,9 @@ class _HomePageState extends State<HomePage> {
                       MediaQuery.of(context).padding.bottom,
                     ),
                     sliver: SliverList.builder(
-                      itemCount: _statistics.length,
-                      itemBuilder: (context, index) => _statistics[index],
+                      itemCount: _shared.statistics.length,
+                      itemBuilder: (context, index) =>
+                          _shared.statistics[index],
                     ),
                   ),
           ],

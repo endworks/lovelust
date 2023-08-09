@@ -26,13 +26,18 @@ class _WeeklyChartStatisticState extends State<WeeklyChartStatistic> {
         width:
             MediaQuery.of(context).size.width, // width of the Container widget
         child: SfCartesianChart(
-          // Initialize category axis
-          primaryXAxis: CategoryAxis(),
+          legend: const Legend(
+            isVisible: true,
+            position: LegendPosition.bottom,
+            orientation: LegendItemOrientation.horizontal,
+          ),
+          primaryXAxis: CategoryAxis(
+            minorTicksPerInterval: 1,
+          ),
           title: ChartTitle(
             text: AppLocalizations.of(context)!.weeklyReport,
             textStyle: Theme.of(context).textTheme.titleMedium,
           ),
-
           series: widget.series,
         ),
       ),

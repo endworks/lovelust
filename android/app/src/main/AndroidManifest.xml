@@ -191,9 +191,9 @@
 
         <activity-alias
             android:enabled="false"
-            android:name=".AltWhite"
+            android:name=".FilledWhite"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_alt_white"
+            android:icon="@mipmap/ic_launcher_filled_white"
             android:exported="true">
 
             <intent-filter>
@@ -204,9 +204,9 @@
 
         <activity-alias
             android:enabled="false"
-            android:name=".AltBlack"
+            android:name=".FilledBlack"
             android:targetActivity=".MainActivity"
-            android:icon="@mipmap/ic_launcher_alt_black"
+            android:icon="@mipmap/ic_launcher_filled_black"
             android:exported="true">
 
             <intent-filter>

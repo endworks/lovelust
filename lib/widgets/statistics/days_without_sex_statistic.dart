@@ -21,6 +21,8 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
       return Colors.white.harmonizeWith(Theme.of(context).colorScheme.primary);
     } else if (days >= 7) {
       return Colors.amber.harmonizeWith(Theme.of(context).colorScheme.primary);
+    } else if (days == 0) {
+      return Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
     }
     return Theme.of(context).colorScheme.secondary;
   }
@@ -47,13 +49,22 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
               end: 4,
             ),
             child: ListTile(
-              title: Text(
-                AppLocalizations.of(context)!.daysWithoutSex,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleSmall,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.days,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.withoutSex,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
               ),
-              trailing: CircleAvatar(
+              leading: CircleAvatar(
                 backgroundColor:
                     getBackground(widget.data.daysWithoutRelationship),
                 child: Text(
@@ -77,13 +88,22 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
               end: 16,
             ),
             child: ListTile(
-              title: Text(
-                AppLocalizations.of(context)!.daysWithoutMasturbation,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleSmall,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.days,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.withoutMasturbation,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelMedium,
+                  ),
+                ],
               ),
-              trailing: CircleAvatar(
+              leading: CircleAvatar(
                 backgroundColor:
                     getBackground(widget.data.daysWithoutMasturbation),
                 child: Text(

@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _shared.statistics = _shared.generateStatistics();
+      refresh();
     });
     _scrollController.addListener(() {
       setState(() {
@@ -31,8 +31,12 @@ class _HomePageState extends State<HomePage> {
       });
     });
     _shared.addListener(() {
-      if (mounted) {
-        setState(() {});
+      try {
+        if (mounted) {
+          setState(() {});
+        }
+      } catch (e) {
+        refresh();
       }
     });
   }

@@ -24,7 +24,9 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final SharedService _shared = getIt<SharedService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
+  final ScrollController _scrollController = ScrollController();
   bool isiOSAppOnMac = false;
+  bool _isScrolled = false;
 
   @override
   void initState() {
@@ -32,6 +34,12 @@ class _SettingsPageState extends State<SettingsPage> {
     if (!kIsWeb && Platform.isIOS) {
       checkIfiOSAppOnMac();
     }
+
+    _scrollController.addListener(() {
+      setState(() {
+        _isScrolled = _scrollController.offset > 0.0;
+      });
+    });
 
     _shared.addListener(() {
       if (mounted) {
@@ -599,6 +607,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: <Widget>[
           GenericHeader(
             title: Text(AppLocalizations.of(context)!.settings),
@@ -608,6 +617,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icon(_shared.isLoggedIn ? Icons.logout : Icons.login),
               )
             ],
+            scrolled: _isScrolled,
           ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(

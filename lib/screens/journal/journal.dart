@@ -23,14 +23,14 @@ class _JournalPageState extends State<JournalPage> {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
-  bool isExtended = true;
+  bool _isExtended = true;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(() {
       setState(() {
-        isExtended = _scrollController.offset <= 0.0;
+        _isExtended = _scrollController.offset <= 0.0;
       });
     });
 
@@ -144,6 +144,7 @@ class _JournalPageState extends State<JournalPage> {
                   ],
                 ),
               ],
+              scrolled: !_isExtended,
             ),
             filteredActivity.isEmpty
                 ? SliverFillRemaining(
@@ -176,7 +177,7 @@ class _JournalPageState extends State<JournalPage> {
               ? MediaQuery.of(context).padding.bottom
               : 0,
         ),
-        child: isExtended
+        child: _isExtended
             ? FloatingActionButton.extended(
                 onPressed: addActivity,
                 label: Text(AppLocalizations.of(context)!.logActivity),

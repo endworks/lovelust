@@ -72,6 +72,7 @@ class _PartnersPageState extends State<PartnersPage> {
           slivers: <Widget>[
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.partners),
+              scrolled: !_isExtended,
             ),
             _shared.partners.isEmpty
                 ? SliverFillRemaining(

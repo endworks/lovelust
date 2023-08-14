@@ -106,9 +106,22 @@ class SharedService extends ChangeNotifier {
     return Future.value(null);
   }
 
+  Color generateAltColor(Color color, {double variation = 30.0}) {
+    HSLColor hslColor = HSLColor.fromColor(color);
+    double hue = hslColor.hue - variation;
+    if (hue > 360) {
+      hue = hue - 360;
+    }
+    if (hue < 0) {
+      hue = hue + 360;
+    }
+    return hslColor.withHue(hue).toColor();
+  }
+
   List<Widget> generateStatistics() {
     debugPrint('generateStatistics');
     BuildContext context = _navigator.navigatorKey.currentContext!;
+    Color background = Theme.of(context).colorScheme.surface;
     Color primary = Theme.of(context).colorScheme.primary;
     Color secondary = Theme.of(context).colorScheme.secondary;
 
@@ -161,7 +174,7 @@ class SharedService extends ChangeNotifier {
       daysWithoutSexDate = lastMasturbation.date;
     }
     daysWithoutSexDate = daysWithoutSexDate.add(const Duration(seconds: 1));
-    if (lastRelationshipDays > -1 || lastMasturbationDays > -1) {
+    if (lastRelationshipDays > 0 || lastMasturbationDays > 0) {
       list.add(
         DynamicStatisticData(
           type: StatisticType.daysWithoutSex,
@@ -170,79 +183,149 @@ class SharedService extends ChangeNotifier {
         ),
       );
     }
+    if (lastRelationship != null || lastMasturbation != null) {
+      List<WeeklyChartData> sexChartData = [];
+      List<WeeklyChartData> masturbationChartData = [];
 
-    List<WeeklyChartData> sexChartData = [];
-    List<WeeklyChartData> masturbationChartData = [];
+      final now = DateTime.now();
+      List<Activity> data = activity
+          .where(
+            (element) =>
+                element.date.compareTo(
+                  DateTime(
+                    now.year,
+                    now.month,
+                    now.day - 7,
+                  ),
+                ) >
+                0,
+          )
+          .toList();
 
-    final now = DateTime.now();
-    List<Activity> data = activity
-        .where(
-          (element) =>
-              element.date.compareTo(
-                DateTime(
-                  now.year,
-                  now.month,
-                  now.day - 7,
-                ),
-              ) >
-              0,
-        )
-        .toList();
+      List<String> weekdays = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
 
-    List<String> weekdays = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
+      for (var i = 6; i >= 0; i--) {
+        DateTime currentDate = DateTime(
+          now.year,
+          now.month,
+          now.day - i,
+        );
+        List<Activity> currentDayData = data
+            .where((element) => element.date.day == currentDate.day)
+            .toList();
+        int countSex = currentDayData
+            .where((element) => element.type == ActivityType.sexualIntercourse)
+            .length;
+        int countMasturbation = currentDayData
+            .where((element) => element.type == ActivityType.masturbation)
+            .length;
+        String weekday = weekdays
+            .elementAt(currentDate.weekday == 7 ? 0 : currentDate.weekday);
+        WeeklyChartData sexChartItem = WeeklyChartData(
+          day: weekday.capitalize(),
+          activityCount: countSex.toDouble(),
+        );
+        sexChartData.add(sexChartItem);
+        WeeklyChartData masturbationChartItem = WeeklyChartData(
+          day: weekday.capitalize(),
+          activityCount: countMasturbation.toDouble(),
+        );
+        masturbationChartData.add(masturbationChartItem);
+      }
 
-    for (var i = 6; i >= 0; i--) {
-      DateTime currentDate = DateTime(
-        now.year,
-        now.month,
-        now.day - i,
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.weeklyChart,
+          date: DateTime.now(),
+          data: <XyDataSeries<WeeklyChartData, String>>[
+            SplineAreaSeries<WeeklyChartData, String>(
+              dataSource: sexChartData,
+              isVisibleInLegend: sexChartData.isNotEmpty,
+              name: AppLocalizations.of(context)!.sexualIntercourse,
+              color: primary,
+              xValueMapper: (WeeklyChartData data, _) => data.day,
+              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+              markerSettings: MarkerSettings(
+                isVisible: true,
+                color: primary,
+                borderColor: primary,
+                borderWidth: 2,
+                height: 4,
+                width: 4,
+              ),
+              splineType: SplineType.monotonic,
+              legendIconType: LegendIconType.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  primary.withAlpha(128),
+                  primary.withAlpha(64),
+                  primary.withAlpha(0),
+                ],
+                stops: const [
+                  0.0,
+                  0.3,
+                  0.9,
+                ],
+              ),
+              borderWidth: 3,
+              borderColor: primary,
+              borderGradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  primary,
+                  generateAltColor(primary),
+                ],
+              ),
+            ),
+            SplineAreaSeries<WeeklyChartData, String>(
+              dataSource: masturbationChartData,
+              isVisibleInLegend: masturbationChartData.isNotEmpty,
+              name: AppLocalizations.of(context)!.masturbation,
+              color: secondary,
+              xValueMapper: (WeeklyChartData data, _) => data.day,
+              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+              markerSettings: MarkerSettings(
+                isVisible: true,
+                color: secondary,
+                borderColor: secondary,
+                borderWidth: 2,
+                height: 4,
+                width: 4,
+              ),
+              splineType: SplineType.monotonic,
+              legendIconType: LegendIconType.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  secondary.withAlpha(128),
+                  secondary.withAlpha(64),
+                  secondary.withAlpha(0),
+                ],
+                stops: const [
+                  0.0,
+                  0.3,
+                  0.9,
+                ],
+              ),
+              borderWidth: 3,
+              borderColor: secondary,
+              borderGradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  secondary,
+                  generateAltColor(secondary),
+                ],
+              ),
+            ),
+          ],
+        ),
       );
-      List<Activity> currentDayData =
-          data.where((element) => element.date.day == currentDate.day).toList();
-      int countSex = currentDayData
-          .where((element) => element.type == ActivityType.sexualIntercourse)
-          .length;
-      int countMasturbation = currentDayData
-          .where((element) => element.type == ActivityType.masturbation)
-          .length;
-      String weekday = weekdays
-          .elementAt(currentDate.weekday == 7 ? 0 : currentDate.weekday);
-      WeeklyChartData sexChartItem = WeeklyChartData(
-        day: weekday.capitalize(),
-        activityCount: countSex.toDouble(),
-      );
-      sexChartData.add(sexChartItem);
-      WeeklyChartData masturbationChartItem = WeeklyChartData(
-        day: weekday.capitalize(),
-        activityCount: countMasturbation.toDouble(),
-      );
-      masturbationChartData.add(masturbationChartItem);
     }
-
-    list.add(
-      DynamicStatisticData(
-        type: StatisticType.weeklyChart,
-        date: DateTime.now(),
-        data: <LineSeries<WeeklyChartData, String>>[
-          LineSeries<WeeklyChartData, String>(
-            dataSource: sexChartData,
-            color: primary,
-            name: AppLocalizations.of(context)!.sexualIntercourse,
-            xValueMapper: (WeeklyChartData data, _) => data.day,
-            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-            markerSettings: const MarkerSettings(isVisible: true),
-          ),
-          LineSeries<WeeklyChartData, String>(
-            dataSource: masturbationChartData,
-            color: secondary,
-            name: AppLocalizations.of(context)!.masturbation,
-            xValueMapper: (WeeklyChartData data, _) => data.day,
-            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-            markerSettings: const MarkerSettings(isVisible: true),
-          ),
-        ],
-      ),
-    );
 
     list.sort((a, b) => b.date.compareTo(a.date));
 

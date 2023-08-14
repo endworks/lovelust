@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class BirthControlBlock extends StatefulWidget {
@@ -19,8 +18,6 @@ class BirthControlBlock extends StatefulWidget {
 }
 
 class _BirthControlBlockState extends State<BirthControlBlock> {
-  final SharedService _shared = getIt<SharedService>();
-
   List<Widget> get birthControl {
     List<Widget> list = [];
     TextStyle style = Theme.of(context).textTheme.titleMedium!;

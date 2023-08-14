@@ -8,10 +8,17 @@ const lipstickColor = Color.fromARGB(255, 223, 0, 32);
 const blueColor = Color.fromARGB(255, 0, 122, 255);
 const shimapanColor = Color.fromARGB(255, 0, 216, 184);
 
+double mixVariation = 0.7;
+
 get lovelustColor {
-  int red = ((loveColor.red + lustColor.red) / 2).floor();
-  int green = ((loveColor.green + lustColor.green) / 2).floor();
-  int blue = ((loveColor.blue + lustColor.blue) / 2).floor();
+  int red = (loveColor.red * mixVariation + lustColor.red * (1 - mixVariation))
+      .floor();
+  int green =
+      (loveColor.green * mixVariation + lustColor.green * (1 - mixVariation))
+          .floor();
+  int blue =
+      (loveColor.blue * mixVariation + lustColor.blue * (1 - mixVariation))
+          .floor();
   return Color.fromARGB(255, red, green, blue);
 }
 

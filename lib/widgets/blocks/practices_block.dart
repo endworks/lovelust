@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class PracticesBlock extends StatefulWidget {
@@ -14,8 +13,6 @@ class PracticesBlock extends StatefulWidget {
 }
 
 class _PracticesBlockState extends State<PracticesBlock> {
-  final SharedService _shared = getIt<SharedService>();
-
   @override
   Widget build(BuildContext context) {
     return Card(

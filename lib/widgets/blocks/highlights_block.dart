@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class HighlightsBlock extends StatefulWidget {
@@ -23,8 +22,6 @@ class HighlightsBlock extends StatefulWidget {
 }
 
 class _HighlightsBlockState extends State<HighlightsBlock> {
-  final SharedService _shared = getIt<SharedService>();
-
   List<Widget> get performance {
     List<Widget> list = [];
     TextStyle style = Theme.of(context).textTheme.titleMedium!;

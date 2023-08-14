@@ -81,9 +81,9 @@ class _HomeState extends State<Home>
     return [
       Destination(
         AppLocalizations.of(context)!.home,
-        const Icon(Icons.analytics_outlined),
+        const Icon(Icons.insert_chart_outlined),
         const Icon(
-          Icons.analytics,
+          Icons.insert_chart,
         ),
       ),
       Destination(

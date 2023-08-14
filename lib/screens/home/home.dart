@@ -16,12 +16,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final SharedService _shared = getIt<SharedService>();
+  final ScrollController _scrollController = ScrollController();
+  bool _isScrolled = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _shared.statistics = _shared.generateStatistics();
+    });
+    _scrollController.addListener(() {
+      setState(() {
+        _isScrolled = _scrollController.offset > 0.0;
+      });
     });
     _shared.addListener(() {
       if (mounted) {
@@ -40,13 +47,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Color generateAltColor(Color color) {
-    HSLColor hslColor = HSLColor.fromColor(color);
-    return hslColor.withHue(hslColor.hue - 20).toColor();
-  }
-
   Widget get title {
-    Color colorLove = generateAltColor(Theme.of(context).colorScheme.primary);
+    Color colorLove =
+        _shared.generateAltColor(Theme.of(context).colorScheme.primary);
     Color colorLust = Theme.of(context).colorScheme.primary;
 
     if (_shared.colorScheme == null) {
@@ -75,6 +78,7 @@ class _HomePageState extends State<HomePage> {
         onRefresh: refresh,
         edgeOffset: 112.0,
         child: CustomScrollView(
+          controller: _scrollController,
           physics: _shared.statistics.isNotEmpty
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
@@ -87,6 +91,7 @@ class _HomePageState extends State<HomePage> {
                   icon: const Icon(Icons.settings),
                 ),
               ],
+              scrolled: _isScrolled,
             ),
             _shared.statistics.isEmpty
                 ? SliverFillRemaining(

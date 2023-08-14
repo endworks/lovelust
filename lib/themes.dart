@@ -132,7 +132,10 @@ ThemeData generateTheme(String? colorSchemeName,
       highlightElevation: 0,
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.onPrimary,
-      // shape: const StadiumBorder(),
+      extendedPadding: const EdgeInsets.symmetric(horizontal: 21, vertical: 0),
+      shape: const StadiumBorder(
+        side: BorderSide.none,
+      ),
     ),
     cardTheme: materialTheme.cardTheme.copyWith(
       color: colorScheme.surface,
@@ -177,6 +180,17 @@ ThemeData generateTheme(String? colorSchemeName,
     ),
     radioTheme: materialTheme.radioTheme.copyWith(
       fillColor: MaterialStatePropertyAll(colorScheme.primary),
+    ),
+    popupMenuTheme: materialTheme.popupMenuTheme.copyWith(
+      color: colorScheme.surface,
+      // elevation: 1,
+      shape: const OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(16),
+        ),
+      ),
+      surfaceTintColor: colorScheme.surface,
     ),
     textTheme: (darkMode
             ? Typography.material2021().white

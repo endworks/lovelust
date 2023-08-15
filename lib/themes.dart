@@ -190,7 +190,11 @@ ThemeData generateTheme(String? colorSchemeName,
           Radius.circular(16),
         ),
       ),
-      surfaceTintColor: colorScheme.surface,
+      surfaceTintColor: colorScheme.background,
+    ),
+    dialogTheme: materialTheme.dialogTheme.copyWith(
+      elevation: 0,
+      backgroundColor: colorScheme.surface,
     ),
     textTheme: (darkMode
             ? Typography.material2021().white

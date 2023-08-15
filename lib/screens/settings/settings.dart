@@ -151,13 +151,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         )
         .toList();
-    menuItems.insert(
-      0,
-      DropdownMenuItem<AppColorScheme?>(
-        value: null,
-        child: Text(SharedService.getAppColorSchemeTranslation(null)),
-      ),
-    );
     if (kIsWeb || !Platform.isAndroid) {
       menuItems.removeAt(1);
     }
@@ -167,7 +160,8 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget get colorSchemeName {
     DropdownMenuItem value = dropdownColorSchemeItems.firstWhere((element) =>
         element.value == _shared.colorScheme ||
-        (element.value == "default" && _shared.colorScheme == null));
+        (element.value == AppColorScheme.defaultAppColorScheme &&
+            _shared.colorScheme == null));
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
@@ -318,11 +312,13 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     );
 
-    if (_shared.colorScheme != value) {
-      setState(() {
-        _shared.colorScheme = value;
-      });
-      reload();
+    if (value != null) {
+      if (_shared.colorScheme != value) {
+        setState(() {
+          _shared.colorScheme = value;
+        });
+        reload();
+      }
     }
   }
 

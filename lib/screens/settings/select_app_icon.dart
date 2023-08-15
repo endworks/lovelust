@@ -43,11 +43,11 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
           List<String> list = dropdownAppIconItems
               .map<String>(
                 (DropdownMenuItem<AppIcon?> e) =>
-                    SharedService.setValueByAppIcon(e.value),
+                    SharedService.setValueByAppIcon(e.value) ?? 'Default',
               )
               .toList();
           DynamicIconFlutter.setIcon(
-            icon: SharedService.setValueByAppIcon(selectedAppIcon),
+            icon: SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default',
             listAvailableIcon: list,
           );
         }
@@ -86,13 +86,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
           ),
         )
         .toList();
-    list.insert(
-      0,
-      DropdownMenuItem<AppIcon?>(
-        value: null,
-        child: Text(SharedService.getAppIconTranslation(null)),
-      ),
-    );
     return list;
   }
 
@@ -105,18 +98,18 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
             leading: Padding(
               padding: const EdgeInsets.all(2.0),
               child: Container(
-                decoration: BoxDecoration(
+                foregroundDecoration: BoxDecoration(
                   border: Border.all(
                     width: 1,
-                    color: const Color.fromARGB(64, 128, 128, 128),
+                    color: const Color.fromARGB(32, 128, 128, 128),
                   ),
-                  borderRadius: BorderRadius.circular(11.0),
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(12.0),
                   child: Image(
                     image: AssetImage(
-                        "assets/AppIcons/${SharedService.setValueByAppIcon(e.value)}.png"),
+                        "assets/AppIcons/${SharedService.setValueByAppIcon(e.value) ?? 'Default'}.png"),
                   ),
                 ),
               ),

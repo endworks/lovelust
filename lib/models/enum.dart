@@ -137,6 +137,7 @@ enum Practice {
 }
 
 enum AppColorScheme {
+  defaultAppColorScheme,
   dynamic,
   pink,
   purple,
@@ -147,6 +148,7 @@ enum AppColorScheme {
 }
 
 enum AppIcon {
+  defaultAppIcon,
   beta,
   pink,
   purple,
@@ -155,6 +157,7 @@ enum AppIcon {
   teal,
   white,
   black,
+  deepPurple,
   glow,
   neon,
   pride,
@@ -163,6 +166,8 @@ enum AppIcon {
   prideBi,
   prideTrans,
   prideAce,
+  prideRomania,
+  filled,
   filledWhite,
   filledBlack,
   health,

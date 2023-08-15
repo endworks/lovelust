@@ -121,7 +121,6 @@ class SharedService extends ChangeNotifier {
   List<Widget> generateStatistics() {
     debugPrint('generateStatistics');
     BuildContext context = _navigator.navigatorKey.currentContext!;
-    Color background = Theme.of(context).colorScheme.surface;
     Color primary = Theme.of(context).colorScheme.primary;
     Color secondary = Theme.of(context).colorScheme.secondary;
 
@@ -233,98 +232,119 @@ class SharedService extends ChangeNotifier {
         masturbationChartData.add(masturbationChartItem);
       }
 
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.weeklyChart,
-          date: DateTime.now(),
-          data: <XyDataSeries<WeeklyChartData, String>>[
-            SplineAreaSeries<WeeklyChartData, String>(
-              dataSource: sexChartData,
-              isVisibleInLegend: sexChartData.isNotEmpty,
-              name: AppLocalizations.of(context)!.sexualIntercourse,
+      List<XyDataSeries<WeeklyChartData, String>> series = [];
+      bool hasSexData = sexChartData.firstWhereOrNull(
+            (element) => element.activityCount > 0,
+          ) !=
+          null;
+      bool hasMasturbationData = masturbationChartData.firstWhereOrNull(
+            (element) => element.activityCount > 0,
+          ) !=
+          null;
+
+      if (hasSexData) {
+        series.add(
+          SplineAreaSeries<WeeklyChartData, String>(
+            dataSource: sexChartData,
+            isVisibleInLegend: sexChartData.isNotEmpty,
+            name: AppLocalizations.of(context)!.sexualIntercourse,
+            color: primary,
+            xValueMapper: (WeeklyChartData data, _) => data.day,
+            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+            markerSettings: MarkerSettings(
+              isVisible: true,
               color: primary,
-              xValueMapper: (WeeklyChartData data, _) => data.day,
-              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-              markerSettings: MarkerSettings(
-                isVisible: true,
-                color: primary,
-                borderColor: primary,
-                borderWidth: 2,
-                height: 4,
-                width: 4,
-              ),
-              splineType: SplineType.monotonic,
-              legendIconType: LegendIconType.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  primary.withAlpha(128),
-                  primary.withAlpha(64),
-                  primary.withAlpha(0),
-                ],
-                stops: const [
-                  0.0,
-                  0.3,
-                  0.9,
-                ],
-              ),
-              borderWidth: 3,
               borderColor: primary,
-              borderGradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  primary,
-                  generateAltColor(primary),
-                ],
-              ),
+              borderWidth: 2,
+              height: 4,
+              width: 4,
             ),
-            SplineAreaSeries<WeeklyChartData, String>(
-              dataSource: masturbationChartData,
-              isVisibleInLegend: masturbationChartData.isNotEmpty,
-              name: AppLocalizations.of(context)!.masturbation,
+            splineType: SplineType.monotonic,
+            legendIconType: LegendIconType.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                primary.withAlpha(128),
+                primary.withAlpha(64),
+                primary.withAlpha(0),
+              ],
+              stops: const [
+                0.0,
+                0.3,
+                0.9,
+              ],
+            ),
+            borderWidth: 3,
+            borderColor: primary,
+            borderGradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                primary,
+                generateAltColor(primary),
+              ],
+            ),
+          ),
+        );
+      }
+
+      if (hasMasturbationData) {
+        series.add(
+          SplineAreaSeries<WeeklyChartData, String>(
+            dataSource: masturbationChartData,
+            isVisibleInLegend: masturbationChartData.isNotEmpty,
+            name: AppLocalizations.of(context)!.masturbation,
+            color: secondary,
+            xValueMapper: (WeeklyChartData data, _) => data.day,
+            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+            markerSettings: MarkerSettings(
+              isVisible: true,
               color: secondary,
-              xValueMapper: (WeeklyChartData data, _) => data.day,
-              yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-              markerSettings: MarkerSettings(
-                isVisible: true,
-                color: secondary,
-                borderColor: secondary,
-                borderWidth: 2,
-                height: 4,
-                width: 4,
-              ),
-              splineType: SplineType.monotonic,
-              legendIconType: LegendIconType.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  secondary.withAlpha(128),
-                  secondary.withAlpha(64),
-                  secondary.withAlpha(0),
-                ],
-                stops: const [
-                  0.0,
-                  0.3,
-                  0.9,
-                ],
-              ),
-              borderWidth: 3,
               borderColor: secondary,
-              borderGradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  secondary,
-                  generateAltColor(secondary),
-                ],
-              ),
+              borderWidth: 2,
+              height: 4,
+              width: 4,
             ),
-          ],
-        ),
-      );
+            splineType: SplineType.monotonic,
+            legendIconType: LegendIconType.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                secondary.withAlpha(128),
+                secondary.withAlpha(64),
+                secondary.withAlpha(0),
+              ],
+              stops: const [
+                0.0,
+                0.3,
+                0.9,
+              ],
+            ),
+            borderWidth: 3,
+            borderColor: secondary,
+            borderGradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                secondary,
+                generateAltColor(secondary),
+              ],
+            ),
+          ),
+        );
+      }
+
+      if (hasSexData || hasMasturbationData) {
+        list.add(
+          DynamicStatisticData(
+            type: StatisticType.weeklyChart,
+            date: DateTime.now(),
+            data: series,
+          ),
+        );
+      }
     }
 
     list.sort((a, b) => b.date.compareTo(a.date));
@@ -997,6 +1017,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.black;
     } else if (value == 'Blue') {
       return AppIcon.blue;
+    } else if (value == 'Filled') {
+      return AppIcon.filled;
     } else if (value == 'FilledBlack') {
       return AppIcon.filledBlack;
     } else if (value == 'FilledWhite') {
@@ -1023,8 +1045,12 @@ class SharedService extends ChangeNotifier {
       return AppIcon.prideRainbow;
     } else if (value == 'PrideTrans') {
       return AppIcon.prideTrans;
+    } else if (value == 'PrideRomania') {
+      return AppIcon.prideRomania;
     } else if (value == 'Purple') {
       return AppIcon.purple;
+    } else if (value == 'DeepPurple') {
+      return AppIcon.deepPurple;
     } else if (value == 'Red') {
       return AppIcon.red;
     } else if (value == 'Sexapill') {
@@ -1034,16 +1060,18 @@ class SharedService extends ChangeNotifier {
     } else if (value == 'White') {
       return AppIcon.white;
     }
-    return null;
+    return AppIcon.defaultAppIcon;
   }
 
-  static String setValueByAppIcon(AppIcon? value) {
+  static String? setValueByAppIcon(AppIcon? value) {
     if (value == AppIcon.beta) {
       return 'Beta';
     } else if (value == AppIcon.black) {
       return 'Black';
     } else if (value == AppIcon.blue) {
       return 'Blue';
+    } else if (value == AppIcon.filled) {
+      return 'Filled';
     } else if (value == AppIcon.filledBlack) {
       return 'FilledBlack';
     } else if (value == AppIcon.filledWhite) {
@@ -1070,8 +1098,12 @@ class SharedService extends ChangeNotifier {
       return 'PrideRainbow';
     } else if (value == AppIcon.prideTrans) {
       return 'PrideTrans';
+    } else if (value == AppIcon.prideRomania) {
+      return 'PrideRomania';
     } else if (value == AppIcon.purple) {
       return 'Purple';
+    } else if (value == AppIcon.deepPurple) {
+      return 'DeepPurple';
     } else if (value == AppIcon.red) {
       return 'Red';
     } else if (value == AppIcon.sexapill) {
@@ -1081,7 +1113,7 @@ class SharedService extends ChangeNotifier {
     } else if (value == AppIcon.white) {
       return 'White';
     }
-    return 'Default';
+    return null;
   }
 
   static AppColorScheme? getAppColorSchemeByValue(String? value) {
@@ -1100,7 +1132,7 @@ class SharedService extends ChangeNotifier {
     } else if (value == 'shimapan') {
       return AppColorScheme.teal;
     }
-    return null;
+    return AppColorScheme.defaultAppColorScheme;
   }
 
   static String? setValueByAppColorScheme(AppColorScheme? value) {
@@ -1377,6 +1409,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.black;
     } else if (value == AppIcon.blue) {
       return AppLocalizations.of(context)!.blue;
+    } else if (value == AppIcon.filled) {
+      return AppLocalizations.of(context)!.filled;
     } else if (value == AppIcon.filledBlack) {
       return AppLocalizations.of(context)!.filledBlack;
     } else if (value == AppIcon.filledWhite) {
@@ -1403,8 +1437,12 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.prideRainbow;
     } else if (value == AppIcon.prideTrans) {
       return AppLocalizations.of(context)!.prideTrans;
+    } else if (value == AppIcon.prideRomania) {
+      return AppLocalizations.of(context)!.prideRomania;
     } else if (value == AppIcon.purple) {
       return AppLocalizations.of(context)!.lust;
+    } else if (value == AppIcon.deepPurple) {
+      return AppLocalizations.of(context)!.deepPurple;
     } else if (value == AppIcon.red) {
       return AppLocalizations.of(context)!.lipstick;
     } else if (value == AppIcon.sexapill) {

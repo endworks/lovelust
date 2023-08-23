@@ -121,6 +121,8 @@
   "blue": "Blue Movie",
   "monochrome": "Monochrome",
   "experimental": "Experimental",
+  "trueBlack": "True black",
+  "trueBlackDescription": "Use true black",
   "material": "Material",
   "materialDescription": "Use Material UI",
   "modernUI": "Modern UI",

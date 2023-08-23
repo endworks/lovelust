@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/colors.dart';
 
-ThemeData generateTheme(String? colorSchemeName,
-    {bool darkMode = false, bool material = false, ColorScheme? colorScheme}) {
+ThemeData generateTheme(
+  String? colorSchemeName, {
+  bool darkMode = false,
+  bool material = false,
+  ColorScheme? colorScheme,
+  bool trueBlack = false,
+}) {
   Color seedColor = lovelustColor;
   if (colorSchemeName == "love") {
     seedColor = loveColor;
@@ -39,18 +44,28 @@ ThemeData generateTheme(String? colorSchemeName,
     }
   }
 
+  Color? background;
+  Color? onPrimary;
+
+  if (trueBlack) {
+    background = darkMode ? blackColor[900] : whiteColor[900];
+    onPrimary = darkMode ? blackColor[900] : whiteColor[900];
+  }
+
   if (material) {
     colorScheme ??= ColorScheme.fromSeed(
       brightness: darkMode ? Brightness.dark : Brightness.light,
       seedColor: seedColor,
+      background: background,
+      onPrimary: onPrimary,
     );
   } else {
     colorScheme ??= ColorScheme.fromSeed(
       brightness: darkMode ? Brightness.dark : Brightness.light,
       seedColor: seedColor,
-      background: darkMode ? blackColor[900] : whiteColor[900],
       primary: seedColor,
-      onPrimary: darkMode ? blackColor[900] : whiteColor[900],
+      background: background,
+      onPrimary: onPrimary,
     );
   }
 

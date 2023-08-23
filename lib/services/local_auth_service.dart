@@ -14,16 +14,20 @@ class LocalAuthService {
   bool authorized = false;
 
   void init() {
-    auth.isDeviceSupported().then(
-          (bool isSupported) => supportState = isSupported
-              ? AuthSupportState.supported
-              : AuthSupportState.unsupported,
-        );
-    checkBiometrics().then(
-      (value) => getAvailableBiometrics().then(
-        (value) => null,
-      ),
-    );
+    try {
+      auth.isDeviceSupported().then(
+            (bool isSupported) => supportState = isSupported
+                ? AuthSupportState.supported
+                : AuthSupportState.unsupported,
+          );
+      checkBiometrics().then(
+        (value) => getAvailableBiometrics().then(
+          (value) => null,
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   Future<void> checkBiometrics() async {

@@ -471,6 +471,26 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.trueBlack),
+        subtitle: Text(
+          AppLocalizations.of(context)!.trueBlackDescription,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+        ),
+        value: _shared.trueBlack,
+        onChanged: (bool value) {
+          setState(() {
+            _shared.trueBlack = value;
+          });
+          reload();
+        },
+        secondary: Icon(
+          Icons.dark_mode,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      SwitchListTile(
         title: Text(AppLocalizations.of(context)!.material),
         subtitle: Text(
           AppLocalizations.of(context)!.materialDescription,

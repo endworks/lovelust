@@ -4,12 +4,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/models/settings.dart';
 import 'package:lovelust/services/storage_service.dart';
 
 class StorageServiceLocal extends StorageService {
   final _storage = const FlutterSecureStorage(
     aOptions: AndroidOptions(
-      encryptedSharedPreferences: false,
+      encryptedSharedPreferences: true,
     ),
     iOptions: IOSOptions(
       synchronizable: true,
@@ -20,6 +21,22 @@ class StorageServiceLocal extends StorageService {
   Future<void> clear() async {
     debugPrint('clear');
     return await _storage.deleteAll();
+  }
+
+  @override
+  Future<Settings> getSettings() async {
+    debugPrint('getSettings');
+    final persisted = await _storage.read(key: 'settings');
+    if (persisted != null) {
+      return Settings.fromJson(jsonDecode(persisted));
+    }
+    return defaultSettings;
+  }
+
+  @override
+  Future<void> setSettings(Settings value) async {
+    debugPrint('setSettings: ${value.toString()}');
+    return await _storage.write(key: 'settings', value: jsonEncode(value));
   }
 
   @override

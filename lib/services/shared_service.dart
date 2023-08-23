@@ -16,6 +16,7 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/activity_widget_data.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/models/settings.dart';
 import 'package:lovelust/models/statistics.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
@@ -33,17 +34,10 @@ class SharedService extends ChangeNotifier {
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
   final NavigationService _navigator = getIt<NavigationService>();
 
-  String _theme = 'system';
-  AppColorScheme? _colorScheme;
-  bool _material = false;
-  String? _accessToken;
-  String? _refreshToken;
+  Settings _settings = defaultSettings;
+
   List<Activity> _activity = [];
   List<Partner> _partners = [];
-  bool _privacyMode = false;
-  bool _requireAuth = false;
-  bool _calendarView = false;
-  String? _activityFilter;
   List<Widget> _statistics = [];
   bool _protected = false;
   AppIcon? _appIcon;
@@ -53,39 +47,23 @@ class SharedService extends ChangeNotifier {
   Future<void> initialLoad() async {
     debugPrint('initialLoad');
     List<Future> futures = <Future>[
-      _storage.getTheme(),
-      _storage.getColorScheme(),
-      _storage.getAccessToken(),
-      _storage.getRefreshToken(),
+      _storage.getSettings(),
       _storage.getActivity(),
       _storage.getPartners(),
-      _storage.getPrivacyMode(),
-      _storage.getRequireAuth(),
-      _storage.getCalendarView(),
-      _storage.getActivityFilter(),
-      _storage.getMaterial(),
       findSystemLocale(),
       getAlternateIconName(),
-      PackageInfo.fromPlatform(),
+      getPackageInfo(),
     ];
 
     List result = await Future.wait(futures);
-    _theme = result[0];
-    _colorScheme = getAppColorSchemeByValue(result[1]);
-    _accessToken = result[2];
-    _refreshToken = result[3];
-    _activity = result[4];
-    _partners = result[5];
-    _privacyMode = result[6];
-    _requireAuth = result[7];
-    _calendarView = result[8];
-    _activityFilter = result[9];
-    _material = result[10];
-    Intl.systemLocale = result[11];
-    _appIcon = getAppIconByValue(result[12]);
-    packageInfo = result[13];
+    debugPrint("result.length: ${result.length}");
+    _settings = result[0];
+    _activity = result[1];
+    _partners = result[2];
+    Intl.systemLocale = result[3];
+    _appIcon = getAppIconByValue(result[4]);
 
-    if (_requireAuth && !authorized) {
+    if (_settings.requireAuth && !authorized) {
       _protected = true;
     }
 
@@ -104,6 +82,12 @@ class SharedService extends ChangeNotifier {
       return DynamicIconFlutter.getAlternateIconName();
     }
     return Future.value(null);
+  }
+
+  Future<void> getPackageInfo() async {
+    if (!kDebugMode) {
+      packageInfo = await PackageInfo.fromPlatform();
+    }
   }
 
   Color generateAltColor(Color color, {double variation = 30.0}) {
@@ -242,53 +226,6 @@ class SharedService extends ChangeNotifier {
           ) !=
           null;
 
-      if (hasSexData) {
-        series.add(
-          SplineAreaSeries<WeeklyChartData, String>(
-            dataSource: sexChartData,
-            isVisibleInLegend: sexChartData.isNotEmpty,
-            name: AppLocalizations.of(context)!.sexualIntercourse,
-            color: primary,
-            xValueMapper: (WeeklyChartData data, _) => data.day,
-            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-            markerSettings: MarkerSettings(
-              isVisible: true,
-              color: primary,
-              borderColor: primary,
-              borderWidth: 2,
-              height: 4,
-              width: 4,
-            ),
-            splineType: SplineType.monotonic,
-            legendIconType: LegendIconType.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                primary.withAlpha(128),
-                primary.withAlpha(64),
-                primary.withAlpha(0),
-              ],
-              stops: const [
-                0.0,
-                0.3,
-                0.9,
-              ],
-            ),
-            borderWidth: 3,
-            borderColor: primary,
-            borderGradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                primary,
-                generateAltColor(primary),
-              ],
-            ),
-          ),
-        );
-      }
-
       if (hasMasturbationData) {
         series.add(
           SplineAreaSeries<WeeklyChartData, String>(
@@ -299,7 +236,7 @@ class SharedService extends ChangeNotifier {
             xValueMapper: (WeeklyChartData data, _) => data.day,
             yValueMapper: (WeeklyChartData data, _) => data.activityCount,
             markerSettings: MarkerSettings(
-              isVisible: true,
+              isVisible: false,
               color: secondary,
               borderColor: secondary,
               borderWidth: 2,
@@ -336,6 +273,53 @@ class SharedService extends ChangeNotifier {
         );
       }
 
+      if (hasSexData) {
+        series.add(
+          SplineAreaSeries<WeeklyChartData, String>(
+            dataSource: sexChartData,
+            isVisibleInLegend: sexChartData.isNotEmpty,
+            name: AppLocalizations.of(context)!.sexualIntercourse,
+            color: primary,
+            xValueMapper: (WeeklyChartData data, _) => data.day,
+            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
+            markerSettings: MarkerSettings(
+              isVisible: false,
+              color: primary,
+              borderColor: primary,
+              borderWidth: 2,
+              height: 4,
+              width: 4,
+            ),
+            splineType: SplineType.monotonic,
+            legendIconType: LegendIconType.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                primary.withAlpha(128),
+                primary.withAlpha(64),
+                primary.withAlpha(0),
+              ],
+              stops: const [
+                0.0,
+                0.3,
+                0.9,
+              ],
+            ),
+            borderWidth: 3,
+            borderColor: primary,
+            borderGradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                primary,
+                generateAltColor(primary),
+              ],
+            ),
+          ),
+        );
+      }
+
       if (hasSexData || hasMasturbationData) {
         list.add(
           DynamicStatisticData(
@@ -360,9 +344,11 @@ class SharedService extends ChangeNotifier {
         .toList();
   }
 
-  updateWidgets() {
+  void updateWidgets() {
     if (!kIsWeb) {
-      HomeWidget.setAppGroupId('group.LoveLust');
+      if (Platform.isIOS) {
+        HomeWidget.setAppGroupId('group.LoveLust');
+      }
       BuildContext context = _navigator.navigatorKey.currentContext!;
 
       try {
@@ -459,7 +445,7 @@ class SharedService extends ChangeNotifier {
     }
   }
 
-  appLifecycleStateChanged(AppLifecycleState state) {
+  void appLifecycleStateChanged(AppLifecycleState state) {
     debugPrint(state.name);
     appLifecycleState = state;
     if (state == AppLifecycleState.inactive) {
@@ -1486,42 +1472,42 @@ class SharedService extends ChangeNotifier {
   }
 
   String get theme {
-    return _theme;
+    return _settings.theme;
   }
 
   set theme(String value) {
-    _theme = value;
-    _storage.setTheme(value);
+    _settings.theme = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
   AppColorScheme? get colorScheme {
-    return _colorScheme;
+    return _settings.colorScheme;
   }
 
   set colorScheme(AppColorScheme? value) {
-    _colorScheme = value;
-    _storage.setColorScheme(setValueByAppColorScheme(value));
+    _settings.colorScheme = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
   String? get accessToken {
-    return _accessToken;
+    return _settings.accessToken;
   }
 
   set accessToken(String? value) {
-    _accessToken = value;
-    _storage.setAccessToken(value);
+    _settings.accessToken = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
   String? get refreshToken {
-    return _refreshToken;
+    return _settings.refreshToken;
   }
 
   set refreshToken(String? value) {
-    _refreshToken = value;
-    _storage.setRefreshToken(value);
+    _settings.refreshToken = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
@@ -1546,42 +1532,42 @@ class SharedService extends ChangeNotifier {
   }
 
   bool get privacyMode {
-    return _privacyMode;
+    return _settings.privacyMode;
   }
 
   set privacyMode(bool value) {
-    _privacyMode = value;
-    _storage.setPrivacyMode(value);
+    _settings.privacyMode = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
   bool get requireAuth {
-    return _requireAuth;
+    return _settings.requireAuth;
   }
 
   set requireAuth(bool value) {
-    _requireAuth = value;
-    _storage.setRequireAuth(value);
+    _settings.requireAuth = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
   bool get calendarView {
-    return _calendarView;
+    return _settings.calendarView;
   }
 
   set calendarView(bool value) {
-    _calendarView = value;
-    _storage.setCalendarView(value);
+    _settings.calendarView = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
   String? get activityFilter {
-    return _activityFilter;
+    return _settings.activityFilter;
   }
 
   set activityFilter(String? value) {
-    _activityFilter = value;
-    _storage.setActivityFilter(value);
+    _settings.activityFilter = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 
@@ -1631,12 +1617,22 @@ class SharedService extends ChangeNotifier {
   }
 
   bool get material {
-    return _material;
+    return _settings.material;
   }
 
   set material(bool value) {
-    _material = value;
-    _storage.setMaterial(value);
+    _settings.material = value;
+    _storage.setSettings(_settings);
+    notifyListeners();
+  }
+
+  bool get trueBlack {
+    return _settings.trueBlack;
+  }
+
+  set trueBlack(bool value) {
+    _settings.trueBlack = value;
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 }

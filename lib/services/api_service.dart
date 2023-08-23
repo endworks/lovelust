@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/auth_tokens.dart';
 import 'package:lovelust/models/partner.dart';
+import 'package:lovelust/models/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/storage_service.dart';
 
@@ -16,7 +17,8 @@ class ApiService {
 
   Future<String?> getAccessToken() async {
     if (_accessToken == null) {
-      return _accessToken = await _storage.getAccessToken();
+      Settings settings = await _storage.getSettings();
+      return _accessToken = settings.accessToken;
     } else {
       return _accessToken;
     }

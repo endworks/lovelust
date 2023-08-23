@@ -43,11 +43,13 @@ class _AppState extends State<App> {
           SharedService.setValueByAppColorScheme(_shared.colorScheme),
           darkMode: false,
           material: _shared.material,
+          trueBlack: _shared.trueBlack,
         );
         ThemeData darkTheme = generateTheme(
           SharedService.setValueByAppColorScheme(_shared.colorScheme),
           darkMode: true,
           material: _shared.material,
+          trueBlack: _shared.trueBlack,
         );
         ThemeMode themeMode = ThemeMode.system;
 
@@ -58,12 +60,14 @@ class _AppState extends State<App> {
                 null,
                 darkMode: false,
                 material: _shared.material,
+                trueBlack: _shared.trueBlack,
                 colorScheme: lightDynamic.harmonized(),
               );
               darkTheme = generateTheme(
                 null,
                 darkMode: true,
                 material: _shared.material,
+                trueBlack: _shared.trueBlack,
                 colorScheme: darkDynamic.harmonized(),
               );
             }

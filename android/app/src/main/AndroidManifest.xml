@@ -152,6 +152,19 @@
 
         <activity-alias
             android:enabled="false"
+            android:name=".DeepPurple"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_deep_purple"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
             android:name=".Red"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_red"
@@ -181,6 +194,32 @@
             android:name=".Teal"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_teal"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".Glow"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_glow"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".Filled"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_filled"
             android:exported="true">
 
             <intent-filter>
@@ -311,6 +350,19 @@
             android:name=".PrideAce"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_pride_ace"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".PrideRomania"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_pride"
             android:exported="true">
 
             <intent-filter>

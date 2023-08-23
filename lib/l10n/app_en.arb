@@ -122,7 +122,7 @@
   "monochrome": "Monochrome",
   "experimental": "Experimental",
   "trueBlack": "True black",
-  "trueBlackDescription": "Use true black",
+  "trueBlackDescription": "Use true black for OLED screens",
   "material": "Material",
   "materialDescription": "Use Material UI",
   "modernUI": "Modern UI",

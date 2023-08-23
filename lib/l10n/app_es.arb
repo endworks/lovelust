@@ -102,6 +102,8 @@
   "blue": "Blue Movie",
   "monochrome": "Monocromático",
   "experimental": "Experimental",
+  "trueBlack": "Negro puro",
+  "trueBlackDescription": "Usa negro puro para pantallas OLED",
   "material": "Material",
   "materialDescription": "Usa la interfaz de Material UI",
   "modernUI": "Interfaz moderna",

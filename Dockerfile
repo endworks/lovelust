@@ -13,4 +13,5 @@ FROM nginx:alpine AS release
 
 LABEL org.opencontainers.image.source https://github.com/endworks/lovelust
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /usr/src/app/build/web/ /usr/share/nginx/html

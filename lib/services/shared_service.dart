@@ -52,7 +52,6 @@ class SharedService extends ChangeNotifier {
       _storage.getPartners(),
       findSystemLocale(),
       getAlternateIconName(),
-      getPackageInfo(),
     ];
 
     List result = await Future.wait(futures);
@@ -69,6 +68,8 @@ class SharedService extends ChangeNotifier {
 
     statistics = generateStatistics();
     updateWidgets();
+
+    await getPackageInfo();
   }
 
   Future<void> initialFetch() async {

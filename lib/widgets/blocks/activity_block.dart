@@ -103,7 +103,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
       child: ListTile(
         onTap: openActivity,
         title: Row(children: [
-          Text(
+          _shared.inappropriateText(
             AppLocalizations.of(context)!.sexualActivity,
             style: Theme.of(context).textTheme.titleMedium,
           ),

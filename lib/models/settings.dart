@@ -7,6 +7,7 @@ class Settings {
   bool material;
   bool trueBlack;
   bool privacyMode;
+  bool sensitiveMode;
   bool requireAuth;
   bool calendarView;
   String? activityFilter;
@@ -19,6 +20,7 @@ class Settings {
     required this.material,
     required this.trueBlack,
     required this.privacyMode,
+    required this.sensitiveMode,
     required this.requireAuth,
     required this.calendarView,
     required this.activityFilter,
@@ -33,6 +35,7 @@ class Settings {
       material: json['material'],
       trueBlack: json['trueBlack'],
       privacyMode: json['privacyMode'],
+      sensitiveMode: json['sensitiveMode'],
       requireAuth: json['requireAuth'],
       calendarView: json['calendarView'],
       activityFilter: json['activityFilter'],
@@ -47,6 +50,7 @@ class Settings {
         'material': material,
         'trueBlack': trueBlack,
         'privacyMode': privacyMode,
+        'sensitiveMode': sensitiveMode,
         'requireAuth': requireAuth,
         'calendarView': calendarView,
         'activityFilter': activityFilter,
@@ -61,6 +65,7 @@ Settings defaultSettings = Settings(
   material: false,
   trueBlack: false,
   privacyMode: false,
+  sensitiveMode: false,
   requireAuth: false,
   calendarView: false,
   activityFilter: null,

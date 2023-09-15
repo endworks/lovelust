@@ -156,6 +156,8 @@
   "sensitiveContent": "Contenido sensible",
   "privacyMode": "Modo privacidad",
   "privacyModeDescription": "Oculta información sensible como nombres de parejas",
+  "sensitiveMode": "Filtro de lenguaje",
+  "sensitiveModeDescription": "Oculta etiquetas y textos sugerentes",
   "username": "Usuario",
   "password": "Contraseña",
   "signIn": "Acceder",

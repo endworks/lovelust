@@ -2,6 +2,8 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/statistics.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class DaysWithoutSexStatistic extends StatefulWidget {
   const DaysWithoutSexStatistic({super.key, required this.data});
@@ -14,6 +16,8 @@ class DaysWithoutSexStatistic extends StatefulWidget {
 }
 
 class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
+  final SharedService _shared = getIt<SharedService>();
+
   Color getForeground(int days) {
     if (days >= 30) {
       return Colors.white.harmonizeWith(Theme.of(context).colorScheme.primary);
@@ -56,7 +60,7 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
                     AppLocalizations.of(context)!.days,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  Text(
+                  _shared.inappropriateText(
                     AppLocalizations.of(context)!.withoutSex,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -95,7 +99,7 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
                     AppLocalizations.of(context)!.days,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  Text(
+                  _shared.inappropriateText(
                     AppLocalizations.of(context)!.withoutMasturbation,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

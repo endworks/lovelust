@@ -231,7 +231,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          _shared.inappropriateText(
             activityTitle,
             style: Theme.of(context).textTheme.titleLarge,
           ),

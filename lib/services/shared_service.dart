@@ -496,24 +496,38 @@ class SharedService extends ChangeNotifier {
   }
 
   Widget sensitiveText(String text, {TextStyle? style}) {
-    return blurText(text, style: style);
+    return privacyMode
+        ? blurText(text, style: style)
+        : Text(text, style: style);
+  }
+
+  Widget inappropriateText(
+    String text, {
+    TextStyle? style,
+    int? maxLines,
+    TextOverflow? overflow,
+  }) {
+    return sensitiveMode
+        ? blurText(text, style: style)
+        : Text(
+            text,
+            style: style,
+            maxLines: maxLines,
+            overflow: overflow,
+          );
   }
 
   Widget blurText(String text, {TextStyle? style}) {
     Text widget = Text(text, style: style);
     double blurRadius = style != null ? style.fontSize! / 4 : 5;
-    if (privacyMode) {
-      return ImageFiltered(
-        imageFilter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
-        child: Container(child: widget),
-      );
-    }
-    return widget;
+    return ImageFiltered(
+      imageFilter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
+      child: Container(child: widget),
+    );
   }
 
   Widget obscureText(String text, {TextStyle? style}) {
-    return Text(privacyMode ? text.replaceAll(RegExp(r"."), "●") : text,
-        style: style);
+    return Text(text.replaceAll(RegExp(r"."), "*"), style: style);
   }
 
   ActivitySafety calculateSafety(Activity activity) {
@@ -1538,6 +1552,16 @@ class SharedService extends ChangeNotifier {
 
   set privacyMode(bool value) {
     _settings.privacyMode = value;
+    _storage.setSettings(_settings);
+    notifyListeners();
+  }
+
+  bool get sensitiveMode {
+    return _settings.sensitiveMode;
+  }
+
+  set sensitiveMode(bool value) {
+    _settings.sensitiveMode = value;
     _storage.setSettings(_settings);
     notifyListeners();
   }

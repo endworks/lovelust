@@ -50,7 +50,7 @@ class _LastRelationshipStatisticState extends State<LastRelationshipStatistic> {
       ),
       child: ListTile(
         onTap: openActivity,
-        title: Text(
+        title: _shared.inappropriateText(
           AppLocalizations.of(context)!.lastRelationship,
           style: Theme.of(context).textTheme.titleMedium,
         ),

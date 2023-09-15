@@ -175,6 +175,8 @@
   "sensitiveContent": "Sensitive content",
   "privacyMode": "Privacy mode",
   "privacyModeDescription": "Hides sensitive data like partner names",
+  "sensitiveMode": "Profanity filter",
+  "sensitiveModeDescription": "Hides sugestive labels and text",
   "username": "Username",
   "password": "Password",
   "signIn": "Sign in",

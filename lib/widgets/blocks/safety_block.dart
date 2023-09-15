@@ -2,6 +2,8 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 class SafetyBlock extends StatefulWidget {
   const SafetyBlock({super.key, required this.safety});
@@ -13,6 +15,8 @@ class SafetyBlock extends StatefulWidget {
 }
 
 class _SafetyBlockState extends State<SafetyBlock> {
+  final SharedService _shared = getIt<SharedService>();
+
   Widget get safetyNotice {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
@@ -22,13 +26,13 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Text(
+              _shared.inappropriateText(
                 AppLocalizations.of(context)!.safeSex,
                 style: style,
               ),
             ],
           ),
-          Text(
+          _shared.inappropriateText(
             AppLocalizations.of(context)!.safeMsg,
             style: Theme.of(context).textTheme.bodyMedium,
           )
@@ -42,13 +46,13 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Text(
+              _shared.inappropriateText(
                 AppLocalizations.of(context)!.unsafeSex,
                 style: style.copyWith(color: color),
               ),
             ],
           ),
-          Text(
+          _shared.inappropriateText(
             AppLocalizations.of(context)!.unsafeMsg,
             style: Theme.of(context).textTheme.bodyMedium,
           )
@@ -62,13 +66,13 @@ class _SafetyBlockState extends State<SafetyBlock> {
         children: [
           Row(
             children: [
-              Text(
+              _shared.inappropriateText(
                 AppLocalizations.of(context)!.partiallyUnsafeSex,
                 style: style.copyWith(color: color),
               ),
             ],
           ),
-          Text(
+          _shared.inappropriateText(
             AppLocalizations.of(context)!.partiallyUnsafeMsg,
             style: Theme.of(context).textTheme.bodyMedium,
           )

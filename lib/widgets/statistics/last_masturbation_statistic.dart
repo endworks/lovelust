@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/screens/journal/activity_details.dart';
+import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/shared_service.dart';
 import 'package:relative_time/relative_time.dart';
 
 class LastMasturbationStatistic extends StatefulWidget {
@@ -15,6 +17,8 @@ class LastMasturbationStatistic extends StatefulWidget {
 }
 
 class _LastMasturbationStatisticState extends State<LastMasturbationStatistic> {
+  final SharedService _shared = getIt<SharedService>();
+
   void openActivity() {
     Navigator.push(
       context,
@@ -36,7 +40,7 @@ class _LastMasturbationStatisticState extends State<LastMasturbationStatistic> {
       ),
       child: ListTile(
         onTap: openActivity,
-        title: Text(
+        title: _shared.inappropriateText(
           AppLocalizations.of(context)!.lastMasturbation,
           style: Theme.of(context).textTheme.titleMedium,
         ),

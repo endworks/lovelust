@@ -452,6 +452,25 @@ class _SettingsPageState extends State<SettingsPage> {
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),
+      SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.sensitiveMode),
+        subtitle: Text(
+          AppLocalizations.of(context)!.sensitiveModeDescription,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+        ),
+        value: _shared.sensitiveMode,
+        onChanged: (bool value) {
+          setState(() {
+            _shared.sensitiveMode = value;
+          });
+        },
+        secondary: Icon(
+          Icons.no_adult_content,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.theme),
         subtitle: themeName,

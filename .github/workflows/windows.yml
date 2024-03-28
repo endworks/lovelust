@@ -25,7 +25,7 @@ jobs:
           cache: true
 
       - name: Disable telemetry
-        run: flutter --disable-telemetry
+        run: flutter config --no-analytics
 
       - name: Install dependencies
         run: flutter pub get

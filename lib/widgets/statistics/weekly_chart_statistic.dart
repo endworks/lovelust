@@ -38,19 +38,18 @@ class _WeeklyChartStatisticState extends State<WeeklyChartStatistic> {
               orientation: LegendItemOrientation.horizontal,
             ),
             plotAreaBorderWidth: 0,
-            primaryXAxis: CategoryAxis(
+            primaryXAxis: const CategoryAxis(
               isVisible: true,
               interval: 1,
-              majorGridLines: const MajorGridLines(width: 0),
-              majorTickLines: const MajorTickLines(size: 0),
-              minorTicksPerInterval: 0,
+              majorGridLines: MajorGridLines(width: 0),
+              majorTickLines: MajorTickLines(size: 0),
             ),
-            primaryYAxis: NumericAxis(
+            primaryYAxis: const NumericAxis(
               isVisible: true,
               interval: 1,
               minorTicksPerInterval: 0,
             ),
-            title: null,
+            title: const ChartTitle(),
             margin: const EdgeInsets.only(top: 8),
             series: widget.series,
           ),

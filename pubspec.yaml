@@ -26,11 +26,7 @@ dependencies:
   local_auth: ^2.1.6
   package_info_plus: ^6.0.0
   relative_time: ^5.0.0
-  # dynamic_icon_flutter: ^0.0.7
-  dynamic_icon_flutter:
-    git:
-      url: https://github.com/ender-null/dynamic_icon_flutter.git
-      ref: main
+  dynamic_icon_flutter: ^0.0.8
   home_widget: ^0.5.0
   collection: ^1.17.1
   syncfusion_flutter_charts: ^25.1.37

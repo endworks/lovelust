@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN flutter --disable-telemetry
+RUN flutter config --no-analytics
 RUN flutter pub get
 RUN flutter build web
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
@@ -30,11 +30,12 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
     if (_shared.appIcon != selectedAppIcon) {
       try {
         if (Platform.isIOS) {
-          DynamicIconFlutter.supportsAlternateIcons.then(
+          FlutterDynamicIconPlus.supportsAlternateIcons.then(
             (supported) {
               String? appIcon =
                   SharedService.setValueByAppIcon(selectedAppIcon);
-              DynamicIconFlutter.setAlternateIconName(appIcon).then(
+              FlutterDynamicIconPlus.setAlternateIconName(iconName: appIcon)
+                  .then(
                 (value) => null,
               );
             },
@@ -46,9 +47,9 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
                     SharedService.setValueByAppIcon(e.value) ?? 'Default',
               )
               .toList();
-          DynamicIconFlutter.setIcon(
-            icon: SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default',
-            listAvailableIcon: list,
+          FlutterDynamicIconPlus.setAlternateIconName(
+            iconName:
+                SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default',
           );
         }
         setState(() {

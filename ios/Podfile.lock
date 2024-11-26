@@ -1,10 +1,11 @@
 PODS:
   - device_info_plus (0.0.1):
     - Flutter
-  - dynamic_icon_flutter (0.0.7):
-    - Flutter
   - Flutter (1.0.0)
-  - flutter_native_splash (0.0.1):
+  - flutter_dynamic_icon_plus (1.0.0):
+    - Flutter
+    - SwiftTryCatch
+  - flutter_native_splash (2.4.3):
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -12,36 +13,42 @@ PODS:
     - Flutter
   - home_widget (0.0.1):
     - Flutter
-  - local_auth_ios (0.0.1):
+  - local_auth_darwin (0.0.1):
     - Flutter
+    - FlutterMacOS
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.1.1):
+  - permission_handler_apple (9.3.0):
     - Flutter
+  - SwiftTryCatch (0.0.1)
 
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
-  - dynamic_icon_flutter (from `.symlinks/plugins/dynamic_icon_flutter/ios`)
   - Flutter (from `Flutter`)
+  - flutter_dynamic_icon_plus (from `.symlinks/plugins/flutter_dynamic_icon_plus/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - health (from `.symlinks/plugins/health/ios`)
   - home_widget (from `.symlinks/plugins/home_widget/ios`)
-  - local_auth_ios (from `.symlinks/plugins/local_auth_ios/ios`)
+  - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
 
+SPEC REPOS:
+  trunk:
+    - SwiftTryCatch
+
 EXTERNAL SOURCES:
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
-  dynamic_icon_flutter:
-    :path: ".symlinks/plugins/dynamic_icon_flutter/ios"
   Flutter:
     :path: Flutter
+  flutter_dynamic_icon_plus:
+    :path: ".symlinks/plugins/flutter_dynamic_icon_plus/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
@@ -50,8 +57,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/health/ios"
   home_widget:
     :path: ".symlinks/plugins/home_widget/ios"
-  local_auth_ios:
-    :path: ".symlinks/plugins/local_auth_ios/ios"
+  local_auth_darwin:
+    :path: ".symlinks/plugins/local_auth_darwin/darwin"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -60,18 +67,19 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
-  device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
-  dynamic_icon_flutter: 8ef1720e1be115981dc0b87abad2b24d51c4b642
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
-  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
-  health: 5a380c0f6c4f619535845992993964293962e99e
+  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_dynamic_icon_plus: 97d2592f571db88345a05183e080369289ec9c94
+  flutter_native_splash: e8a1e01082d97a8099d973f919f57904c925008a
+  flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
+  health: 5d10c4296a95f6be50a8131d47d3cb3ad640bdf5
   home_widget: 0434835a4c9a75704264feff6be17ea40e0f0d57
-  local_auth_ios: c6cf091ded637a88f24f86a8875d8b0f526e2605
-  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
-  path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
+  local_auth_darwin: 66e40372f1c29f383a314c738c7446e2f7fdadc3
+  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
+  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
+  SwiftTryCatch: fb6d2b34abe48efd69578dac919293a44f95b481
 
 PODFILE CHECKSUM: b59e06eb7ef2e76bfd84f382f4d4bcd3f69eba11
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2

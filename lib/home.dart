@@ -9,6 +9,7 @@ import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/home/protected.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';
+import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
@@ -73,6 +74,7 @@ class _HomeState extends State<Home>
         HomePage(),
         JournalPage(),
         PartnersPage(),
+        SettingsPage()
       ],
     );
   }
@@ -107,6 +109,13 @@ class _HomeState extends State<Home>
           Icons.book,
         ),
       ),*/
+      Destination(
+        AppLocalizations.of(context)!.settings,
+        const Icon(Icons.settings_outlined),
+        const Icon(
+          Icons.settings,
+        ),
+      ),
     ];
   }
 

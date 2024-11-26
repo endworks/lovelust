@@ -89,12 +89,6 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             GenericHeader(
               title: title,
-              actions: [
-                IconButton(
-                  onPressed: _openSettings,
-                  icon: const Icon(Icons.settings),
-                ),
-              ],
               scrolled: _isScrolled,
             ),
             _shared.statistics.isEmpty

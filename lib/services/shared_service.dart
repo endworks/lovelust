@@ -3,9 +3,9 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:collection/collection.dart';
-import 'package:dynamic_icon_flutter/dynamic_icon_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
@@ -80,7 +80,7 @@ class SharedService extends ChangeNotifier {
 
   Future<String?> getAlternateIconName() async {
     if (!kIsWeb && Platform.isIOS) {
-      return DynamicIconFlutter.getAlternateIconName();
+      return FlutterDynamicIconPlus.alternateIconName;
     }
     return Future.value(null);
   }

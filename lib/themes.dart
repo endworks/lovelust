@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
 
 ThemeData generateTheme(
@@ -56,7 +57,7 @@ ThemeData generateTheme(
     colorScheme ??= ColorScheme.fromSeed(
       brightness: darkMode ? Brightness.dark : Brightness.light,
       seedColor: seedColor,
-      background: background,
+      surface: background,
       onPrimary: onPrimary,
     );
   } else {
@@ -64,32 +65,14 @@ ThemeData generateTheme(
       brightness: darkMode ? Brightness.dark : Brightness.light,
       seedColor: seedColor,
       primary: seedColor,
-      background: background,
+      surface: background,
       onPrimary: onPrimary,
     );
   }
 
-  const defaultTextStyle = TextStyle(
-    fontFamily: 'Inter',
-    fontFamilyFallback: ['NotoEmoji'],
-  );
-
-  TextTheme defaultTextTheme = const TextTheme(
-    bodyLarge: defaultTextStyle,
-    bodyMedium: defaultTextStyle,
-    labelLarge: defaultTextStyle,
-    bodySmall: defaultTextStyle,
-    labelSmall: defaultTextStyle,
-    displayLarge: defaultTextStyle,
-    displayMedium: defaultTextStyle,
-    displaySmall: defaultTextStyle,
-    headlineLarge: defaultTextStyle,
-    headlineMedium: defaultTextStyle,
-    headlineSmall: defaultTextStyle,
-    titleLarge: defaultTextStyle,
-    titleMedium: defaultTextStyle,
-    titleSmall: defaultTextStyle,
-  );
+  TextTheme defaultTextTheme = GoogleFonts.nunitoTextTheme(ThemeData(
+    brightness: darkMode ? Brightness.dark : Brightness.light,
+  ).textTheme);
 
   ThemeData materialTheme = ThemeData(
     colorScheme: colorScheme,
@@ -112,18 +95,18 @@ ThemeData generateTheme(
   ThemeData defaultTheme = ThemeData(
     colorScheme: colorScheme,
     appBarTheme: materialTheme.appBarTheme.copyWith(
-      backgroundColor: colorScheme.background,
-      surfaceTintColor: colorScheme.surfaceVariant,
+      backgroundColor: colorScheme.surface,
+      surfaceTintColor: colorScheme.surfaceDim,
       elevation: 0,
     ),
     navigationBarTheme: materialTheme.navigationBarTheme.copyWith(
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-      // surfaceTintColor: experimentalColorScheme.surfaceVariant,
+      surfaceTintColor: colorScheme.surfaceDim,
       elevation: 0,
       // indicatorColor: colorScheme.primary,
       indicatorColor: Colors.transparent,
-      iconTheme: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.selected)) {
+      iconTheme: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
           return IconThemeData(
             color: colorScheme!.primary,
           );
@@ -134,7 +117,7 @@ ThemeData generateTheme(
       height: 56,
     ),
     navigationRailTheme: materialTheme.navigationRailTheme.copyWith(
-      labelType: NavigationRailLabelType.none,
+      labelType: NavigationRailLabelType.selected,
       elevation: 0,
       indicatorColor: Colors.transparent,
       selectedIconTheme: IconThemeData(
@@ -146,7 +129,7 @@ ThemeData generateTheme(
       elevation: 0,
       highlightElevation: 0,
       backgroundColor: colorScheme.primary,
-      foregroundColor: colorScheme.onPrimary,
+      foregroundColor: colorScheme.primaryFixed,
       extendedPadding: const EdgeInsets.symmetric(horizontal: 21, vertical: 0),
       shape: const StadiumBorder(
         side: BorderSide.none,
@@ -165,18 +148,13 @@ ThemeData generateTheme(
           .withSaturation(0)
           .toColor(),
     ),
-    chipTheme: const ChipThemeData(
-      /*labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
+    chipTheme: ChipThemeData(
+      labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
         color: colorScheme.onSurface,
       ),
       secondaryLabelStyle: materialTheme.textTheme.labelSmall!.copyWith(
         color: colorScheme.onSurface,
       ),
-      backgroundColor: colorScheme.surface,
-      //selectedColor: colorScheme.primary,
-      // secondarySelectedColor: colorScheme.onPrimary,
-      // side: BorderSide.none,
-      */
       shape: StadiumBorder(),
     ),
     inputDecorationTheme: materialTheme.inputDecorationTheme.copyWith(
@@ -191,10 +169,10 @@ ThemeData generateTheme(
       isDense: true,
     ),
     switchTheme: materialTheme.switchTheme.copyWith(
-      trackOutlineColor: const MaterialStatePropertyAll(Colors.transparent),
+      trackOutlineColor: const WidgetStatePropertyAll(Colors.transparent),
     ),
     radioTheme: materialTheme.radioTheme.copyWith(
-      fillColor: MaterialStatePropertyAll(colorScheme.primary),
+      fillColor: WidgetStatePropertyAll(colorScheme.primary),
     ),
     popupMenuTheme: materialTheme.popupMenuTheme.copyWith(
       color: colorScheme.surface,
@@ -205,7 +183,7 @@ ThemeData generateTheme(
           Radius.circular(16),
         ),
       ),
-      surfaceTintColor: colorScheme.background,
+      surfaceTintColor: colorScheme.surface,
     ),
     dialogTheme: materialTheme.dialogTheme.copyWith(
       elevation: 0,

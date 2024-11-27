@@ -44,7 +44,8 @@ flutter:
 
   assets:
     - assets/AppIcons/
-    - fonts/
+    - fonts/Inter/static/
+    - fonts/Nunito/static/
 
 msix_config:
   display_name: LoveLust

@@ -97,7 +97,7 @@ class _JournalPageState extends State<JournalPage> {
               children: <Widget>[
                 Text(difference > 1 ? '$difference days' : '$difference day',
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.surfaceVariant)),
+                        color: Theme.of(context).colorScheme.surfaceDim)),
               ]));
     }
     return const Divider(

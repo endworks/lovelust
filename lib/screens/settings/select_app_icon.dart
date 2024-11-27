@@ -41,12 +41,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
             },
           );
         } else if (Platform.isAndroid) {
-          List<String> list = dropdownAppIconItems
-              .map<String>(
-                (DropdownMenuItem<AppIcon?> e) =>
-                    SharedService.setValueByAppIcon(e.value) ?? 'Default',
-              )
-              .toList();
           FlutterDynamicIconPlus.setAlternateIconName(
             iconName:
                 SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default',

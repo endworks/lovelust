@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class BigHeader extends StatefulWidget implements PreferredSizeWidget {
-  const BigHeader({Key? key, required this.title, this.actions})
-      : super(key: key);
+  const BigHeader({super.key, required this.title, this.actions});
 
   final Widget title;
   final List<Widget>? actions;

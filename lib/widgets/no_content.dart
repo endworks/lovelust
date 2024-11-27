@@ -47,14 +47,14 @@ class _NoContentState extends State<NoContent> {
                     padding: const EdgeInsets.only(top: 32.0),
                     child: FilledButton.tonal(
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(color),
-                        side: MaterialStateBorderSide.resolveWith(
+                        foregroundColor: WidgetStateProperty.all(color),
+                        side: WidgetStateBorderSide.resolveWith(
                           (states) => BorderSide(
                             width: 1,
                             color: color,
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.resolveWith(
+                        backgroundColor: WidgetStateProperty.resolveWith(
                           (states) => Colors.transparent,
                         ),
                       ),

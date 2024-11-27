@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
-import 'package:lovelust/screens/settings/settings.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -39,16 +38,6 @@ class _HomePageState extends State<HomePage> {
         refresh();
       }
     });
-  }
-
-  void _openSettings() {
-    Navigator.push(
-      context,
-      MaterialPageRoute<Widget>(
-        settings: const RouteSettings(name: 'Settings'),
-        builder: (BuildContext context) => const SettingsPage(),
-      ),
-    );
   }
 
   Widget get title {

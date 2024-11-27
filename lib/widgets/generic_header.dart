@@ -19,7 +19,7 @@ class _GenericHeaderState extends State<GenericHeader> {
   final SharedService _shared = getIt<SharedService>();
 
   Color get backgroundColor {
-    Color color = Theme.of(context).colorScheme.background;
+    Color color = Theme.of(context).colorScheme.surface;
     if (widget.scrolled != null && widget.scrolled != false) {
       color = Theme.of(context).colorScheme.surface;
     }

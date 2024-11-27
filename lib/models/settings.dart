@@ -62,7 +62,7 @@ class Settings {
 Settings defaultSettings = Settings(
   theme: 'system',
   colorScheme: null,
-  material: false,
+  material: true,
   trueBlack: false,
   privacyMode: false,
   sensitiveMode: false,

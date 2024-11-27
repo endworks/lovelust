@@ -7,7 +7,6 @@ import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lovelust/models/enum.dart';
-import 'package:lovelust/screens/settings/login_dialog.dart';
 import 'package:lovelust/screens/settings/select_app_icon.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/local_auth_service.dart';
@@ -386,24 +385,6 @@ class _SettingsPageState extends State<SettingsPage> {
     });*/
   }
 
-  _handleLogin() {
-    if (_shared.isLoggedIn) {
-      _shared.signOut();
-      reload();
-    } else {
-      showModalBottomSheet<void>(
-        context: context,
-        useSafeArea: true,
-        builder: (BuildContext context) {
-          return const SizedBox(
-            height: 300,
-            child: LoginDialog(),
-          );
-        },
-      );
-    }
-  }
-
   String? get installerStore {
     if (_shared.packageInfo?.installerStore == 'com.apple.simulator') {
       return 'Simulator';
@@ -646,12 +627,6 @@ class _SettingsPageState extends State<SettingsPage> {
         slivers: <Widget>[
           GenericHeader(
             title: Text(AppLocalizations.of(context)!.settings),
-            actions: [
-              IconButton(
-                onPressed: _handleLogin,
-                icon: Icon(_shared.isLoggedIn ? Icons.logout : Icons.login),
-              )
-            ],
             scrolled: _isScrolled,
           ),
           SliverPadding(

@@ -77,7 +77,7 @@ class _PartnersPageState extends State<PartnersPage> {
             _shared.partners.isEmpty
                 ? SliverFillRemaining(
                     child: NoContent(
-                      icon: Icons.person_off,
+                      icon: Icons.person,
                       message: AppLocalizations.of(context)!.noPartners,
                     ),
                   )

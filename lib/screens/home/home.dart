@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
             _shared.statistics.isEmpty
                 ? SliverFillRemaining(
                     child: NoContent(
-                      icon: Icons.analytics_outlined,
+                      icon: Icons.analytics,
                       message: AppLocalizations.of(context)!.noStatistics,
                     ),
                   )

@@ -149,7 +149,7 @@ class _JournalPageState extends State<JournalPage> {
             filteredActivity.isEmpty
                 ? SliverFillRemaining(
                     child: NoContent(
-                      icon: Icons.no_adult_content,
+                      icon: Icons.assignment,
                       message: AppLocalizations.of(context)!.noActivity,
                     ),
                   )

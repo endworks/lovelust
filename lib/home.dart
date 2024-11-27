@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:home_widget/home_widget.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/destination.dart';
 import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/home/protected.dart';

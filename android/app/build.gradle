@@ -85,10 +85,9 @@ flutter {
 
 dependencies {
     def billing_version = "6.2.0"
-    def healthconnect_version = "1.1.0-alpha07"
+    def healthconnect_version = "1.1.0-alpha10"
     def play_services_ads = "22.6.0"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "com.android.billingclient:billing:$billing_version"
     implementation "com.android.billingclient:billing-ktx:$billing_version"
     implementation "androidx.health.connect:connect-client:$healthconnect_version"

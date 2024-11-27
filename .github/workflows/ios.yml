@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
 
       - name: Flutter setup
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@main
         with:
           channel: "stable"
           architecture: x64
@@ -30,7 +30,7 @@ jobs:
 
       - name: Cache 1password-cli
         id: cache-op
-        uses: actions/cache@v3
+        uses: actions/cache@main
         env:
           cache-name: cache-op
         with:
@@ -124,7 +124,7 @@ jobs:
       - name: Update the Xcode project settings to use fetched code signing profiles
         run: xcode-project use-profiles --export-options-plist=ios/exportOptions.plist
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@main
         with:
           path: ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
@@ -132,7 +132,7 @@ jobs:
             ${{ runner.os }}-pods-
 
       - name: Install Ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@main
         with:
           max-size: 5G
 

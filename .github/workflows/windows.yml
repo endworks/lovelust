@@ -14,12 +14,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
         with:
           fetch-depth: 0
 
       - name: Flutter setup
-        uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@main
         with:
           channel: "stable"
           cache: true
@@ -81,12 +81,12 @@ jobs:
         run: flutter build windows --release --build-number=$env:COMMIT_NUMBER --obfuscate --split-debug-info=out/windows/
 
       - name: Upload MSIX artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: msix
           path: build/windows/runner/Release/*.msix
 
-      - uses: microsoft/setup-msstore-cli@v1
+      - uses: microsoft/setup-msstore-cli@main
 
       - name: Configure the Microsoft Store CLI
         run: msstore reconfigure --tenantId $env:PARTNER_CENTER_TENANT_ID --sellerId $env:PARTNER_CENTER_SELLER_ID --clientId $env:PARTNER_CENTER_CLIENT_ID --clientSecret $env:PARTNER_CENTER_CLIENT_SECRET
@@ -95,7 +95,7 @@ jobs:
         run: msstore package --version $env:MSIX_VERSION
 
       - name: Upload MSIX artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: msix
           path: build/windows/runner/Release/*.msix

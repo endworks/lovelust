@@ -71,7 +71,7 @@ class _HomeState extends State<Home>
     return IndexedStack(
       index: _selectedIndex.value,
       children: const [
-        HomePage(),
+        // HomePage(),
         JournalPage(),
         PartnersPage(),
         SettingsPage()
@@ -81,13 +81,13 @@ class _HomeState extends State<Home>
 
   List<Destination> get destinations {
     return [
-      Destination(
+      /*Destination(
         AppLocalizations.of(context)!.home,
         const Icon(Icons.insert_chart_outlined),
         const Icon(
           Icons.insert_chart,
         ),
-      ),
+      ),*/
       Destination(
         AppLocalizations.of(context)!.journal,
         const Icon(Icons.assignment_outlined),

@@ -857,6 +857,12 @@ abstract class AppLocalizations {
   /// **'Health 2'**
   String get health2;
 
+  /// No description provided for @health3.
+  ///
+  /// In en, this message translates to:
+  /// **'Health 3'**
+  String get health3;
+
   /// No description provided for @requireFingerprint.
   ///
   /// In en, this message translates to:
@@ -1160,7 +1166,7 @@ abstract class AppLocalizations {
   /// No description provided for @outercourse.
   ///
   /// In en, this message translates to:
-  /// **'Outercourse'**
+  /// **'Without penetration'**
   String get outercourse;
 
   /// No description provided for @pill.

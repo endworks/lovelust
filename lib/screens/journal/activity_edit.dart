@@ -230,58 +230,20 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         type: _type,
         mood: _mood,
       );
-      if (!_shared.isLoggedIn) {
-        List<Activity> journal = [..._shared.activity];
-        if (!_new) {
-          Activity? element = journal.firstWhere((e) => e.id == activity.id);
-          int index = journal.indexOf(element);
-          journal[index] = activity;
-        } else {
-          journal.add(activity);
-        }
-        journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
-        if (mounted) {
-          setState(() => _shared.activity = journal);
-        }
-        Navigator.pop(context);
+
+      List<Activity> journal = [..._shared.activity];
+      if (!_new) {
+        Activity? element = journal.firstWhere((e) => e.id == activity.id);
+        int index = journal.indexOf(element);
+        journal[index] = activity;
       } else {
-        try {
-          Future request =
-              _new ? _api.postActivity(activity) : _api.patchActivity(activity);
-          request.then((value) {
-            _api.getActivity().then((value) {
-              if (mounted) {
-                setState(() => _shared.activity = value);
-              }
-              Navigator.pop(context);
-            });
-          });
-        } on SocketException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No Internet connection!'),
-            ),
-          );
-        } on HttpException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Couldn't sign in!"),
-            ),
-          );
-        } on FormatException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bad response format!'),
-            ),
-          );
-        } on Exception {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to sign in!'),
-            ),
-          );
-        }
+        journal.add(activity);
       }
+      journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
+      if (mounted) {
+        setState(() => _shared.activity = journal);
+      }
+      Navigator.pop(context);
     }
   }
 

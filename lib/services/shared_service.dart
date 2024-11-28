@@ -40,7 +40,6 @@ class SharedService extends ChangeNotifier {
   List<Partner> _partners = [];
   List<Widget> _statistics = [];
   bool _protected = false;
-  AppIcon? _appIcon;
   PackageInfo? packageInfo;
   AppLifecycleState appLifecycleState = AppLifecycleState.inactive;
 
@@ -51,22 +50,19 @@ class SharedService extends ChangeNotifier {
       _storage.getActivity(),
       _storage.getPartners(),
       findSystemLocale(),
-      getAlternateIconName(),
     ];
 
     List result = await Future.wait(futures);
-    debugPrint("result.length: ${result.length}");
     _settings = result[0];
     _activity = result[1];
     _partners = result[2];
     Intl.systemLocale = result[3];
-    _appIcon = getAppIconByValue(result[4]);
 
     if (_settings.requireAuth && !authorized) {
       _protected = true;
     }
 
-    statistics = generateStatistics();
+    //statistics = generateStatistics();
     updateWidgets();
 
     await getPackageInfo();
@@ -76,13 +72,6 @@ class SharedService extends ChangeNotifier {
     debugPrint('initialFetch');
     activity = await _api.getActivity();
     partners = await _api.getPartners();
-  }
-
-  Future<String?> getAlternateIconName() async {
-    if (!kIsWeb && Platform.isIOS) {
-      return FlutterDynamicIconPlus.alternateIconName;
-    }
-    return Future.value(null);
   }
 
   Future<void> getPackageInfo() async {
@@ -408,11 +397,16 @@ class SharedService extends ChangeNotifier {
             Future.wait([
               HomeWidget.updateWidget(
                 iOSName: "LastActivity",
-              ),
-              HomeWidget.updateWidget(
-                iOSName: "DaysSince",
+                androidName: 'LastActivityWidgetReceiver',
+                qualifiedAndroidName:
+                    'works.end.LoveLust.glance.LastActivityWidgetReceiver',
               )
             ]).then((value) => debugPrint("update widget data"));
+            if (Platform.isIOS) {
+              HomeWidget.updateWidget(
+                iOSName: "DaysSince",
+              );
+            }
           });
         }
       } catch (e) {
@@ -1030,6 +1024,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.health;
     } else if (value == 'Health2') {
       return AppIcon.health2;
+    } else if (value == 'Health3') {
+      return AppIcon.health3;
     } else if (value == 'Neon') {
       return AppIcon.neon;
     } else if (value == 'Pink') {
@@ -1083,6 +1079,8 @@ class SharedService extends ChangeNotifier {
       return 'Health';
     } else if (value == AppIcon.health2) {
       return 'Health2';
+    } else if (value == AppIcon.health3) {
+      return 'Health3';
     } else if (value == AppIcon.neon) {
       return 'Neon';
     } else if (value == AppIcon.pink) {
@@ -1422,6 +1420,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.health;
     } else if (value == AppIcon.health2) {
       return AppLocalizations.of(context)!.health2;
+    } else if (value == AppIcon.health3) {
+      return AppLocalizations.of(context)!.health3;
     } else if (value == AppIcon.neon) {
       return AppLocalizations.of(context)!.neon;
     } else if (value == AppIcon.pink) {
@@ -1597,11 +1597,12 @@ class SharedService extends ChangeNotifier {
   }
 
   AppIcon? get appIcon {
-    return _appIcon;
+    return getAppIconByValue(_settings.appIcon);
   }
 
   set appIcon(AppIcon? value) {
-    _appIcon = value;
+    _settings.appIcon = setValueByAppIcon(value);
+    _storage.setSettings(_settings);
     notifyListeners();
   }
 

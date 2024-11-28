@@ -24,32 +24,23 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
   void initState() {
     super.initState();
     selectedAppIcon = _shared.appIcon;
+    debugPrint("_shared.appIcon: ${_shared.appIcon}");
   }
 
   void save() {
     if (_shared.appIcon != selectedAppIcon) {
       try {
-        if (Platform.isIOS) {
-          FlutterDynamicIconPlus.supportsAlternateIcons.then(
-            (supported) {
-              String? appIcon =
-                  SharedService.setValueByAppIcon(selectedAppIcon);
-              FlutterDynamicIconPlus.setAlternateIconName(iconName: appIcon)
-                  .then(
-                (value) => null,
-              );
-            },
-          );
-        } else if (Platform.isAndroid) {
-          FlutterDynamicIconPlus.setAlternateIconName(
-            iconName:
-                SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default',
-          );
-        }
-        setState(() {
-          _shared.appIcon = selectedAppIcon;
-        });
-        Navigator.of(context).pop();
+        FlutterDynamicIconPlus.supportsAlternateIcons.then(
+          (supported) {
+            String appIcon =
+                SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default';
+            FlutterDynamicIconPlus.setAlternateIconName(iconName: appIcon).then(
+              (value) => null,
+            );
+            setState(() => _shared.appIcon = selectedAppIcon);
+            Navigator.of(context).pop();
+          },
+        );
       } on PlatformException {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -67,9 +58,8 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
   }
 
   void onChanged(AppIcon? value) {
-    setState(() {
-      selectedAppIcon = value!;
-    });
+    setState(() => selectedAppIcon = value!);
+    debugPrint("value: ${value}");
   }
 
   List<DropdownMenuItem<AppIcon?>> get dropdownAppIconItems {

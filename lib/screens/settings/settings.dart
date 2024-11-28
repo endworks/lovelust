@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
@@ -44,6 +45,18 @@ class _SettingsPageState extends State<SettingsPage> {
       if (mounted) {
         setState(() {});
       }
+    });
+
+    FlutterDynamicIconPlus.alternateIconName.then((iconName) {
+      setState(() {
+        if (iconName.toString().contains('.')) {
+          _shared.appIcon = SharedService.getAppIconByValue(
+            iconName.toString().split('.').last,
+          );
+        } else {
+          _shared.appIcon = SharedService.getAppIconByValue(iconName);
+        }
+      });
     });
   }
 

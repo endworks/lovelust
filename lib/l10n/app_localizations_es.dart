@@ -428,6 +428,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get health2 => 'Salud 2';
 
   @override
+  String get health3 => 'Salud 3';
+
+  @override
   String get requireFingerprint => 'Requerir huella';
 
   @override
@@ -578,7 +581,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get intrauterineDevice => 'Dispositivo Intrauterino (DIU)';
 
   @override
-  String get outercourse => 'Relaciones exteriores';
+  String get outercourse => 'Sin penetración';
 
   @override
   String get pill => 'Pildora';

@@ -61,6 +61,7 @@ enum Mood {
 }
 
 enum Contraceptive {
+  outercourse,
   condom,
   internalCondom,
   cervicalCap,
@@ -70,7 +71,6 @@ enum Contraceptive {
   contraceptiveShot,
   infertility,
   intrauterineDevice,
-  outercourse,
   pill,
   pullOut,
   sponge,
@@ -172,5 +172,6 @@ enum AppIcon {
   filledBlack,
   health,
   health2,
+  health3,
   sexapill
 }

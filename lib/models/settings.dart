@@ -10,6 +10,7 @@ class Settings {
   bool sensitiveMode;
   bool requireAuth;
   bool calendarView;
+  String? appIcon;
   String? activityFilter;
   String? accessToken;
   String? refreshToken;
@@ -23,6 +24,7 @@ class Settings {
     required this.sensitiveMode,
     required this.requireAuth,
     required this.calendarView,
+    required this.appIcon,
     required this.activityFilter,
     this.accessToken,
     this.refreshToken,
@@ -38,6 +40,7 @@ class Settings {
       sensitiveMode: json['sensitiveMode'],
       requireAuth: json['requireAuth'],
       calendarView: json['calendarView'],
+      appIcon: json['appIcon'],
       activityFilter: json['activityFilter'],
       accessToken: json['accessToken'],
       refreshToken: json['refreshToken'],
@@ -53,6 +56,7 @@ class Settings {
         'sensitiveMode': sensitiveMode,
         'requireAuth': requireAuth,
         'calendarView': calendarView,
+        'appIcon': appIcon,
         'activityFilter': activityFilter,
         'accessToken': accessToken,
         'refreshToken': refreshToken,
@@ -68,5 +72,6 @@ Settings defaultSettings = Settings(
   sensitiveMode: false,
   requireAuth: false,
   calendarView: false,
+  appIcon: null,
   activityFilter: null,
 );

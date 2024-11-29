@@ -1,5 +1,5 @@
-// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -386,9 +386,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get filledWhite => 'Relleno Blanco';
 
   @override
-  String get filledBlack => 'Relleno Negro';
-
-  @override
   String get pink => 'Rosa';
 
   @override
@@ -413,9 +410,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prideRainbowLine => 'Orgullo: Línea Arcoíris';
 
   @override
-  String get prideClassic => 'Orgullo: Clásico';
-
-  @override
   String get prideBi => 'Orgullo: Bi';
 
   @override
@@ -429,6 +423,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get sexapill => 'Sexapill';
+
+  @override
+  String get sexapillWhite => 'Sexapill Blanco';
 
   @override
   String get health => 'Salud';

@@ -1017,8 +1017,6 @@ class SharedService extends ChangeNotifier {
       return AppIcon.blue;
     } else if (value == 'Filled') {
       return AppIcon.filled;
-    } else if (value == 'FilledBlack') {
-      return AppIcon.filledBlack;
     } else if (value == 'FilledWhite') {
       return AppIcon.filledWhite;
     } else if (value == 'Glow') {
@@ -1027,6 +1025,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.health;
     } else if (value == 'Health2') {
       return AppIcon.health2;
+    } else if (value == 'Health3') {
+      return AppIcon.health3;
     } else if (value == 'Neon') {
       return AppIcon.neon;
     } else if (value == 'Pink') {
@@ -1037,8 +1037,6 @@ class SharedService extends ChangeNotifier {
       return AppIcon.prideAce;
     } else if (value == 'PrideBi') {
       return AppIcon.prideBi;
-    } else if (value == 'PrideClassic') {
-      return AppIcon.prideClassic;
     } else if (value == 'PrideRainbow') {
       return AppIcon.prideRainbow;
     } else if (value == 'PrideRainbowLine') {
@@ -1055,6 +1053,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.red;
     } else if (value == 'Sexapill') {
       return AppIcon.sexapill;
+    } else if (value == 'SexapillWhite') {
+      return AppIcon.sexapillWhite;
     } else if (value == 'Teal') {
       return AppIcon.teal;
     } else if (value == 'White') {
@@ -1076,8 +1076,6 @@ class SharedService extends ChangeNotifier {
       return 'Blue';
     } else if (value == AppIcon.filled) {
       return 'Filled';
-    } else if (value == AppIcon.filledBlack) {
-      return 'FilledBlack';
     } else if (value == AppIcon.filledWhite) {
       return 'FilledWhite';
     } else if (value == AppIcon.glow) {
@@ -1086,6 +1084,8 @@ class SharedService extends ChangeNotifier {
       return 'Health';
     } else if (value == AppIcon.health2) {
       return 'Health2';
+    } else if (value == AppIcon.health3) {
+      return 'Health3';
     } else if (value == AppIcon.neon) {
       return 'Neon';
     } else if (value == AppIcon.pink) {
@@ -1096,8 +1096,6 @@ class SharedService extends ChangeNotifier {
       return 'PrideAce';
     } else if (value == AppIcon.prideBi) {
       return 'PrideBi';
-    } else if (value == AppIcon.prideClassic) {
-      return 'PrideClassic';
     } else if (value == AppIcon.prideRainbow) {
       return 'PrideRainbow';
     } else if (value == AppIcon.prideRainbowLine) {
@@ -1114,6 +1112,8 @@ class SharedService extends ChangeNotifier {
       return 'Red';
     } else if (value == AppIcon.sexapill) {
       return 'Sexapill';
+    } else if (value == AppIcon.sexapillWhite) {
+      return 'SexapillWhite';
     } else if (value == AppIcon.teal) {
       return 'Teal';
     } else if (value == AppIcon.white) {
@@ -1421,8 +1421,6 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.blue;
     } else if (value == AppIcon.filled) {
       return AppLocalizations.of(context)!.filled;
-    } else if (value == AppIcon.filledBlack) {
-      return AppLocalizations.of(context)!.filledBlack;
     } else if (value == AppIcon.filledWhite) {
       return AppLocalizations.of(context)!.filledWhite;
     } else if (value == AppIcon.glow) {
@@ -1431,6 +1429,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.health;
     } else if (value == AppIcon.health2) {
       return AppLocalizations.of(context)!.health2;
+    } else if (value == AppIcon.health3) {
+      return AppLocalizations.of(context)!.health3;
     } else if (value == AppIcon.neon) {
       return AppLocalizations.of(context)!.neon;
     } else if (value == AppIcon.pink) {
@@ -1441,8 +1441,6 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.prideAce;
     } else if (value == AppIcon.prideBi) {
       return AppLocalizations.of(context)!.prideBi;
-    } else if (value == AppIcon.prideClassic) {
-      return AppLocalizations.of(context)!.prideClassic;
     } else if (value == AppIcon.prideRainbow) {
       return AppLocalizations.of(context)!.prideRainbow;
     } else if (value == AppIcon.prideRainbowLine) {
@@ -1459,6 +1457,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.lipstick;
     } else if (value == AppIcon.sexapill) {
       return AppLocalizations.of(context)!.sexapill;
+    } else if (value == AppIcon.sexapillWhite) {
+      return AppLocalizations.of(context)!.sexapillWhite;
     } else if (value == AppIcon.teal) {
       return AppLocalizations.of(context)!.shimapan;
     } else if (value == AppIcon.white) {

@@ -773,12 +773,6 @@ abstract class AppLocalizations {
   /// **'Filled White'**
   String get filledWhite;
 
-  /// No description provided for @filledBlack.
-  ///
-  /// In en, this message translates to:
-  /// **'Filled Black'**
-  String get filledBlack;
-
   /// No description provided for @pink.
   ///
   /// In en, this message translates to:
@@ -827,12 +821,6 @@ abstract class AppLocalizations {
   /// **'Pride: Rainbow Line'**
   String get prideRainbowLine;
 
-  /// No description provided for @prideClassic.
-  ///
-  /// In en, this message translates to:
-  /// **'Pride: Classic'**
-  String get prideClassic;
-
   /// No description provided for @prideBi.
   ///
   /// In en, this message translates to:
@@ -862,6 +850,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sexapill'**
   String get sexapill;
+
+  /// No description provided for @sexapillWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'Sexapill White'**
+  String get sexapillWhite;
 
   /// No description provided for @health.
   ///

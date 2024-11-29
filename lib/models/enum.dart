@@ -162,7 +162,6 @@ enum AppIcon {
   glow,
   neon,
   pride,
-  prideClassic,
   prideRainbow,
   prideRainbowLine,
   prideBi,
@@ -171,8 +170,9 @@ enum AppIcon {
   prideRomania,
   filled,
   filledWhite,
-  filledBlack,
   health,
   health2,
-  sexapill
+  health3,
+  sexapill,
+  sexapillWhite
 }

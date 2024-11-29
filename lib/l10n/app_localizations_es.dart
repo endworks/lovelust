@@ -368,10 +368,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get beta => 'Beta';
 
   @override
-  String get white => 'Blanco Beso';
+  String get white => 'Blanco';
 
   @override
-  String get black => 'Negro Cuero';
+  String get black => 'Negro';
+
+  @override
+  String get monoWhite => 'Blanco Beso';
+
+  @override
+  String get monoBlack => 'Negro Cuero';
 
   @override
   String get filled => 'Relleno';
@@ -402,6 +408,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get prideRainbow => 'Orgullo: Arcoíris';
+
+  @override
+  String get prideRainbowLine => 'Orgullo: Línea Arcoíris';
 
   @override
   String get prideClassic => 'Orgullo: Clásico';

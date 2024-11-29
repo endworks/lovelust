@@ -740,14 +740,26 @@ abstract class AppLocalizations {
   /// No description provided for @white.
   ///
   /// In en, this message translates to:
-  /// **'White Kiss'**
+  /// **'White'**
   String get white;
 
   /// No description provided for @black.
   ///
   /// In en, this message translates to:
-  /// **'Black Leather'**
+  /// **'Black'**
   String get black;
+
+  /// No description provided for @monoWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'White Kiss'**
+  String get monoWhite;
+
+  /// No description provided for @monoBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black Leather'**
+  String get monoBlack;
 
   /// No description provided for @filled.
   ///
@@ -808,6 +820,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pride: Rainbow'**
   String get prideRainbow;
+
+  /// No description provided for @prideRainbowLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Pride: Rainbow Line'**
+  String get prideRainbowLine;
 
   /// No description provided for @prideClassic.
   ///

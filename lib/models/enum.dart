@@ -156,13 +156,15 @@ enum AppIcon {
   blue,
   teal,
   white,
-  black,
+  monoWhite,
+  monoBlack,
   deepPurple,
   glow,
   neon,
   pride,
   prideClassic,
   prideRainbow,
+  prideRainbowLine,
   prideBi,
   prideTrans,
   prideAce,
@@ -172,6 +174,5 @@ enum AppIcon {
   filledBlack,
   health,
   health2,
-  health3,
   sexapill
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
@@ -7,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/rating_select.dart';
@@ -24,7 +21,6 @@ class ActivityEditPage extends StatefulWidget {
 
 class _ActivityEditPageState extends State<ActivityEditPage> {
   final SharedService _shared = getIt<SharedService>();
-  final ApiService _api = getIt<ApiService>();
 
   final _dateController = TextEditingController();
   final _locationController = TextEditingController();

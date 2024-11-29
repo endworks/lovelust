@@ -5,7 +5,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/destination.dart';
-import 'package:lovelust/screens/home/home.dart';
 import 'package:lovelust/screens/home/protected.dart';
 import 'package:lovelust/screens/journal/journal.dart';
 import 'package:lovelust/screens/partners/partners.dart';

@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
@@ -1008,8 +1007,12 @@ class SharedService extends ChangeNotifier {
   static AppIcon? getAppIconByValue(String? value) {
     if (value == 'Beta') {
       return AppIcon.beta;
-    } else if (value == 'Black') {
-      return AppIcon.black;
+    } else if (value == 'MonoBlack') {
+      return AppIcon.monoBlack;
+    } else if (value == 'MonoWhite') {
+      return AppIcon.monoWhite;
+    } else if (value == 'White') {
+      return AppIcon.white;
     } else if (value == 'Blue') {
       return AppIcon.blue;
     } else if (value == 'Filled') {
@@ -1024,8 +1027,6 @@ class SharedService extends ChangeNotifier {
       return AppIcon.health;
     } else if (value == 'Health2') {
       return AppIcon.health2;
-    } else if (value == 'Health3') {
-      return AppIcon.health3;
     } else if (value == 'Neon') {
       return AppIcon.neon;
     } else if (value == 'Pink') {
@@ -1040,6 +1041,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.prideClassic;
     } else if (value == 'PrideRainbow') {
       return AppIcon.prideRainbow;
+    } else if (value == 'PrideRainbowLine') {
+      return AppIcon.prideRainbowLine;
     } else if (value == 'PrideTrans') {
       return AppIcon.prideTrans;
     } else if (value == 'PrideRomania') {
@@ -1063,8 +1066,12 @@ class SharedService extends ChangeNotifier {
   static String? setValueByAppIcon(AppIcon? value) {
     if (value == AppIcon.beta) {
       return 'Beta';
-    } else if (value == AppIcon.black) {
-      return 'Black';
+    } else if (value == AppIcon.monoBlack) {
+      return 'MonoBlack';
+    } else if (value == AppIcon.monoWhite) {
+      return 'MonoWhite';
+    } else if (value == AppIcon.white) {
+      return 'White';
     } else if (value == AppIcon.blue) {
       return 'Blue';
     } else if (value == AppIcon.filled) {
@@ -1079,8 +1086,6 @@ class SharedService extends ChangeNotifier {
       return 'Health';
     } else if (value == AppIcon.health2) {
       return 'Health2';
-    } else if (value == AppIcon.health3) {
-      return 'Health3';
     } else if (value == AppIcon.neon) {
       return 'Neon';
     } else if (value == AppIcon.pink) {
@@ -1095,6 +1100,8 @@ class SharedService extends ChangeNotifier {
       return 'PrideClassic';
     } else if (value == AppIcon.prideRainbow) {
       return 'PrideRainbow';
+    } else if (value == AppIcon.prideRainbowLine) {
+      return 'PrideRainbowLine';
     } else if (value == AppIcon.prideTrans) {
       return 'PrideTrans';
     } else if (value == AppIcon.prideRomania) {
@@ -1404,8 +1411,12 @@ class SharedService extends ChangeNotifier {
 
     if (value == AppIcon.beta) {
       return AppLocalizations.of(context)!.beta;
-    } else if (value == AppIcon.black) {
-      return AppLocalizations.of(context)!.black;
+    } else if (value == AppIcon.monoBlack) {
+      return AppLocalizations.of(context)!.monoBlack;
+    } else if (value == AppIcon.monoWhite) {
+      return AppLocalizations.of(context)!.monoWhite;
+    } else if (value == AppIcon.white) {
+      return AppLocalizations.of(context)!.white;
     } else if (value == AppIcon.blue) {
       return AppLocalizations.of(context)!.blue;
     } else if (value == AppIcon.filled) {
@@ -1420,8 +1431,6 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.health;
     } else if (value == AppIcon.health2) {
       return AppLocalizations.of(context)!.health2;
-    } else if (value == AppIcon.health3) {
-      return AppLocalizations.of(context)!.health3;
     } else if (value == AppIcon.neon) {
       return AppLocalizations.of(context)!.neon;
     } else if (value == AppIcon.pink) {
@@ -1436,6 +1445,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.prideClassic;
     } else if (value == AppIcon.prideRainbow) {
       return AppLocalizations.of(context)!.prideRainbow;
+    } else if (value == AppIcon.prideRainbowLine) {
+      return AppLocalizations.of(context)!.prideRainbowLine;
     } else if (value == AppIcon.prideTrans) {
       return AppLocalizations.of(context)!.prideTrans;
     } else if (value == AppIcon.prideRomania) {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
@@ -22,7 +24,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
   void initState() {
     super.initState();
     selectedAppIcon = _shared.appIcon;
-    debugPrint("_shared.appIcon: ${_shared.appIcon}");
   }
 
   void save() {
@@ -30,13 +31,15 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
       try {
         FlutterDynamicIconPlus.supportsAlternateIcons.then(
           (supported) {
-            String appIcon =
-                SharedService.setValueByAppIcon(selectedAppIcon) ?? 'Default';
+            String? appIcon = SharedService.setValueByAppIcon(selectedAppIcon);
+            if (Platform.isAndroid && appIcon == null) {
+              appIcon = 'Default';
+            }
             FlutterDynamicIconPlus.setAlternateIconName(iconName: appIcon).then(
               (value) => null,
             );
             setState(() => _shared.appIcon = selectedAppIcon);
-            Navigator.of(context).pop();
+            if (context.mounted) Navigator.of(context).pop();
           },
         );
       } on PlatformException {
@@ -57,7 +60,6 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
 
   void onChanged(AppIcon? value) {
     setState(() => selectedAppIcon = value!);
-    debugPrint("value: ${value}");
   }
 
   List<DropdownMenuItem<AppIcon?>> get dropdownAppIconItems {

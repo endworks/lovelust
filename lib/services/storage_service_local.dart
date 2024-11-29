@@ -35,7 +35,7 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setSettings(Settings value) async {
-    debugPrint('setSettings: ${value.toString()}');
+    debugPrint('setSettings: ${jsonEncode(value)}');
     return await _storage.write(key: 'settings', value: jsonEncode(value));
   }
 
@@ -53,7 +53,7 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setActivity(List<Activity> value) async {
-    debugPrint('setActivity: ${value.toString()}');
+    debugPrint('setActivity: ${jsonEncode(value)}');
     return await _storage.write(key: 'activity', value: jsonEncode(value));
   }
 
@@ -71,7 +71,7 @@ class StorageServiceLocal extends StorageService {
 
   @override
   Future<void> setPartners(List<Partner> value) async {
-    debugPrint('setPartners: ${value.toString()}');
+    debugPrint('setPartners: ${jsonEncode(value)}');
     return await _storage.write(key: 'partners', value: jsonEncode(value));
   }
 }

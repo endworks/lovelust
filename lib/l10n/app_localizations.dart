@@ -1079,6 +1079,60 @@ abstract class AppLocalizations {
   /// **'Logged in'**
   String get loggedIn;
 
+  /// No description provided for @healthIntegration.
+  ///
+  /// In en, this message translates to:
+  /// **'Health integration'**
+  String get healthIntegration;
+
+  /// No description provided for @healthIntegrationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrate with native health data app'**
+  String get healthIntegrationDescription;
+
+  /// No description provided for @healthIntegrationDescriptionAndroid.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrate with Health Connect'**
+  String get healthIntegrationDescriptionAndroid;
+
+  /// No description provided for @healthIntegrationDescriptionIOS.
+  ///
+  /// In en, this message translates to:
+  /// **'Integrate with HealthKit'**
+  String get healthIntegrationDescriptionIOS;
+
+  /// No description provided for @healthPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Permissions'**
+  String get healthPermissions;
+
+  /// No description provided for @healthImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import data'**
+  String get healthImport;
+
+  /// No description provided for @healthExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export data'**
+  String get healthExport;
+
+  /// No description provided for @healthInstall.
+  ///
+  /// In en, this message translates to:
+  /// **'Install Health Connect'**
+  String get healthInstall;
+
+  /// No description provided for @healthOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Health'**
+  String get healthOpen;
+
   /// No description provided for @fetch.
   ///
   /// In en, this message translates to:

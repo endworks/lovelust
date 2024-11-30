@@ -19,6 +19,7 @@ class Activity {
   final ActivityType? type;
   final List<Practice>? practices;
   final Mood? mood;
+  final String? healthRecordId;
 
   const Activity({
     required this.id,
@@ -37,6 +38,7 @@ class Activity {
     required this.type,
     required this.practices,
     required this.mood,
+    required this.healthRecordId,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -76,6 +78,7 @@ class Activity {
       mood: SharedService.getMoodByValue(
         json['mood'],
       ),
+      healthRecordId: json['health_record_id'],
     );
   }
 
@@ -114,5 +117,6 @@ class Activity {
         'mood': SharedService.setValueByMood(
           mood,
         ),
+        'health_record_id': healthRecordId,
       };
 }

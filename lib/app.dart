@@ -6,6 +6,7 @@ import 'package:lovelust/home.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/health_service.dart';
 import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/shared_service.dart';

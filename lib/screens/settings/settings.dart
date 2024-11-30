@@ -8,8 +8,10 @@ import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lovelust/models/enum.dart';
+import 'package:lovelust/screens/settings/health_integration.dart';
 import 'package:lovelust/screens/settings/select_app_icon.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/health_service.dart';
 import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -24,8 +26,10 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final SharedService _shared = getIt<SharedService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
+  final HealthService _health = getIt<HealthService>();
   final ScrollController _scrollController = ScrollController();
   bool isiOSAppOnMac = false;
+  bool isHealthIntegrationAvailable = false;
   bool _isScrolled = false;
 
   @override
@@ -56,6 +60,12 @@ class _SettingsPageState extends State<SettingsPage> {
         } else {
           _shared.appIcon = SharedService.getAppIconByValue(iconName);
         }
+      });
+    });
+
+    _health.isAvailable().then((available) {
+      setState(() {
+        isHealthIntegrationAvailable = available;
       });
     });
   }
@@ -344,58 +354,18 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
     return Future.value(null);
+  }
 
-    /*return showDialog<String>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          title: Text(AppLocalizations.of(context)!.appIcon),
-          children: dropdownAppIconItems
-              .map(
-                (e) => SimpleDialogOption(
-                  onPressed: () {
-                    Navigator.pop(context, e.value);
-                  },
-                  child: e.child,
-                ),
-              )
-              .toList(),
-        );
-      },
-    ).then((String? value) {
-      if (value != null && _shared.appIcon != value) {
-        try {
-          if (Platform.isIOS) {
-            setState(() {
-              _shared.appIcon = value;
-            });
-            DynamicIconFlutter.supportsAlternateIcons.then((supported) {
-              String? appIcon = value != 'Default' ? value : null;
-              DynamicIconFlutter.setAlternateIconName(appIcon)
-                  .then((value) => null);
-            });
-          } else if (Platform.isAndroid) {
-            List<String> list = dropdownAppIconItems
-                .map<String>(
-                    (DropdownMenuItem<String> e) => e.value ?? 'Default')
-                .toList();
-            DynamicIconFlutter.setIcon(icon: value, listAvailableIcon: list);
-          }
-        } on PlatformException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Platform not supported"),
-            ),
-          );
-        } catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Failed to change app icon"),
-            ),
-          );
-        }
-      }
-    });*/
+  Future<void> _goToHealthIntegration() {
+    Navigator.push(
+      context,
+      MaterialPageRoute<Widget>(
+        fullscreenDialog: true,
+        settings: const RouteSettings(name: 'HealthIntegration'),
+        builder: (BuildContext context) => const HealthIntegrationPage(),
+      ),
+    );
+    return Future.value(null);
   }
 
   String? get installerStore {
@@ -553,26 +523,29 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     ];
 
-    list.insert(
-      0,
-      SwitchListTile(
-        title: Text(authMethodName),
-        subtitle: Text(
-          authMethodDescription,
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-              ),
+    if (!kIsWeb) {
+      list.insert(
+        0,
+        SwitchListTile(
+          title: Text(authMethodName),
+          subtitle: Text(
+            authMethodDescription,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
+          ),
+          value: _shared.requireAuth,
+          onChanged: (bool value) {
+            toggleRequireAuth(value);
+          },
+          secondary: Icon(
+            authMethodIcon,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
         ),
-        value: _shared.requireAuth,
-        onChanged: (bool value) {
-          toggleRequireAuth(value);
-        },
-        secondary: Icon(
-          authMethodIcon,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-    );
+      );
+    }
 
     if (_shared.isLoggedIn) {
       list.insert(
@@ -604,6 +577,27 @@ class _SettingsPageState extends State<SettingsPage> {
           onTap: _askAppIcon,
           leading: Icon(
             Icons.app_shortcut,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      );
+    }
+
+    if (isHealthIntegrationAvailable) {
+      list.insert(
+        list.length - 2,
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.healthIntegration),
+          subtitle: Text(
+            AppLocalizations.of(context)!.healthIntegrationDescription,
+            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                ),
+          ),
+          onTap: _goToHealthIntegration,
+          leading: Icon(
+            Icons.medical_information,
             color: Theme.of(context).colorScheme.secondary,
           ),
         ),

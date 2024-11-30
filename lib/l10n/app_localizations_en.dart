@@ -537,6 +537,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loggedIn => 'Logged in';
 
   @override
+  String get healthIntegration => 'Health integration';
+
+  @override
+  String get healthIntegrationDescription => 'Integrate with native health data app';
+
+  @override
+  String get healthIntegrationDescriptionAndroid => 'Integrate with Health Connect';
+
+  @override
+  String get healthIntegrationDescriptionIOS => 'Integrate with HealthKit';
+
+  @override
+  String get healthPermissions => 'Permissions';
+
+  @override
+  String get healthImport => 'Import data';
+
+  @override
+  String get healthExport => 'Export data';
+
+  @override
+  String get healthInstall => 'Install Health Connect';
+
+  @override
+  String get healthOpen => 'Open Health';
+
+  @override
   String get fetch => 'Fetch';
 
   @override

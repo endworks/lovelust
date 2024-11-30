@@ -39,6 +39,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   List<Practice> _practices = [];
   Initiator? _initiator;
   Mood? _mood;
+  String? _healthRecordId;
 
   bool _new = true;
   bool _moreFields = false;
@@ -57,6 +58,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     _practices = widget.activity.practices ?? [];
     _initiator = widget.activity.initiator;
     _mood = widget.activity.mood;
+    _healthRecordId = widget.activity.healthRecordId;
 
     _dateController.value = TextEditingValue(
       text: widget.activity.date.toIso8601String(),
@@ -209,23 +211,23 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   void save() {
     if (valid) {
       Activity activity = Activity(
-        id: _new ? const Uuid().v4() : widget.activity.id,
-        birthControl: _birthControl,
-        date: _date ?? DateTime.now(),
-        duration: int.parse(_durationController.value.text),
-        initiator: _initiator,
-        location: _locationController.value.text,
-        orgasms: int.parse(_orgasmsController.value.text),
-        partner: _partner,
-        partnerBirthControl: _partnerBirthControl,
-        partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
-        place: _place,
-        practices: _practices,
-        rating: int.parse(_ratingController.value.text),
-        notes: _notesController.value.text,
-        type: _type,
-        mood: _mood,
-      );
+          id: _new ? const Uuid().v4() : widget.activity.id,
+          birthControl: _birthControl,
+          date: _date ?? DateTime.now(),
+          duration: int.parse(_durationController.value.text),
+          initiator: _initiator,
+          location: _locationController.value.text,
+          orgasms: int.parse(_orgasmsController.value.text),
+          partner: _partner,
+          partnerBirthControl: _partnerBirthControl,
+          partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
+          place: _place,
+          practices: _practices,
+          rating: int.parse(_ratingController.value.text),
+          notes: _notesController.value.text,
+          type: _type,
+          mood: _mood,
+          healthRecordId: _healthRecordId);
 
       List<Activity> journal = [..._shared.activity];
       if (!_new) {

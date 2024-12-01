@@ -431,10 +431,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get health => 'Salud';
 
   @override
-  String get health2 => 'Salud 2';
+  String get health2 => 'Salud II';
 
   @override
-  String get health3 => 'Salud 3';
+  String get health3 => 'Salud III';
 
   @override
   String get bold => 'Marcado';
@@ -444,6 +444,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get pills => 'Píldoras';
+
+  @override
+  String get pills2 => 'Píldoras II';
+
+  @override
+  String get renamesApp => 'Cambia el nombre de la app';
 
   @override
   String get requireFingerprint => 'Requerir huella';

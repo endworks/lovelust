@@ -429,10 +429,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get health => 'Health';
 
   @override
-  String get health2 => 'Health 2';
+  String get health2 => 'Health II';
 
   @override
-  String get health3 => 'Health 3';
+  String get health3 => 'Health III';
 
   @override
   String get bold => 'Bold';
@@ -442,6 +442,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pills => 'Pills';
+
+  @override
+  String get pills2 => 'Pills II';
+
+  @override
+  String get renamesApp => 'Changes the name of the app';
 
   @override
   String get requireFingerprint => 'Require fingerprint';

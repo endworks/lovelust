@@ -74,12 +74,25 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
     return list;
   }
 
+  Widget? iconRenamesApp(AppIcon icon) {
+    if (icon == AppIcon.health ||
+        icon == AppIcon.health2 ||
+        icon == AppIcon.health3 ||
+        icon == AppIcon.journal ||
+        icon == AppIcon.sexapill ||
+        icon == AppIcon.sexapillWhite) {
+      return Text(AppLocalizations.of(context)!.renamesApp);
+    }
+    return null;
+  }
+
   List<Widget> get fields {
-    List<Widget> fields = dropdownAppIconItems
+    return AppIcon.values
         .map(
           (e) => ListTile(
-            title: e.child,
-            onTap: () => onChanged(e.value),
+            title: Text(SharedService.getAppIconTranslation(e)),
+            subtitle: iconRenamesApp(e),
+            onTap: () => onChanged(e),
             leading: Padding(
               padding: const EdgeInsets.all(2.0),
               child: Container(
@@ -94,20 +107,19 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
                   borderRadius: BorderRadius.circular(12.0),
                   child: Image(
                     image: AssetImage(
-                        "assets/AppIcons/${SharedService.setValueByAppIcon(e.value) ?? 'Default'}.png"),
+                        "assets/AppIcons/${SharedService.setValueByAppIcon(e) ?? 'Default'}.png"),
                   ),
                 ),
               ),
             ),
             trailing: Radio<AppIcon?>(
-              value: e.value,
+              value: e,
               groupValue: selectedAppIcon,
               onChanged: onChanged,
             ),
           ),
         )
         .toList();
-    return fields;
   }
 
   @override

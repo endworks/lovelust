@@ -866,13 +866,13 @@ abstract class AppLocalizations {
   /// No description provided for @health2.
   ///
   /// In en, this message translates to:
-  /// **'Health 2'**
+  /// **'Health II'**
   String get health2;
 
   /// No description provided for @health3.
   ///
   /// In en, this message translates to:
-  /// **'Health 3'**
+  /// **'Health III'**
   String get health3;
 
   /// No description provided for @bold.
@@ -892,6 +892,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pills'**
   String get pills;
+
+  /// No description provided for @pills2.
+  ///
+  /// In en, this message translates to:
+  /// **'Pills II'**
+  String get pills2;
+
+  /// No description provided for @renamesApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes the name of the app'**
+  String get renamesApp;
 
   /// No description provided for @requireFingerprint.
   ///

@@ -187,7 +187,8 @@ class _SettingsPageState extends State<SettingsPage> {
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
     );
   }
@@ -210,7 +211,8 @@ class _SettingsPageState extends State<SettingsPage> {
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
     );
   }
@@ -237,7 +239,8 @@ class _SettingsPageState extends State<SettingsPage> {
     return Text(
       (value.child as Text).data!,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
     );
   }
@@ -402,7 +405,10 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           AppLocalizations.of(context)!.privacyModeDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
         ),
         value: _shared.privacyMode,
@@ -421,7 +427,10 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           AppLocalizations.of(context)!.sensitiveModeDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
         ),
         value: _shared.sensitiveMode,
@@ -458,7 +467,10 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           AppLocalizations.of(context)!.trueBlackDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
         ),
         value: _shared.trueBlack,
@@ -478,7 +490,10 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           AppLocalizations.of(context)!.materialDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
         ),
         value: _shared.material,
@@ -498,7 +513,10 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           AppLocalizations.of(context)!.clearPersonalDataDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
         ),
         onTap: _askClearPersonalData,
@@ -512,7 +530,10 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           AppLocalizations.of(context)!.clearDataDescription,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
               ),
         ),
         onTap: _askClearData,
@@ -531,8 +552,10 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: Text(
             authMethodDescription,
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
                 ),
           ),
           value: _shared.requireAuth,
@@ -555,8 +578,10 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: Text(
             AppLocalizations.of(context)!.initialFetchDescription,
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
                 ),
           ),
           leading: Icon(
@@ -591,8 +616,10 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: Text(
             AppLocalizations.of(context)!.healthIntegrationDescription,
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
                 ),
           ),
           onTap: _goToHealthIntegration,
@@ -611,8 +638,10 @@ class _SettingsPageState extends State<SettingsPage> {
           subtitle: Text(
             "${_shared.packageInfo?.version ?? '1.0.0'} (${_shared.packageInfo?.buildNumber ?? 1}) ${installerStore ?? 'store'}",
             style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
                 ),
           ),
           leading: Icon(

@@ -116,7 +116,7 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
-        vertical: 4,
+        vertical: 8,
       ),
       child: ListTile(
         title: Text(

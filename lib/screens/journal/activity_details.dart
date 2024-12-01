@@ -172,6 +172,30 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   }
 
   get cards {
+    List<Widget> timeRow = [
+      Icon(
+        Icons.access_time,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      const Padding(padding: EdgeInsets.only(left: 4)),
+      Text(
+        DateFormat('HH:mm').format(_activity.date),
+      ),
+    ];
+
+    if (_activity.duration > 0) {
+      timeRow.addAll([
+        const Padding(padding: EdgeInsets.only(left: 16)),
+        Icon(
+          Icons.timer,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        const Padding(padding: EdgeInsets.only(left: 4)),
+        Text(_activity.duration.toString()),
+        Text(' ${AppLocalizations.of(context)!.min}'),
+      ]);
+    }
+
     List<Widget> list = [
       ListTile(
         leading: ActivityAvatar(
@@ -179,20 +203,21 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           masturbation: _solo,
         ),
         trailing: encounters,
-        title: Row(
-          children: [
-            Icon(
-              Icons.location_pin,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            const Padding(padding: EdgeInsets.only(left: 4)),
-            Text(
-              SharedService.getPlaceTranslation(_activity.place),
-            ),
-          ],
-        ),
         subtitle: Column(
+          spacing: 4,
           children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.location_pin,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                const Padding(padding: EdgeInsets.only(left: 4)),
+                Text(
+                  SharedService.getPlaceTranslation(_activity.place),
+                ),
+              ],
+            ),
             Row(
               children: [
                 Icon(
@@ -206,26 +231,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
               ],
             ),
             Row(
-              children: [
-                Icon(
-                  Icons.access_time,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                const Padding(padding: EdgeInsets.only(left: 4)),
-                Text(
-                  DateFormat('HH:mm').format(_activity.date),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 16)),
-                Icon(
-                  Icons.timer,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                const Padding(padding: EdgeInsets.only(left: 4)),
-                Text(_activity.duration.toString()),
-                Text(' ${AppLocalizations.of(context)!.min}'),
-              ],
+              children: timeRow,
             ),
-            widget.activity.rating > 0
+            _activity.rating > 0
                 ? Row(
                     children: [
                       Rating(rating: _activity.rating),
@@ -287,7 +295,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       body: CustomScrollView(
         slivers: [
           GenericHeader(
-            title: _solo ? Text(title) : _shared.sensitiveText(title),
+            title: _solo || _partner == null
+                ? Text(title)
+                : _shared.sensitiveText(title),
             actions: [
               IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
               PopupMenuButton(

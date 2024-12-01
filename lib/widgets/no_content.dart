@@ -20,7 +20,7 @@ class _NoContentState extends State<NoContent> {
 
   @override
   Widget build(BuildContext context) {
-    color = Theme.of(context).colorScheme.onSurface.withOpacity(alpha);
+    color = Theme.of(context).colorScheme.onSurface.withValues(alpha: alpha);
 
     return Padding(
       padding: const EdgeInsets.all(24),

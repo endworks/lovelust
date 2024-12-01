@@ -142,6 +142,8 @@
   "journal": "Diario",
   "partners": "Parejas",
   "bold": "Marcado",
+  "pastel": "Pastel",
+  "pills": "Píldoras",
   "requireFingerprint": "Requerir huella",
   "requireFingerprintDescription": "Requerir huella para acceder a la app",
   "requireFace": "Requerir reconocimiento facial",

@@ -881,6 +881,18 @@ abstract class AppLocalizations {
   /// **'Bold'**
   String get bold;
 
+  /// No description provided for @pastel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pastel'**
+  String get pastel;
+
+  /// No description provided for @pills.
+  ///
+  /// In en, this message translates to:
+  /// **'Pills'**
+  String get pills;
+
   /// No description provided for @requireFingerprint.
   ///
   /// In en, this message translates to:

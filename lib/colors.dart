@@ -5,6 +5,7 @@ const loveColor = Color.fromARGB(255, 246, 30, 109);
 const lustColor = Color.fromARGB(255, 185, 82, 197);
 // Color.fromARGB(255, 106, 47, 208);
 const lipstickColor = Color.fromARGB(255, 223, 0, 32);
+const redColor = Color.fromARGB(255, 235, 0, 77);
 const blueColor = Color.fromARGB(255, 0, 122, 255);
 const shimapanColor = Color.fromARGB(255, 0, 216, 184);
 

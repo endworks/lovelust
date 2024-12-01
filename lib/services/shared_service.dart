@@ -548,6 +548,13 @@ class SharedService extends ChangeNotifier {
     return ActivitySafety.partiallyUnsafe;
   }
 
+  bool isProtectionUsed(Activity activity) {
+    if (calculateSafety(activity) == ActivitySafety.unsafe) {
+      return false;
+    }
+    return true;
+  }
+
   Activity? getActivityById(String id) {
     if (id.isEmpty) {
       return null;
@@ -601,6 +608,8 @@ class SharedService extends ChangeNotifier {
       return Contraceptive.vaginalRing;
     } else if (value == 'VASECTOMY') {
       return Contraceptive.vasectomy;
+    } else if (value == 'ANAL') {
+      return Contraceptive.anal;
     }
     return null;
   }
@@ -640,6 +649,8 @@ class SharedService extends ChangeNotifier {
       return 'VAGINAL_RING';
     } else if (value == Contraceptive.vasectomy) {
       return 'VASECTOMY';
+    } else if (value == Contraceptive.anal) {
+      return 'ANAL';
     }
     return null;
   }
@@ -1063,6 +1074,10 @@ class SharedService extends ChangeNotifier {
       return AppIcon.teal;
     } else if (value == 'White') {
       return AppIcon.white;
+    } else if (value == 'Pastel') {
+      return AppIcon.pastel;
+    } else if (value == 'Pills') {
+      return AppIcon.pills;
     }
     return AppIcon.defaultAppIcon;
   }
@@ -1126,6 +1141,10 @@ class SharedService extends ChangeNotifier {
       return 'Teal';
     } else if (value == AppIcon.white) {
       return 'White';
+    } else if (value == AppIcon.pastel) {
+      return 'Pastel';
+    } else if (value == AppIcon.pills) {
+      return 'Pills';
     }
     return null;
   }
@@ -1207,6 +1226,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.vaginalRing;
     } else if (value == Contraceptive.vasectomy) {
       return AppLocalizations.of(context)!.vasectomy;
+    } else if (value == Contraceptive.anal) {
+      return AppLocalizations.of(context)!.anal;
     }
     return AppLocalizations.of(context)!.noBirthControl;
   }
@@ -1475,6 +1496,10 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.shimapan;
     } else if (value == AppIcon.white) {
       return AppLocalizations.of(context)!.white;
+    } else if (value == AppIcon.pastel) {
+      return AppLocalizations.of(context)!.pastel;
+    } else if (value == AppIcon.pills) {
+      return AppLocalizations.of(context)!.pills;
     }
     return AppLocalizations.of(context)!.defaultAppIcon;
   }

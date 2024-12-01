@@ -440,6 +440,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get bold => 'Marcado';
 
   @override
+  String get pastel => 'Pastel';
+
+  @override
+  String get pills => 'Píldoras';
+
+  @override
   String get requireFingerprint => 'Requerir huella';
 
   @override

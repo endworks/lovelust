@@ -28,13 +28,13 @@ class _RatingState extends State<Rating> {
 
     Icon star = Icon(
       Icons.star,
-      size: Theme.of(context).textTheme.bodyLarge!.fontSize,
+      size: Theme.of(context).textTheme.headlineSmall!.fontSize,
       color: color,
     );
     Icon starEmpty = Icon(
       Icons.star_border,
-      size: Theme.of(context).textTheme.bodyLarge!.fontSize,
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+      size: Theme.of(context).textTheme.headlineSmall!.fontSize,
+      color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
     );
     if (widget.rating > 0) {
       container.add(star);

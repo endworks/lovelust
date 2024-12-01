@@ -161,6 +161,8 @@
   "journal": "Journal",
   "partners": "Partners",
   "bold": "Bold",
+  "pastel": "Pastel",
+  "pills": "Pills",
   "requireFingerprint": "Require fingerprint",
   "requireFingerprintDescription": "Require fingerprint to access the app",
   "requireFace": "Require face recognition",

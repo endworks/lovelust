@@ -21,7 +21,7 @@ class _RatingSelectState extends State<RatingSelect> {
     );
     Icon starEmpty = Icon(
       Icons.star_border,
-      color: Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+      color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.5),
     );
 
     for (int i = 0; i < 5; i++) {

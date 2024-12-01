@@ -438,6 +438,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bold => 'Bold';
 
   @override
+  String get pastel => 'Pastel';
+
+  @override
+  String get pills => 'Pills';
+
+  @override
   String get requireFingerprint => 'Require fingerprint';
 
   @override

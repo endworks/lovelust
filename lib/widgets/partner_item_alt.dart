@@ -89,7 +89,8 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     return Text(
       text,
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            color:
+                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
           ),
     );
   }

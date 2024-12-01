@@ -21,7 +21,7 @@ class HealthService {
   ];
   final healthKitTypes = <String>[CategoryType.sexualActivity.identifier];
   bool readOnly = false;
-  DateTime startTime = DateTime.now().subtract(const Duration(days: 30));
+  DateTime startTime = DateTime.now().subtract(const Duration(days: 365 * 10));
   DateTime endTime = DateTime.now();
 
   Future<bool> isApiSupported() async {
@@ -216,20 +216,93 @@ class HealthService {
           CategoryType.sexualActivity,
           predicate,
         ).then((categories) {
+          List<Activity> journal = [..._shared.activity];
           for (var record in categories) {
-            bool protectionUsed = false;
-            debugPrint("${record.map}");
-            protectionUsed = record.harmonized.metadata!['double']['dictionary']
-                    ['HKSexualActivityProtectionUsed'] ==
-                1;
+            bool protectionUsed = record.harmonized.metadata!['double']
+                        ['dictionary']['HKSexualActivityProtectionUsed'] ==
+                    1 ||
+                false;
             DateTime startDate = DateTime.fromMillisecondsSinceEpoch(
               record.startTimestamp.toInt() * 1000,
             );
             DateTime endDate = DateTime.fromMillisecondsSinceEpoch(
               record.endTimestamp.toInt() * 1000,
             );
-            debugPrint("${record.uuid} $startDate $protectionUsed");
+
+            Activity? activity;
+            bool matchedRecord = false;
+            bool needsSaving = false;
+
+            for (Activity a in journal) {
+              if (a.date.year == startDate.year &&
+                  a.date.month == startDate.month &&
+                  a.date.day == startDate.day &&
+                  a.date.hour == startDate.hour &&
+                  a.date.minute == startDate.minute &&
+                  a.date.second == startDate.second) {
+                activity = a;
+                matchedRecord = true;
+              }
+            }
+
+            if (activity != null) {
+              debugPrint("matched record");
+              if (activity.healthRecordId != record.uuid) {
+                needsSaving = true;
+                activity = Activity(
+                  id: activity.id,
+                  birthControl: activity.birthControl,
+                  date: activity.date,
+                  duration: activity.duration,
+                  initiator: activity.initiator,
+                  location: activity.location,
+                  orgasms: activity.orgasms,
+                  partner: activity.partner,
+                  partnerBirthControl: activity.partnerBirthControl,
+                  partnerOrgasms: activity.partnerOrgasms,
+                  place: activity.place,
+                  practices: activity.practices,
+                  rating: activity.rating,
+                  notes: activity.notes,
+                  type: activity.type,
+                  mood: activity.mood,
+                  healthRecordId: record.uuid,
+                );
+              }
+            } else {
+              activity = Activity(
+                id: record.uuid,
+                partner: null,
+                birthControl: protectionUsed ? Contraceptive.condom : null,
+                partnerBirthControl: null,
+                date: startDate,
+                location: null,
+                notes: null,
+                duration: endDate.difference(startDate).inMinutes,
+                orgasms: 0,
+                partnerOrgasms: 0,
+                place: null,
+                initiator: null,
+                rating: 0,
+                type: ActivityType.sexualIntercourse,
+                practices: null,
+                mood: null,
+                healthRecordId: record.uuid,
+              );
+            }
+
+            if (matchedRecord) {
+              if (needsSaving) {
+                Activity? element =
+                    journal.firstWhere((e) => e.id == activity!.id);
+                journal[journal.indexOf(element)] = activity;
+              }
+            } else {
+              journal.add(activity);
+            }
           }
+          journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
+          _shared.activity = journal;
         });
       }
     }

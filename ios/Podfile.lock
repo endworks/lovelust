@@ -1,16 +1,18 @@
 PODS:
-  - device_info_plus (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
   - flutter_dynamic_icon_plus (1.0.0):
     - Flutter
     - SwiftTryCatch
+  - flutter_health_connect (0.0.1):
+    - Flutter
   - flutter_native_splash (2.4.3):
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - health (1.0.4):
+  - health_kit_reporter (2.1.0):
     - Flutter
+    - HealthKitReporter
+  - HealthKitReporter (3.1.0)
   - home_widget (0.0.1):
     - Flutter
   - local_auth_darwin (0.0.1):
@@ -26,12 +28,12 @@ PODS:
   - SwiftTryCatch (0.0.1)
 
 DEPENDENCIES:
-  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_dynamic_icon_plus (from `.symlinks/plugins/flutter_dynamic_icon_plus/ios`)
+  - flutter_health_connect (from `.symlinks/plugins/flutter_health_connect/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - health (from `.symlinks/plugins/health/ios`)
+  - health_kit_reporter (from `.symlinks/plugins/health_kit_reporter/ios`)
   - home_widget (from `.symlinks/plugins/home_widget/ios`)
   - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
@@ -40,21 +42,22 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - HealthKitReporter
     - SwiftTryCatch
 
 EXTERNAL SOURCES:
-  device_info_plus:
-    :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
   flutter_dynamic_icon_plus:
     :path: ".symlinks/plugins/flutter_dynamic_icon_plus/ios"
+  flutter_health_connect:
+    :path: ".symlinks/plugins/flutter_health_connect/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  health:
-    :path: ".symlinks/plugins/health/ios"
+  health_kit_reporter:
+    :path: ".symlinks/plugins/health_kit_reporter/ios"
   home_widget:
     :path: ".symlinks/plugins/home_widget/ios"
   local_auth_darwin:
@@ -67,12 +70,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
-  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_dynamic_icon_plus: 97d2592f571db88345a05183e080369289ec9c94
+  flutter_health_connect: ac5623c081166629c5c2fa1f4bebb24dd4575d4d
   flutter_native_splash: e8a1e01082d97a8099d973f919f57904c925008a
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
-  health: 5d10c4296a95f6be50a8131d47d3cb3ad640bdf5
+  health_kit_reporter: c42352ae9e6ba3035618f27aec723833487ceab3
+  HealthKitReporter: 4fae728be1afa52c4833d4cfb9835b368bfc89e6
   home_widget: 0434835a4c9a75704264feff6be17ea40e0f0d57
   local_auth_darwin: 66e40372f1c29f383a314c738c7446e2f7fdadc3
   package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4

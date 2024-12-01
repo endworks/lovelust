@@ -79,7 +79,7 @@ ThemeData generateTheme(
     useMaterial3: true,
     brightness: darkMode ? Brightness.dark : Brightness.light,
     visualDensity: VisualDensity.adaptivePlatformDensity,
-    navigationBarTheme: const NavigationBarThemeData(
+    navigationBarTheme: NavigationBarThemeData(
       labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
     ),
     cardTheme: const CardTheme(
@@ -90,6 +90,10 @@ ThemeData generateTheme(
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
+    textTheme: (darkMode
+            ? Typography.material2021().white
+            : Typography.material2021().black)
+        .merge(defaultTextTheme),
   );
 
   ThemeData defaultTheme = ThemeData(

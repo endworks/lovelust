@@ -2,7 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
-import 'package:health_kit_reporter/health_kit_reporter.dart';
+import 'package:health_kit_reporter/health_kit_reporter.dart' as HKR;
+import 'package:health_kit_reporter/model/payload/category.dart' as HKRCategory;
+import 'package:health_kit_reporter/model/payload/source.dart';
+import 'package:health_kit_reporter/model/payload/source_revision.dart';
 import 'package:health_kit_reporter/model/predicate.dart';
 import 'package:health_kit_reporter/model/type/category_type.dart';
 import 'package:lovelust/models/activity.dart';
@@ -18,7 +21,7 @@ class HealthService {
   ];
   final healthKitTypes = <String>[CategoryType.sexualActivity.identifier];
   bool readOnly = false;
-  DateTime startTime = DateTime.now().subtract(const Duration(days: 365 * 10));
+  DateTime startTime = DateTime.now().subtract(const Duration(days: 30));
   DateTime endTime = DateTime.now();
 
   Future<bool> isApiSupported() async {
@@ -70,7 +73,7 @@ class HealthService {
         final requests = <Future>[];
         for (var type in healthKitTypes) {
           requests.add(
-            HealthKitReporter.isAuthorizedToWrite(type),
+            HKR.HealthKitReporter.isAuthorizedToWrite(type),
           );
         }
         return await Future.wait(requests).then((results) {
@@ -94,7 +97,7 @@ class HealthService {
           readOnlyTypes: readOnly ? healthConnectTypes : null,
         );
       } else if (Platform.isIOS) {
-        return HealthKitReporter.requestAuthorization(
+        return HKR.HealthKitReporter.requestAuthorization(
           healthKitTypes,
           healthKitTypes,
         );
@@ -209,11 +212,24 @@ class HealthService {
         }
       } else if (Platform.isIOS) {
         Predicate predicate = Predicate(startTime, endTime);
-        await HealthKitReporter.categoryQuery(
+        await HKR.HealthKitReporter.categoryQuery(
           CategoryType.sexualActivity,
           predicate,
         ).then((categories) {
-          debugPrint("categories: ${categories.map((e) => e.map).toList()}");
+          for (var record in categories) {
+            bool protectionUsed = false;
+            debugPrint("${record.map}");
+            protectionUsed = record.harmonized.metadata!['double']['dictionary']
+                    ['HKSexualActivityProtectionUsed'] ==
+                1;
+            DateTime startDate = DateTime.fromMillisecondsSinceEpoch(
+              record.startTimestamp.toInt() * 1000,
+            );
+            DateTime endDate = DateTime.fromMillisecondsSinceEpoch(
+              record.endTimestamp.toInt() * 1000,
+            );
+            debugPrint("${record.uuid} $startDate $protectionUsed");
+          }
         });
       }
     }
@@ -277,13 +293,100 @@ class HealthService {
               );
             }
           }
-
-          return await Future.wait(requests).then(
-            (value) => _shared.activity = journal,
-          );
-        } catch (e, s) {
-          debugPrint("$e:$s".toString());
+          if (requests.isNotEmpty) {
+            return await Future.wait(requests).then(
+              (value) => _shared.activity = journal,
+            );
+          }
+        } catch (e) {
+          debugPrint("$e");
           return Future.error(e);
+        }
+      } else if (Platform.isIOS) {
+        try {
+          final source = Source(
+            'LoveLust',
+            'works.end.LoveLust',
+          );
+          final operatingSystem = OperatingSystem(
+            18,
+            1,
+            0,
+          );
+          final sourceRevision = SourceRevision(
+            source,
+            "${operatingSystem.majorVersion}.${operatingSystem.minorVersion}",
+            'iPhone14,2',
+            "${operatingSystem.majorVersion}.${operatingSystem.minorVersion}.${operatingSystem.patchVersion}",
+            operatingSystem,
+          );
+
+          final canWrite = await HKR.HealthKitReporter.isAuthorizedToWrite(
+              CategoryType.sexualActivity.identifier);
+          if (canWrite) {
+            final requests = <Future>[];
+            List<Activity> journal = [..._shared.activity];
+            for (var activity in journal) {
+              if (activity.healthRecordId == null) {
+                ActivitySafety safety = _shared.calculateSafety(activity);
+                final endDate =
+                    activity.date.add(Duration(minutes: activity.duration));
+                final harmonized = HKRCategory.CategoryHarmonized(
+                  0,
+                  'HKCategoryValue',
+                  'Not Applicable',
+                  {
+                    'HKSexualActivityProtectionUsed':
+                        safety == ActivitySafety.unsafe ? 0 : 1,
+                    'HKWasUserEntered': 1,
+                  },
+                );
+                final sexualActivity = HKRCategory.Category(
+                  Uuid().v4(),
+                  CategoryType.sexualActivity.identifier,
+                  activity.date.millisecondsSinceEpoch,
+                  endDate.millisecondsSinceEpoch,
+                  null,
+                  sourceRevision,
+                  harmonized,
+                );
+                debugPrint('try to save: ${sexualActivity.map}');
+                requests.add(
+                    HKR.HealthKitReporter.save(sexualActivity).then((value) {
+                  Activity updatedActivity = Activity(
+                    id: activity.id,
+                    birthControl: activity.birthControl,
+                    date: activity.date,
+                    duration: activity.duration,
+                    initiator: activity.initiator,
+                    location: activity.location,
+                    orgasms: activity.orgasms,
+                    partner: activity.partner,
+                    partnerBirthControl: activity.partnerBirthControl,
+                    partnerOrgasms: activity.partnerOrgasms,
+                    place: activity.place,
+                    practices: activity.practices,
+                    rating: activity.rating,
+                    notes: activity.notes,
+                    type: activity.type,
+                    mood: activity.mood,
+                    healthRecordId: sexualActivity.uuid,
+                  );
+                  journal[journal.indexOf(activity)] = updatedActivity;
+                  journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
+                }));
+              }
+            }
+            if (requests.isNotEmpty) {
+              return await Future.wait(requests).then(
+                (value) => _shared.activity = journal,
+              );
+            }
+          } else {
+            debugPrint('error canWrite sexualActivity: $canWrite');
+          }
+        } catch (e) {
+          debugPrint("$e");
         }
       }
     }

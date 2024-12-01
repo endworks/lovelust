@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
-import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/screens/settings/health_integration.dart';
 import 'package:lovelust/screens/settings/select_app_icon.dart';
@@ -585,7 +585,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (isHealthIntegrationAvailable) {
       list.insert(
-        list.length - 2,
+        0,
         ListTile(
           title: Text(AppLocalizations.of(context)!.healthIntegration),
           subtitle: Text(

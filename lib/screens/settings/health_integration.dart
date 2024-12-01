@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/health_service.dart';
@@ -59,18 +58,19 @@ class _HealthIntegrationPageState extends State<HealthIntegrationPage> {
           color: Theme.of(context).colorScheme.secondary,
         ),
       ),
-      ListTile(
-        title: Text(AppLocalizations.of(context)!.healthOpen),
-        onTap: _health.openHealthApp,
-        leading: Icon(
-          Icons.open_in_new,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
     ];
     if (Platform.isAndroid) {
-      list.insert(
-        list.length - 1,
+      list.add(
+        ListTile(
+          title: Text(AppLocalizations.of(context)!.healthOpen),
+          onTap: _health.openHealthApp,
+          leading: Icon(
+            Icons.open_in_new,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      );
+      list.add(
         ListTile(
           title: Text(AppLocalizations.of(context)!.healthInstall),
           onTap: _health.installHealthApp,

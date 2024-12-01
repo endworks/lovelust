@@ -4,6 +4,8 @@
     <string name="app_name_beta">LoveLust β</string>
     <string name="app_name_sexapill">Sexapill</string>
     <string name="app_name_health">Health</string>
+    <string name="app_name_journal">Journal</string>
+    <string name="app_name_partners">Partners</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>

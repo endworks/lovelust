@@ -1019,6 +1019,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.filled;
     } else if (value == 'FilledWhite') {
       return AppIcon.filledWhite;
+    } else if (value == 'Bold') {
+      return AppIcon.bold;
     } else if (value == 'Glow') {
       return AppIcon.glow;
     } else if (value == 'Health') {
@@ -1027,6 +1029,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.health2;
     } else if (value == 'Health3') {
       return AppIcon.health3;
+    } else if (value == 'Journal') {
+      return AppIcon.journal;
     } else if (value == 'Neon') {
       return AppIcon.neon;
     } else if (value == 'Pink') {
@@ -1078,6 +1082,8 @@ class SharedService extends ChangeNotifier {
       return 'Filled';
     } else if (value == AppIcon.filledWhite) {
       return 'FilledWhite';
+    } else if (value == AppIcon.bold) {
+      return 'Bold';
     } else if (value == AppIcon.glow) {
       return 'Glow';
     } else if (value == AppIcon.health) {
@@ -1086,6 +1092,8 @@ class SharedService extends ChangeNotifier {
       return 'Health2';
     } else if (value == AppIcon.health3) {
       return 'Health3';
+    } else if (value == AppIcon.journal) {
+      return 'Journal';
     } else if (value == AppIcon.neon) {
       return 'Neon';
     } else if (value == AppIcon.pink) {
@@ -1423,6 +1431,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.filled;
     } else if (value == AppIcon.filledWhite) {
       return AppLocalizations.of(context)!.filledWhite;
+    } else if (value == AppIcon.bold) {
+      return AppLocalizations.of(context)!.bold;
     } else if (value == AppIcon.glow) {
       return AppLocalizations.of(context)!.glow;
     } else if (value == AppIcon.health) {
@@ -1431,6 +1441,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.health2;
     } else if (value == AppIcon.health3) {
       return AppLocalizations.of(context)!.health3;
+    } else if (value == AppIcon.journal) {
+      return AppLocalizations.of(context)!.journal;
     } else if (value == AppIcon.neon) {
       return AppLocalizations.of(context)!.neon;
     } else if (value == AppIcon.pink) {

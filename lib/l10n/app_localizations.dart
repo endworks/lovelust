@@ -875,6 +875,12 @@ abstract class AppLocalizations {
   /// **'Health 3'**
   String get health3;
 
+  /// No description provided for @bold.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold'**
+  String get bold;
+
   /// No description provided for @requireFingerprint.
   ///
   /// In en, this message translates to:

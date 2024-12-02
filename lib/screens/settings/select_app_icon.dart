@@ -75,12 +75,13 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
   }
 
   Widget? iconRenamesApp(AppIcon icon) {
-    if (icon == AppIcon.health ||
-        icon == AppIcon.health2 ||
-        icon == AppIcon.health3 ||
-        icon == AppIcon.journal ||
-        icon == AppIcon.sexapill ||
-        icon == AppIcon.sexapillWhite) {
+    if (Platform.isAndroid &&
+        (icon == AppIcon.health ||
+            icon == AppIcon.health2 ||
+            icon == AppIcon.health3 ||
+            icon == AppIcon.journal ||
+            icon == AppIcon.sexapill ||
+            icon == AppIcon.sexapillWhite)) {
       return Text(AppLocalizations.of(context)!.renamesApp);
     }
     return null;

@@ -300,47 +300,49 @@ class HealthService {
           final requests = <Future>[];
           List<Activity> journal = [..._shared.activity];
           for (var activity in journal) {
-            SexualActivityRecord record = SexualActivityRecord(
-              time: activity.date,
-              protectionUsed: _shared.isProtectionUsed(activity)
-                  ? Protection.protected
-                  : Protection.unprotected,
-            );
-
-            if (activity.healthRecordId == null) {
-              requests.add(
-                HealthConnectFactory.writeData(
-                  type: HealthConnectDataType.SexualActivity,
-                  data: [record],
-                ).then(
-                  (value) {
-                    debugPrint(
-                      "$HealthConnectDataType.SexualActivity.name: $record",
-                    );
-                    Activity updatedActivity = Activity(
-                      id: activity.id,
-                      birthControl: activity.birthControl,
-                      date: activity.date,
-                      duration: activity.duration,
-                      initiator: activity.initiator,
-                      location: activity.location,
-                      orgasms: activity.orgasms,
-                      partner: activity.partner,
-                      partnerBirthControl: activity.partnerBirthControl,
-                      partnerOrgasms: activity.partnerOrgasms,
-                      place: activity.place,
-                      practices: activity.practices,
-                      rating: activity.rating,
-                      notes: activity.notes,
-                      type: activity.type,
-                      mood: activity.mood,
-                      healthRecordId: record.metadata.id,
-                    );
-                    journal[journal.indexOf(activity)] = updatedActivity;
-                    journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
-                  },
-                ),
+            if (activity.type == ActivityType.sexualIntercourse) {
+              SexualActivityRecord record = SexualActivityRecord(
+                time: activity.date,
+                protectionUsed: _shared.isProtectionUsed(activity)
+                    ? Protection.protected
+                    : Protection.unprotected,
               );
+
+              if (activity.healthRecordId == null) {
+                requests.add(
+                  HealthConnectFactory.writeData(
+                    type: HealthConnectDataType.SexualActivity,
+                    data: [record],
+                  ).then(
+                    (value) {
+                      debugPrint(
+                        "$HealthConnectDataType.SexualActivity.name: $record",
+                      );
+                      Activity updatedActivity = Activity(
+                        id: activity.id,
+                        birthControl: activity.birthControl,
+                        date: activity.date,
+                        duration: activity.duration,
+                        initiator: activity.initiator,
+                        location: activity.location,
+                        orgasms: activity.orgasms,
+                        partner: activity.partner,
+                        partnerBirthControl: activity.partnerBirthControl,
+                        partnerOrgasms: activity.partnerOrgasms,
+                        place: activity.place,
+                        practices: activity.practices,
+                        rating: activity.rating,
+                        notes: activity.notes,
+                        type: activity.type,
+                        mood: activity.mood,
+                        healthRecordId: record.metadata.id,
+                      );
+                      journal[journal.indexOf(activity)] = updatedActivity;
+                      journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
+                    },
+                  ),
+                );
+              }
             }
           }
           if (requests.isNotEmpty) {
@@ -377,53 +379,55 @@ class HealthService {
             final requests = <Future>[];
             List<Activity> journal = [..._shared.activity];
             for (var activity in journal) {
-              if (activity.healthRecordId == null) {
-                final endDate =
-                    activity.date.add(Duration(minutes: activity.duration));
-                final harmonized = HKRCategory.CategoryHarmonized(
-                  0,
-                  'HKCategoryValue',
-                  'Not Applicable',
-                  {
-                    'HKSexualActivityProtectionUsed':
-                        _shared.isProtectionUsed(activity) ? 1 : 0,
-                    'HKWasUserEntered': 1,
-                  },
-                );
-                final sexualActivity = HKRCategory.Category(
-                  Uuid().v4(),
-                  CategoryType.sexualActivity.identifier,
-                  activity.date.millisecondsSinceEpoch,
-                  endDate.millisecondsSinceEpoch,
-                  null,
-                  sourceRevision,
-                  harmonized,
-                );
-                debugPrint('try to save: ${sexualActivity.map}');
-                requests.add(
-                    HKR.HealthKitReporter.save(sexualActivity).then((value) {
-                  Activity updatedActivity = Activity(
-                    id: activity.id,
-                    birthControl: activity.birthControl,
-                    date: activity.date,
-                    duration: activity.duration,
-                    initiator: activity.initiator,
-                    location: activity.location,
-                    orgasms: activity.orgasms,
-                    partner: activity.partner,
-                    partnerBirthControl: activity.partnerBirthControl,
-                    partnerOrgasms: activity.partnerOrgasms,
-                    place: activity.place,
-                    practices: activity.practices,
-                    rating: activity.rating,
-                    notes: activity.notes,
-                    type: activity.type,
-                    mood: activity.mood,
-                    healthRecordId: sexualActivity.uuid,
+              if (activity.type == ActivityType.sexualIntercourse) {
+                if (activity.healthRecordId == null) {
+                  final endDate =
+                      activity.date.add(Duration(minutes: activity.duration));
+                  final harmonized = HKRCategory.CategoryHarmonized(
+                    0,
+                    'HKCategoryValue',
+                    'Not Applicable',
+                    {
+                      'HKSexualActivityProtectionUsed':
+                          _shared.isProtectionUsed(activity) ? 1 : 0,
+                      'HKWasUserEntered': 1,
+                    },
                   );
-                  journal[journal.indexOf(activity)] = updatedActivity;
-                  journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
-                }));
+                  final sexualActivity = HKRCategory.Category(
+                    Uuid().v4(),
+                    CategoryType.sexualActivity.identifier,
+                    activity.date.millisecondsSinceEpoch,
+                    endDate.millisecondsSinceEpoch,
+                    null,
+                    sourceRevision,
+                    harmonized,
+                  );
+                  debugPrint('try to save: ${sexualActivity.map}');
+                  requests.add(
+                      HKR.HealthKitReporter.save(sexualActivity).then((value) {
+                    Activity updatedActivity = Activity(
+                      id: activity.id,
+                      birthControl: activity.birthControl,
+                      date: activity.date,
+                      duration: activity.duration,
+                      initiator: activity.initiator,
+                      location: activity.location,
+                      orgasms: activity.orgasms,
+                      partner: activity.partner,
+                      partnerBirthControl: activity.partnerBirthControl,
+                      partnerOrgasms: activity.partnerOrgasms,
+                      place: activity.place,
+                      practices: activity.practices,
+                      rating: activity.rating,
+                      notes: activity.notes,
+                      type: activity.type,
+                      mood: activity.mood,
+                      healthRecordId: sexualActivity.uuid,
+                    );
+                    journal[journal.indexOf(activity)] = updatedActivity;
+                    journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
+                  }));
+                }
               }
             }
             if (requests.isNotEmpty) {
@@ -444,31 +448,33 @@ class HealthService {
 
   Future<bool> deleteSexualActivityFromHealth(Activity activity) async {
     if (!kIsWeb) {
-      final endDate = activity.date.add(Duration(minutes: activity.duration));
-      if (Platform.isAndroid) {
-        return HealthConnectFactory.deleteRecordsByTime(
-          type: HealthConnectDataType.SexualActivity,
-          startTime: activity.date,
-          endTime: endDate,
-        ).then(
-          (value) {
+      if (activity.type == ActivityType.sexualIntercourse) {
+        final endDate = activity.date.add(Duration(minutes: activity.duration));
+        if (Platform.isAndroid) {
+          return HealthConnectFactory.deleteRecordsByTime(
+            type: HealthConnectDataType.SexualActivity,
+            startTime: activity.date,
+            endTime: endDate,
+          ).then(
+            (value) {
+              debugPrint(
+                "delete ${HealthConnectDataType.SexualActivity.name}: $value",
+              );
+              return value;
+            },
+          );
+        } else if (Platform.isIOS) {
+          Predicate predicate = Predicate(activity.date, endTime);
+          return HKR.HealthKitReporter.deleteObjects(
+            CategoryType.sexualActivity.identifier,
+            predicate,
+          ).then((value) {
             debugPrint(
-              "delete ${HealthConnectDataType.SexualActivity.name}: $value",
+              "delete ${CategoryType.sexualActivity.identifier}: $value",
             );
             return value;
-          },
-        );
-      } else if (Platform.isIOS) {
-        Predicate predicate = Predicate(activity.date, endTime);
-        return HKR.HealthKitReporter.deleteObjects(
-          CategoryType.sexualActivity.identifier,
-          predicate,
-        ).then((value) {
-          debugPrint(
-            "delete ${CategoryType.sexualActivity.identifier}: $value",
-          );
-          return value;
-        });
+          });
+        }
       }
     }
     return Future.value(false);
@@ -476,23 +482,25 @@ class HealthService {
 
   Future<dynamic> writeSexualActivityToHealth(Activity activity) async {
     if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        SexualActivityRecord record = SexualActivityRecord(
-          time: activity.date,
-          protectionUsed: _shared.isProtectionUsed(activity)
-              ? Protection.protected
-              : Protection.unprotected,
-        );
-        HealthConnectFactory.writeData(
-          type: HealthConnectDataType.SexualActivity,
-          data: [record],
-        ).then(
-          (value) {
-            debugPrint(
-              "$HealthConnectDataType.SexualActivity.name: $record",
-            );
-          },
-        );
+      if (activity.type == ActivityType.sexualIntercourse) {
+        if (Platform.isAndroid) {
+          SexualActivityRecord record = SexualActivityRecord(
+            time: activity.date,
+            protectionUsed: _shared.isProtectionUsed(activity)
+                ? Protection.protected
+                : Protection.unprotected,
+          );
+          HealthConnectFactory.writeData(
+            type: HealthConnectDataType.SexualActivity,
+            data: [record],
+          ).then(
+            (value) {
+              debugPrint(
+                "$HealthConnectDataType.SexualActivity.name: $record",
+              );
+            },
+          );
+        }
       }
     }
   }

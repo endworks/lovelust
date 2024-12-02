@@ -109,6 +109,7 @@ struct Activity: Decodable, Hashable {
     let type: String?
     let mood: String?
     let practices: [IdName]
+    let healthRecordId: String?
 }
 
 struct Partner: Decodable, Hashable {
@@ -244,8 +245,8 @@ struct LastActivityEntryView : View {
                }
            }
         }
+        .containerBackground(for: .widget) {}
         .privacySensitive()
-        .padding()
     }
     
     private var NoDataView: some View {
@@ -324,14 +325,15 @@ struct LastActivityEntryView : View {
                     .foregroundColor(.cyan)
                 Spacer()
              }
-         }
+        }
+        .containerBackground(for: .widget) {}
         .redacted(reason: .placeholder)
-        .padding()
         
     }
     
     private var InlineView: some View {
         Text("\(entry.widgetData!.safetyString.uppercased()) \(entry.widgetData!.dateString)")
+            .containerBackground(for: .widget) {}
             .font(.caption)
             .fontDesign(.rounded)
             .foregroundColor(.gray)
@@ -381,6 +383,7 @@ struct LastActivityEntryView : View {
                 }
             }
         }
+        .containerBackground(for: .widget) {}
     }
 
     var body: some View {
@@ -430,7 +433,8 @@ struct LastActivity_Previews: PreviewProvider {
         rating: 4,
         type: "SEXUAL_INTERCOURSE",
         mood: "HORNY",
-        practices: []
+        practices: [],
+        healthRecordId: nil
     )
     
     static var widgetData = ActivityWidgetData(

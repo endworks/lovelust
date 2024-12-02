@@ -5,12 +5,12 @@ import 'dart:ui';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl_standalone.dart';
 import 'package:lovelust/extensions/string_extension.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/activity_widget_data.dart';
 import 'package:lovelust/models/enum.dart';
@@ -393,17 +393,19 @@ class SharedService extends ChangeNotifier {
             'lastSexualIntercourse',
             jsonEncode(widgetData),
           ).then((value) {
-            Future.wait([
-              HomeWidget.updateWidget(
-                iOSName: "LastActivity",
-                androidName: 'LastActivityWidgetReceiver',
-                qualifiedAndroidName:
-                    'works.end.LoveLust.glance.LastActivityWidgetReceiver',
-              )
-            ]).then((value) => debugPrint("update widget data"));
+            HomeWidget.updateWidget(
+              iOSName: "LastActivity",
+              androidName: 'LastActivityWidgetReceiver',
+              qualifiedAndroidName:
+                  'works.end.LoveLust.glance.LastActivityWidgetReceiver',
+            ).then(
+              (value) => debugPrint("update LastActivity widget"),
+            );
             if (Platform.isIOS) {
               HomeWidget.updateWidget(
                 iOSName: "DaysSince",
+              ).then(
+                (value) => debugPrint("update DaysSince widget"),
               );
             }
           });
@@ -1594,6 +1596,7 @@ class SharedService extends ChangeNotifier {
     _activity = value;
     _storage.setActivity(value);
     notifyListeners();
+    updateWidgets();
   }
 
   List<Partner> get partners {
@@ -1604,6 +1607,7 @@ class SharedService extends ChangeNotifier {
     _partners = value;
     _storage.setPartners(value);
     notifyListeners();
+    updateWidgets();
   }
 
   bool get privacyMode {

@@ -108,6 +108,7 @@ struct Activity: Decodable, Hashable {
     let type: String?
     let mood: String?
     let practices: [IdName]
+    let healthRecordId: String?
 }
 
 struct Partner: Decodable, Hashable {
@@ -198,7 +199,6 @@ struct DaysSinceEntryView : View {
     
     private var WidgetView: some View {
         ZStack {
-            widgetBackground
             VStack(spacing: 0) {
                 Text(days.description)
                     .font(fontDays)
@@ -221,31 +221,34 @@ struct DaysSinceEntryView : View {
                 }
             }
         }
+        .containerBackground(for: .widget) {
+            widgetBackground
+        }
     }
     
     private var NoDataView: some View {
-        ZStack {
+        VStack(spacing: 0) {
+            Text("7")
+                .font(fontDays)
+                .fontWeight(.bold)
+                .fontDesign(.rounded)
+                .foregroundColor(widgetForeground)
+                .redacted(reason: .placeholder)
+            Text("days")
+                .font(fontTitle)
+                .fontDesign(.rounded)
+                .fontWeight(.semibold)
+                .textCase(.uppercase)
+                .foregroundColor(widgetForegroundTitle)
+            Text("without sex")
+                .font(fontSubtitle)
+                .fontDesign(.rounded)
+                .fontWeight(.semibold)
+                .textCase(.uppercase)
+                .foregroundColor(widgetForegroundSubtitle)
+        }
+        .containerBackground(for: .widget) {
             widgetBackground
-            VStack(spacing: 0) {
-                Text("7")
-                    .font(fontDays)
-                    .fontWeight(.bold)
-                    .fontDesign(.rounded)
-                    .foregroundColor(widgetForeground)
-                    .redacted(reason: .placeholder)
-                Text("days")
-                    .font(fontTitle)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .foregroundColor(widgetForegroundTitle)
-                Text("without sex")
-                    .font(fontSubtitle)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .foregroundColor(widgetForegroundSubtitle)
-            }
         }
     }
     
@@ -268,6 +271,7 @@ struct DaysSinceEntryView : View {
                     .textCase(.uppercase)
             }
         }
+        .containerBackground(for: .widget) {}
     }
     
     private var AccessoryNoDataView: some View {
@@ -290,6 +294,7 @@ struct DaysSinceEntryView : View {
             }
         }
         .redacted(reason: .placeholder)
+        .containerBackground(for: .widget) {}
     }
     
     private var InlineView: some View {
@@ -298,6 +303,7 @@ struct DaysSinceEntryView : View {
             .fontDesign(.rounded)
             .fontWeight(.semibold)
             .privacySensitive()
+            .containerBackground(for: .widget) {}
     }
     
     private var InlineNoDataView: some View {
@@ -306,6 +312,7 @@ struct DaysSinceEntryView : View {
             .fontDesign(.rounded)
             .fontWeight(.semibold)
             .redacted(reason: .placeholder)
+            .containerBackground(for: .widget) {}
     }
     
     var body: some View {
@@ -371,7 +378,8 @@ struct DaysSince: Widget {
             rating: 4,
             type: "SEXUAL_INTERCOURSE",
             mood: "HORNY",
-            practices: []
+            practices: [],
+            healthRecordId: nil
         )
         
         static var widgetData = ActivityWidgetData(

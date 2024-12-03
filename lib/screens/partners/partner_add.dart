@@ -18,6 +18,12 @@ class _PartnerAddPageState extends State<PartnerAddPage> {
     name: '',
     meetingDate: DateTime.now(),
     notes: null,
+    birthDay: null,
+    instagram: null,
+    onlyfans: null,
+    phone: null,
+    snapchat: null,
+    x: null,
   );
 
   @override

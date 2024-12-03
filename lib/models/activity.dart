@@ -25,24 +25,24 @@ class Activity {
 
   const Activity({
     required this.id,
-    this.partner,
-    this.birthControl,
-    this.partnerBirthControl,
+    required this.partner,
+    required this.birthControl,
+    required this.partnerBirthControl,
     required this.date,
-    this.location,
-    this.notes,
+    required this.location,
+    required this.notes,
     required this.duration,
     required this.orgasms,
     required this.partnerOrgasms,
-    this.place,
-    this.initiator,
+    required this.place,
+    required this.initiator,
     required this.rating,
-    this.type,
-    this.practices,
-    this.mood,
-    this.ejaculation,
+    required this.type,
+    required this.practices,
+    required this.mood,
+    required this.ejaculation,
     required this.watchedPorn,
-    this.healthRecordId,
+    required this.healthRecordId,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -85,7 +85,7 @@ class Activity {
       ejaculation: SharedService.getEjaculationByValue(
         json['ejaculation'],
       ),
-      watchedPorn: json['watched_porn'],
+      watchedPorn: json['watched_porn'] ?? false,
       healthRecordId: json['health_record_id'],
     );
   }

@@ -21,13 +21,13 @@ class Partner {
     required this.gender,
     required this.name,
     required this.meetingDate,
-    this.birthDay,
-    this.notes,
-    this.phone,
-    this.instagram,
-    this.x,
-    this.snapchat,
-    this.onlyfans,
+    required this.birthDay,
+    required this.notes,
+    required this.phone,
+    required this.instagram,
+    required this.x,
+    required this.snapchat,
+    required this.onlyfans,
   });
 
   factory Partner.fromJson(Map<String, dynamic> json) {

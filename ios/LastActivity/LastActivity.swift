@@ -28,7 +28,7 @@ struct Provider: IntentTimelineProvider {
         
         if(sharedDefaults != nil) {
             do {
-                let sharedWidgetData = sharedDefaults?.string(forKey: "lastSexualIntercourse")
+                let sharedWidgetData = sharedDefaults?.string(forKey: "lastActivity")
                 
                 if (sharedWidgetData != nil) {
                     let formatter = DateFormatter()
@@ -76,20 +76,11 @@ struct Provider: IntentTimelineProvider {
 }
 
 struct ActivityWidgetData: Decodable, Hashable {
-    let activity: Activity
+    let soloActivity: Activity
+    let sexualActivity: Activity
     let partner: Partner?
     let safety: String
-    let partnerString: String
-    let safetyString: String
-    let dateString: String
-    let dayString: String
-    let weekdayString: String
-    let placeString: String
-    let contraceptiveString: String
-    let partnerContraceptiveString: String
-    let moodString: String
     let moodEmoji: String
-    let feelingsStrings: [String]
 }
 
 struct Activity: Decodable, Hashable {
@@ -417,41 +408,61 @@ struct LastActivity: Widget {
 }
 
 struct LastActivity_Previews: PreviewProvider {
-    static var lastSexualIntercourse = Activity(
+    static var partner = Partner(
+        id: "11545aaf-0b8f-41a5-8b53-7464f2e931aa",
+        sex: "F",
+        gender: "F",
+        name: "Flavia",
+        meetingDate: Date(),
+        notes: nil
+    )
+
+    static var lastSexualActivity = Activity(
         id: "1d934cb5-efe0-41d6-a0bc-6d6c6f567843",
-        partner: nil,
+        partner: "11545aaf-0b8f-41a5-8b53-7464f2e931aa",
         birthControl: "CONDOM",
         partnerBirthControl: nil,
         date: Date(),
-        location: nil,
-        notes: nil,
+        location: "",
+        notes: "",
         duration: 10,
         orgasms: 1,
         partnerOrgasms: 1,
         place: "BEDROOM",
         initiator: "ME",
-        rating: 4,
+        rating: 5,
         type: "SEXUAL_INTERCOURSE",
+        mood: "HORNY",
+        practices: [],
+        healthRecordId: nil
+    )
+
+    static var lastSoloActivity = Activity(
+        id: "e29341fa-e09b-444b-a42a-69f9d7c21682",
+        partner: nil,
+        birthControl: nil,
+        partnerBirthControl: nil,
+        date: Date(),
+        location: "",
+        notes: "",
+        duration: 20,
+        orgasms: 1,
+        partnerOrgasms: 0,
+        place: "BEDROOM",
+        initiator: "ME",
+        rating: 4,
+        type: "MASTURBATION",
         mood: "HORNY",
         practices: [],
         healthRecordId: nil
     )
     
     static var widgetData = ActivityWidgetData(
-        activity: lastSexualIntercourse,
-        partner: nil,
+        sexualActivity: lastSexualActivity,
+        partner: partner,
         safety: "SAFE",
-        partnerString: "Flavia",
-        safetyString: "Protected sex",
-        dateString: "a month ago",
-        dayString: "1",
-        weekdayString: "Saturday",
-        placeString: "Bedroom",
-        contraceptiveString: "Condom",
-        partnerContraceptiveString: "No contraceptive",
-        moodString: "Horny",
+        soloActivity: lastSexualActivity,
         moodEmoji: "🥵",
-        feelingsStrings: ["Safe", "Adventurous"]
     )
     
     static var previews: some View {

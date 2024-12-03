@@ -117,4 +117,5 @@ dependencies {
     implementation "androidx.glance:glance:$glance_version"
     implementation "androidx.glance:glance-appwidget:$glance_version"
     implementation "androidx.glance:glance-material3:$glance_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0"
 }

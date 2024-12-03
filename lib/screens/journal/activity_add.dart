@@ -33,6 +33,8 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
       type: ActivityType.sexualIntercourse,
       practices: null,
       mood: null,
+      watchedPorn: false,
+      ejaculation: null,
       healthRecordId: null,
     );
   }

@@ -7,7 +7,13 @@ class Partner {
   final Gender gender;
   final String name;
   final DateTime meetingDate;
+  final DateTime? birthDay;
   final String? notes;
+  final String? phone;
+  final String? instagram;
+  final String? x;
+  final String? snapchat;
+  final String? onlyfans;
 
   Partner({
     required this.id,
@@ -15,7 +21,13 @@ class Partner {
     required this.gender,
     required this.name,
     required this.meetingDate,
-    required this.notes,
+    this.birthDay,
+    this.notes,
+    this.phone,
+    this.instagram,
+    this.x,
+    this.snapchat,
+    this.onlyfans,
   });
 
   factory Partner.fromJson(Map<String, dynamic> json) {
@@ -25,7 +37,13 @@ class Partner {
       gender: SharedService.getGenderByValue(json['gender']),
       name: json['name'],
       meetingDate: DateTime.parse(json['meeting_date']),
+      birthDay: DateTime.parse(json['birth_day']),
       notes: SharedService.emptyStringToNull(json['notes']),
+      phone: SharedService.emptyStringToNull(json['phone']),
+      instagram: SharedService.emptyStringToNull(json['instagram']),
+      x: SharedService.emptyStringToNull(json['x']),
+      snapchat: SharedService.emptyStringToNull(json['snapchat']),
+      onlyfans: SharedService.emptyStringToNull(json['onlyfans']),
     );
   }
 
@@ -35,7 +53,13 @@ class Partner {
         'gender': SharedService.setValueByGender(gender),
         'name': name.toString(),
         'meeting_date': meetingDate.toIso8601String(),
+        'birth_day': birthDay?.toIso8601String(),
         'notes': notes ?? '',
+        'phone': phone ?? '',
+        'instagram': instagram ?? '',
+        'x': x ?? '',
+        'snapchat': snapchat ?? '',
+        'onlyfans': onlyfans ?? '',
       };
 
   @override

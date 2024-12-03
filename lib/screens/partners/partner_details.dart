@@ -8,7 +8,9 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/blocks/activity_block.dart';
+import 'package:lovelust/widgets/blocks/date_block.dart';
 import 'package:lovelust/widgets/blocks/notes_block.dart';
+import 'package:lovelust/widgets/blocks/socials_block.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/partner_avatar.dart';
 
@@ -119,6 +121,29 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
     List<Widget> list = [
       PartnerAvatar(partner: _partner),
     ];
+    if (_partner.phone != null ||
+        _partner.instagram != null ||
+        _partner.x != null ||
+        _partner.snapchat != null ||
+        _partner.onlyfans != null) {
+      list.add(
+        SocialsBlock(
+          phone: _partner.phone,
+          instagram: _partner.instagram,
+          x: _partner.x,
+          snapchat: _partner.snapchat,
+          onlyfans: _partner.onlyfans,
+        ),
+      );
+    }
+    if (_partner.birthDay != null) {
+      list.add(
+        DateBlock(
+          date: _partner.birthDay!,
+          label: AppLocalizations.of(context)!.birthDay,
+        ),
+      );
+    }
     if (_partner.notes != null && _partner.notes!.isNotEmpty) {
       list.add(
         NotesBlock(

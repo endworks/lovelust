@@ -90,10 +90,6 @@ ThemeData generateTheme(
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
-    textTheme: (darkMode
-            ? Typography.material2021().white
-            : Typography.material2021().black)
-        .merge(defaultTextTheme),
   );
 
   ThemeData defaultTheme = ThemeData(

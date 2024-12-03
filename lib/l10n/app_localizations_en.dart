@@ -204,7 +204,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get partnerOrgasms => 'Partner orgasms';
 
   @override
-  String get meetingDate => 'Meeting date';
+  String get meetingDate => 'First encounter date';
+
+  @override
+  String get birthDay => 'Birthday';
 
   @override
   String get gender => 'Gender';
@@ -262,6 +265,54 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mood => 'Mood';
+
+  @override
+  String get ejaculation => 'Ejaculation';
+
+  @override
+  String get ejaculationAss => 'Inside the ass';
+
+  @override
+  String get ejaculationBack => 'On the back';
+
+  @override
+  String get ejaculationButtocks => 'On the buttocks';
+
+  @override
+  String get ejaculationChest => 'On the chest';
+
+  @override
+  String get ejaculationFace => 'On the face';
+
+  @override
+  String get ejaculationMouth => 'Inside the mouth';
+
+  @override
+  String get ejaculationVagina => 'Inside the vagina';
+
+  @override
+  String get noEjaculation => 'No ejaculation';
+
+  @override
+  String get watchedPorn => 'I watched porn';
+
+  @override
+  String get socials => 'Social networks';
+
+  @override
+  String get phone => 'Phone';
+
+  @override
+  String get instagram => 'Instagram';
+
+  @override
+  String get x => 'X / Twitter';
+
+  @override
+  String get snapchat => 'Snapchat';
+
+  @override
+  String get onlyfans => 'OnlyFans';
 
   @override
   String get noSexualActivity => 'No sexual activity...';

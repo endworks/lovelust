@@ -19,26 +19,30 @@ class Activity {
   final ActivityType? type;
   final List<Practice>? practices;
   final Mood? mood;
+  final Ejaculation? ejaculation;
+  final bool? watchedPorn;
   final String? healthRecordId;
 
   const Activity({
     required this.id,
-    required this.partner,
-    required this.birthControl,
-    required this.partnerBirthControl,
+    this.partner,
+    this.birthControl,
+    this.partnerBirthControl,
     required this.date,
-    required this.location,
-    required this.notes,
+    this.location,
+    this.notes,
     required this.duration,
     required this.orgasms,
     required this.partnerOrgasms,
-    required this.place,
-    required this.initiator,
+    this.place,
+    this.initiator,
     required this.rating,
-    required this.type,
-    required this.practices,
-    required this.mood,
-    required this.healthRecordId,
+    this.type,
+    this.practices,
+    this.mood,
+    this.ejaculation,
+    required this.watchedPorn,
+    this.healthRecordId,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -78,6 +82,10 @@ class Activity {
       mood: SharedService.getMoodByValue(
         json['mood'],
       ),
+      ejaculation: SharedService.getEjaculationByValue(
+        json['ejaculation'],
+      ),
+      watchedPorn: json['watched_porn'],
       healthRecordId: json['health_record_id'],
     );
   }
@@ -117,6 +125,10 @@ class Activity {
         'mood': SharedService.setValueByMood(
           mood,
         ),
+        'ejaculation': SharedService.setValueByEjaculation(
+          ejaculation,
+        ),
+        'watched_porn': watchedPorn ?? false,
         'health_record_id': healthRecordId,
       };
 }

@@ -416,8 +416,14 @@ abstract class AppLocalizations {
   /// No description provided for @meetingDate.
   ///
   /// In en, this message translates to:
-  /// **'Meeting date'**
+  /// **'First encounter date'**
   String get meetingDate;
+
+  /// No description provided for @birthDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday'**
+  String get birthDay;
 
   /// No description provided for @gender.
   ///
@@ -532,6 +538,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mood'**
   String get mood;
+
+  /// No description provided for @ejaculation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ejaculation'**
+  String get ejaculation;
+
+  /// No description provided for @ejaculationAss.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside the ass'**
+  String get ejaculationAss;
+
+  /// No description provided for @ejaculationBack.
+  ///
+  /// In en, this message translates to:
+  /// **'On the back'**
+  String get ejaculationBack;
+
+  /// No description provided for @ejaculationButtocks.
+  ///
+  /// In en, this message translates to:
+  /// **'On the buttocks'**
+  String get ejaculationButtocks;
+
+  /// No description provided for @ejaculationChest.
+  ///
+  /// In en, this message translates to:
+  /// **'On the chest'**
+  String get ejaculationChest;
+
+  /// No description provided for @ejaculationFace.
+  ///
+  /// In en, this message translates to:
+  /// **'On the face'**
+  String get ejaculationFace;
+
+  /// No description provided for @ejaculationMouth.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside the mouth'**
+  String get ejaculationMouth;
+
+  /// No description provided for @ejaculationVagina.
+  ///
+  /// In en, this message translates to:
+  /// **'Inside the vagina'**
+  String get ejaculationVagina;
+
+  /// No description provided for @noEjaculation.
+  ///
+  /// In en, this message translates to:
+  /// **'No ejaculation'**
+  String get noEjaculation;
+
+  /// No description provided for @watchedPorn.
+  ///
+  /// In en, this message translates to:
+  /// **'I watched porn'**
+  String get watchedPorn;
+
+  /// No description provided for @socials.
+  ///
+  /// In en, this message translates to:
+  /// **'Social networks'**
+  String get socials;
+
+  /// No description provided for @phone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phone;
+
+  /// No description provided for @instagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get instagram;
+
+  /// No description provided for @x.
+  ///
+  /// In en, this message translates to:
+  /// **'X / Twitter'**
+  String get x;
+
+  /// No description provided for @snapchat.
+  ///
+  /// In en, this message translates to:
+  /// **'Snapchat'**
+  String get snapchat;
+
+  /// No description provided for @onlyfans.
+  ///
+  /// In en, this message translates to:
+  /// **'OnlyFans'**
+  String get onlyfans;
 
   /// No description provided for @noSexualActivity.
   ///

@@ -39,6 +39,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   List<Practice> _practices = [];
   Initiator? _initiator;
   Mood? _mood;
+  Ejaculation? _ejaculation;
+  bool? _watchedPorn;
   String? _healthRecordId;
 
   bool _new = true;
@@ -58,6 +60,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     _practices = widget.activity.practices ?? [];
     _initiator = widget.activity.initiator;
     _mood = widget.activity.mood;
+    _ejaculation = widget.activity.ejaculation;
+    _watchedPorn = widget.activity.watchedPorn;
     _healthRecordId = widget.activity.healthRecordId;
 
     _dateController.value = TextEditingValue(
@@ -106,6 +110,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         _practices.isNotEmpty ||
         _initiator != null ||
         _mood != null ||
+        _ejaculation != null ||
         _ratingController.value.text != '0' ||
         _durationController.value.text != '0' ||
         _orgasmsController.value.text != '0' ||
@@ -208,6 +213,25 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     return list;
   }
 
+  List<DropdownMenuItem<Ejaculation?>> get ejaculationDropdownMenuEntries {
+    List<DropdownMenuItem<Ejaculation?>> list = Ejaculation.values
+        .map(
+          (e) => DropdownMenuItem<Ejaculation?>(
+            value: e,
+            child: Text(SharedService.getEjaculationTranslation(e)),
+          ),
+        )
+        .toList();
+    list.insert(
+      0,
+      DropdownMenuItem(
+        value: null,
+        child: Text(AppLocalizations.of(context)!.noEjaculation),
+      ),
+    );
+    return list;
+  }
+
   void save() {
     if (valid) {
       Activity activity = Activity(
@@ -227,6 +251,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           notes: _notesController.value.text,
           type: _type,
           mood: _mood,
+          ejaculation: _ejaculation,
+          watchedPorn: _watchedPorn,
           healthRecordId: _healthRecordId);
 
       List<Activity> journal = [..._shared.activity];
@@ -390,6 +416,24 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           ),
         ],
       );
+    } else {
+      fields.addAll(
+        [
+          SwitchListTile(
+            title: Text(AppLocalizations.of(context)!.watchedPorn),
+            value: _watchedPorn ?? false,
+            onChanged: (bool value) {
+              setState(() {
+                _watchedPorn = value;
+              });
+            },
+            secondary: Icon(
+              Icons.ondemand_video,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+        ],
+      );
     }
 
     if (!_moreFields) {
@@ -413,6 +457,31 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField(
+                      value: _ejaculation,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.ejaculation,
+                      ),
+                      items: ejaculationDropdownMenuEntries,
+                      onChanged: (value) {
+                        setState(() {
+                          _ejaculation = value;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              leading: Icon(
+                Icons.water_drop,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            ListTile(
+              title: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField(
                       value: _initiator,
                       decoration: InputDecoration(
                         labelText: AppLocalizations.of(context)!.initiator,
@@ -428,7 +497,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 ],
               ),
               leading: Icon(
-                Icons.start,
+                Icons.rocket_launch,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
@@ -649,7 +718,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialEntryMode: DatePickerEntryMode.calendarOnly,
+        initialEntryMode: DatePickerEntryMode.calendar,
         initialDate: _date ?? DateTime.now(),
         firstDate: DateTime(2000),
         lastDate: DateTime.now());
@@ -672,7 +741,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialEntryMode: TimePickerEntryMode.dialOnly,
+      initialEntryMode: TimePickerEntryMode.dial,
       initialTime: TimeOfDay.fromDateTime(_date!),
     );
     if (picked != null) {

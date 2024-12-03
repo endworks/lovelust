@@ -6,4 +6,8 @@
     <string name="app_name_health">Salud</string>
     <string name="app_name_journal">Diario</string>
     <string name="app_name_partners">Parejas</string>
+    <string name="app_widget_last_activity_title">Última actividad</string>
+    <string name="app_widget_last_activity_description">Datos de la última actividad sexual</string>
+    <string name="app_widget_days_since_title">Días sin sexo</string>
+    <string name="app_widget_days_since_description">Número de días desde la ultima actividad sexual</string>
 </resources>

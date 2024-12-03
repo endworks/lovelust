@@ -37,6 +37,16 @@ enum ActivityType {
   sexualIntercourse,
 }
 
+enum Ejaculation {
+  vagina,
+  ass,
+  mouth,
+  back,
+  chest,
+  face,
+  buttocks,
+}
+
 enum Initiator {
   me,
   partner,

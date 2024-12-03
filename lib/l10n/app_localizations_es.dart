@@ -206,7 +206,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get partnerOrgasms => 'Orgasmos de pareja';
 
   @override
-  String get meetingDate => 'Fecha de encuentro';
+  String get meetingDate => 'Fecha del primer encuentro';
+
+  @override
+  String get birthDay => 'Cumpleaños';
 
   @override
   String get gender => 'Género';
@@ -264,6 +267,54 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get mood => 'Estado de ánimo';
+
+  @override
+  String get ejaculation => 'Eyaculación';
+
+  @override
+  String get ejaculationAss => 'Dentro del culo';
+
+  @override
+  String get ejaculationBack => 'En la espalda';
+
+  @override
+  String get ejaculationButtocks => 'En las nalgas';
+
+  @override
+  String get ejaculationChest => 'En el pecho';
+
+  @override
+  String get ejaculationFace => 'En la cara';
+
+  @override
+  String get ejaculationMouth => 'Dentro de la boca';
+
+  @override
+  String get ejaculationVagina => 'Dentro de la vagina';
+
+  @override
+  String get noEjaculation => 'Sin eyaculación';
+
+  @override
+  String get watchedPorn => 'He visto porno';
+
+  @override
+  String get socials => 'Redes sociales';
+
+  @override
+  String get phone => 'Teléfono';
+
+  @override
+  String get instagram => 'Instagram';
+
+  @override
+  String get x => 'X / Twitter';
+
+  @override
+  String get snapchat => 'Snapchat';
+
+  @override
+  String get onlyfans => 'OnlyFans';
 
   @override
   String get noSexualActivity => 'Sin actividad sexual...';

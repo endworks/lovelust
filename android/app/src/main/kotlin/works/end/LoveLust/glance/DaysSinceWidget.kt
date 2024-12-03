@@ -1,5 +1,12 @@
 package works.end.LoveLust.glance
 
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+
+import kotlinx.serialization.json.Json
+
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -24,7 +31,9 @@ import androidx.glance.text.Text
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
 
-class LastActivityWidget : GlanceAppWidget() {
+import ActivityWidgetData
+
+class DaysSinceWidget : GlanceAppWidget() {
 
   override val stateDefinition: GlanceStateDefinition<*>?
     get() = HomeWidgetGlanceStateDefinition()
@@ -38,12 +47,32 @@ class LastActivityWidget : GlanceAppWidget() {
   @Composable
   private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState) {
     val prefs = currentState.preferences
-    val lastActivity = prefs.getString("lastActivity", "{}")
+    val jsonString = prefs.getString("lastActivity", "{}")
+    var days: Int = 0
+
+    try {
+      if (jsonString != null) {
+        val json = Json { ignoreUnknownKeys = true }
+        val widgetData = json.decodeFromString<ActivityWidgetData>(jsonString)
+        if (widgetData.sexualActivity != null) {
+            val formatter = DateTimeFormatter.ISO_DATE_TIME
+            val sexualActivityDate = LocalDateTime.parse(widgetData.sexualActivity.date, formatter)
+            val today = LocalDateTime.now(ZoneId.of("UTC"))
+            days = ChronoUnit.DAYS.between(sexualActivityDate, today).toInt()
+        }
+      }
+    } catch (e: Exception) {
+      Box(modifier = GlanceModifier.background(Color.Red).padding(16.dp)) {
+        Column {
+          Text("${e.message}")
+        }
+      }
+    }
+    
     Box(modifier = GlanceModifier.background(Color.White).padding(16.dp)) {
-      Column() {
-        Text(
-            lastActivity.toString()
-        )
+      Column {
+        Text("Days since activity")
+        Text("$days days")
       }
     }
   }

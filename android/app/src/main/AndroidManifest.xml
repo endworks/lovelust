@@ -515,7 +515,9 @@
             android:name="com.solusibejo.flutter_dynamic_icon_plus.FlutterDynamicIconPlusService"
             android:stopWithTask="false"/>
 
-        <receiver android:name=".glance.LastActivityWidgetReceiver"
+        <receiver
+            android:name=".glance.LastActivityWidgetReceiver"
+            android:label="@string/app_widget_last_activity_title"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -523,6 +525,18 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/last_activity_info" />
+        </receiver>
+
+        <receiver
+            android:name=".glance.DaysSinceWidgetReceiver"
+            android:label="@string/app_widget_days_since_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/days_since_info" />
         </receiver>
 
         <!-- Don't delete the meta-data below.

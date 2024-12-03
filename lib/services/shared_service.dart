@@ -341,58 +341,46 @@ class SharedService extends ChangeNotifier {
       BuildContext context = _navigator.navigatorKey.currentContext!;
 
       try {
-        Activity? lastSexualIntercourse = activity.firstWhereOrNull(
-            (element) => element.type == ActivityType.sexualIntercourse);
-        if (lastSexualIntercourse != null) {
+        Activity? lastSexualActivity = activity.firstWhereOrNull(
+          (element) => element.type == ActivityType.sexualIntercourse,
+        );
+        Activity? lastSoloActivity = activity.firstWhereOrNull(
+          (element) => element.type == ActivityType.masturbation,
+        );
+        if (lastSexualActivity != null || lastSoloActivity != null) {
           Partner? partner;
-          if (lastSexualIntercourse.partner != null) {
-            partner = getPartnerById(lastSexualIntercourse.partner!);
-          }
-          ActivitySafety safety = calculateSafety(lastSexualIntercourse);
-          String safetyValue;
-          String safetyString;
-          switch (safety) {
-            case ActivitySafety.safe:
-              safetyValue = "SAFE";
-              safetyString = AppLocalizations.of(context)!.safeSex;
-              break;
-            case ActivitySafety.unsafe:
-              safetyValue = "UNSAFE";
-              safetyString = AppLocalizations.of(context)!.unsafeSex;
-              break;
-            default:
-              safetyValue = "PARTIALLY_UNSAFE";
-              safetyString = AppLocalizations.of(context)!.partiallyUnsafeSex;
+          String safety = "PARTIALLY_UNSAFE";
+          if (lastSexualActivity != null) {
+            if (lastSexualActivity.partner != null) {
+              partner = getPartnerById(lastSexualActivity.partner!);
+            }
+
+            switch (calculateSafety(lastSexualActivity)) {
+              case ActivitySafety.safe:
+                safety = "SAFE";
+                break;
+              case ActivitySafety.unsafe:
+                safety = "UNSAFE";
+                break;
+              default:
+                safety = "PARTIALLY_UNSAFE";
+            }
           }
 
           ActivityWidgetData widgetData = ActivityWidgetData(
-            activity: lastSexualIntercourse,
+            soloActivity: lastSoloActivity,
+            sexualActivity: lastSexualActivity,
             partner: partner,
-            safety: safetyValue,
-            partnerString: partner != null
-                ? partner.name
-                : AppLocalizations.of(context)!.unknownPartner,
-            safetyString: safetyString,
-            dateString: RelativeTime(context, numeric: true)
-                .format(lastSexualIntercourse.date),
-            dayString:
-                DateFormat(DateFormat.DAY).format(lastSexualIntercourse.date),
-            weekdayString: DateFormat(DateFormat.WEEKDAY)
-                .format(lastSexualIntercourse.date),
-            placeString: getPlaceTranslation(lastSexualIntercourse.place),
-            contraceptiveString:
-                getContraceptiveTranslation(lastSexualIntercourse.birthControl),
-            partnerContraceptiveString: getContraceptiveTranslation(
-                lastSexualIntercourse.partnerBirthControl),
-            moodString: getMoodTranslation(lastSexualIntercourse.mood),
-            moodEmoji: getMoodEmoji(lastSexualIntercourse.mood),
-            feelingsStrings: [],
+            safety: safety,
+            moodEmoji: lastSexualActivity != null
+                ? getMoodEmoji(lastSexualActivity.mood)
+                : null,
           );
 
           debugPrint(jsonEncode(widgetData));
 
           HomeWidget.saveWidgetData<String>(
-            'lastSexualIntercourse',
+            'lastActivity',
             jsonEncode(widgetData),
           ).then((value) {
             HomeWidget.updateWidget(
@@ -414,7 +402,7 @@ class SharedService extends ChangeNotifier {
         }
       } catch (e) {
         HomeWidget.saveWidgetData(
-          'lastSexualIntercourse',
+          'lastActivity',
           null,
         ).then((value) {
           HomeWidget.updateWidget(
@@ -1024,6 +1012,44 @@ class SharedService extends ChangeNotifier {
     return null;
   }
 
+  static Ejaculation? getEjaculationByValue(String? value) {
+    if (value == 'ASS') {
+      return Ejaculation.ass;
+    } else if (value == 'BACK') {
+      return Ejaculation.back;
+    } else if (value == 'BUTTOCKS') {
+      return Ejaculation.buttocks;
+    } else if (value == 'CHEST') {
+      return Ejaculation.chest;
+    } else if (value == 'FACE') {
+      return Ejaculation.face;
+    } else if (value == 'MOUCH') {
+      return Ejaculation.mouth;
+    } else if (value == 'VAGINA') {
+      return Ejaculation.vagina;
+    }
+    return null;
+  }
+
+  static String? setValueByEjaculation(Ejaculation? value) {
+    if (value == Ejaculation.ass) {
+      return 'ASS';
+    } else if (value == Ejaculation.back) {
+      return 'BACK';
+    } else if (value == Ejaculation.buttocks) {
+      return 'BUTTOCKS';
+    } else if (value == Ejaculation.chest) {
+      return 'CHEST';
+    } else if (value == Ejaculation.face) {
+      return 'FACE';
+    } else if (value == Ejaculation.mouth) {
+      return 'MOUCH';
+    } else if (value == Ejaculation.vagina) {
+      return 'VAGINA';
+    }
+    return null;
+  }
+
   static AppIcon? getAppIconByValue(String? value) {
     if (value == 'Beta') {
       return AppIcon.beta;
@@ -1349,6 +1375,29 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.other;
     }
     return AppLocalizations.of(context)!.noInitiator;
+  }
+
+  static String getEjaculationTranslation(Ejaculation? value) {
+    GetIt locator = GetIt.instance;
+    BuildContext context =
+        locator<NavigationService>().navigatorKey.currentContext!;
+
+    if (value == Ejaculation.ass) {
+      return AppLocalizations.of(context)!.ejaculationAss;
+    } else if (value == Ejaculation.back) {
+      return AppLocalizations.of(context)!.ejaculationBack;
+    } else if (value == Ejaculation.buttocks) {
+      return AppLocalizations.of(context)!.ejaculationButtocks;
+    } else if (value == Ejaculation.chest) {
+      return AppLocalizations.of(context)!.ejaculationChest;
+    } else if (value == Ejaculation.face) {
+      return AppLocalizations.of(context)!.ejaculationFace;
+    } else if (value == Ejaculation.mouth) {
+      return AppLocalizations.of(context)!.ejaculationMouth;
+    } else if (value == Ejaculation.vagina) {
+      return AppLocalizations.of(context)!.ejaculationVagina;
+    }
+    return AppLocalizations.of(context)!.noEjaculation;
   }
 
   static String getPracticeTranslation(Practice? value) {

@@ -27,14 +27,23 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
   late Gender _gender;
   late BiologicalSex _sex;
   final _notesController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _instagramController = TextEditingController();
+  final _xController = TextEditingController();
+  final _snapchatController = TextEditingController();
+  final _onlyfansController = TextEditingController();
+
   bool _new = true;
-  DateTime? _meetingDate = DateTime.now();
+  bool _moreFields = false;
+  DateTime _meetingDate = DateTime.now();
+  DateTime? _birthDay;
 
   @override
   void initState() {
     super.initState();
     _new = widget.partner.id != null && widget.partner.id!.isEmpty;
     _meetingDate = widget.partner.meetingDate;
+    _birthDay = widget.partner.birthDay;
     _nameController.value = TextEditingValue(
       text: widget.partner.name,
       selection: TextSelection.fromPosition(
@@ -49,7 +58,46 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         TextPosition(offset: (widget.partner.notes ?? '').length),
       ),
     );
+    _phoneController.value = TextEditingValue(
+      text: widget.partner.phone ?? '',
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: (widget.partner.phone ?? '').length),
+      ),
+    );
+    _instagramController.value = TextEditingValue(
+      text: widget.partner.instagram ?? '',
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: (widget.partner.instagram ?? '').length),
+      ),
+    );
+    _xController.value = TextEditingValue(
+      text: widget.partner.x ?? '',
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: (widget.partner.x ?? '').length),
+      ),
+    );
+    _snapchatController.value = TextEditingValue(
+      text: widget.partner.snapchat ?? '',
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: (widget.partner.snapchat ?? '').length),
+      ),
+    );
+    _onlyfansController.value = TextEditingValue(
+      text: widget.partner.onlyfans ?? '',
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: (widget.partner.onlyfans ?? '').length),
+      ),
+    );
     _nameController.addListener(() => setState(() {}));
+
+    if (_birthDay != null ||
+        _phoneController.value.text.isNotEmpty ||
+        _instagramController.value.text.isNotEmpty ||
+        _xController.value.text.isNotEmpty ||
+        _snapchatController.value.text.isNotEmpty ||
+        _onlyfansController.value.text.isNotEmpty) {
+      _moreFields = true;
+    }
   }
 
   @override
@@ -68,8 +116,24 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         sex: _sex,
         gender: _gender,
         name: _nameController.value.text,
-        meetingDate: widget.partner.meetingDate,
-        notes: _notesController.value.text,
+        meetingDate: _meetingDate,
+        notes: _notesController.value.text.isNotEmpty
+            ? _notesController.value.text
+            : null,
+        birthDay: _birthDay,
+        phone: _phoneController.value.text.isNotEmpty
+            ? _phoneController.value.text
+            : null,
+        instagram: _instagramController.value.text.isNotEmpty
+            ? _instagramController.value.text
+            : null,
+        x: _xController.value.text.isNotEmpty ? _xController.value.text : null,
+        snapchat: _snapchatController.value.text.isNotEmpty
+            ? _snapchatController.value.text
+            : null,
+        onlyfans: _onlyfansController.value.text.isNotEmpty
+            ? _onlyfansController.value.text
+            : null,
       );
       if (!_shared.isLoggedIn) {
         List<Partner> partners = [..._shared.partners];
@@ -199,11 +263,12 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialEntryMode: DatePickerEntryMode.calendarOnly,
-        initialDate: _meetingDate ?? DateTime.now(),
-        firstDate: DateTime(2015, 8),
-        lastDate: DateTime.now());
+      context: context,
+      initialEntryMode: DatePickerEntryMode.calendar,
+      initialDate: _meetingDate,
+      firstDate: DateTime(1900, 0),
+      lastDate: DateTime.now(),
+    );
     if (picked != null && picked != _meetingDate) {
       setState(() {
         _meetingDate = picked;
@@ -211,8 +276,24 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     }
   }
 
+  Future<void> _selectBirthDay(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialEntryMode: DatePickerEntryMode.calendar,
+      initialDate: _birthDay ?? DateTime.now(),
+      firstDate: DateTime(1900, 0),
+      lastDate: DateTime.now(),
+      barrierDismissible: true,
+    );
+    if (picked != null && picked != _birthDay) {
+      setState(() {
+        _birthDay = picked;
+      });
+    }
+  }
+
   List<Widget> get fields {
-    return [
+    List<Widget> fields = [
       ListTile(
         title: Row(
           mainAxisSize: MainAxisSize.min,
@@ -288,13 +369,13 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         onTap: () => _selectDate(context),
       ),
       ListTile(
-        subtitle: Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: TextField(
                 controller: _notesController,
-                maxLines: 1,
+                maxLines: 4,
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)!.notes,
                 ),
@@ -308,6 +389,135 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
         ),
       ),
     ];
+    if (!_moreFields) {
+      fields.add(
+        TextButton(
+          onPressed: () => setState(() => _moreFields = !_moreFields),
+          child: Text(_moreFields
+              ? AppLocalizations.of(context)!.lessFields
+              : AppLocalizations.of(context)!.moreFields),
+        ),
+      );
+    }
+
+    if (_moreFields) {
+      fields.addAll(
+        [
+          ListTile(
+            title: Text(AppLocalizations.of(context)!.birthDay),
+            leading: Icon(
+              Icons.perm_contact_calendar,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            trailing: _birthDay != null
+                ? Text(DateFormat.yMMMEd().format(_birthDay!))
+                : null,
+            onTap: () => _selectBirthDay(context),
+          ),
+          ListTile(
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _phoneController,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.phone,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.phone,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          ListTile(
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _instagramController,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.instagram,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.person_search,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          ListTile(
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _xController,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.x,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.person_search,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          ListTile(
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _snapchatController,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.snapchat,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.person_search,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          ListTile(
+            subtitle: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _onlyfansController,
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.onlyfans,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            leading: Icon(
+              Icons.person_search,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+        ],
+      );
+    }
+    return fields;
   }
 
   @override

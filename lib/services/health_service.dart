@@ -146,6 +146,8 @@ class HealthService {
                       notes: activity.notes,
                       type: activity.type,
                       mood: activity.mood,
+                      watchedPorn: activity.watchedPorn,
+                      ejaculation: activity.ejaculation,
                       healthRecordId: record.metadata.id,
                     );
                   }
@@ -169,6 +171,8 @@ class HealthService {
                     type: ActivityType.sexualIntercourse,
                     practices: null,
                     mood: null,
+                    watchedPorn: null,
+                    ejaculation: null,
                     healthRecordId: record.metadata.id,
                   );
                 }
@@ -249,6 +253,8 @@ class HealthService {
                   notes: activity.notes,
                   type: activity.type,
                   mood: activity.mood,
+                  watchedPorn: activity.watchedPorn,
+                  ejaculation: activity.ejaculation,
                   healthRecordId: record.uuid,
                 );
               }
@@ -270,6 +276,8 @@ class HealthService {
                 type: ActivityType.sexualIntercourse,
                 practices: null,
                 mood: null,
+                watchedPorn: null,
+                ejaculation: null,
                 healthRecordId: record.uuid,
               );
             }
@@ -335,6 +343,8 @@ class HealthService {
                         notes: activity.notes,
                         type: activity.type,
                         mood: activity.mood,
+                        watchedPorn: activity.watchedPorn,
+                        ejaculation: activity.ejaculation,
                         healthRecordId: record.metadata.id,
                       );
                       journal[journal.indexOf(activity)] = updatedActivity;
@@ -422,6 +432,8 @@ class HealthService {
                       notes: activity.notes,
                       type: activity.type,
                       mood: activity.mood,
+                      watchedPorn: activity.watchedPorn,
+                      ejaculation: activity.ejaculation,
                       healthRecordId: sexualActivity.uuid,
                     );
                     journal[journal.indexOf(activity)] = updatedActivity;

@@ -389,6 +389,8 @@ class SharedService extends ChangeNotifier {
             feelingsStrings: [],
           );
 
+          debugPrint(jsonEncode(widgetData));
+
           HomeWidget.saveWidgetData<String>(
             'lastSexualIntercourse',
             jsonEncode(widgetData),
@@ -415,14 +417,19 @@ class SharedService extends ChangeNotifier {
           'lastSexualIntercourse',
           null,
         ).then((value) {
-          Future.wait([
-            HomeWidget.updateWidget(
-              iOSName: "LastActivity",
-            ),
+          HomeWidget.updateWidget(
+            iOSName: "LastActivity",
+          ).then(
+            (value) => debugPrint("delete LastActivity widget"),
+          );
+
+          if (Platform.isIOS) {
             HomeWidget.updateWidget(
               iOSName: "DaysSince",
-            )
-          ]).then((value) => debugPrint("delete widget data"));
+            ).then(
+              (value) => debugPrint("delete DaysSince widget"),
+            );
+          }
         });
       }
     }
@@ -1044,6 +1051,10 @@ class SharedService extends ChangeNotifier {
       return AppIcon.health3;
     } else if (value == 'Journal') {
       return AppIcon.journal;
+    } else if (value == 'Journal2') {
+      return AppIcon.journal2;
+    } else if (value == 'Partners') {
+      return AppIcon.partners;
     } else if (value == 'Neon') {
       return AppIcon.neon;
     } else if (value == 'Pink') {
@@ -1068,6 +1079,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.deepPurple;
     } else if (value == 'Red') {
       return AppIcon.red;
+    } else if (value == 'Orange') {
+      return AppIcon.orange;
     } else if (value == 'Sexapill') {
       return AppIcon.sexapill;
     } else if (value == 'SexapillWhite') {
@@ -1115,6 +1128,10 @@ class SharedService extends ChangeNotifier {
       return 'Health3';
     } else if (value == AppIcon.journal) {
       return 'Journal';
+    } else if (value == AppIcon.journal2) {
+      return 'Journal2';
+    } else if (value == AppIcon.partners) {
+      return 'Partners';
     } else if (value == AppIcon.neon) {
       return 'Neon';
     } else if (value == AppIcon.pink) {
@@ -1139,6 +1156,8 @@ class SharedService extends ChangeNotifier {
       return 'DeepPurple';
     } else if (value == AppIcon.red) {
       return 'Red';
+    } else if (value == AppIcon.orange) {
+      return 'Orange';
     } else if (value == AppIcon.sexapill) {
       return 'Sexapill';
     } else if (value == AppIcon.sexapillWhite) {
@@ -1474,6 +1493,10 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.health3;
     } else if (value == AppIcon.journal) {
       return AppLocalizations.of(context)!.journal;
+    } else if (value == AppIcon.journal2) {
+      return AppLocalizations.of(context)!.journal2;
+    } else if (value == AppIcon.partners) {
+      return AppLocalizations.of(context)!.partners;
     } else if (value == AppIcon.neon) {
       return AppLocalizations.of(context)!.neon;
     } else if (value == AppIcon.pink) {
@@ -1498,6 +1521,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.deepPurple;
     } else if (value == AppIcon.red) {
       return AppLocalizations.of(context)!.lipstick;
+    } else if (value == AppIcon.orange) {
+      return AppLocalizations.of(context)!.orange;
     } else if (value == AppIcon.sexapill) {
       return AppLocalizations.of(context)!.sexapill;
     } else if (value == AppIcon.sexapillWhite) {

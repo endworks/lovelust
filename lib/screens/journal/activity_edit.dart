@@ -448,19 +448,17 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               spacing: 4,
               runSpacing: 4,
               children: [
-                ...[...Mood.values, null]
-                    .map(
-                      (e) => FilterChip(
-                        label: Text(SharedService.getMoodTranslation(e)),
-                        /*avatar: Text(
+                ...[...Mood.values, null].map(
+                  (e) => FilterChip(
+                    label: Text(SharedService.getMoodTranslation(e)),
+                    /*avatar: Text(
                         SharedService.getMoodEmoji(e),
                       ),*/
-                        selected: isMoodSelected(e),
-                        onSelected: (value) => selectMood(e, value),
-                        showCheckmark: false,
-                      ),
-                    )
-                    .toList()
+                    selected: isMoodSelected(e),
+                    onSelected: (value) => selectMood(e, value),
+                    showCheckmark: false,
+                  ),
+                )
               ],
             ),
             titleAlignment: ListTileTitleAlignment.top,
@@ -475,16 +473,14 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               spacing: 4,
               runSpacing: 4,
               children: [
-                ...Practice.values
-                    .map(
-                      (e) => FilterChip(
-                        label: Text(SharedService.getPracticeTranslation(e)),
-                        selected: isPracticeSelected(e),
-                        onSelected: (value) => togglePractice(e, value),
-                        showCheckmark: false,
-                      ),
-                    )
-                    .toList()
+                ...Practice.values.map(
+                  (e) => FilterChip(
+                    label: Text(SharedService.getPracticeTranslation(e)),
+                    selected: isPracticeSelected(e),
+                    onSelected: (value) => togglePractice(e, value),
+                    showCheckmark: false,
+                  ),
+                )
               ],
             ),
             titleAlignment: ListTileTitleAlignment.top,

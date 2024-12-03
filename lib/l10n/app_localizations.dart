@@ -791,6 +791,12 @@ abstract class AppLocalizations {
   /// **'Purple Deep'**
   String get deepPurple;
 
+  /// No description provided for @orange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get orange;
+
   /// No description provided for @neon.
   ///
   /// In en, this message translates to:
@@ -874,6 +880,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Health III'**
   String get health3;
+
+  /// No description provided for @journal2.
+  ///
+  /// In en, this message translates to:
+  /// **'Journal II'**
+  String get journal2;
 
   /// No description provided for @bold.
   ///

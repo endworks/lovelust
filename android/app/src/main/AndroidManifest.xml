@@ -220,6 +220,19 @@
 
         <activity-alias
             android:enabled="false"
+            android:name=".Orange"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_orange"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
             android:name=".Glow"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_glow"
@@ -357,6 +370,20 @@
             android:name=".Journal"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_journal"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:label="@string/app_name_journal"
+            android:name=".Journal2"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_journal2"
             android:exported="true">
 
             <intent-filter>

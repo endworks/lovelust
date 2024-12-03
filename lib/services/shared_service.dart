@@ -24,7 +24,6 @@ import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/statistics/dynamic_statistic.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:relative_time/relative_time.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SharedService extends ChangeNotifier {
@@ -338,7 +337,6 @@ class SharedService extends ChangeNotifier {
       if (Platform.isIOS) {
         HomeWidget.setAppGroupId('group.LoveLust');
       }
-      BuildContext context = _navigator.navigatorKey.currentContext!;
 
       try {
         Activity? lastSexualActivity = activity.firstWhereOrNull(
@@ -391,13 +389,14 @@ class SharedService extends ChangeNotifier {
             ).then(
               (value) => debugPrint("update LastActivity widget"),
             );
-            if (Platform.isIOS) {
-              HomeWidget.updateWidget(
-                iOSName: "DaysSince",
-              ).then(
-                (value) => debugPrint("update DaysSince widget"),
-              );
-            }
+            HomeWidget.updateWidget(
+              iOSName: "DaysSince",
+              androidName: 'DaysSinceWidgetReceiver',
+              qualifiedAndroidName:
+                  'works.end.LoveLust.glance.DaysSinceWidgetReceiver',
+            ).then(
+              (value) => debugPrint("update DaysSince widget"),
+            );
           });
         }
       } catch (e) {
@@ -411,13 +410,11 @@ class SharedService extends ChangeNotifier {
             (value) => debugPrint("delete LastActivity widget"),
           );
 
-          if (Platform.isIOS) {
-            HomeWidget.updateWidget(
-              iOSName: "DaysSince",
-            ).then(
-              (value) => debugPrint("delete DaysSince widget"),
-            );
-          }
+          HomeWidget.updateWidget(
+            iOSName: "DaysSince",
+          ).then(
+            (value) => debugPrint("delete DaysSince widget"),
+          );
         });
       }
     }

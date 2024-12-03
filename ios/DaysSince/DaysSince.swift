@@ -144,7 +144,7 @@ struct DaysSinceEntryView : View {
                 .current
                 .dateComponents(
                     [.day],
-                    from: entry.widgetData!.activity.date,
+                    from: entry.widgetData!.sexualActivity.date,
                     to: Date()
                 ).day!
         } else {
@@ -338,8 +338,8 @@ struct DaysSinceEntryView : View {
 
 struct DaysSince: Widget {
     let kind: String = "DaysSince"
-    let displayName:LocalizedStringKey = "daysSince.displayName"
-    let description:LocalizedStringKey = "daysSince.description"
+    let displayName: LocalizedStringKey = "daysSince.displayName"
+    let description: LocalizedStringKey = "daysSince.description"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
@@ -403,11 +403,11 @@ struct DaysSince: Widget {
         )
         
         static var widgetData = ActivityWidgetData(
+            soloActivity: lastSexualActivity,
             sexualActivity: lastSexualActivity,
             partner: partner,
             safety: "SAFE",
-            soloActivity: lastSexualActivity,
-            moodEmoji: "🥵",
+            moodEmoji: "🥵"
         )
         
         static var previews: some View {

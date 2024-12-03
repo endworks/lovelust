@@ -131,19 +131,37 @@ struct LastActivityEntryView : View {
     @Environment(\.widgetFamily) var widgetFamily
     
     private var WidgetView: some View {
-        var safetyColor: Color = .primary
+        let moodString = "mood.\(entry.widgetData!.sexualActivity.mood ?? "NO_MOOD")"
+        let placeString = "place.\(entry.widgetData!.sexualActivity.place ?? "NO_PLACE")"
+        let safetyString = "place.\(entry.widgetData!.safety)"
+        let contraceptiveString =  "contraceptive.\(entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")"
+        let partnerContraceptiveString =  "contraceptive.\(entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")"
 
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+        dateFormatter.dateFormat = "EEEE"
+        let weekdayString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+        dateFormatter.dateFormat = "d"
+        let dayString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+
+        var safetyColor: Color = .primary
         if entry.widgetData!.safety == "UNSAFE" {
             safetyColor = .red
         } else if entry.widgetData!.safety == "PARTIALLY_UNSAFE" {
             safetyColor = .orange
         }
-
         
-       return VStack {
+        var partnerString = String(localized: "partner.UNKNOWN")
+        if entry.widgetData!.partner != nil {
+            partnerString = entry.widgetData!.partner!.name
+        }
+        
+        
+        return VStack {
             HStack(alignment: .top, spacing: 0) {
                 VStack(alignment: .leading, spacing: -2) {
-                    Text(entry.widgetData!.weekdayString)
+                    Text(weekdayString)
                         .font(.caption2)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
@@ -151,7 +169,7 @@ struct LastActivityEntryView : View {
                         .foregroundColor(.red)
                         .lineLimit(1)
                         .truncationMode(.tail)
-                    Text(entry.widgetData!.dayString)
+                    Text(dayString)
                         .font(.largeTitle)
                         .fontWeight(.light)
                         .lineLimit(1)
@@ -160,13 +178,13 @@ struct LastActivityEntryView : View {
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    Text(entry.widgetData!.partnerString).font(.headline)
+                    Text(partnerString).font(.headline)
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .privacySensitive()
 
-                    if (widgetFamily != .systemSmall && entry.widgetData!.activity.mood != nil) {
-                        Text(entry.widgetData!.moodString)
+                    if (widgetFamily != .systemSmall && entry.widgetData!.sexualActivity.mood != nil) {
+                        Text(moodString)
                             .font(.caption2)
                             .fontDesign(.rounded)
                             .fontWeight(.semibold)
@@ -180,15 +198,15 @@ struct LastActivityEntryView : View {
             }
             Spacer()
             HStack(spacing: 4) {
-                if widgetFamily != .systemSmall && entry.widgetData!.activity.place != nil {
-                    Text(entry.widgetData!.placeString)
+                if widgetFamily != .systemSmall && entry.widgetData!.sexualActivity.place != nil {
+                    Text(placeString)
                         .font(.caption)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
                         .foregroundColor(.purple)
                 }
-                Text(entry.widgetData!.dateString)
+                Text(dateString)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .font(.caption)
@@ -199,21 +217,21 @@ struct LastActivityEntryView : View {
             }
             HStack(alignment: .bottom, spacing: 0) {
                 if widgetFamily == .systemSmall {
-                    Text(entry.widgetData!.safetyString)
+                    Text(safetyString)
                         .font(.headline)
                         .foregroundColor(safetyColor)
                 } else {
-                    Text(entry.widgetData!.safetyString)
+                    Text(safetyString)
                         .font(.title)
                         .foregroundColor(safetyColor)
                     
                 }
                 Spacer()
             }
-           if entry.widgetData?.activity.birthControl != nil || entry.widgetData?.activity.partnerBirthControl != nil {
+           if entry.widgetData?.sexualActivity.birthControl != nil || entry.widgetData?.sexualActivity.partnerBirthControl != nil {
                HStack(alignment: .top) {
-                   if entry.widgetData?.activity.birthControl != nil {
-                       Text(entry.widgetData!.contraceptiveString)
+                   if entry.widgetData?.sexualActivity.birthControl != nil {
+                       Text(contraceptiveString)
                            .lineLimit(1)
                            .truncationMode(.tail)
                            .font(.caption)
@@ -222,8 +240,8 @@ struct LastActivityEntryView : View {
                            .textCase(.uppercase)
                            .foregroundColor(.cyan)
                    }
-                   if entry.widgetData?.activity.partnerBirthControl != nil && entry.widgetData?.activity.partnerBirthControl != entry.widgetData?.activity.birthControl{
-                       Text(entry.widgetData!.partnerContraceptiveString)
+                   if entry.widgetData?.sexualActivity.partnerBirthControl != nil && entry.widgetData?.sexualActivity.partnerBirthControl != entry.widgetData?.sexualActivity.birthControl{
+                       Text(partnerContraceptiveString)
                            .lineLimit(1)
                            .truncationMode(.tail)
                            .font(.caption)
@@ -241,7 +259,7 @@ struct LastActivityEntryView : View {
     }
     
     private var NoDataView: some View {
-        return VStack {
+        VStack {
              HStack(alignment: .top, spacing: 0) {
                  VStack(alignment: .leading, spacing: -2) {
                      Text("Saturday")
@@ -306,7 +324,7 @@ struct LastActivityEntryView : View {
                  Spacer()
              }
              HStack(alignment: .top) {
-                Text(entry.widgetData!.contraceptiveString)
+                Text("Condom")
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .font(.caption)
@@ -323,7 +341,12 @@ struct LastActivityEntryView : View {
     }
     
     private var InlineView: some View {
-        Text("\(entry.widgetData!.safetyString.uppercased()) \(entry.widgetData!.dateString)")
+        let safetyString = String(localized: "safety.\(entry.widgetData!.safety)")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+        
+        return Text("\(safetyString.uppercased()) \(dateString)")
             .containerBackground(for: .widget) {}
             .font(.caption)
             .fontDesign(.rounded)
@@ -331,9 +354,16 @@ struct LastActivityEntryView : View {
     }
     
     private var RectangularView: some View {
-        VStack() {
+        let safetyString = String(localized: "safety.\(entry.widgetData!.safety)")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+        let contraceptiveString = String(localized: "contraceptive.\(entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")")
+        let partnerContraceptiveString = String(localized: "contraceptive.\(entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")")
+        
+        return VStack() {
             HStack{
-                Text(entry.widgetData!.dateString)
+                Text(dateString)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .font(.caption)
@@ -343,17 +373,17 @@ struct LastActivityEntryView : View {
                 Spacer()
             }
             HStack{
-                Text(entry.widgetData!.safetyString)
+                Text(safetyString)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .font(.headline)
                     .foregroundColor(.primary)
                 Spacer()
             }
-            if entry.widgetData?.activity.birthControl != nil || entry.widgetData?.activity.partnerBirthControl != nil {
+            if entry.widgetData?.sexualActivity.birthControl != nil || entry.widgetData?.sexualActivity.partnerBirthControl != nil {
                 HStack(alignment: .top) {
-                    if entry.widgetData?.activity.birthControl != nil {
-                        Text(entry.widgetData!.contraceptiveString)
+                    if entry.widgetData?.sexualActivity.birthControl != nil {
+                        Text(contraceptiveString)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .font(.caption)
@@ -361,8 +391,8 @@ struct LastActivityEntryView : View {
                             .fontWeight(.semibold)
                             .textCase(.uppercase)
                     }
-                    if entry.widgetData?.activity.partnerBirthControl != nil && entry.widgetData?.activity.partnerBirthControl != entry.widgetData?.activity.birthControl{
-                        Text(entry.widgetData!.partnerContraceptiveString)
+                    if entry.widgetData?.sexualActivity.partnerBirthControl != nil && entry.widgetData?.sexualActivity.partnerBirthControl != entry.widgetData?.sexualActivity.birthControl{
+                        Text(partnerContraceptiveString)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .font(.caption)
@@ -458,11 +488,11 @@ struct LastActivity_Previews: PreviewProvider {
     )
     
     static var widgetData = ActivityWidgetData(
+        soloActivity: lastSexualActivity,
         sexualActivity: lastSexualActivity,
         partner: partner,
         safety: "SAFE",
-        soloActivity: lastSexualActivity,
-        moodEmoji: "🥵",
+        moodEmoji: "🥵"
     )
     
     static var previews: some View {

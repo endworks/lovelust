@@ -1,6 +1,48 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@"
+          }
+        }
+      }
+    },
+    "1" : {
+
+    },
+    "a month ago" : {
+
+    },
+    "Bedroom" : {
+
+    },
+    "Condom" : {
+
+    },
+    "contraceptive.%@" : {
+
+    },
+    "contraceptive.CONDOM" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condom"
+          }
+        }
+      }
+    },
+    "Flavia" : {
+
+    },
+    "Horny" : {
+
+    },
     "lastActivity.description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -31,6 +73,87 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Última actividad"
+          }
+        }
+      }
+    },
+    "mood.%@" : {
+
+    },
+    "partner.UNKNOWN" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown"
+          }
+        }
+      }
+    },
+    "place.%@" : {
+
+    },
+    "Protected sex" : {
+
+    },
+    "safety.%@" : {
+
+    },
+    "safety.PARTIALLY_UNSAFE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partly safe"
+          }
+        }
+      }
+    },
+    "safety.SAFE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Safe"
+          }
+        }
+      }
+    },
+    "safety.UNSAFE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unsafe"
+          }
+        }
+      }
+    },
+    "Saturday" : {
+
+    },
+    "type.MASTURBATION" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Masturbation"
+          }
+        }
+      }
+    },
+    "type.SEXUAL_INTERCOURSE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sexual activity"
           }
         }
       }

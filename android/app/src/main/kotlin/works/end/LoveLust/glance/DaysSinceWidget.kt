@@ -50,7 +50,7 @@ class DaysSinceWidget : GlanceAppWidget() {
     val jsonString = prefs.getString("lastActivity", "{}")
     var days: Int = 0
 
-    try {
+    /*try {
       if (jsonString != null) {
         val json = Json { ignoreUnknownKeys = true }
         val widgetData = json.decodeFromString<ActivityWidgetData>(jsonString)
@@ -67,12 +67,13 @@ class DaysSinceWidget : GlanceAppWidget() {
           Text("${e.message}")
         }
       }
-    }
+    }*/
     
     Box(modifier = GlanceModifier.background(Color.White).padding(16.dp)) {
       Column {
-        Text("Days since activity")
-        Text("$days days")
+        Text("$days")
+        Text("Days")
+        Text("Without sex")
       }
     }
   }

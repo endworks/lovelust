@@ -113,7 +113,7 @@ dependencies {
     implementation "com.android.billingclient:billing:$billing_version"
     implementation "com.android.billingclient:billing-ktx:$billing_version"
     implementation "androidx.health.connect:connect-client:$healthconnect_version"
-    // implementation "com.google.android.gms:play-services-ads:$play_services_ads"
+    implementation "com.google.android.gms:play-services-ads:$play_services_ads"
     implementation "androidx.glance:glance:$glance_version"
     implementation "androidx.glance:glance-appwidget:$glance_version"
     implementation "androidx.glance:glance-material3:$glance_version"

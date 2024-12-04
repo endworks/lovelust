@@ -364,7 +364,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           color: Theme.of(context).colorScheme.secondary,
         ),
         trailing: _meetingDate != null
-            ? Text(DateFormat.yMMMEd().format(_meetingDate!))
+            ? Text(DateFormat.yMMMEd().format(_meetingDate))
             : null,
         onTap: () => _selectDate(context),
       ),

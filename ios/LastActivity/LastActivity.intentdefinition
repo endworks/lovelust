@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>INEnumDisplayName</key>
-			<string>Type</string>
+			<string>ACTIVITY_TYPE</string>
 			<key>INEnumDisplayNameID</key>
 			<string>CTLEMX</string>
 			<key>INEnumGeneratesHeader</key>
@@ -19,7 +19,7 @@
 			<array>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>type.SELECT</string>
+					<string>SELECT</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>nfe1Me</string>
 					<key>INEnumValueName</key>
@@ -27,7 +27,7 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>type.SEXUAL_INTERCOURSE</string>
+					<string>SEXUAL_INTERCOURSE</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>nBgGVy</string>
 					<key>INEnumValueIndex</key>
@@ -37,7 +37,7 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>type.MASTURBATION</string>
+					<string>MASTURBATION</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>oSQEoV</string>
 					<key>INEnumValueIndex</key>

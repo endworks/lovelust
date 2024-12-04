@@ -50,7 +50,7 @@ struct Provider: IntentTimelineProvider {
                         if let date = formatter.date(from: dateStr) {
                             return date
                         }
-                        throw DateError.invalidDate
+                        return Date()
                     })
                     
                     widgetData = try decoder.decode(ActivityWidgetData.self, from: sharedWidgetData!.data(using: .utf8)!)
@@ -60,6 +60,8 @@ struct Provider: IntentTimelineProvider {
             } catch {
                 print(error)
             }
+        } else {
+            print("empty sharedWidgetData")
         }
 
         // Generate a timeline consisting of five entries an hour apart, starting from the current date.
@@ -81,6 +83,7 @@ struct ActivityWidgetData: Decodable, Hashable {
     let partner: Partner?
     let safety: String
     let moodEmoji: String
+    let sensitiveMode: Bool
 }
 
 struct Activity: Decodable, Hashable {
@@ -99,7 +102,9 @@ struct Activity: Decodable, Hashable {
     let rating: Int
     let type: String?
     let mood: String?
-    let practices: [IdName]
+    let ejaculation: String?
+    let practices: [IdName]?
+    let watchedPorn: Bool?
     let healthRecordId: String?
 }
 
@@ -109,7 +114,13 @@ struct Partner: Decodable, Hashable {
     let gender: String
     let name: String
     let meetingDate: Date
+    let birthDay: Date?
     let notes: String?
+    let phone: String?
+    let instagram: String?
+    let x: String?
+    let snapchat: String?
+    let onlyfans: String?
 }
 
 struct IdName: Decodable, Hashable {
@@ -131,11 +142,11 @@ struct LastActivityEntryView : View {
     @Environment(\.widgetFamily) var widgetFamily
     
     private var WidgetView: some View {
-        let moodString = "mood.\(entry.widgetData!.sexualActivity.mood ?? "NO_MOOD")"
-        let placeString = "place.\(entry.widgetData!.sexualActivity.place ?? "NO_PLACE")"
-        let safetyString = "place.\(entry.widgetData!.safety)"
-        let contraceptiveString =  "contraceptive.\(entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")"
-        let partnerContraceptiveString =  "contraceptive.\(entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")"
+        let moodString = LocalizedStringKey(entry.widgetData!.sexualActivity.mood ?? "NO_MOOD")
+        let placeString = LocalizedStringKey(entry.widgetData!.sexualActivity.place ?? "NO_PLACE")
+        let safetyString = LocalizedStringKey(entry.widgetData!.safety)
+        let contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")
+        let partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -152,7 +163,7 @@ struct LastActivityEntryView : View {
             safetyColor = .orange
         }
         
-        var partnerString = String(localized: "partner.UNKNOWN")
+        var partnerString = String(localized: "UNKNOWN")
         if entry.widgetData!.partner != nil {
             partnerString = entry.widgetData!.partner!.name
         }
@@ -182,6 +193,8 @@ struct LastActivityEntryView : View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .privacySensitive()
+                        .redacted(reason: .privacy)
+                        .redacted(reason: entry.widgetData!.sensitiveMode ? .placeholder : [])
 
                     if (widgetFamily != .systemSmall && entry.widgetData!.sexualActivity.mood != nil) {
                         Text(moodString)
@@ -341,25 +354,34 @@ struct LastActivityEntryView : View {
     }
     
     private var InlineView: some View {
-        let safetyString = String(localized: "safety.\(entry.widgetData!.safety)")
+        let safetyString = LocalizedStringKey(entry.widgetData!.safety)
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
         
-        return Text("\(safetyString.uppercased()) \(dateString)")
+        return Text("\(safetyString) \(dateString)")
             .containerBackground(for: .widget) {}
             .font(.caption)
             .fontDesign(.rounded)
             .foregroundColor(.gray)
     }
     
+    private var InlineNoDataView: some View {
+       Text("SAFE 3 Nov 2024")
+            .containerBackground(for: .widget) {}
+            .font(.caption)
+            .fontDesign(.rounded)
+            .foregroundColor(.gray)
+            .redacted(reason: .placeholder)
+    }
+    
     private var RectangularView: some View {
-        let safetyString = String(localized: "safety.\(entry.widgetData!.safety)")
+        let safetyString = LocalizedStringKey(entry.widgetData!.safety)
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
-        let contraceptiveString = String(localized: "contraceptive.\(entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")")
-        let partnerContraceptiveString = String(localized: "contraceptive.\(entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")")
+        let contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")
+        let partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")
         
         return VStack() {
             HStack{
@@ -406,14 +428,48 @@ struct LastActivityEntryView : View {
         }
         .containerBackground(for: .widget) {}
     }
+    
+    private var RectangularNoDataView: some View {
+        return VStack() {
+            HStack{
+                Text("3 Nov 2024")
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.caption)
+                    .fontDesign(.rounded)
+                    .textCase(.uppercase)
+                    .foregroundColor(.gray)
+                    .redacted(reason: .placeholder)
+                Spacer()
+            }
+            HStack{
+                Text("SAFE")
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                    .redacted(reason: .placeholder)
+                Spacer()
+            }
+        }
+        .containerBackground(for: .widget) {}
+    }
 
     var body: some View {
-        if(widgetFamily == .accessoryInline) {
-            InlineView
-        } else if(widgetFamily == .accessoryRectangular) {
-            RectangularView
+        if (widgetFamily == .accessoryInline) {
+            if (entry.widgetData != nil) {
+                InlineView
+            } else {
+                InlineNoDataView
+            }
+        } else if (widgetFamily == .accessoryRectangular) {
+            if (entry.widgetData != nil) {
+                RectangularView
+            } else {
+                RectangularNoDataView
+            }
         } else {
-            if(entry.widgetData != nil) {
+            if (entry.widgetData != nil) {
                 WidgetView
             } else {
                 NoDataView
@@ -424,8 +480,8 @@ struct LastActivityEntryView : View {
 
 struct LastActivity: Widget {
     let kind: String = "LastActivity"
-    let displayName:LocalizedStringKey = "lastActivity.displayName"
-    let description:LocalizedStringKey = "lastActivity.description"
+    let displayName: LocalizedStringKey = "lastActivity.displayName"
+    let description: LocalizedStringKey = "lastActivity.description"
 
     var body: some WidgetConfiguration {
         IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
@@ -444,7 +500,13 @@ struct LastActivity_Previews: PreviewProvider {
         gender: "F",
         name: "Flavia",
         meetingDate: Date(),
-        notes: nil
+        birthDay: Date(),
+        notes: nil,
+        phone: nil,
+        instagram: nil,
+        x: nil,
+        snapchat: nil,
+        onlyfans: nil
     )
 
     static var lastSexualActivity = Activity(
@@ -463,7 +525,9 @@ struct LastActivity_Previews: PreviewProvider {
         rating: 5,
         type: "SEXUAL_INTERCOURSE",
         mood: "HORNY",
+        ejaculation: "IN_THE_ASS",
         practices: [],
+        watchedPorn: false,
         healthRecordId: nil
     )
 
@@ -483,7 +547,9 @@ struct LastActivity_Previews: PreviewProvider {
         rating: 4,
         type: "MASTURBATION",
         mood: "HORNY",
+        ejaculation: "IN_THE_ASS",
         practices: [],
+        watchedPorn: false,
         healthRecordId: nil
     )
     
@@ -492,7 +558,8 @@ struct LastActivity_Previews: PreviewProvider {
         sexualActivity: lastSexualActivity,
         partner: partner,
         safety: "SAFE",
-        moodEmoji: "🥵"
+        moodEmoji: "🥵",
+        sensitiveMode: false
     )
     
     static var previews: some View {

@@ -42,11 +42,16 @@ class StorageServiceLocal extends StorageService {
   @override
   Future<List<Activity>> getActivity() async {
     debugPrint('getActivity');
-    final persisted = await _storage.read(key: 'activity');
-    if (persisted != null) {
-      return jsonDecode(persisted)
-          .map<Activity>((map) => Activity.fromJson(map))
-          .toList();
+    try {
+      final persisted = await _storage.read(key: 'activity');
+      if (persisted != null) {
+        return jsonDecode(persisted)
+            .map<Activity>((map) => Activity.fromJson(map))
+            .toList();
+      }
+    } catch (e) {
+      debugPrint('getActivity exception: ${e.toString()}');
+      return [];
     }
     return [];
   }
@@ -60,11 +65,16 @@ class StorageServiceLocal extends StorageService {
   @override
   Future<List<Partner>> getPartners() async {
     debugPrint('getPartners');
-    final persisted = await _storage.read(key: 'partners');
-    if (persisted != null) {
-      return jsonDecode(persisted)
-          .map<Partner>((map) => Partner.fromJson(map))
-          .toList();
+    try {
+      final persisted = await _storage.read(key: 'partners');
+      if (persisted != null) {
+        return jsonDecode(persisted)
+            .map<Partner>((map) => Partner.fromJson(map))
+            .toList();
+      }
+    } catch (e) {
+      debugPrint('getPartners exception: ${e.toString()}');
+      return [];
     }
     return [];
   }

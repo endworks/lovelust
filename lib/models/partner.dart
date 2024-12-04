@@ -37,13 +37,14 @@ class Partner {
       gender: SharedService.getGenderByValue(json['gender']),
       name: json['name'],
       meetingDate: DateTime.parse(json['meeting_date']),
-      birthDay: DateTime.parse(json['birth_day']),
-      notes: SharedService.emptyStringToNull(json['notes']),
-      phone: SharedService.emptyStringToNull(json['phone']),
-      instagram: SharedService.emptyStringToNull(json['instagram']),
-      x: SharedService.emptyStringToNull(json['x']),
-      snapchat: SharedService.emptyStringToNull(json['snapchat']),
-      onlyfans: SharedService.emptyStringToNull(json['onlyfans']),
+      birthDay:
+          json['birth_day'] != null ? DateTime.parse(json['birth_day']) : null,
+      notes: SharedService.emptyStringToNull(json['notes'] ?? ''),
+      phone: SharedService.emptyStringToNull(json['phone'] ?? ''),
+      instagram: SharedService.emptyStringToNull(json['instagram'] ?? ''),
+      x: SharedService.emptyStringToNull(json['x'] ?? ''),
+      snapchat: SharedService.emptyStringToNull(json['snapchat'] ?? ''),
+      onlyfans: SharedService.emptyStringToNull(json['onlyfans'] ?? ''),
     );
   }
 

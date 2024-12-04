@@ -373,9 +373,8 @@ class SharedService extends ChangeNotifier {
             moodEmoji: lastSexualActivity != null
                 ? getMoodEmoji(lastSexualActivity.mood)
                 : null,
+            sensitiveMode: _settings.sensitiveMode,
           );
-
-          debugPrint(jsonEncode(widgetData));
 
           HomeWidget.saveWidgetData<String>(
             'lastActivity',
@@ -406,12 +405,18 @@ class SharedService extends ChangeNotifier {
         ).then((value) {
           HomeWidget.updateWidget(
             iOSName: "LastActivity",
+            androidName: 'LastActivityWidgetReceiver',
+            qualifiedAndroidName:
+                'works.end.LoveLust.glance.LastActivityWidgetReceiver',
           ).then(
             (value) => debugPrint("delete LastActivity widget"),
           );
 
           HomeWidget.updateWidget(
             iOSName: "DaysSince",
+            androidName: 'DaysSinceWidgetReceiver',
+            qualifiedAndroidName:
+                'works.end.LoveLust.glance.DaysSinceWidgetReceiver',
           ).then(
             (value) => debugPrint("delete DaysSince widget"),
           );

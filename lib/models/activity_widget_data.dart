@@ -7,6 +7,7 @@ class ActivityWidgetData {
   final Partner? partner;
   final String? safety;
   final String? moodEmoji;
+  final bool sensitiveMode;
 
   const ActivityWidgetData({
     required this.soloActivity,
@@ -14,6 +15,7 @@ class ActivityWidgetData {
     required this.partner,
     required this.safety,
     required this.moodEmoji,
+    required this.sensitiveMode,
   });
 
   factory ActivityWidgetData.fromJson(Map<String, dynamic> json) {
@@ -23,6 +25,7 @@ class ActivityWidgetData {
       partner: json['partner'],
       safety: json['safety'],
       moodEmoji: json['moodEmoji'],
+      sensitiveMode: json['sensitiveMode'],
     );
   }
 
@@ -32,5 +35,6 @@ class ActivityWidgetData {
         'partner': partner,
         'safety': safety,
         'moodEmoji': moodEmoji,
+        'sensitiveMode': sensitiveMode,
       };
 }

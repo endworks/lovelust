@@ -128,7 +128,7 @@ class Activity {
         'ejaculation': SharedService.setValueByEjaculation(
           ejaculation,
         ),
-        'watched_porn': watchedPorn ?? false,
+        'watched_porn': watchedPorn != true,
         'health_record_id': healthRecordId,
       };
 }

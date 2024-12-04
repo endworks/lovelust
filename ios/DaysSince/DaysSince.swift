@@ -49,7 +49,7 @@ struct Provider: TimelineProvider {
                         if let date = formatter.date(from: dateStr) {
                             return date
                         }
-                        throw DateError.invalidDate
+                        return Date()
                     })
                     
                     widgetData = try decoder.decode(ActivityWidgetData.self, from: sharedWidgetData!.data(using: .utf8)!)
@@ -80,6 +80,7 @@ struct ActivityWidgetData: Decodable, Hashable {
     let partner: Partner?
     let safety: String
     let moodEmoji: String
+    let sensitiveMode: Bool
 }
 
 struct Activity: Decodable, Hashable {
@@ -98,7 +99,9 @@ struct Activity: Decodable, Hashable {
     let rating: Int
     let type: String?
     let mood: String?
-    let practices: [IdName]
+    let ejaculation: String?
+    let practices: [IdName]?
+    let watchedPorn: Bool?
     let healthRecordId: String?
 }
 
@@ -108,7 +111,13 @@ struct Partner: Decodable, Hashable {
     let gender: String
     let name: String
     let meetingDate: Date
+    let birthDay: Date?
     let notes: String?
+    let phone: String?
+    let instagram: String?
+    let x: String?
+    let snapchat: String?
+    let onlyfans: String?
 }
 
 struct IdName: Decodable, Hashable {
@@ -127,6 +136,7 @@ enum DateError: String, Error {
 struct DaysSinceEntryView : View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var widgetFamily
+    @Environment(\.widgetRenderingMode) var widgetRenderingMode
     private var days: Int
     private var daysString: String
     private var fontDays: Font
@@ -359,7 +369,13 @@ struct DaysSince: Widget {
             gender: "F",
             name: "Flavia",
             meetingDate: Date(),
-            notes: nil
+            birthDay: Date(),
+            notes: nil,
+            phone: nil,
+            instagram: nil,
+            x: nil,
+            snapchat: nil,
+            onlyfans: nil
         )
 
         static var lastSexualActivity = Activity(
@@ -378,7 +394,9 @@ struct DaysSince: Widget {
             rating: 5,
             type: "SEXUAL_INTERCOURSE",
             mood: "HORNY",
+            ejaculation: "IN_THE_ASS",
             practices: [],
+            watchedPorn: false,
             healthRecordId: nil
         )
 
@@ -398,7 +416,9 @@ struct DaysSince: Widget {
             rating: 4,
             type: "MASTURBATION",
             mood: "HORNY",
+            ejaculation: nil,
             practices: [],
+            watchedPorn: false,
             healthRecordId: nil
         )
         
@@ -407,7 +427,8 @@ struct DaysSince: Widget {
             sexualActivity: lastSexualActivity,
             partner: partner,
             safety: "SAFE",
-            moodEmoji: "🥵"
+            moodEmoji: "🥵",
+            sensitiveMode: false
         )
         
         static var previews: some View {

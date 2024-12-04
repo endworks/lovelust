@@ -20,7 +20,7 @@ class _HealthIntegrationPageState extends State<HealthIntegrationPage> {
   @override
   void initState() {
     super.initState();
-    _health.hasPermissions().then((value) {
+    _health.hasPermissions.then((value) {
       setState(() {
         hasPermissions = value;
       });
@@ -44,7 +44,7 @@ class _HealthIntegrationPageState extends State<HealthIntegrationPage> {
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.healthImport),
-        onTap: _health.readSexualActivity,
+        onTap: _health.importSexualActivity,
         leading: Icon(
           Icons.cloud_download,
           color: Theme.of(context).colorScheme.secondary,
@@ -52,7 +52,7 @@ class _HealthIntegrationPageState extends State<HealthIntegrationPage> {
       ),
       ListTile(
         title: Text(AppLocalizations.of(context)!.healthExport),
-        onTap: _health.writeSexualActivity,
+        onTap: _health.exportSexualActivity,
         leading: Icon(
           Icons.cloud_upload,
           color: Theme.of(context).colorScheme.secondary,

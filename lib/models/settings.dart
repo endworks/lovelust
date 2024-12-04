@@ -66,7 +66,7 @@ class Settings {
 Settings defaultSettings = Settings(
   theme: 'system',
   colorScheme: null,
-  material: true,
+  material: false,
   trueBlack: false,
   privacyMode: false,
   sensitiveMode: false,

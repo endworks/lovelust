@@ -5,6 +5,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 import android.appwidget.AppWidgetManager
@@ -45,36 +46,54 @@ class DaysSinceWidget : GlanceAppWidget() {
   }
 
   @Composable
-  private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState) {
-    val prefs = currentState.preferences
-    val jsonString = prefs.getString("lastActivity", "{}")
-    var days: Int = 0
-
-    /*try {
-      if (jsonString != null) {
-        val json = Json { ignoreUnknownKeys = true }
-        val widgetData = json.decodeFromString<ActivityWidgetData>(jsonString)
-        if (widgetData.sexualActivity != null) {
-            val formatter = DateTimeFormatter.ISO_DATE_TIME
-            val sexualActivityDate = LocalDateTime.parse(widgetData.sexualActivity.date, formatter)
-            val today = LocalDateTime.now(ZoneId.of("UTC"))
-            days = ChronoUnit.DAYS.between(sexualActivityDate, today).toInt()
-        }
-      }
-    } catch (e: Exception) {
-      Box(modifier = GlanceModifier.background(Color.Red).padding(16.dp)) {
-        Column {
-          Text("${e.message}")
-        }
-      }
-    }*/
-    
+  private fun ContentView(days: Int) {
     Box(modifier = GlanceModifier.background(Color.White).padding(16.dp)) {
       Column {
         Text("$days")
         Text("Days")
         Text("Without sex")
       }
+    }
+  }
+
+  @Composable
+  private fun ErrorView(error: String) {
+    Box(modifier = GlanceModifier.background(Color.White).padding(16.dp)) {
+      Column {
+        Text("$error")
+      }
+    }
+  }
+
+
+  @ExperimentalSerializationApi
+  @Composable
+  private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState) {
+    val prefs = currentState.preferences
+    val jsonString = prefs.getString("lastActivity", "{}")
+    var days: Int = 0
+    var isError = false;
+    var error = ""
+
+    try {
+      if (jsonString != null) {
+        val json = Json { ignoreUnknownKeys = true }
+        val widgetData = json.decodeFromString<ActivityWidgetData>(jsonString)
+        if (widgetData.sexualActivity != null) {
+          val formatter = DateTimeFormatter.ISO_DATE_TIME
+          val sexualActivityDate = LocalDateTime.parse(widgetData.sexualActivity.date, formatter)
+          val today = LocalDateTime.now(ZoneId.of("UTC"))
+          days = ChronoUnit.DAYS.between(sexualActivityDate, today).toInt()
+        }
+      }
+    } catch (e: Exception) {
+      error = "${e.message}"
+    }
+
+    if (error != "") {
+        ErrorView(error)
+    } else {
+        ContentView(days)
     }
   }
 }

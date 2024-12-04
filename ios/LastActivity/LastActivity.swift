@@ -105,7 +105,6 @@ struct Activity: Decodable, Hashable {
     let ejaculation: String?
     let practices: [IdName]?
     let watchedPorn: Bool?
-    let healthRecordId: String?
 }
 
 struct Partner: Decodable, Hashable {
@@ -527,8 +526,7 @@ struct LastActivity_Previews: PreviewProvider {
         mood: "HORNY",
         ejaculation: "IN_THE_ASS",
         practices: [],
-        watchedPorn: false,
-        healthRecordId: nil
+        watchedPorn: false
     )
 
     static var lastSoloActivity = Activity(
@@ -549,8 +547,7 @@ struct LastActivity_Previews: PreviewProvider {
         mood: "HORNY",
         ejaculation: "IN_THE_ASS",
         practices: [],
-        watchedPorn: false,
-        healthRecordId: nil
+        watchedPorn: false
     )
     
     static var widgetData = ActivityWidgetData(

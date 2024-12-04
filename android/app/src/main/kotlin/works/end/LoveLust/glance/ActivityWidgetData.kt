@@ -20,7 +20,6 @@ data class Activity(
     val mood: String? = null,
     val ejaculation: String? = null,
     val watched_porn: Boolean,
-    val health_record_id: String? = null
 )
 
 @Serializable

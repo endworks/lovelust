@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
+import 'package:lovelust/services/health_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/rating_select.dart';
@@ -21,6 +22,7 @@ class ActivityEditPage extends StatefulWidget {
 
 class _ActivityEditPageState extends State<ActivityEditPage> {
   final SharedService _shared = getIt<SharedService>();
+  final HealthService _health = getIt<HealthService>();
 
   final _dateController = TextEditingController();
   final _locationController = TextEditingController();
@@ -62,7 +64,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
     _mood = widget.activity.mood;
     _ejaculation = widget.activity.ejaculation;
     _watchedPorn = widget.activity.watchedPorn;
-    _healthRecordId = widget.activity.healthRecordId;
 
     _dateController.value = TextEditingValue(
       text: widget.activity.date.toIso8601String(),
@@ -235,25 +236,25 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   void save() {
     if (valid) {
       Activity activity = Activity(
-          id: _new ? const Uuid().v4() : widget.activity.id,
-          birthControl: _birthControl,
-          date: _date ?? DateTime.now(),
-          duration: int.parse(_durationController.value.text),
-          initiator: _initiator,
-          location: _locationController.value.text,
-          orgasms: int.parse(_orgasmsController.value.text),
-          partner: _partner,
-          partnerBirthControl: _partnerBirthControl,
-          partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
-          place: _place,
-          practices: _practices,
-          rating: int.parse(_ratingController.value.text),
-          notes: _notesController.value.text,
-          type: _type,
-          mood: _mood,
-          ejaculation: _ejaculation,
-          watchedPorn: _watchedPorn,
-          healthRecordId: _healthRecordId);
+        id: _new ? const Uuid().v4() : widget.activity.id,
+        birthControl: _birthControl,
+        date: _date ?? DateTime.now(),
+        duration: int.parse(_durationController.value.text),
+        initiator: _initiator,
+        location: _locationController.value.text,
+        orgasms: int.parse(_orgasmsController.value.text),
+        partner: _partner,
+        partnerBirthControl: _partnerBirthControl,
+        partnerOrgasms: int.parse(_partnerOrgasmsController.value.text),
+        place: _place,
+        practices: _practices,
+        rating: int.parse(_ratingController.value.text),
+        notes: _notesController.value.text,
+        type: _type,
+        mood: _mood,
+        ejaculation: _ejaculation,
+        watchedPorn: _watchedPorn,
+      );
 
       List<Activity> journal = [..._shared.activity];
       if (!_new) {
@@ -263,6 +264,16 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       } else {
         journal.add(activity);
       }
+      _health.hasPermissions.then((value) {
+        if (value) {
+          if (!_new) {
+            _health.updateSexualActivity(activity);
+          } else {
+            _health.writeSexualActivity(activity);
+          }
+        }
+      });
+
       journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
       if (mounted) {
         setState(() => _shared.activity = journal);

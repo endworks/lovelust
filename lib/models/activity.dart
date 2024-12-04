@@ -21,7 +21,6 @@ class Activity {
   final Mood? mood;
   final Ejaculation? ejaculation;
   final bool? watchedPorn;
-  final String? healthRecordId;
 
   const Activity({
     required this.id,
@@ -42,7 +41,6 @@ class Activity {
     required this.mood,
     required this.ejaculation,
     required this.watchedPorn,
-    required this.healthRecordId,
   });
 
   factory Activity.fromJson(Map<String, dynamic> json) {
@@ -86,7 +84,6 @@ class Activity {
         json['ejaculation'],
       ),
       watchedPorn: json['watched_porn'] ?? false,
-      healthRecordId: json['health_record_id'],
     );
   }
 
@@ -129,6 +126,5 @@ class Activity {
           ejaculation,
         ),
         'watched_porn': watchedPorn != true,
-        'health_record_id': healthRecordId,
       };
 }

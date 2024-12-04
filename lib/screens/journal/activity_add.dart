@@ -35,7 +35,6 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
       mood: null,
       watchedPorn: false,
       ejaculation: null,
-      healthRecordId: null,
     );
   }
 

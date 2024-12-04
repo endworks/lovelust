@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -16,8 +17,43 @@ import 'package:uuid/uuid.dart';
 
 class HealthService {
   final SharedService _shared = getIt<SharedService>();
-  DateTime startTime = DateTime.now().subtract(const Duration(days: 365 * 10));
-  DateTime endTime = DateTime.now();
+
+  int get daysToRead {
+    return 365 * 10;
+  }
+
+  DateTime get endTime {
+    return DateTime.now();
+  }
+
+  DateTime get startTime {
+    return endTime.subtract(Duration(days: daysToRead));
+  }
+
+  Source get source {
+    return Source(
+      'LoveLust',
+      'works.end.LoveLust',
+    );
+  }
+
+  OperatingSystem get operatingSystem {
+    return OperatingSystem(
+      18,
+      1,
+      0,
+    );
+  }
+
+  SourceRevision get sourceRevision {
+    return SourceRevision(
+      source,
+      "${operatingSystem.majorVersion}.${operatingSystem.minorVersion}",
+      'iPhone14,2',
+      "${operatingSystem.majorVersion}.${operatingSystem.minorVersion}.${operatingSystem.patchVersion}",
+      operatingSystem,
+    );
+  }
 
   Future<bool> isApiSupported() async {
     if (!kIsWeb) {
@@ -57,7 +93,7 @@ class HealthService {
     }
   }
 
-  Future<bool> hasPermissions() async {
+  Future<bool> get hasPermissions async {
     if (!kIsWeb) {
       if (Platform.isAndroid) {
         return await HealthConnectFactory.hasPermissions(
@@ -92,9 +128,9 @@ class HealthService {
     return Future.value(false);
   }
 
-  Future<List<dynamic>> readSexualActivity() async {
-    debugPrint('readSexualActivity');
-    if (!kIsWeb) {
+  Future<List<dynamic>> importSexualActivity() async {
+    debugPrint('importSexualActivity');
+    /*if (!kIsWeb) {
       if (Platform.isAndroid) {
         try {
           final requests = <Future>[];
@@ -127,7 +163,7 @@ class HealthService {
 
                 if (activity != null) {
                   debugPrint("matched record");
-                  if (activity.healthRecordId != record.metadata.id) {
+
                     needsSaving = true;
                     activity = Activity(
                       id: activity.id,
@@ -234,7 +270,7 @@ class HealthService {
 
             if (activity != null) {
               debugPrint("matched record");
-              if (activity.healthRecordId != record.uuid) {
+              if (activity.id != record.harmonized.metadata.) {
                 needsSaving = true;
                 activity = Activity(
                   id: activity.id,
@@ -255,7 +291,6 @@ class HealthService {
                   mood: activity.mood,
                   watchedPorn: activity.watchedPorn,
                   ejaculation: activity.ejaculation,
-                  healthRecordId: record.uuid,
                 );
               }
             } else {
@@ -296,172 +331,40 @@ class HealthService {
           _shared.activity = journal;
         });
       }
-    }
+    }*/
     return Future.value([]);
   }
 
-  Future<List<dynamic>> writeSexualActivity() async {
-    debugPrint('writeSexualActivity');
+  Future<List<dynamic>> exportSexualActivity() async {
+    debugPrint('exportSexualActivity');
     if (!kIsWeb) {
-      if (Platform.isAndroid) {
-        try {
-          final requests = <Future>[];
-          List<Activity> journal = [..._shared.activity];
-          for (var activity in journal) {
-            if (activity.type == ActivityType.sexualIntercourse) {
-              SexualActivityRecord record = SexualActivityRecord(
-                time: activity.date,
-                protectionUsed: _shared.isProtectionUsed(activity)
-                    ? Protection.protected
-                    : Protection.unprotected,
-              );
-
-              if (activity.healthRecordId == null) {
-                requests.add(
-                  HealthConnectFactory.writeData(
-                    type: HealthConnectDataType.SexualActivity,
-                    data: [record],
-                  ).then(
-                    (value) {
-                      debugPrint(
-                        "$HealthConnectDataType.SexualActivity.name: $record",
-                      );
-                      Activity updatedActivity = Activity(
-                        id: activity.id,
-                        birthControl: activity.birthControl,
-                        date: activity.date,
-                        duration: activity.duration,
-                        initiator: activity.initiator,
-                        location: activity.location,
-                        orgasms: activity.orgasms,
-                        partner: activity.partner,
-                        partnerBirthControl: activity.partnerBirthControl,
-                        partnerOrgasms: activity.partnerOrgasms,
-                        place: activity.place,
-                        practices: activity.practices,
-                        rating: activity.rating,
-                        notes: activity.notes,
-                        type: activity.type,
-                        mood: activity.mood,
-                        watchedPorn: activity.watchedPorn,
-                        ejaculation: activity.ejaculation,
-                        healthRecordId: record.metadata.id,
-                      );
-                      journal[journal.indexOf(activity)] = updatedActivity;
-                      journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
-                    },
-                  ),
-                );
-              }
-            }
-          }
-          if (requests.isNotEmpty) {
-            return await Future.wait(requests).then(
-              (value) => _shared.activity = journal,
+      try {
+        Iterable<Future<bool>> requests = _shared.activity
+            .where(
+                (activity) => activity.type == ActivityType.sexualIntercourse)
+            .map(
+              (activity) => writeSexualActivity(activity),
             );
-          }
-        } catch (e) {
-          debugPrint("$e");
-          return Future.error(e);
+        if (requests.isNotEmpty) {
+          await Future.wait(requests);
         }
-      } else if (Platform.isIOS) {
-        try {
-          final source = Source(
-            'LoveLust',
-            'works.end.LoveLust',
-          );
-          final operatingSystem = OperatingSystem(
-            18,
-            1,
-            0,
-          );
-          final sourceRevision = SourceRevision(
-            source,
-            "${operatingSystem.majorVersion}.${operatingSystem.minorVersion}",
-            'iPhone14,2',
-            "${operatingSystem.majorVersion}.${operatingSystem.minorVersion}.${operatingSystem.patchVersion}",
-            operatingSystem,
-          );
-
-          final canWrite = await HKR.HealthKitReporter.isAuthorizedToWrite(
-              CategoryType.sexualActivity.identifier);
-          if (canWrite) {
-            final requests = <Future>[];
-            List<Activity> journal = [..._shared.activity];
-            for (var activity in journal) {
-              if (activity.type == ActivityType.sexualIntercourse) {
-                if (activity.healthRecordId == null) {
-                  final endDate =
-                      activity.date.add(Duration(minutes: activity.duration));
-                  final harmonized = HKRCategory.CategoryHarmonized(
-                    0,
-                    'HKCategoryValue',
-                    'Not Applicable',
-                    {
-                      'HKSexualActivityProtectionUsed':
-                          _shared.isProtectionUsed(activity) ? 1 : 0,
-                      'HKWasUserEntered': 1,
-                    },
-                  );
-                  final sexualActivity = HKRCategory.Category(
-                    Uuid().v4(),
-                    CategoryType.sexualActivity.identifier,
-                    activity.date.millisecondsSinceEpoch,
-                    endDate.millisecondsSinceEpoch,
-                    null,
-                    sourceRevision,
-                    harmonized,
-                  );
-                  debugPrint('try to save: ${sexualActivity.map}');
-                  requests.add(
-                      HKR.HealthKitReporter.save(sexualActivity).then((value) {
-                    Activity updatedActivity = Activity(
-                      id: activity.id,
-                      birthControl: activity.birthControl,
-                      date: activity.date,
-                      duration: activity.duration,
-                      initiator: activity.initiator,
-                      location: activity.location,
-                      orgasms: activity.orgasms,
-                      partner: activity.partner,
-                      partnerBirthControl: activity.partnerBirthControl,
-                      partnerOrgasms: activity.partnerOrgasms,
-                      place: activity.place,
-                      practices: activity.practices,
-                      rating: activity.rating,
-                      notes: activity.notes,
-                      type: activity.type,
-                      mood: activity.mood,
-                      watchedPorn: activity.watchedPorn,
-                      ejaculation: activity.ejaculation,
-                      healthRecordId: sexualActivity.uuid,
-                    );
-                    journal[journal.indexOf(activity)] = updatedActivity;
-                    journal.sort((a, b) => a.date.isAfter(b.date) ? -1 : 1);
-                  }));
-                }
-              }
-            }
-            if (requests.isNotEmpty) {
-              return await Future.wait(requests).then(
-                (value) => _shared.activity = journal,
-              );
-            }
-          } else {
-            debugPrint('error canWrite sexualActivity: $canWrite');
-          }
-        } catch (e) {
-          debugPrint("$e");
-        }
+      } catch (e) {
+        debugPrint("$e");
+        return Future.error(e);
       }
     }
     return Future.value([]);
   }
 
-  Future<bool> deleteSexualActivityFromHealth(Activity activity) async {
+  Future<bool> deleteSexualActivity(Activity activity) async {
+    debugPrint(
+      "deleteSexualActivity: ${jsonEncode(activity)}",
+    );
     if (!kIsWeb) {
       if (activity.type == ActivityType.sexualIntercourse) {
-        final endDate = activity.date.add(Duration(minutes: activity.duration));
+        final endDate = activity.date.add(
+          Duration(minutes: activity.duration > 0 ? activity.duration : 1),
+        );
         if (Platform.isAndroid) {
           return HealthConnectFactory.deleteRecordsByTime(
             type: HealthConnectDataType.SexualActivity,
@@ -492,28 +395,99 @@ class HealthService {
     return Future.value(false);
   }
 
-  Future<dynamic> writeSexualActivityToHealth(Activity activity) async {
+  Future<bool> writeSexualActivity(Activity activity) async {
+    debugPrint(
+      "writeSexualActivity: ${jsonEncode(activity)}",
+    );
     if (!kIsWeb) {
+      ActivitySafety safety = _shared.calculateSafety(activity);
       if (activity.type == ActivityType.sexualIntercourse) {
         if (Platform.isAndroid) {
-          SexualActivityRecord record = SexualActivityRecord(
-            time: activity.date,
-            protectionUsed: _shared.isProtectionUsed(activity)
-                ? Protection.protected
-                : Protection.unprotected,
+          Protection protectionUsed = Protection.unknown;
+          if (safety == ActivitySafety.safe) {
+            protectionUsed = Protection.protected;
+          } else if (safety == ActivitySafety.unsafe) {
+            protectionUsed = Protection.unprotected;
+          }
+          Metadata metadata = Metadata(
+            clientRecordId: activity.id!,
+            recordingMethod: RecordingMethod.manualEntry,
           );
-          HealthConnectFactory.writeData(
+          SexualActivityRecord sexualActivity = SexualActivityRecord(
+            time: activity.date,
+            protectionUsed: protectionUsed,
+            metadata: metadata,
+          );
+          return HealthConnectFactory.writeData(
             type: HealthConnectDataType.SexualActivity,
-            data: [record],
+            data: [sexualActivity],
           ).then(
             (value) {
               debugPrint(
-                "$HealthConnectDataType.SexualActivity.name: $record",
+                "${HealthConnectDataType.SexualActivity.name}: ${sexualActivity.toMap().toString()}",
               );
+              return value;
             },
           );
+        } else if (Platform.isIOS) {
+          try {
+            final canWrite = await HKR.HealthKitReporter.isAuthorizedToWrite(
+                CategoryType.sexualActivity.identifier);
+            if (canWrite) {
+              if (activity.type == ActivityType.sexualIntercourse) {
+                final endDate =
+                    activity.date.add(Duration(minutes: activity.duration));
+                Map<String, dynamic> metadata = {
+                  'HKMetadataKeyExternalUUID': activity.id!,
+                  'HKWasUserEntered': 1,
+                  'Contraceptive': activity.birthControl,
+                  'PartnerContraceptive': activity.partnerBirthControl,
+                  'Partner': activity.partner,
+                };
+                if (safety == ActivitySafety.safe) {
+                  metadata.update(
+                      'HKSexualActivityProtectionUsed', (value) => value = 1);
+                } else if (safety == ActivitySafety.unsafe) {
+                  metadata.update(
+                      'HKSexualActivityProtectionUsed', (value) => value = 0);
+                }
+                final harmonized = HKRCategory.CategoryHarmonized(
+                  0,
+                  'HKCategoryValue',
+                  'Not Applicable',
+                  metadata,
+                );
+                final sexualActivity = HKRCategory.Category(
+                  activity.id!,
+                  CategoryType.sexualActivity.identifier,
+                  activity.date.millisecondsSinceEpoch,
+                  endDate.millisecondsSinceEpoch,
+                  null,
+                  sourceRevision,
+                  harmonized,
+                );
+                debugPrint('try to save: ${sexualActivity.map}');
+                return HKR.HealthKitReporter.save(sexualActivity).then((value) {
+                  debugPrint(
+                    "${HealthConnectDataType.SexualActivity.name}: ${jsonEncode(sexualActivity.map)}",
+                  );
+                  return value;
+                });
+              }
+            } else {
+              debugPrint('error canWrite sexualActivity: $canWrite');
+            }
+          } catch (e) {
+            debugPrint("$e");
+          }
         }
       }
     }
+    return Future.value(false);
+  }
+
+  Future<bool> updateSexualActivity(Activity activity) async {
+    await deleteSexualActivity(activity);
+    return writeSexualActivity(activity);
   }
 }

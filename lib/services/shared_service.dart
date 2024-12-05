@@ -603,6 +603,8 @@ class SharedService extends ChangeNotifier {
       return Contraceptive.tubalLigation;
     } else if (value == 'UNSAFE_BIRTH_CONTROL') {
       return Contraceptive.unsafeContraceptive;
+    } else if (value == 'UNSAFE_CONTRACEPTIVE') {
+      return Contraceptive.unsafeContraceptive;
     } else if (value == 'VAGINAL_RING') {
       return Contraceptive.vaginalRing;
     } else if (value == 'VASECTOMY') {
@@ -643,7 +645,7 @@ class SharedService extends ChangeNotifier {
     } else if (value == Contraceptive.tubalLigation) {
       return 'TUBAL_LIGATION';
     } else if (value == Contraceptive.unsafeContraceptive) {
-      return 'UNSAFE_BIRTH_CONTROL';
+      return 'UNSAFE_CONTRACEPTIVE';
     } else if (value == Contraceptive.vaginalRing) {
       return 'VAGINAL_RING';
     } else if (value == Contraceptive.vasectomy) {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
 import 'package:health_kit_reporter/health_kit_reporter.dart' as HKR;
@@ -13,21 +14,22 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
-import 'package:uuid/uuid.dart';
 
 class HealthService {
   final SharedService _shared = getIt<SharedService>();
+
+  List<dynamic> sexualActivity = [];
 
   int get daysToRead {
     return 365 * 10;
   }
 
   DateTime get endTime {
-    return DateTime.now();
+    return DateTime.now().add(Duration(days: daysToRead));
   }
 
   DateTime get startTime {
-    return endTime.subtract(Duration(days: daysToRead));
+    return DateTime.now().subtract(Duration(days: daysToRead));
   }
 
   Source get source {
@@ -339,6 +341,7 @@ class HealthService {
     debugPrint('exportSexualActivity');
     if (!kIsWeb) {
       try {
+        await clearSexualActivity();
         Iterable<Future<bool>> requests = _shared.activity
             .where(
                 (activity) => activity.type == ActivityType.sexualIntercourse)
@@ -356,30 +359,142 @@ class HealthService {
     return Future.value([]);
   }
 
-  Future<bool> deleteSexualActivity(Activity activity) async {
-    debugPrint(
-      "deleteSexualActivity: ${jsonEncode(activity)}",
-    );
+  Future<void> clearSexualActivity() async {
+    debugPrint('clearSexualActivity');
     if (!kIsWeb) {
-      if (activity.type == ActivityType.sexualIntercourse) {
-        final endDate = activity.date.add(
-          Duration(minutes: activity.duration > 0 ? activity.duration : 1),
-        );
+      try {
         if (Platform.isAndroid) {
-          return HealthConnectFactory.deleteRecordsByTime(
+          HealthConnectFactory.deleteRecordsByTime(
             type: HealthConnectDataType.SexualActivity,
-            startTime: activity.date,
-            endTime: endDate,
+            startTime: startTime,
+            endTime: endTime,
           ).then(
             (value) {
               debugPrint(
                 "delete ${HealthConnectDataType.SexualActivity.name}: $value",
               );
-              return value;
             },
           );
         } else if (Platform.isIOS) {
-          Predicate predicate = Predicate(activity.date, endTime);
+          Predicate predicate = Predicate(startTime, endTime);
+          HKR.HealthKitReporter.deleteObjects(
+            CategoryType.sexualActivity.identifier,
+            predicate,
+          ).then((value) {
+            debugPrint(
+              "delete ${CategoryType.sexualActivity.identifier}: $value",
+            );
+          });
+        }
+      } catch (e) {
+        debugPrint("$e");
+        return Future.error(e);
+      }
+    }
+  }
+
+  Future<List<dynamic>> readSexualActivity() async {
+    if (!kIsWeb) {
+      try {
+        if (Platform.isAndroid) {
+          return HealthConnectFactory.getRecords(
+            type: HealthConnectDataType.SexualActivity,
+            startTime: startTime,
+            endTime: endTime,
+          ).then((value) => sexualActivity = value);
+        } else if (Platform.isIOS) {
+          Predicate predicate = Predicate(startTime, endTime);
+          return HKR.HealthKitReporter.categoryQuery(
+            CategoryType.sexualActivity,
+            predicate,
+          ).then((value) => sexualActivity = value.toList());
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+        return Future.error(e);
+      }
+    }
+    return Future.value([]);
+  }
+
+  Future<dynamic> findSexualActivity(Activity activity) async {
+    if (!kIsWeb) {
+      try {
+        if (sexualActivity.isEmpty) {
+          await readSexualActivity();
+        }
+        debugPrint("sexualActivity length: ${sexualActivity.length}");
+        if (Platform.isAndroid) {
+          final records = sexualActivity as List<SexualActivityRecord>;
+          return records.firstWhereOrNull(
+            (record) => record.metadata.clientRecordId == activity.id,
+          );
+        } else if (Platform.isIOS) {
+          final records = sexualActivity as List<HKRCategory.Category>;
+          return records.firstWhereOrNull(
+            (record) {
+              String recordDate = DateTime.fromMillisecondsSinceEpoch(
+                record.endTimestamp.toInt() * 1000,
+              ).toString().toString().substring(0, 19);
+              String activityDate = activity.date.toString().substring(0, 19);
+              debugPrint(
+                  "$recordDate = $activityDate ${recordDate == activityDate}");
+              return recordDate == activityDate;
+            },
+          );
+        }
+      } catch (e) {
+        debugPrint(e.toString());
+        return Future.error(e);
+      }
+    }
+    return Future.value(null);
+  }
+
+  Future<bool> deleteSexualActivity(Activity activity) async {
+    debugPrint(
+      "deleteSexualActivity: ${activity.id}",
+    );
+    if (!kIsWeb) {
+      if (activity.type == ActivityType.sexualIntercourse) {
+        final endDate = activity.date.add(
+          Duration(minutes: activity.duration + 1),
+        );
+        final startDate = activity.date.subtract(
+          Duration(minutes: activity.duration + 1),
+        );
+
+        if (Platform.isAndroid) {
+          final record = await findSexualActivity(activity);
+          if (record != null) {
+            final androidRecord = record as SexualActivityRecord;
+            return HealthConnectFactory.deleteRecordsByIds(
+              type: HealthConnectDataType.SexualActivity,
+              idList: [androidRecord.metadata.id],
+            ).then(
+              (value) {
+                debugPrint(
+                  "delete by id ${HealthConnectDataType.SexualActivity.name}: $value",
+                );
+                return value;
+              },
+            );
+          } else {
+            return HealthConnectFactory.deleteRecordsByTime(
+              type: HealthConnectDataType.SexualActivity,
+              startTime: startDate,
+              endTime: endDate,
+            ).then(
+              (value) {
+                debugPrint(
+                  "delete ${HealthConnectDataType.SexualActivity.name}: $value",
+                );
+                return value;
+              },
+            );
+          }
+        } else if (Platform.isIOS) {
+          Predicate predicate = Predicate(startDate, endDate);
           return HKR.HealthKitReporter.deleteObjects(
             CategoryType.sexualActivity.identifier,
             predicate,
@@ -387,7 +502,7 @@ class HealthService {
             debugPrint(
               "delete ${CategoryType.sexualActivity.identifier}: $value",
             );
-            return value;
+            return value['status'];
           });
         }
       }
@@ -401,6 +516,7 @@ class HealthService {
     );
     if (!kIsWeb) {
       ActivitySafety safety = _shared.calculateSafety(activity);
+      bool protection = _shared.isProtectionUsed(activity);
       if (activity.type == ActivityType.sexualIntercourse) {
         if (Platform.isAndroid) {
           Protection protectionUsed = Protection.unknown;
@@ -415,6 +531,7 @@ class HealthService {
           );
           SexualActivityRecord sexualActivity = SexualActivityRecord(
             time: activity.date,
+            zoneOffset: Duration(minutes: activity.duration),
             protectionUsed: protectionUsed,
             metadata: metadata,
           );
@@ -435,38 +552,27 @@ class HealthService {
                 CategoryType.sexualActivity.identifier);
             if (canWrite) {
               if (activity.type == ActivityType.sexualIntercourse) {
-                final endDate =
-                    activity.date.add(Duration(minutes: activity.duration));
-                Map<String, dynamic> metadata = {
-                  'HKMetadataKeyExternalUUID': activity.id!,
-                  'HKWasUserEntered': 1,
-                  'Contraceptive': activity.birthControl,
-                  'PartnerContraceptive': activity.partnerBirthControl,
-                  'Partner': activity.partner,
-                };
-                if (safety == ActivitySafety.safe) {
-                  metadata.update(
-                      'HKSexualActivityProtectionUsed', (value) => value = 1);
-                } else if (safety == ActivitySafety.unsafe) {
-                  metadata.update(
-                      'HKSexualActivityProtectionUsed', (value) => value = 0);
-                }
+                final startDate = activity.date.subtract(
+                  Duration(minutes: activity.duration),
+                );
                 final harmonized = HKRCategory.CategoryHarmonized(
                   0,
                   'HKCategoryValue',
                   'Not Applicable',
-                  metadata,
+                  {
+                    'HKWasUserEntered': 1,
+                    'HKSexualActivityProtectionUsed': protection ? 1 : 0,
+                  },
                 );
                 final sexualActivity = HKRCategory.Category(
                   activity.id!,
                   CategoryType.sexualActivity.identifier,
+                  startDate.millisecondsSinceEpoch,
                   activity.date.millisecondsSinceEpoch,
-                  endDate.millisecondsSinceEpoch,
                   null,
                   sourceRevision,
                   harmonized,
                 );
-                debugPrint('try to save: ${sexualActivity.map}');
                 return HKR.HealthKitReporter.save(sexualActivity).then((value) {
                   debugPrint(
                     "${HealthConnectDataType.SexualActivity.name}: ${jsonEncode(sexualActivity.map)}",
@@ -486,8 +592,9 @@ class HealthService {
     return Future.value(false);
   }
 
-  Future<bool> updateSexualActivity(Activity activity) async {
-    await deleteSexualActivity(activity);
+  Future<bool> updateSexualActivity(
+      Activity activity, Activity originalActivity) async {
+    await deleteSexualActivity(originalActivity);
     return writeSexualActivity(activity);
   }
 }

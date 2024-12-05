@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
@@ -43,7 +43,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   Mood? _mood;
   Ejaculation? _ejaculation;
   bool? _watchedPorn;
-  String? _healthRecordId;
 
   bool _new = true;
   bool _moreFields = false;
@@ -267,7 +266,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       _health.hasPermissions.then((value) {
         if (value) {
           if (!_new) {
-            _health.updateSexualActivity(activity);
+            _health.updateSexualActivity(activity, widget.activity);
           } else {
             _health.writeSexualActivity(activity);
           }

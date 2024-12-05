@@ -53,7 +53,7 @@ class Activity {
       partnerBirthControl: SharedService.getContraceptiveByValue(
         json['partner_birth_control'],
       ),
-      date: DateTime.parse(json['date']),
+      date: DateTime.parse(json['date']).toLocal(),
       location: SharedService.emptyStringToNull(json['location']),
       notes: SharedService.emptyStringToNull(json['notes']),
       duration: json['duration'],

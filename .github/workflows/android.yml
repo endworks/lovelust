@@ -110,7 +110,7 @@ jobs:
           packageName: works.end.LoveLust
           releaseFiles: ./build/app/outputs/bundle/release/app-release.aab
           mappingFile: ./build/app/outputs/mapping/release/mapping.txt
-          debugSymbols: ./build/app/outputs/symbols
+          # debugSymbols: ./build/app/outputs/symbols
           whatsNewDirectory: whatsnew
           track: beta
           status: completed

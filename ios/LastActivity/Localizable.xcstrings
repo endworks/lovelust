@@ -37,6 +37,17 @@
         }
       }
     },
+    "ANAL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anal"
+          }
+        }
+      }
+    },
     "Bedroom" : {
 
     },

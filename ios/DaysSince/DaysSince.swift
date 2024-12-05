@@ -137,7 +137,7 @@ struct DaysSinceEntryView : View {
     @Environment(\.widgetFamily) var widgetFamily
     @Environment(\.widgetRenderingMode) var widgetRenderingMode
     private var days: Int
-    private var daysString: String
+    private var daysString: LocalizedStringKey
     private var fontDays: Font
     private var fontTitle: Font
     private var fontSubtitle: Font
@@ -159,7 +159,7 @@ struct DaysSinceEntryView : View {
         } else {
             days = 0
         }
-        daysString = days == 1 ? "day" : "days"
+        daysString = days == 1 ? LocalizedStringKey("day") : LocalizedStringKey("days")
         
         widgetBackground = .clear
         widgetForeground = .primary

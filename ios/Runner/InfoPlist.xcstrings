@@ -25,6 +25,17 @@
         }
       }
     },
+    "GADApplicationIdentifier" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ca-app-pub-6304064057718478~5474274876"
+          }
+        }
+      }
+    },
     "NSFaceIDUsageDescription" : {
       "extractionState" : "manual",
       "localizations" : {

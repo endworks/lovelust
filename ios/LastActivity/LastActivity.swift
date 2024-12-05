@@ -11,15 +11,15 @@ import Intents
 
 struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), widgetData: nil, configuration: ConfigurationIntent())
+        SimpleEntry(date: Date(), widgetData: nil, configuration: LastActivityConfigurationIntent())
     }
 
-    func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+    func getSnapshot(for configuration: LastActivityConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
         let entry = SimpleEntry(date: Date(), widgetData: nil, configuration: configuration)
         completion(entry)
     }
 
-    func getTimeline(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(for configuration: LastActivityConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
         
         let sharedDefaults = UserDefaults.init(suiteName: "group.LoveLust")
@@ -78,8 +78,8 @@ struct Provider: IntentTimelineProvider {
 }
 
 struct ActivityWidgetData: Decodable, Hashable {
-    let soloActivity: Activity
-    let sexualActivity: Activity
+    let soloActivity: Activity?
+    let sexualActivity: Activity?
     let partner: Partner?
     let safety: String
     let moodEmoji: String
@@ -129,7 +129,7 @@ struct IdName: Decodable, Hashable {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let widgetData: ActivityWidgetData?
-    let configuration: ConfigurationIntent
+    let configuration: LastActivityConfigurationIntent
 }
 
 enum DateError: String, Error {
@@ -141,30 +141,79 @@ struct LastActivityEntryView : View {
     @Environment(\.widgetFamily) var widgetFamily
     
     private var WidgetView: some View {
-        let moodString = LocalizedStringKey(entry.widgetData!.sexualActivity.mood ?? "NO_MOOD")
-        let placeString = LocalizedStringKey(entry.widgetData!.sexualActivity.place ?? "NO_PLACE")
-        let safetyString = LocalizedStringKey(entry.widgetData!.safety)
-        let contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")
-        let partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")
-
         let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
-        dateFormatter.dateFormat = "EEEE"
-        let weekdayString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
-        dateFormatter.dateFormat = "d"
-        let dayString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+        let moodString: LocalizedStringKey
+        var partnerString: String
+        let placeString: LocalizedStringKey
+        let safetyString: LocalizedStringKey
+        let contraceptiveString: LocalizedStringKey
+        let partnerContraceptiveString: LocalizedStringKey
+        let dateString: String
+        let weekdayString: String
+        let dayString: String
+        var activity: Activity?
+        let partner: Partner?
+        var safety: String
+        var safetyColor: Color
+        var sensitiveMode: Bool
+        
+        if entry.widgetData != nil {
+            if entry.widgetData!.sexualActivity != nil {
+                activity = entry.widgetData!.sexualActivity!
+            }
+            if entry.widgetData!.soloActivity != nil {
+                activity = entry.widgetData!.soloActivity!
+            }
 
-        var safetyColor: Color = .primary
-        if entry.widgetData!.safety == "UNSAFE" {
-            safetyColor = .red
-        } else if entry.widgetData!.safety == "PARTIALLY_UNSAFE" {
-            safetyColor = .orange
+            partner = entry.widgetData!.partner
+            safety = entry.widgetData!.safety
+            sensitiveMode = entry.widgetData!.sensitiveMode
+        } else {
+            activity = nil
+            partner = nil
+            safety = "UNSAFE"
+            sensitiveMode = false
         }
         
-        var partnerString = String(localized: "UNKNOWN")
-        if entry.widgetData!.partner != nil {
-            partnerString = entry.widgetData!.partner!.name
+        if activity != nil {
+            moodString = LocalizedStringKey(activity!.mood ?? "NO_MOOD")
+            placeString = LocalizedStringKey(activity!.place ?? "NO_PLACE")
+            safetyString = LocalizedStringKey(safety)
+            contraceptiveString = LocalizedStringKey( activity!.birthControl ?? "NO_CONTRACEPTIVE")
+            partnerContraceptiveString = LocalizedStringKey( activity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
+            
+            dateFormatter.dateStyle = .medium
+            dateString = dateFormatter.string(from: activity!.date)
+            dateFormatter.dateFormat = "EEEE"
+            weekdayString = dateFormatter.string(from: activity!.date)
+            dateFormatter.dateFormat = "d"
+            dayString = dateFormatter.string(from: activity!.date)
+            
+            safetyColor = .primary
+            if safety == "UNSAFE" {
+                safetyColor = .red
+            } else if entry.widgetData!.safety == "PARTIALLY_UNSAFE" {
+                safetyColor = .orange
+            }
+            
+            partnerString = String(localized: "UNKNOWN")
+            if partner != nil {
+                partnerString = entry.widgetData!.partner!.name
+            }
+        } else {
+            moodString = LocalizedStringKey("NO_MOOD")
+            placeString = LocalizedStringKey("NO_PLACE")
+            safetyString = LocalizedStringKey("SAFE")
+            contraceptiveString = LocalizedStringKey("NO_CONTRACEPTIVE")
+            partnerContraceptiveString = LocalizedStringKey("NO_CONTRACEPTIVE")
+            dateFormatter.dateStyle = .medium
+            dateString = dateFormatter.string(from: Date())
+            dateFormatter.dateFormat = "EEEE"
+            weekdayString = dateFormatter.string(from: Date())
+            dateFormatter.dateFormat = "d"
+            dayString = dateFormatter.string(from: Date())
+            safetyColor = .primary
+            partnerString = String(localized: "UNKNOWN")
         }
         
         
@@ -179,11 +228,13 @@ struct LastActivityEntryView : View {
                         .foregroundColor(.red)
                         .lineLimit(1)
                         .truncationMode(.tail)
+                        .redacted(reason: activity == nil ? .placeholder : [])
                     Text(dayString)
                         .font(.largeTitle)
                         .fontWeight(.light)
                         .lineLimit(1)
                         .truncationMode(.tail)
+                        .redacted(reason: activity == nil ? .placeholder : [])
                     Spacer()
                 }
                 Spacer()
@@ -192,10 +243,10 @@ struct LastActivityEntryView : View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .privacySensitive()
-                        .redacted(reason: .privacy)
-                        .redacted(reason: entry.widgetData!.sensitiveMode ? .placeholder : [])
+                        .redacted(reason: sensitiveMode ? .privacy : [])
+                        .redacted(reason: activity == nil ? .placeholder : [])
 
-                    if (widgetFamily != .systemSmall && entry.widgetData!.sexualActivity.mood != nil) {
+                    if (widgetFamily != .systemSmall && activity!.mood != nil) {
                         Text(moodString)
                             .font(.caption2)
                             .fontDesign(.rounded)
@@ -204,19 +255,21 @@ struct LastActivityEntryView : View {
                             .foregroundColor(.pink)
                             .lineLimit(1)
                             .truncationMode(.tail)
+                            .redacted(reason: activity == nil ? .placeholder : [])
                     }
                     
                 }
             }
             Spacer()
             HStack(spacing: 4) {
-                if widgetFamily != .systemSmall && entry.widgetData!.sexualActivity.place != nil {
+                if widgetFamily != .systemSmall && activity!.place != nil {
                     Text(placeString)
                         .font(.caption)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
                         .foregroundColor(.purple)
+                        .redacted(reason: activity == nil ? .placeholder : [])
                 }
                 Text(dateString)
                     .lineLimit(1)
@@ -225,6 +278,7 @@ struct LastActivityEntryView : View {
                     .fontDesign(.rounded)
                     .textCase(.uppercase)
                     .foregroundColor(.gray)
+                    .redacted(reason: activity == nil ? .placeholder : [])
                 Spacer()
             }
             HStack(alignment: .bottom, spacing: 0) {
@@ -232,17 +286,19 @@ struct LastActivityEntryView : View {
                     Text(safetyString)
                         .font(.headline)
                         .foregroundColor(safetyColor)
+                        .redacted(reason: activity == nil ? .placeholder : [])
                 } else {
                     Text(safetyString)
                         .font(.title)
                         .foregroundColor(safetyColor)
+                        .redacted(reason: activity == nil ? .placeholder : [])
                     
                 }
                 Spacer()
             }
-           if entry.widgetData?.sexualActivity.birthControl != nil || entry.widgetData?.sexualActivity.partnerBirthControl != nil {
+           if activity!.birthControl != nil || activity!.partnerBirthControl != nil {
                HStack(alignment: .top) {
-                   if entry.widgetData?.sexualActivity.birthControl != nil {
+                   if activity!.birthControl != nil {
                        Text(contraceptiveString)
                            .lineLimit(1)
                            .truncationMode(.tail)
@@ -251,8 +307,9 @@ struct LastActivityEntryView : View {
                            .fontWeight(.semibold)
                            .textCase(.uppercase)
                            .foregroundColor(.cyan)
+                           .redacted(reason: activity == nil ? .placeholder : [])
                    }
-                   if entry.widgetData?.sexualActivity.partnerBirthControl != nil && entry.widgetData?.sexualActivity.partnerBirthControl != entry.widgetData?.sexualActivity.birthControl{
+                   if activity!.partnerBirthControl != nil && activity!.partnerBirthControl != activity!.birthControl {
                        Text(partnerContraceptiveString)
                            .lineLimit(1)
                            .truncationMode(.tail)
@@ -261,6 +318,7 @@ struct LastActivityEntryView : View {
                            .fontWeight(.semibold)
                            .textCase(.uppercase)
                            .foregroundColor(.cyan)
+                           .redacted(reason: activity == nil ? .placeholder : [])
                    }
                    Spacer()
                }
@@ -270,117 +328,46 @@ struct LastActivityEntryView : View {
         .privacySensitive()
     }
     
-    private var NoDataView: some View {
-        VStack {
-             HStack(alignment: .top, spacing: 0) {
-                 VStack(alignment: .leading, spacing: -2) {
-                     Text("Saturday")
-                         .font(.caption2)
-                         .fontDesign(.rounded)
-                         .fontWeight(.semibold)
-                         .textCase(.uppercase)
-                         .foregroundColor(.red)
-                     Text("1")
-                         .font(.largeTitle)
-                         .fontWeight(.light)
-                     Spacer()
-                 }
-                 Spacer()
-                 VStack(alignment: .trailing, spacing: 0) {
-                    Text("Flavia").font(.headline)
-                         .lineLimit(1)
-                         .truncationMode(.tail)
-
-                    if widgetFamily != .systemSmall {
-                        Text("Horny")
-                            .font(.caption2)
-                            .fontDesign(.rounded)
-                            .fontWeight(.semibold)
-                            .textCase(.uppercase)
-                            .foregroundColor(.pink)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                    }
-                 }
-             }
-             Spacer()
-             HStack(spacing: 4) {
-                 if widgetFamily != .systemSmall {
-                     Text("Bedroom")
-                         .font(.caption)
-                         .fontDesign(.rounded)
-                         .fontWeight(.semibold)
-                         .textCase(.uppercase)
-                         .foregroundColor(.purple)
-                 }
-                 Text("a month ago")
-                     .lineLimit(1)
-                     .truncationMode(.tail)
-                     .font(.caption)
-                     .fontDesign(.rounded)
-                     .textCase(.uppercase)
-                     .foregroundColor(.gray)
-                 Spacer()
-             }
-             HStack(alignment: .bottom, spacing: 0) {
-                 if widgetFamily == .systemSmall {
-                     Text("Protected sex")
-                         .font(.headline)
-                         .foregroundColor(.primary)
-                 } else {
-                     Text("Protected sex")
-                         .font(.title)
-                         .foregroundColor(.primary)
-                     
-                 }
-                 Spacer()
-             }
-             HStack(alignment: .top) {
-                Text("Condom")
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .font(.caption)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .foregroundColor(.cyan)
-                Spacer()
-             }
-        }
-        .containerBackground(for: .widget) {}
-        .redacted(reason: .placeholder)
-        
-    }
-    
     private var InlineView: some View {
-        let safetyString = LocalizedStringKey(entry.widgetData!.safety)
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
+        let dateString: String
+        let safetyString: LocalizedStringKey
+        if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
+            dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
+            safetyString = LocalizedStringKey(entry.widgetData!.safety)
+        } else {
+            dateString = dateFormatter.string(from: Date())
+            safetyString = "SAFE"
+        }
         
         return Text("\(safetyString) \(dateString)")
             .containerBackground(for: .widget) {}
             .font(.caption)
             .fontDesign(.rounded)
             .foregroundColor(.gray)
-    }
-    
-    private var InlineNoDataView: some View {
-       Text("SAFE 3 Nov 2024")
-            .containerBackground(for: .widget) {}
-            .font(.caption)
-            .fontDesign(.rounded)
-            .foregroundColor(.gray)
-            .redacted(reason: .placeholder)
+            .redacted(reason: entry.widgetData == nil ? .placeholder : [])
     }
     
     private var RectangularView: some View {
-        let safetyString = LocalizedStringKey(entry.widgetData!.safety)
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
-        let dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity.date)
-        let contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.birthControl ?? "NO_CONTRACEPTIVE")
-        let partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity.partnerBirthControl ?? "NO_CONTRACEPTIVE")
+        let dateString: String
+        let safetyString: LocalizedStringKey
+        let contraceptiveString: LocalizedStringKey
+        let partnerContraceptiveString: LocalizedStringKey
+        
+        if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
+            dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
+            safetyString = LocalizedStringKey(entry.widgetData!.safety)
+            contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity!.birthControl ?? "NO_CONTRACEPTIVE")
+            partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
+        } else {
+            dateString = dateFormatter.string(from: Date())
+            safetyString = "SAFE"
+            contraceptiveString = "CONDOM"
+            partnerContraceptiveString = "NO_CONTRACEPTIVE"
+        }
         
         return VStack() {
             HStack{
@@ -391,6 +378,7 @@ struct LastActivityEntryView : View {
                     .fontDesign(.rounded)
                     .textCase(.uppercase)
                     .foregroundColor(.gray)
+                    .redacted(reason: entry.widgetData == nil ? .placeholder : [])
                 Spacer()
             }
             HStack{
@@ -399,56 +387,35 @@ struct LastActivityEntryView : View {
                     .truncationMode(.tail)
                     .font(.headline)
                     .foregroundColor(.primary)
+                    .redacted(reason: entry.widgetData == nil ? .placeholder : [])
                 Spacer()
             }
-            if entry.widgetData?.sexualActivity.birthControl != nil || entry.widgetData?.sexualActivity.partnerBirthControl != nil {
-                HStack(alignment: .top) {
-                    if entry.widgetData?.sexualActivity.birthControl != nil {
-                        Text(contraceptiveString)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .font(.caption)
-                            .fontDesign(.rounded)
-                            .fontWeight(.semibold)
-                            .textCase(.uppercase)
+            if entry.widgetData?.sexualActivity != nil {
+                if entry.widgetData?.sexualActivity!.birthControl != nil || entry.widgetData?.sexualActivity!.partnerBirthControl != nil {
+                    HStack(alignment: .top) {
+                        if entry.widgetData?.sexualActivity!.birthControl != nil {
+                            Text(contraceptiveString)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .font(.caption)
+                                .fontDesign(.rounded)
+                                .fontWeight(.semibold)
+                                .textCase(.uppercase)
+                                .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+                        }
+                        if entry.widgetData?.sexualActivity!.partnerBirthControl != nil && entry.widgetData?.sexualActivity!.partnerBirthControl != entry.widgetData?.sexualActivity!.birthControl{
+                            Text(partnerContraceptiveString)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .font(.caption)
+                                .fontDesign(.rounded)
+                                .fontWeight(.semibold)
+                                .textCase(.uppercase)
+                                .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+                        }
+                        Spacer()
                     }
-                    if entry.widgetData?.sexualActivity.partnerBirthControl != nil && entry.widgetData?.sexualActivity.partnerBirthControl != entry.widgetData?.sexualActivity.birthControl{
-                        Text(partnerContraceptiveString)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .font(.caption)
-                            .fontDesign(.rounded)
-                            .fontWeight(.semibold)
-                            .textCase(.uppercase)
-                    }
-                    Spacer()
                 }
-            }
-        }
-        .containerBackground(for: .widget) {}
-    }
-    
-    private var RectangularNoDataView: some View {
-        return VStack() {
-            HStack{
-                Text("3 Nov 2024")
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .font(.caption)
-                    .fontDesign(.rounded)
-                    .textCase(.uppercase)
-                    .foregroundColor(.gray)
-                    .redacted(reason: .placeholder)
-                Spacer()
-            }
-            HStack{
-                Text("SAFE")
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .redacted(reason: .placeholder)
-                Spacer()
             }
         }
         .containerBackground(for: .widget) {}
@@ -456,23 +423,11 @@ struct LastActivityEntryView : View {
 
     var body: some View {
         if (widgetFamily == .accessoryInline) {
-            if (entry.widgetData != nil) {
-                InlineView
-            } else {
-                InlineNoDataView
-            }
+            InlineView
         } else if (widgetFamily == .accessoryRectangular) {
-            if (entry.widgetData != nil) {
-                RectangularView
-            } else {
-                RectangularNoDataView
-            }
+            RectangularView
         } else {
-            if (entry.widgetData != nil) {
-                WidgetView
-            } else {
-                NoDataView
-            }
+            WidgetView
         }
     }
 }
@@ -483,7 +438,7 @@ struct LastActivity: Widget {
     let description: LocalizedStringKey = "lastActivity.description"
 
     var body: some WidgetConfiguration {
-        IntentConfiguration(kind: kind, intent: ConfigurationIntent.self, provider: Provider()) { entry in
+        IntentConfiguration(kind: kind, intent: LastActivityConfigurationIntent.self, provider: Provider()) { entry in
             LastActivityEntryView(entry: entry)
         }
         .configurationDisplayName(displayName)
@@ -560,7 +515,7 @@ struct LastActivity_Previews: PreviewProvider {
     )
     
     static var previews: some View {
-        LastActivityEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: ConfigurationIntent()))
+        LastActivityEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: LastActivityConfigurationIntent()))
             .previewContext(WidgetPreviewContext(family: .systemSmall))
     }
 }

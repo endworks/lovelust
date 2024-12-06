@@ -7,18 +7,19 @@
 
 import WidgetKit
 import SwiftUI
+import Intents
 
-struct Provider: TimelineProvider {
+struct Provider: IntentTimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), widgetData: nil)
+        SimpleEntry(date: Date(), widgetData: nil, configuration: DaysSinceConfigurationIntent())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), widgetData: nil)
+    func getSnapshot(for configuration: DaysSinceConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+        let entry = SimpleEntry(date: Date(), widgetData: nil, configuration: configuration)
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(for configuration: DaysSinceConfigurationIntent, in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         var entries: [SimpleEntry] = []
         
         let sharedDefaults = UserDefaults.init(suiteName: "group.LoveLust")
@@ -65,7 +66,7 @@ struct Provider: TimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, widgetData: widgetData)
+            let entry = SimpleEntry(date: entryDate, widgetData: widgetData, configuration: configuration)
             entries.append(entry)
         }
 
@@ -75,8 +76,8 @@ struct Provider: TimelineProvider {
 }
 
 struct ActivityWidgetData: Decodable, Hashable {
-    let soloActivity: Activity
-    let sexualActivity: Activity
+    let soloActivity: Activity?
+    let sexualActivity: Activity?
     let partner: Partner?
     let safety: String
     let moodEmoji: String
@@ -126,6 +127,7 @@ struct IdName: Decodable, Hashable {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let widgetData: ActivityWidgetData?
+    let configuration: DaysSinceConfigurationIntent
 }
 
 enum DateError: String, Error {
@@ -134,215 +136,170 @@ enum DateError: String, Error {
 
 struct DaysSinceEntryView : View {
     var entry: Provider.Entry
-    @Environment(\.widgetFamily) var widgetFamily
-    @Environment(\.widgetRenderingMode) var widgetRenderingMode
-    private var days: Int
-    private var daysString: LocalizedStringKey
-    private var fontDays: Font
-    private var fontTitle: Font
-    private var fontSubtitle: Font
-    private var widgetBackground: Color
-    private var widgetForeground: Color
-    private var widgetForegroundTitle: Color
-    private var widgetForegroundSubtitle: Color
-    
-    init(entry: Provider.Entry) {
-        self.entry = entry
-        if (entry.widgetData != nil) {
-            days = Calendar
-                .current
-                .dateComponents(
-                    [.day],
-                    from: entry.widgetData!.sexualActivity.date,
-                    to: Date()
-                ).day!
-        } else {
-            days = 0
-        }
-        daysString = days == 1 ? LocalizedStringKey("day") : LocalizedStringKey("days")
+        @Environment(\.widgetFamily) var widgetFamily
+        @Environment(\.widgetRenderingMode) var widgetRenderingMode
+        private var activity: Activity?
+        private var days: Int
+        private var daysString: LocalizedStringKey
+        private var withoutSexString: LocalizedStringKey
+        private var fontDays: Font
+        private var fontTitle: Font
+        private var fontSubtitle: Font
+        private var widgetBackground: Color
+        private var widgetForeground: Color
+        private var widgetForegroundTitle: Color
+        private var widgetForegroundSubtitle: Color
         
-        widgetBackground = .clear
-        widgetForeground = .primary
-        widgetForegroundTitle = .primary
-        widgetForegroundSubtitle = .gray
-        
-        if (days == 0) {
-            widgetForeground = .green
-        } else  if (days >= 30) {
-            widgetBackground = .red
-            widgetForeground = .white
-            widgetForegroundTitle = .white
-            widgetForegroundSubtitle = .white
-        } else  if (days >= 14) {
-            widgetBackground = .orange
-            widgetForeground = .white
-            widgetForegroundTitle = .white
-            widgetForegroundSubtitle = .yellow
-        } else  if (days >= 7) {
-            widgetForeground = .orange
-        }
+        init(entry: Provider.Entry) {
+            self.entry = entry
+            
+            if (entry.widgetData != nil) {
+                if entry.configuration.type == DaysSinceActivityType.masturbation {
+                    activity = entry.widgetData?.soloActivity
+                } else {
+                    activity = entry.widgetData?.sexualActivity
+                }
+                if activity != nil {
+                    days = Calendar
+                        .current
+                        .dateComponents(
+                            [.day],
+                            from: activity!.date,
+                            to: Date()
+                        ).day!
+                } else {
+                    days = 0
+                }
+            } else {
+                activity = nil
+                days = 0
+            }
+            daysString = LocalizedStringKey("days")
+            if (days == 1) {
+                daysString = LocalizedStringKey("day")
+            }
+            widgetBackground = Color(UIColor.systemBackground)
+            widgetForeground = Color(UIColor.label)
+            widgetForegroundTitle = Color(UIColor.label)
+            widgetForegroundSubtitle = Color(UIColor.systemGray)
 
-        fontDays = Font.system(size: 16)
-        fontTitle = Font.system(size: 8)
-        fontSubtitle = Font.system(size: 8)
-        if (widgetFamily == .systemSmall || widgetFamily == .systemMedium) {
-            fontDays = Font.system(size: 64)
-            fontTitle = Font.system(size: 24)
+            if entry.configuration.type == DaysSinceActivityType.masturbation {
+                withoutSexString = LocalizedStringKey("without masturbation")
+                if (days == 0) {
+                    widgetForeground = Color(UIColor.systemPink)
+                } else  if (days >= 30) {
+                    widgetForeground = Color(UIColor.systemGreen)
+                } else  if (days >= 14) {
+                    widgetForeground = Color(UIColor.systemYellow)
+                } else  if (days >= 7) {
+                    widgetForeground = Color(UIColor.systemOrange)
+                }
+            } else {
+                withoutSexString = LocalizedStringKey("without sex")
+                if (days == 0) {
+                    widgetForeground = Color(UIColor.systemGreen)
+                } else  if (days >= 30) {
+                    widgetForeground = Color(UIColor.systemRed)
+                } else  if (days >= 14) {
+                    widgetForeground = Color(UIColor.systemOrange)
+                } else  if (days >= 7) {
+                    widgetForeground = Color(UIColor.systemYellow)
+                }
+            }
+
+            fontDays = Font.system(size: 16)
+            fontTitle = Font.system(size: 8)
             fontSubtitle = Font.system(size: 8)
-        } else if (widgetFamily == .systemLarge) {
-            fontDays = Font.system(size: 128)
-            fontTitle = Font.system(size: 48)
-            fontSubtitle = Font.system(size: 16)
+            if (widgetFamily == .systemSmall || widgetFamily == .systemMedium) {
+                fontDays = Font.system(size: 64)
+                fontTitle = Font.system(size: 24)
+                fontSubtitle = Font.system(size: 8)
+            } else if (widgetFamily == .systemLarge) {
+                fontDays = Font.system(size: 128)
+                fontTitle = Font.system(size: 48)
+                fontSubtitle = Font.system(size: 16)
+            }
+            if (widgetRenderingMode == .accented) {
+                widgetBackground = Color(UIColor.systemBackground)
+            }
+            
         }
         
-    }
-    
-    private var WidgetView: some View {
-        ZStack {
-            VStack(spacing: 0) {
-                Text(days.description)
-                    .font(fontDays)
-                    .fontWeight(.bold)
-                    .fontDesign(.rounded)
-                    .foregroundColor(widgetForeground)
-                Text(daysString)
-                    .font(fontTitle)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .foregroundColor(widgetForegroundTitle)
-                if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                    Text("without sex")
-                        .font(fontSubtitle)
+        private var WidgetView: some View {
+            ZStack {
+                VStack(spacing: 0) {
+                    Text(days.description)
+                        .font(fontDays)
+                        .fontWeight(.bold)
+                        .fontDesign(.rounded)
+                        .foregroundColor(widgetForeground)
+                        .redacted(reason: activity == nil ? .placeholder : [])
+                    Text(daysString)
+                        .font(fontTitle)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
-                        .foregroundColor(widgetForegroundSubtitle)
+                        .foregroundColor(widgetForegroundTitle)
+                        .redacted(reason: activity == nil ? .placeholder : [])
+                    if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                        Text(withoutSexString)
+                            .font(fontSubtitle)
+                            .fontDesign(.rounded)
+                            .fontWeight(.semibold)
+                            .textCase(.uppercase)
+                            .foregroundColor(widgetForegroundSubtitle)
+                            .redacted(reason: activity == nil ? .placeholder : [])
+                    }
                 }
             }
+            .containerBackground(for: .widget) {
+                widgetBackground
+            }
         }
-        .containerBackground(for: .widget) {
-            widgetBackground
+        
+        private var AccessoryView: some View {
+            VStack(spacing: 0) {
+                Text(days.description)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .fontDesign(.rounded)
+                    .redacted(reason: activity == nil ? .placeholder : [])
+                Text(daysString)
+                    .font(.caption)
+                    .fontDesign(.rounded)
+                    .fontWeight(.semibold)
+                    .textCase(.uppercase)
+                    .redacted(reason: activity == nil ? .placeholder : [])
+                if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                    Text(withoutSexString)
+                        .font(.caption2)
+                        .fontDesign(.rounded)
+                        .fontWeight(.semibold)
+                        .textCase(.uppercase)
+                        .redacted(reason: activity == nil ? .placeholder : [])
+                }
+            }
+            .containerBackground(for: .widget) {}
         }
-    }
-    
-    private var NoDataView: some View {
-        VStack(spacing: 0) {
-            Text("7")
-                .font(fontDays)
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-                .foregroundColor(widgetForeground)
-                .redacted(reason: .placeholder)
-            Text("days")
+        
+        private var InlineView: some View {
+            Text("\(days) \(daysString) \(withoutSexString)")
                 .font(fontTitle)
                 .fontDesign(.rounded)
                 .fontWeight(.semibold)
-                .textCase(.uppercase)
-                .foregroundColor(widgetForegroundTitle)
-            Text("without sex")
-                .font(fontSubtitle)
-                .fontDesign(.rounded)
-                .fontWeight(.semibold)
-                .textCase(.uppercase)
-                .foregroundColor(widgetForegroundSubtitle)
+                .privacySensitive()
+                .containerBackground(for: .widget) {}
         }
-        .containerBackground(for: .widget) {
-            widgetBackground
-        }
-    }
-    
-    private var AccessoryView: some View {
-        VStack(spacing: 0) {
-            Text(days.description)
-                .font(.title)
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-            Text(daysString)
-                .font(.caption)
-                .fontDesign(.rounded)
-                .fontWeight(.semibold)
-                .textCase(.uppercase)
-            if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("without sex")
-                    .font(.caption2)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-            }
-        }
-        .containerBackground(for: .widget) {}
-    }
-    
-    private var AccessoryNoDataView: some View {
-        VStack(spacing: 0) {
-            Text("7")
-                .font(.title)
-                .fontWeight(.bold)
-                .fontDesign(.rounded)
-            Text("days")
-                .font(.caption)
-                .fontDesign(.rounded)
-                .fontWeight(.semibold)
-                .textCase(.uppercase)
-            if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                Text("without sex")
-                    .font(.caption2)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-            }
-        }
-        .redacted(reason: .placeholder)
-        .containerBackground(for: .widget) {}
-    }
-    
-    private var InlineView: some View {
-        Text("\(days) \(daysString) without sex")
-            .font(fontTitle)
-            .fontDesign(.rounded)
-            .fontWeight(.semibold)
-            .privacySensitive()
-            .containerBackground(for: .widget) {}
-    }
-    
-    private var InlineNoDataView: some View {
-        Text("7 days without sex")
-            .font(fontTitle)
-            .fontDesign(.rounded)
-            .fontWeight(.semibold)
-            .redacted(reason: .placeholder)
-            .containerBackground(for: .widget) {}
-    }
-    
-    var body: some View {
-        if(widgetFamily == .accessoryInline) {
-            if(entry.widgetData != nil) {
+        
+        var body: some View {
+            if widgetFamily == .accessoryInline {
                 InlineView
-            } else {
-                InlineNoDataView
-            }
-        } else if(widgetFamily == .accessoryCircular || widgetFamily == .accessoryRectangular) {
-            if(entry.widgetData != nil) {
+            } else if widgetFamily == .accessoryCircular || widgetFamily == .accessoryRectangular {
                 AccessoryView
             } else {
-                AccessoryNoDataView
+                WidgetView
             }
-        } else {
-            if(entry.widgetData != nil) {
-                if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                    ZStack {
-                        widgetBackground
-                        WidgetView
-                    }
-                } else {
-                    WidgetView
-                }
-            } else {
-                NoDataView
-            }
-    }
-    }
+        }
 }
 
 struct DaysSince: Widget {
@@ -351,7 +308,7 @@ struct DaysSince: Widget {
     let description: LocalizedStringKey = "daysSince.description"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        IntentConfiguration(kind: kind, intent: DaysSinceConfigurationIntent.self, provider: Provider()) { entry in
             DaysSinceEntryView(entry: entry)
         }
         .configurationDisplayName(displayName)
@@ -429,7 +386,7 @@ struct DaysSince: Widget {
         )
         
         static var previews: some View {
-            DaysSinceEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData))
+            DaysSinceEntryView(entry: SimpleEntry(date: Date(), widgetData: widgetData, configuration: DaysSinceConfigurationIntent()))
                 .previewContext(WidgetPreviewContext(family: .systemSmall))
         }
     }

@@ -272,8 +272,8 @@
 			children = (
 				BA9B11962A771F9100368DC2 /* LastActivityBundle.swift */,
 				BA9B11982A771F9100368DC2 /* LastActivity.swift */,
-				BA1980E92CFE3BD400886595 /* Localizable.xcstrings */,
 				BA9B119A2A771F9100368DC2 /* LastActivity.intentdefinition */,
+				BA1980E92CFE3BD400886595 /* Localizable.xcstrings */,
 				BA9B119B2A771F9200368DC2 /* Assets.xcassets */,
 				BA9B119D2A771F9200368DC2 /* Info.plist */,
 			);
@@ -286,9 +286,9 @@
 				BAC09C492A785F3B0070852E /* DaysSinceBundle.swift */,
 				BAC09C4B2A785F3B0070852E /* DaysSince.swift */,
 				BA016B0A2D023FD90050DC5A /* DaysSince.intentdefinition */,
+				BA1980E72CFE3AD700886595 /* Localizable.xcstrings */,
 				BAC09C4D2A785F3B0070852E /* Assets.xcassets */,
 				BAC09C4F2A785F3B0070852E /* Info.plist */,
-				BA1980E72CFE3AD700886595 /* Localizable.xcstrings */,
 			);
 			path = DaysSince;
 			sourceTree = "<group>";

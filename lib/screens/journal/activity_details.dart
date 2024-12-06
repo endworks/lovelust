@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
+import 'package:lovelust/services/health_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
 import 'package:lovelust/widgets/blocks/birth_control_block.dart';
@@ -28,6 +29,7 @@ class ActivityDetailsPage extends StatefulWidget {
 
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
+  final HealthService _health = getIt<HealthService>();
   final ApiService _api = getIt<ApiService>();
   late Activity _activity;
   Partner? _partner;
@@ -111,6 +113,9 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       } else {
         List<Activity> activity = [..._shared.activity];
         activity.removeWhere((element) => element.id == _activity.id);
+        _health.hasPermissions.then((value) {
+          if (value) _health.deleteSexualActivity(_activity);
+        });
         setState(() {
           _shared.activity = activity;
         });

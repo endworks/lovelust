@@ -156,13 +156,14 @@ struct LastActivityEntryView : View {
         var safety: String
         var safetyColor: Color
         var sensitiveMode: Bool
+        var redactionReason: RedactionReasons = []
+        var partnerRedactionReason: RedactionReasons = []
         
         if entry.widgetData != nil {
-            if entry.widgetData!.sexualActivity != nil {
-                activity = entry.widgetData!.sexualActivity!
-            }
-            if entry.widgetData!.soloActivity != nil {
-                activity = entry.widgetData!.soloActivity!
+            if entry.configuration.type == LastActivityType.masturbation {
+                activity = entry.widgetData?.soloActivity
+            } else {
+                activity = entry.widgetData?.sexualActivity
             }
 
             partner = entry.widgetData!.partner
@@ -173,12 +174,13 @@ struct LastActivityEntryView : View {
             partner = nil
             safety = "UNSAFE"
             sensitiveMode = false
+            redactionReason.insert(.placeholder)
+            partnerRedactionReason.insert(.placeholder)
         }
         
         if activity != nil {
             moodString = LocalizedStringKey(activity!.mood ?? "NO_MOOD")
             placeString = LocalizedStringKey(activity!.place ?? "NO_PLACE")
-            safetyString = LocalizedStringKey(safety)
             contraceptiveString = LocalizedStringKey( activity!.birthControl ?? "NO_CONTRACEPTIVE")
             partnerContraceptiveString = LocalizedStringKey( activity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
             
@@ -189,16 +191,24 @@ struct LastActivityEntryView : View {
             dateFormatter.dateFormat = "d"
             dayString = dateFormatter.string(from: activity!.date)
             
-            safetyColor = .primary
-            if safety == "UNSAFE" {
-                safetyColor = .red
-            } else if entry.widgetData!.safety == "PARTIALLY_UNSAFE" {
-                safetyColor = .orange
-            }
-            
-            partnerString = String(localized: "UNKNOWN")
-            if partner != nil {
-                partnerString = entry.widgetData!.partner!.name
+            if entry.configuration.type == LastActivityType.masturbation {
+                safetyString = LocalizedStringKey("Masturbation")
+                safetyColor = .pink
+                partnerString = ""
+                sensitiveMode = false
+            } else {
+                safetyString = LocalizedStringKey(safety)
+                safetyColor = .primary
+                if safety == "UNSAFE" {
+                    safetyColor = .red
+                } else if entry.widgetData!.safety == "PARTIALLY_UNSAFE" {
+                    safetyColor = .orange
+                }
+
+                partnerString = String(localized: "UNKNOWN")
+                if partner != nil {
+                    partnerString = entry.widgetData!.partner!.name
+                }
             }
         } else {
             moodString = LocalizedStringKey("NO_MOOD")
@@ -216,10 +226,14 @@ struct LastActivityEntryView : View {
             partnerString = String(localized: "UNKNOWN")
         }
         
+        if sensitiveMode {
+            partnerRedactionReason.insert(.privacy)
+        }
+        
         
         return VStack {
             HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: -2) {
+                VStack(alignment: .leading, spacing: 0) {
                     Text(weekdayString)
                         .font(.caption2)
                         .fontDesign(.rounded)
@@ -228,23 +242,24 @@ struct LastActivityEntryView : View {
                         .foregroundColor(.red)
                         .lineLimit(1)
                         .truncationMode(.tail)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .redacted(reason: redactionReason)
                     Text(dayString)
                         .font(.largeTitle)
                         .fontWeight(.light)
                         .lineLimit(1)
                         .truncationMode(.tail)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .redacted(reason: redactionReason)
                     Spacer()
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    Text(partnerString).font(.headline)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                        .privacySensitive()
-                        .redacted(reason: sensitiveMode ? .privacy : [])
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                    if entry.configuration.type != LastActivityType.masturbation {
+                        Text(partnerString).font(.headline)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .privacySensitive()
+                            .redacted(reason: partnerRedactionReason)
+                    }
 
                     if (widgetFamily != .systemSmall && activity!.mood != nil) {
                         Text(moodString)
@@ -255,7 +270,7 @@ struct LastActivityEntryView : View {
                             .foregroundColor(.pink)
                             .lineLimit(1)
                             .truncationMode(.tail)
-                            .redacted(reason: activity == nil ? .placeholder : [])
+                            .redacted(reason: redactionReason)
                     }
                     
                 }
@@ -269,7 +284,7 @@ struct LastActivityEntryView : View {
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
                         .foregroundColor(.purple)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .redacted(reason: redactionReason)
                 }
                 Text(dateString)
                     .lineLimit(1)
@@ -278,7 +293,7 @@ struct LastActivityEntryView : View {
                     .fontDesign(.rounded)
                     .textCase(.uppercase)
                     .foregroundColor(.gray)
-                    .redacted(reason: activity == nil ? .placeholder : [])
+                    .redacted(reason: redactionReason)
                 Spacer()
             }
             HStack(alignment: .bottom, spacing: 0) {
@@ -286,45 +301,49 @@ struct LastActivityEntryView : View {
                     Text(safetyString)
                         .font(.headline)
                         .foregroundColor(safetyColor)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .redacted(reason: redactionReason)
                 } else {
                     Text(safetyString)
                         .font(.title)
                         .foregroundColor(safetyColor)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .redacted(reason: redactionReason)
                     
                 }
                 Spacer()
             }
-           if activity!.birthControl != nil || activity!.partnerBirthControl != nil {
-               HStack(alignment: .top) {
-                   if activity!.birthControl != nil {
-                       Text(contraceptiveString)
-                           .lineLimit(1)
-                           .truncationMode(.tail)
-                           .font(.caption)
-                           .fontDesign(.rounded)
-                           .fontWeight(.semibold)
-                           .textCase(.uppercase)
-                           .foregroundColor(.cyan)
-                           .redacted(reason: activity == nil ? .placeholder : [])
-                   }
-                   if activity!.partnerBirthControl != nil && activity!.partnerBirthControl != activity!.birthControl {
-                       Text(partnerContraceptiveString)
-                           .lineLimit(1)
-                           .truncationMode(.tail)
-                           .font(.caption)
-                           .fontDesign(.rounded)
-                           .fontWeight(.semibold)
-                           .textCase(.uppercase)
-                           .foregroundColor(.cyan)
-                           .redacted(reason: activity == nil ? .placeholder : [])
-                   }
-                   Spacer()
-               }
+            if entry.configuration.type != LastActivityType.masturbation && widgetFamily == .systemMedium {
+                if activity!.birthControl != nil || activity!.partnerBirthControl != nil {
+                    HStack(alignment: .top) {
+                        if activity!.birthControl != nil {
+                            Text(contraceptiveString)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .font(.caption)
+                                .fontDesign(.rounded)
+                                .fontWeight(.semibold)
+                                .textCase(.uppercase)
+                                .foregroundColor(.cyan)
+                                .redacted(reason: redactionReason)
+                        }
+                        if activity!.partnerBirthControl != nil && activity!.partnerBirthControl != activity!.birthControl {
+                            Text(partnerContraceptiveString)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .font(.caption)
+                                .fontDesign(.rounded)
+                                .fontWeight(.semibold)
+                                .textCase(.uppercase)
+                                .foregroundColor(.cyan)
+                                .redacted(reason: redactionReason)
+                        }
+                        Spacer()
+                    }
+                }
            }
         }
-        .containerBackground(for: .widget) {}
+        .containerBackground(for: .widget) {
+            Color(UIColor.systemBackground)
+        }
         .privacySensitive()
     }
     
@@ -333,12 +352,15 @@ struct LastActivityEntryView : View {
         dateFormatter.dateStyle = .medium
         let dateString: String
         let safetyString: LocalizedStringKey
+        var redactionReason: RedactionReasons = []
+
         if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
             dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
             safetyString = LocalizedStringKey(entry.widgetData!.safety)
         } else {
             dateString = dateFormatter.string(from: Date())
             safetyString = "SAFE"
+            redactionReason.insert(.placeholder)
         }
         
         return Text("\(safetyString) \(dateString)")
@@ -346,7 +368,7 @@ struct LastActivityEntryView : View {
             .font(.caption)
             .fontDesign(.rounded)
             .foregroundColor(.gray)
-            .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+            .redacted(reason: redactionReason)
     }
     
     private var RectangularView: some View {
@@ -356,6 +378,7 @@ struct LastActivityEntryView : View {
         let safetyString: LocalizedStringKey
         let contraceptiveString: LocalizedStringKey
         let partnerContraceptiveString: LocalizedStringKey
+        var redactionReason: RedactionReasons = []
         
         if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
             dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
@@ -367,6 +390,7 @@ struct LastActivityEntryView : View {
             safetyString = "SAFE"
             contraceptiveString = "CONDOM"
             partnerContraceptiveString = "NO_CONTRACEPTIVE"
+            redactionReason.insert(.placeholder)
         }
         
         return VStack() {
@@ -378,7 +402,7 @@ struct LastActivityEntryView : View {
                     .fontDesign(.rounded)
                     .textCase(.uppercase)
                     .foregroundColor(.gray)
-                    .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+                    .redacted(reason: redactionReason)
                 Spacer()
             }
             HStack{
@@ -387,7 +411,7 @@ struct LastActivityEntryView : View {
                     .truncationMode(.tail)
                     .font(.headline)
                     .foregroundColor(.primary)
-                    .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+                    .redacted(reason: redactionReason)
                 Spacer()
             }
             if entry.widgetData?.sexualActivity != nil {
@@ -401,7 +425,7 @@ struct LastActivityEntryView : View {
                                 .fontDesign(.rounded)
                                 .fontWeight(.semibold)
                                 .textCase(.uppercase)
-                                .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+                                .redacted(reason: redactionReason)
                         }
                         if entry.widgetData?.sexualActivity!.partnerBirthControl != nil && entry.widgetData?.sexualActivity!.partnerBirthControl != entry.widgetData?.sexualActivity!.birthControl{
                             Text(partnerContraceptiveString)
@@ -411,7 +435,7 @@ struct LastActivityEntryView : View {
                                 .fontDesign(.rounded)
                                 .fontWeight(.semibold)
                                 .textCase(.uppercase)
-                                .redacted(reason: entry.widgetData == nil ? .placeholder : [])
+                                .redacted(reason: redactionReason)
                         }
                         Spacer()
                     }
@@ -483,27 +507,6 @@ struct LastActivity_Previews: PreviewProvider {
         practices: [],
         watchedPorn: false
     )
-
-    static var lastSoloActivity = Activity(
-        id: "e29341fa-e09b-444b-a42a-69f9d7c21682",
-        partner: nil,
-        birthControl: nil,
-        partnerBirthControl: nil,
-        date: Date(),
-        location: "",
-        notes: "",
-        duration: 20,
-        orgasms: 1,
-        partnerOrgasms: 0,
-        place: "BEDROOM",
-        initiator: "ME",
-        rating: 4,
-        type: "MASTURBATION",
-        mood: "HORNY",
-        ejaculation: "IN_THE_ASS",
-        practices: [],
-        watchedPorn: false
-    )
     
     static var widgetData = ActivityWidgetData(
         soloActivity: lastSexualActivity,
@@ -511,7 +514,7 @@ struct LastActivity_Previews: PreviewProvider {
         partner: partner,
         safety: "SAFE",
         moodEmoji: "🥵",
-        sensitiveMode: false
+        sensitiveMode: true
     )
     
     static var previews: some View {

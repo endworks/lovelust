@@ -27,7 +27,7 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>SEXUAL_INTERCOURSE</string>
+					<string>Sexual activity</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>nBgGVy</string>
 					<key>INEnumValueIndex</key>
@@ -37,7 +37,7 @@
 				</dict>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>MASTURBATION</string>
+					<string>Masturbation</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>oSQEoV</string>
 					<key>INEnumValueIndex</key>
@@ -81,7 +81,7 @@
 					<key>INIntentParameterConfigurable</key>
 					<true/>
 					<key>INIntentParameterDisplayName</key>
-					<string>ACTIVITY_TYPE</string>
+					<string>Type</string>
 					<key>INIntentParameterDisplayNameID</key>
 					<string>3lSij6</string>
 					<key>INIntentParameterDisplayPriority</key>
@@ -161,7 +161,7 @@
 				<array>
 					<dict>
 						<key>INIntentResponseParameterDisplayName</key>
-						<string>ACTIVITY_TYPE</string>
+						<string>Type</string>
 						<key>INIntentResponseParameterDisplayNameID</key>
 						<string>IQvcdF</string>
 						<key>INIntentResponseParameterDisplayPriority</key>

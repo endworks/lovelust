@@ -411,7 +411,6 @@ class SharedService extends ChangeNotifier {
           ).then(
             (value) => debugPrint("delete LastActivity widget"),
           );
-
           HomeWidget.updateWidget(
             iOSName: "DaysSince",
             androidName: 'DaysSinceWidgetReceiver',

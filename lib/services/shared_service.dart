@@ -373,7 +373,7 @@ class SharedService extends ChangeNotifier {
             moodEmoji: lastSexualActivity != null
                 ? getMoodEmoji(lastSexualActivity.mood)
                 : null,
-            sensitiveMode: _settings.sensitiveMode,
+            privacyMode: privacyMode,
           );
 
           HomeWidget.saveWidgetData<String>(
@@ -441,14 +441,14 @@ class SharedService extends ChangeNotifier {
     debugPrint(state.name);
     appLifecycleState = state;
     if (state == AppLifecycleState.inactive) {
-      if (requireAuth || privacyMode) {
+      if (requireAuth) {
         if (!isAuthenticating) {
           protected = true;
         }
       }
     }
     if (state == AppLifecycleState.resumed) {
-      if (!requireAuth || privacyMode || authorized) {
+      if (!requireAuth || authorized) {
         protected = false;
       }
     }
@@ -1691,7 +1691,6 @@ class SharedService extends ChangeNotifier {
     _activity = value;
     _storage.setActivity(value);
     notifyListeners();
-    updateWidgets();
   }
 
   List<Partner> get partners {
@@ -1702,7 +1701,6 @@ class SharedService extends ChangeNotifier {
     _partners = value;
     _storage.setPartners(value);
     notifyListeners();
-    updateWidgets();
   }
 
   bool get privacyMode {

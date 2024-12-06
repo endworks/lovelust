@@ -83,7 +83,7 @@ struct ActivityWidgetData: Decodable, Hashable {
     let partner: Partner?
     let safety: String
     let moodEmoji: String
-    let sensitiveMode: Bool
+    let privacyMode: Bool
 }
 
 struct Activity: Decodable, Hashable {
@@ -139,6 +139,7 @@ enum DateError: String, Error {
 struct LastActivityEntryView : View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var widgetFamily
+    @Environment(\.redactionReasons) var redactionReasons
     
     private var WidgetView: some View {
         let dateFormatter = DateFormatter()
@@ -155,9 +156,8 @@ struct LastActivityEntryView : View {
         let partner: Partner?
         var safety: String
         var safetyColor: Color
-        var sensitiveMode: Bool
-        var redactionReason: RedactionReasons = []
-        var partnerRedactionReason: RedactionReasons = []
+        var privacyMode: Bool
+        var redactionReason: RedactionReasons
         
         if entry.widgetData != nil {
             if entry.configuration.type == LastActivityType.masturbation {
@@ -168,14 +168,12 @@ struct LastActivityEntryView : View {
 
             partner = entry.widgetData!.partner
             safety = entry.widgetData!.safety
-            sensitiveMode = entry.widgetData!.sensitiveMode
+            privacyMode = entry.widgetData!.privacyMode
         } else {
             activity = nil
             partner = nil
             safety = "UNSAFE"
-            sensitiveMode = false
-            redactionReason.insert(.placeholder)
-            partnerRedactionReason.insert(.placeholder)
+            privacyMode = false
         }
         
         if activity != nil {
@@ -195,7 +193,7 @@ struct LastActivityEntryView : View {
                 safetyString = LocalizedStringKey("Masturbation")
                 safetyColor = .pink
                 partnerString = ""
-                sensitiveMode = false
+                privacyMode = false
             } else {
                 safetyString = LocalizedStringKey(safety)
                 safetyColor = .primary
@@ -210,6 +208,8 @@ struct LastActivityEntryView : View {
                     partnerString = entry.widgetData!.partner!.name
                 }
             }
+            
+            redactionReason = redactionReasons
         } else {
             moodString = LocalizedStringKey("NO_MOOD")
             placeString = LocalizedStringKey("NO_PLACE")
@@ -224,10 +224,7 @@ struct LastActivityEntryView : View {
             dayString = dateFormatter.string(from: Date())
             safetyColor = .primary
             partnerString = String(localized: "UNKNOWN")
-        }
-        
-        if sensitiveMode {
-            partnerRedactionReason.insert(.privacy)
+            redactionReason = [.placeholder]
         }
         
         
@@ -253,12 +250,12 @@ struct LastActivityEntryView : View {
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    if entry.configuration.type != LastActivityType.masturbation {
+                    if entry.configuration.type != LastActivityType.masturbation && !privacyMode {
                         Text(partnerString).font(.headline)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .privacySensitive()
-                            .redacted(reason: partnerRedactionReason)
+                            .redacted(reason: redactionReason)
                     }
 
                     if (widgetFamily != .systemSmall && activity!.mood != nil) {
@@ -351,23 +348,26 @@ struct LastActivityEntryView : View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let dateString: String
-        let safetyString: LocalizedStringKey
+        let safetyIcon: String
         var redactionReason: RedactionReasons = []
 
         if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
             dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
-            safetyString = LocalizedStringKey(entry.widgetData!.safety)
+            if entry.widgetData!.safety == "SAFE" {
+                safetyIcon = "checkmark.shield"
+            } else if entry.widgetData!.safety == "UNSAFE" {
+                safetyIcon = "shield.slash"
+            } else {
+                safetyIcon = "exclamationmark.shield"
+            }
         } else {
             dateString = dateFormatter.string(from: Date())
-            safetyString = "SAFE"
+            safetyIcon = "shield"
             redactionReason.insert(.placeholder)
         }
-        
-        return Text("\(safetyString) \(dateString)")
-            .containerBackground(for: .widget) {}
-            .font(.caption)
-            .fontDesign(.rounded)
-            .foregroundColor(.gray)
+
+        return (Text(Image(systemName: safetyIcon)) + Text(" ") + Text(dateString))
+            .privacySensitive()
             .redacted(reason: redactionReason)
     }
     
@@ -376,71 +376,84 @@ struct LastActivityEntryView : View {
         dateFormatter.dateStyle = .medium
         let dateString: String
         let safetyString: LocalizedStringKey
+        let safetyIcon: String
         let contraceptiveString: LocalizedStringKey
         let partnerContraceptiveString: LocalizedStringKey
         var redactionReason: RedactionReasons = []
         
         if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
             dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
-            safetyString = LocalizedStringKey(entry.widgetData!.safety)
             contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity!.birthControl ?? "NO_CONTRACEPTIVE")
             partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
+            safetyString = LocalizedStringKey(entry.widgetData!.safety)
+            if entry.widgetData!.safety == "SAFE" {
+                safetyIcon = "checkmark.shield"
+            } else if entry.widgetData!.safety == "UNSAFE" {
+                safetyIcon = "shield.slash"
+            } else {
+                safetyIcon = "exclamationmark.shield"
+            }
         } else {
             dateString = dateFormatter.string(from: Date())
-            safetyString = "SAFE"
             contraceptiveString = "CONDOM"
             partnerContraceptiveString = "NO_CONTRACEPTIVE"
+            safetyString = "SAFE"
+            safetyIcon = "shield"
             redactionReason.insert(.placeholder)
         }
         
-        return VStack() {
-            HStack{
-                Text(dateString)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .font(.caption)
-                    .fontDesign(.rounded)
-                    .textCase(.uppercase)
-                    .foregroundColor(.gray)
-                    .redacted(reason: redactionReason)
-                Spacer()
-            }
-            HStack{
-                Text(safetyString)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                    .redacted(reason: redactionReason)
-                Spacer()
-            }
-            if entry.widgetData?.sexualActivity != nil {
-                if entry.widgetData?.sexualActivity!.birthControl != nil || entry.widgetData?.sexualActivity!.partnerBirthControl != nil {
-                    HStack(alignment: .top) {
-                        if entry.widgetData?.sexualActivity!.birthControl != nil {
-                            Text(contraceptiveString)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                                .font(.caption)
-                                .fontDesign(.rounded)
-                                .fontWeight(.semibold)
-                                .textCase(.uppercase)
-                                .redacted(reason: redactionReason)
+        return HStack{
+            VStack {
+                HStack{
+                    Text(dateString)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .font(.caption)
+                        .fontDesign(.rounded)
+                        .textCase(.uppercase)
+                        .foregroundColor(.gray)
+                        .redacted(reason: redactionReason)
+                    Spacer()
+                }
+                HStack{
+                    Text(safetyString)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .redacted(reason: redactionReason)
+                    Spacer()
+                }
+                if entry.widgetData?.sexualActivity != nil {
+                    if entry.widgetData?.sexualActivity!.birthControl != nil || entry.widgetData?.sexualActivity!.partnerBirthControl != nil {
+                        HStack(alignment: .top) {
+                            if entry.widgetData?.sexualActivity!.birthControl != nil {
+                                Text(contraceptiveString)
+                                    .lineLimit(1)
+                                    .truncationMode(.tail)
+                                    .font(.caption)
+                                    .fontDesign(.rounded)
+                                    .fontWeight(.semibold)
+                                    .textCase(.uppercase)
+                                    .redacted(reason: redactionReason)
+                            }
+                            if entry.widgetData?.sexualActivity!.partnerBirthControl != nil && entry.widgetData?.sexualActivity!.partnerBirthControl != entry.widgetData?.sexualActivity!.birthControl{
+                                Text(partnerContraceptiveString)
+                                    .lineLimit(1)
+                                    .truncationMode(.tail)
+                                    .font(.caption)
+                                    .fontDesign(.rounded)
+                                    .fontWeight(.semibold)
+                                    .textCase(.uppercase)
+                                    .redacted(reason: redactionReason)
+                            }
+                            Spacer()
                         }
-                        if entry.widgetData?.sexualActivity!.partnerBirthControl != nil && entry.widgetData?.sexualActivity!.partnerBirthControl != entry.widgetData?.sexualActivity!.birthControl{
-                            Text(partnerContraceptiveString)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                                .font(.caption)
-                                .fontDesign(.rounded)
-                                .fontWeight(.semibold)
-                                .textCase(.uppercase)
-                                .redacted(reason: redactionReason)
-                        }
-                        Spacer()
                     }
                 }
             }
+            Spacer()
+            Text("\(Image(systemName: safetyIcon))").font(.title3)
         }
         .containerBackground(for: .widget) {}
     }
@@ -514,7 +527,7 @@ struct LastActivity_Previews: PreviewProvider {
         partner: partner,
         safety: "SAFE",
         moodEmoji: "🥵",
-        sensitiveMode: true
+        privacyMode: true
     )
     
     static var previews: some View {

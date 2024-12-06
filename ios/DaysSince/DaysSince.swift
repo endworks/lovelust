@@ -81,7 +81,7 @@ struct ActivityWidgetData: Decodable, Hashable {
     let partner: Partner?
     let safety: String
     let moodEmoji: String
-    let sensitiveMode: Bool
+    let privacyMode: Bool
 }
 
 struct Activity: Decodable, Hashable {
@@ -138,9 +138,13 @@ struct DaysSinceEntryView : View {
     var entry: Provider.Entry
         @Environment(\.widgetFamily) var widgetFamily
         @Environment(\.widgetRenderingMode) var widgetRenderingMode
+        @Environment(\.redactionReasons) var redactionReasons
         private var activity: Activity?
         private var days: Int
+        private var hours: Int
+        private var max: Double
         private var daysString: LocalizedStringKey
+        private var hoursString: LocalizedStringKey
         private var withoutSexString: LocalizedStringKey
         private var fontDays: Font
         private var fontTitle: Font
@@ -167,16 +171,29 @@ struct DaysSinceEntryView : View {
                             from: activity!.date,
                             to: Date()
                         ).day!
+                    hours = Calendar
+                        .current
+                        .dateComponents(
+                            [.hour],
+                            from: activity!.date,
+                            to: Date()
+                        ).hour!
                 } else {
                     days = 0
+                    hours = 0
                 }
             } else {
                 activity = nil
-                days = 0
+                days = 1
+                hours = 1
             }
-            daysString = LocalizedStringKey("days")
+            daysString = "days"
             if (days == 1) {
-                daysString = LocalizedStringKey("day")
+                daysString = "day"
+            }
+            hoursString = "hours"
+            if (hours == 1) {
+                hoursString = "hour"
             }
             widgetBackground = Color(UIColor.systemBackground)
             widgetForeground = Color(UIColor.label)
@@ -184,18 +201,20 @@ struct DaysSinceEntryView : View {
             widgetForegroundSubtitle = Color(UIColor.systemGray)
 
             if entry.configuration.type == DaysSinceActivityType.masturbation {
-                withoutSexString = LocalizedStringKey("without masturbation")
+                withoutSexString = "without fap"
                 if (days == 0) {
                     widgetForeground = Color(UIColor.systemPink)
                 } else  if (days >= 30) {
                     widgetForeground = Color(UIColor.systemGreen)
                 } else  if (days >= 14) {
-                    widgetForeground = Color(UIColor.systemYellow)
+                    widgetForeground = Color(UIColor.label)
                 } else  if (days >= 7) {
+                    widgetForeground = Color(UIColor.systemYellow)
+                } else {
                     widgetForeground = Color(UIColor.systemOrange)
                 }
             } else {
-                withoutSexString = LocalizedStringKey("without sex")
+                withoutSexString = "without sex"
                 if (days == 0) {
                     widgetForeground = Color(UIColor.systemGreen)
                 } else  if (days >= 30) {
@@ -206,13 +225,25 @@ struct DaysSinceEntryView : View {
                     widgetForeground = Color(UIColor.systemYellow)
                 }
             }
+            
+            if (days == 0) {
+                max = 24.0
+            } else if (days >= 30) {
+                max = Double(days)
+            } else  if (days >= 14) {
+                max = 30.0
+            } else  if (days >= 7) {
+                max = 14.0
+            } else {
+                max = 7.0
+            }
 
             fontDays = Font.system(size: 16)
             fontTitle = Font.system(size: 8)
             fontSubtitle = Font.system(size: 8)
             if (widgetFamily == .systemSmall || widgetFamily == .systemMedium) {
-                fontDays = Font.system(size: 64)
-                fontTitle = Font.system(size: 24)
+                fontDays = Font.system(size: 32)
+                fontTitle = Font.system(size: 16)
                 fontSubtitle = Font.system(size: 8)
             } else if (widgetFamily == .systemLarge) {
                 fontDays = Font.system(size: 128)
@@ -222,25 +253,40 @@ struct DaysSinceEntryView : View {
             if (widgetRenderingMode == .accented) {
                 widgetBackground = Color(UIColor.systemBackground)
             }
-            
         }
         
         private var WidgetView: some View {
-            ZStack {
+            var redactionReason: RedactionReasons
+            if (activity == nil) {
+                redactionReason = [.placeholder]
+            } else {
+                redactionReason = redactionReasons
+            }
+            let progress: Double
+            let value: Double = days == 0 ? Double(hours) : Double(days)
+            
+            if entry.configuration.type == DaysSinceActivityType.masturbation {
+                progress = redactionReasons.contains(.privacy) ? 0 : value
+            } else {
+                progress = redactionReasons.contains(.privacy) ? 0 : max - value
+
+            }
+            
+            return ZStack {
                 VStack(spacing: 0) {
                     Text(days.description)
                         .font(fontDays)
-                        .fontWeight(.bold)
+                        .fontWeight(.heavy)
                         .fontDesign(.rounded)
-                        .foregroundColor(widgetForeground)
-                        .redacted(reason: activity == nil ? .placeholder : [])
-                    Text(daysString)
+                        .foregroundColor(widgetForegroundTitle)
+                        .redacted(reason: redactionReason)
+                    Text(days == 0 ? hoursString : daysString)
                         .font(fontTitle)
                         .fontDesign(.rounded)
                         .fontWeight(.semibold)
                         .textCase(.uppercase)
                         .foregroundColor(widgetForegroundTitle)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .redacted(reason: redactionReason)
                     if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
                         Text(withoutSexString)
                             .font(fontSubtitle)
@@ -248,9 +294,12 @@ struct DaysSinceEntryView : View {
                             .fontWeight(.semibold)
                             .textCase(.uppercase)
                             .foregroundColor(widgetForegroundSubtitle)
-                            .redacted(reason: activity == nil ? .placeholder : [])
+                            .redacted(reason: redactionReason)
                     }
                 }
+                ProgressView(value: progress, total: max)
+                    .progressViewStyle(.circular)
+                    .tint(widgetForeground)
             }
             .containerBackground(for: .widget) {
                 widgetBackground
@@ -258,37 +307,58 @@ struct DaysSinceEntryView : View {
         }
         
         private var AccessoryView: some View {
-            VStack(spacing: 0) {
-                Text(days.description)
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .fontDesign(.rounded)
-                    .redacted(reason: activity == nil ? .placeholder : [])
-                Text(daysString)
-                    .font(.caption)
-                    .fontDesign(.rounded)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .redacted(reason: activity == nil ? .placeholder : [])
-                if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                    Text(withoutSexString)
-                        .font(.caption2)
+            var redactionReason: RedactionReasons
+            if (activity == nil) {
+                redactionReason = [.placeholder]
+            } else {
+                redactionReason = redactionReasons
+            }
+
+            let value: Double = days == 0 ? Double(hours) : Double(days)
+            let progress: Double
+            let icon: String
+            let daysCounter: String
+            
+            if days > 90 {
+                daysCounter = "+90"
+            } else {
+                daysCounter = days.description
+            }
+            
+            if entry.configuration.type == DaysSinceActivityType.masturbation {
+                progress = redactionReasons.contains(.privacy) ? 0 : value
+                icon = "hand.raised.fill"
+            } else {
+                progress = redactionReasons.contains(.privacy) ? 0 : max - value
+                icon = "heart.slash.fill"
+            }
+            
+            return ZStack {
+                ProgressView(value: progress, total: max)
+                    .progressViewStyle(.circular)
+                HStack (spacing: 0) {
+                    Text(daysCounter)
+                        .bold()
                         .fontDesign(.rounded)
-                        .fontWeight(.semibold)
-                        .textCase(.uppercase)
-                        .redacted(reason: activity == nil ? .placeholder : [])
+                        .privacySensitive()
+                        .redacted(reason: redactionReason)
+                    Text(Image(systemName: icon))
                 }
+                
             }
             .containerBackground(for: .widget) {}
         }
         
         private var InlineView: some View {
-            Text("\(days) \(daysString) \(withoutSexString)")
-                .font(fontTitle)
-                .fontDesign(.rounded)
-                .fontWeight(.semibold)
+            var redactionReason: RedactionReasons
+            if (activity == nil) {
+                redactionReason = [.placeholder]
+            } else {
+                redactionReason = redactionReasons
+            }
+            return (Text(days.description) + Text(" ") + Text(daysString) + Text(" ") + Text(withoutSexString))
                 .privacySensitive()
-                .containerBackground(for: .widget) {}
+                .redacted(reason: redactionReason)
         }
         
         var body: some View {
@@ -313,7 +383,7 @@ struct DaysSince: Widget {
         }
         .configurationDisplayName(displayName)
         .description(description)
-        .supportedFamilies([.systemSmall, .accessoryInline, .accessoryRectangular, .accessoryCircular])
+        .supportedFamilies([.systemSmall, .accessoryInline, .accessoryCircular])
     }
 }
 
@@ -382,7 +452,7 @@ struct DaysSince: Widget {
             partner: partner,
             safety: "SAFE",
             moodEmoji: "🥵",
-            sensitiveMode: false
+            privacyMode: false
         )
         
         static var previews: some View {

@@ -1,46 +1,73 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%d %@ without sex" : {
+    " " : {
+      "shouldTranslate" : false
+    },
+    "%d day without fap" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d %@ without sex"
+            "value" : "%d day without fap"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d %@ sin sexo"
+            "value" : "%d días sin pajas"
           }
         }
       }
     },
-    "%lld %@ %@" : {
+    "%d day without sex" : {
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld %2$@ %3$@"
-          }
-        }
-      }
-    },
-    "%lld %@ without sex" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$lld %2$@ without sex"
+            "state" : "translated",
+            "value" : "%d day without sex"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$lld %2$@ sin sexo"
+            "value" : "%d días sin sexo"
+          }
+        }
+      }
+    },
+    "%d days without fap" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d days without fap"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d día sin pajas"
+          }
+        }
+      }
+    },
+    "%d days without sex" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d days without sex"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d día sin sexo"
           }
         }
       }
@@ -113,6 +140,26 @@
         }
       }
     },
+    "hour" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hora"
+          }
+        }
+      }
+    },
+    "hours" : {
+      "localizations" : {
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "horas"
+          }
+        }
+      }
+    },
     "Masturbation" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -164,19 +211,19 @@
         }
       }
     },
-    "without masturbation" : {
+    "without fap" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "without masturbation"
+            "value" : "without fap"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "sin masturbación"
+            "value" : "sin pajas"
           }
         }
       }

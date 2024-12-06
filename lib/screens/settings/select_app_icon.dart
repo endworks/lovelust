@@ -79,7 +79,10 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
         (icon == AppIcon.health ||
             icon == AppIcon.health2 ||
             icon == AppIcon.health3 ||
+            icon == AppIcon.health4 ||
             icon == AppIcon.journal ||
+            icon == AppIcon.journal2 ||
+            icon == AppIcon.partners ||
             icon == AppIcon.sexapill ||
             icon == AppIcon.sexapillWhite)) {
       return Text(AppLocalizations.of(context)!.renamesApp);

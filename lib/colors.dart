@@ -12,12 +12,14 @@ const shimapanColor = Color.fromARGB(255, 0, 216, 184);
 double mixVariation = 0.7;
 
 get lovelustColor {
-  int red =
-      (loveColor.r * mixVariation + lustColor.r * (1 - mixVariation)).floor();
+  int red = (loveColor.red * mixVariation + lustColor.red * (1 - mixVariation))
+      .floor();
   int green =
-      (loveColor.g * mixVariation + lustColor.g * (1 - mixVariation)).floor();
+      (loveColor.green * mixVariation + lustColor.green * (1 - mixVariation))
+          .floor();
   int blue =
-      (loveColor.b * mixVariation + lustColor.b * (1 - mixVariation)).floor();
+      (loveColor.blue * mixVariation + lustColor.blue * (1 - mixVariation))
+          .floor();
   return Color.fromARGB(255, red, green, blue);
 }
 

@@ -983,6 +983,12 @@ abstract class AppLocalizations {
   /// **'Health III'**
   String get health3;
 
+  /// No description provided for @health4.
+  ///
+  /// In en, this message translates to:
+  /// **'Health IV'**
+  String get health4;
+
   /// No description provided for @journal2.
   ///
   /// In en, this message translates to:
@@ -1012,6 +1018,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pills II'**
   String get pills2;
+
+  /// No description provided for @pills3.
+  ///
+  /// In en, this message translates to:
+  /// **'Pills III'**
+  String get pills3;
+
+  /// No description provided for @fire.
+  ///
+  /// In en, this message translates to:
+  /// **'Fire'**
+  String get fire;
 
   /// No description provided for @renamesApp.
   ///

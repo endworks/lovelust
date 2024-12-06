@@ -1078,6 +1078,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.health2;
     } else if (value == 'Health3') {
       return AppIcon.health3;
+    } else if (value == 'Health4') {
+      return AppIcon.health4;
     } else if (value == 'Journal') {
       return AppIcon.journal;
     } else if (value == 'Journal2') {
@@ -1124,8 +1126,12 @@ class SharedService extends ChangeNotifier {
       return AppIcon.pills;
     } else if (value == 'Pills2') {
       return AppIcon.pills2;
+    } else if (value == 'Pills3') {
+      return AppIcon.pills3;
     } else if (value == 'Condom') {
       return AppIcon.condom;
+    } else if (value == 'Fire') {
+      return AppIcon.fire;
     }
     return AppIcon.defaultAppIcon;
   }
@@ -1155,6 +1161,8 @@ class SharedService extends ChangeNotifier {
       return 'Health2';
     } else if (value == AppIcon.health3) {
       return 'Health3';
+    } else if (value == AppIcon.health4) {
+      return 'Health4';
     } else if (value == AppIcon.journal) {
       return 'Journal';
     } else if (value == AppIcon.journal2) {
@@ -1201,8 +1209,12 @@ class SharedService extends ChangeNotifier {
       return 'Pills';
     } else if (value == AppIcon.pills2) {
       return 'Pills2';
+    } else if (value == AppIcon.pills3) {
+      return 'Pills3';
     } else if (value == AppIcon.condom) {
       return 'Condom';
+    } else if (value == AppIcon.fire) {
+      return 'Fire';
     }
     return null;
   }
@@ -1543,6 +1555,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.health2;
     } else if (value == AppIcon.health3) {
       return AppLocalizations.of(context)!.health3;
+    } else if (value == AppIcon.health4) {
+      return AppLocalizations.of(context)!.health4;
     } else if (value == AppIcon.journal) {
       return AppLocalizations.of(context)!.journal;
     } else if (value == AppIcon.journal2) {
@@ -1589,8 +1603,12 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.pills;
     } else if (value == AppIcon.pills2) {
       return AppLocalizations.of(context)!.pills2;
+    } else if (value == AppIcon.pills3) {
+      return AppLocalizations.of(context)!.pills3;
     } else if (value == AppIcon.condom) {
       return AppLocalizations.of(context)!.condom;
+    } else if (value == AppIcon.fire) {
+      return AppLocalizations.of(context)!.fire;
     }
     return AppLocalizations.of(context)!.defaultAppIcon;
   }

@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>INEnumDisplayName</key>
-			<string>Days Since Activity Type</string>
+			<string>Type</string>
 			<key>INEnumDisplayNameID</key>
 			<string>CTLEMX</string>
 			<key>INEnumGeneratesHeader</key>
@@ -19,7 +19,7 @@
 			<array>
 				<dict>
 					<key>INEnumValueDisplayName</key>
-					<string>SELECT</string>
+					<string>Select</string>
 					<key>INEnumValueDisplayNameID</key>
 					<string>nfe1Me</string>
 					<key>INEnumValueName</key>
@@ -53,7 +53,7 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>24C5089c</string>
+	<string>24C98</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
 	<string>16B40</string>
 	<key>INIntentDefinitionToolsVersion</key>

@@ -160,7 +160,7 @@ struct LastActivityEntryView : View {
         var redactionReason: RedactionReasons
         
         if entry.widgetData != nil {
-            if entry.configuration.type == LastActivityType.masturbation {
+            if entry.configuration.type.rawValue == 2 {
                 activity = entry.widgetData?.soloActivity
             } else {
                 activity = entry.widgetData?.sexualActivity
@@ -189,7 +189,7 @@ struct LastActivityEntryView : View {
             dateFormatter.dateFormat = "d"
             dayString = dateFormatter.string(from: activity!.date)
             
-            if entry.configuration.type == LastActivityType.masturbation {
+            if entry.configuration.type.rawValue == 2 {
                 safetyString = LocalizedStringKey("Masturbation")
                 safetyColor = .pink
                 partnerString = ""
@@ -250,7 +250,7 @@ struct LastActivityEntryView : View {
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 0) {
-                    if entry.configuration.type != LastActivityType.masturbation && !privacyMode {
+                    if entry.configuration.type.rawValue != 2 && !privacyMode {
                         Text(partnerString).font(.headline)
                             .lineLimit(1)
                             .truncationMode(.tail)
@@ -258,7 +258,7 @@ struct LastActivityEntryView : View {
                             .redacted(reason: redactionReason)
                     }
 
-                    if (widgetFamily != .systemSmall && activity!.mood != nil) {
+                    if (widgetFamily != .systemSmall && activity != nil && activity!.mood != nil) {
                         Text(moodString)
                             .font(.caption2)
                             .fontDesign(.rounded)
@@ -274,7 +274,7 @@ struct LastActivityEntryView : View {
             }
             Spacer()
             HStack(spacing: 4) {
-                if widgetFamily != .systemSmall && activity!.place != nil {
+                if widgetFamily != .systemSmall && activity != nil && activity!.place != nil {
                     Text(placeString)
                         .font(.caption)
                         .fontDesign(.rounded)
@@ -308,7 +308,7 @@ struct LastActivityEntryView : View {
                 }
                 Spacer()
             }
-            if entry.configuration.type != LastActivityType.masturbation && widgetFamily == .systemMedium {
+            if entry.configuration.type.rawValue != 2 && widgetFamily == .systemMedium {
                 if activity!.birthControl != nil || activity!.partnerBirthControl != nil {
                     HStack(alignment: .top) {
                         if activity!.birthControl != nil {
@@ -345,20 +345,38 @@ struct LastActivityEntryView : View {
     }
     
     private var InlineView: some View {
+        let activity: Activity?
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let dateString: String
+        let safety: String
         let safetyIcon: String
         var redactionReason: RedactionReasons = []
-
-        if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
-            dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
-            if entry.widgetData!.safety == "SAFE" {
-                safetyIcon = "checkmark.shield"
-            } else if entry.widgetData!.safety == "UNSAFE" {
-                safetyIcon = "shield.slash"
+        
+        if entry.widgetData != nil {
+            if entry.configuration.type.rawValue == 2 {
+                activity = entry.widgetData!.soloActivity
             } else {
-                safetyIcon = "exclamationmark.shield"
+                activity = entry.widgetData!.sexualActivity
+            }
+            safety = entry.widgetData!.safety
+        } else {
+            activity = nil
+            safety = "SAFE"
+        }
+
+        if (activity != nil) {
+            dateString = dateFormatter.string(from: activity!.date)
+            if entry.configuration.type.rawValue != 2 {
+                if safety == "SAFE" {
+                    safetyIcon = "checkmark.shield"
+                } else if safety == "UNSAFE" {
+                    safetyIcon = "shield.slash"
+                } else {
+                    safetyIcon = "exclamationmark.shield"
+                }
+            } else {
+                safetyIcon = "hand.raised"
             }
         } else {
             dateString = dateFormatter.string(from: Date())
@@ -372,23 +390,37 @@ struct LastActivityEntryView : View {
     }
     
     private var RectangularView: some View {
+        let activity: Activity?
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let dateString: String
+        let safety: String
         let safetyString: LocalizedStringKey
         let safetyIcon: String
         let contraceptiveString: LocalizedStringKey
         let partnerContraceptiveString: LocalizedStringKey
         var redactionReason: RedactionReasons = []
         
-        if (entry.widgetData != nil && entry.widgetData!.sexualActivity != nil) {
-            dateString = dateFormatter.string(from: entry.widgetData!.sexualActivity!.date)
-            contraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity!.birthControl ?? "NO_CONTRACEPTIVE")
-            partnerContraceptiveString = LocalizedStringKey( entry.widgetData!.sexualActivity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
-            safetyString = LocalizedStringKey(entry.widgetData!.safety)
-            if entry.widgetData!.safety == "SAFE" {
+        if entry.widgetData != nil {
+            if entry.configuration.type.rawValue == 2 {
+                activity = entry.widgetData!.soloActivity
+            } else {
+                activity = entry.widgetData!.sexualActivity
+            }
+            safety = entry.widgetData!.safety
+        } else {
+            activity = nil
+            safety = "SAFE"
+        }
+        
+        if (activity != nil) {
+            dateString = dateFormatter.string(from: activity!.date)
+            contraceptiveString = LocalizedStringKey( activity!.birthControl ?? "NO_CONTRACEPTIVE")
+            partnerContraceptiveString = LocalizedStringKey( activity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
+            safetyString = LocalizedStringKey(safety)
+            if safety == "SAFE" {
                 safetyIcon = "checkmark.shield"
-            } else if entry.widgetData!.safety == "UNSAFE" {
+            } else if safety == "UNSAFE" {
                 safetyIcon = "shield.slash"
             } else {
                 safetyIcon = "exclamationmark.shield"
@@ -424,10 +456,10 @@ struct LastActivityEntryView : View {
                         .redacted(reason: redactionReason)
                     Spacer()
                 }
-                if entry.widgetData?.sexualActivity != nil {
-                    if entry.widgetData?.sexualActivity!.birthControl != nil || entry.widgetData?.sexualActivity!.partnerBirthControl != nil {
+                if activity != nil && entry.configuration.type.rawValue == 2 {
+                    if activity!.birthControl != nil || activity!.partnerBirthControl != nil {
                         HStack(alignment: .top) {
-                            if entry.widgetData?.sexualActivity!.birthControl != nil {
+                            if activity!.birthControl != nil {
                                 Text(contraceptiveString)
                                     .lineLimit(1)
                                     .truncationMode(.tail)
@@ -437,7 +469,7 @@ struct LastActivityEntryView : View {
                                     .textCase(.uppercase)
                                     .redacted(reason: redactionReason)
                             }
-                            if entry.widgetData?.sexualActivity!.partnerBirthControl != nil && entry.widgetData?.sexualActivity!.partnerBirthControl != entry.widgetData?.sexualActivity!.birthControl{
+                            if activity!.partnerBirthControl != nil && activity!.partnerBirthControl != activity!.birthControl{
                                 Text(partnerContraceptiveString)
                                     .lineLimit(1)
                                     .truncationMode(.tail)

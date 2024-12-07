@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>INEnumDisplayName</key>
-			<string>Activity Type</string>
+			<string>Type</string>
 			<key>INEnumDisplayNameID</key>
 			<string>CTLEMX</string>
 			<key>INEnumGeneratesHeader</key>
@@ -53,7 +53,7 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>24C5089c</string>
+	<string>24C98</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
 	<string>16B40</string>
 	<key>INIntentDefinitionToolsVersion</key>

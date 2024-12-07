@@ -62,9 +62,9 @@ struct Provider: IntentTimelineProvider {
             }
         }
 
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+        // Generate a timeline consisting of 24 entries an hour apart, starting from the current date.
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
+        for hourOffset in 0 ..< 24 {
             let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
             let entry = SimpleEntry(date: entryDate, widgetData: widgetData, configuration: configuration)
             entries.append(entry)
@@ -149,8 +149,8 @@ struct DaysSinceEntryView : View {
         private var fontDays: Font
         private var fontTitle: Font
         private var fontSubtitle: Font
+        private var widgetColor: Color
         private var widgetBackground: Color
-        private var widgetForeground: Color
         private var widgetForegroundTitle: Color
         private var widgetForegroundSubtitle: Color
         
@@ -195,45 +195,52 @@ struct DaysSinceEntryView : View {
             if (hours == 1) {
                 hoursString = "hour"
             }
-            widgetBackground = Color(UIColor.systemBackground)
-            widgetForeground = Color(UIColor.label)
+            
+            widgetColor = Color(UIColor.label)
             widgetForegroundTitle = Color(UIColor.label)
-            widgetForegroundSubtitle = Color(UIColor.systemGray)
+            widgetForegroundSubtitle = Color(UIColor.secondaryLabel)
+            widgetBackground = Color(UIColor.systemBackground)
 
             if entry.configuration.type == DaysSinceActivityType.masturbation {
                 withoutSexString = "without fap"
                 if (days == 0) {
-                    widgetForeground = Color(UIColor.systemPink)
+                    widgetColor = Color(UIColor.systemPink)
                 } else  if (days >= 30) {
-                    widgetForeground = Color(UIColor.systemGreen)
+                    widgetColor = Color(UIColor.systemGreen)
                 } else  if (days >= 14) {
-                    widgetForeground = Color(UIColor.label)
+                    widgetColor = Color(UIColor.label)
                 } else  if (days >= 7) {
-                    widgetForeground = Color(UIColor.systemYellow)
+                    widgetColor = Color(UIColor.systemYellow)
                 } else {
-                    widgetForeground = Color(UIColor.systemOrange)
+                    widgetColor = Color(UIColor.systemOrange)
                 }
             } else {
                 withoutSexString = "without sex"
                 if (days == 0) {
-                    widgetForeground = Color(UIColor.systemGreen)
+                    widgetColor = Color(UIColor.systemGreen)
                 } else  if (days >= 30) {
-                    widgetForeground = Color(UIColor.systemRed)
+                    widgetColor = Color(UIColor.systemRed)
                 } else  if (days >= 14) {
-                    widgetForeground = Color(UIColor.systemOrange)
+                    widgetColor = Color(UIColor.systemOrange)
                 } else  if (days >= 7) {
-                    widgetForeground = Color(UIColor.systemYellow)
+                    widgetColor = Color(UIColor.systemYellow)
                 }
             }
             
-            if (days == 0) {
-                max = 24.0
-            } else if (days >= 30) {
+             if (days >= 365) {
                 max = Double(days)
+            } else if (days >= 180) {
+                max = 365
+            } else if (days >= 90) {
+                max = 180
+            } else if (days >= 30) {
+                max = 90.0
             } else  if (days >= 14) {
                 max = 30.0
             } else  if (days >= 7) {
                 max = 14.0
+            } else if (days == 0) {
+                max = 24.0
             } else {
                 max = 7.0
             }
@@ -250,9 +257,6 @@ struct DaysSinceEntryView : View {
                 fontTitle = Font.system(size: 48)
                 fontSubtitle = Font.system(size: 16)
             }
-            if (widgetRenderingMode == .accented) {
-                widgetBackground = Color(UIColor.systemBackground)
-            }
         }
         
         private var WidgetView: some View {
@@ -262,44 +266,47 @@ struct DaysSinceEntryView : View {
             } else {
                 redactionReason = redactionReasons
             }
+            let hidden: Bool = redactionReasons.contains(.privacy) || redactionReasons.contains(.placeholder)
             let progress: Double
             let value: Double = days == 0 ? Double(hours) : Double(days)
             
-            if entry.configuration.type == DaysSinceActivityType.masturbation {
-                progress = redactionReasons.contains(.privacy) ? 0 : value
+            if entry.configuration.type.rawValue == 0 {
+                progress = hidden ? 0 : value
             } else {
-                progress = redactionReasons.contains(.privacy) ? 0 : max - value
-
+                progress = hidden ? 0 : max - value
             }
             
             return ZStack {
-                VStack(spacing: 0) {
-                    Text(days.description)
-                        .font(fontDays)
-                        .fontWeight(.heavy)
-                        .fontDesign(.rounded)
-                        .foregroundColor(widgetForegroundTitle)
-                        .redacted(reason: redactionReason)
-                    Text(days == 0 ? hoursString : daysString)
-                        .font(fontTitle)
-                        .fontDesign(.rounded)
-                        .fontWeight(.semibold)
-                        .textCase(.uppercase)
-                        .foregroundColor(widgetForegroundTitle)
-                        .redacted(reason: redactionReason)
-                    if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                        Text(withoutSexString)
-                            .font(fontSubtitle)
+                ProgressView(value: progress, total: max)
+                    .progressViewStyle(.circular)
+                    .tint(!hidden ? widgetColor : nil)
+                if !hidden {
+                    VStack(spacing: 0) {
+                        Text(days == 0 ? hours.description : days.description)
+                            .font(fontDays)
+                            .fontWeight(.heavy)
+                            .fontDesign(.rounded)
+                            .foregroundColor(widgetForegroundTitle)
+                            .redacted(reason: redactionReason)
+                            .padding(.bottom, -4)
+                        Text(days == 0 ? hoursString : daysString)
+                            .font(fontTitle)
                             .fontDesign(.rounded)
                             .fontWeight(.semibold)
                             .textCase(.uppercase)
-                            .foregroundColor(widgetForegroundSubtitle)
+                            .foregroundColor(widgetForegroundTitle)
                             .redacted(reason: redactionReason)
+                        if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                            Text(withoutSexString)
+                                .font(fontSubtitle)
+                                .fontDesign(.rounded)
+                                .fontWeight(.semibold)
+                                .textCase(.uppercase)
+                                .foregroundColor(widgetForegroundSubtitle)
+                                .redacted(reason: redactionReason)
+                        }
                     }
                 }
-                ProgressView(value: progress, total: max)
-                    .progressViewStyle(.circular)
-                    .tint(widgetForeground)
             }
             .containerBackground(for: .widget) {
                 widgetBackground
@@ -313,7 +320,7 @@ struct DaysSinceEntryView : View {
             } else {
                 redactionReason = redactionReasons
             }
-
+            let hidden: Bool = redactionReasons.contains(.privacy) || redactionReasons.contains(.placeholder)
             let value: Double = days == 0 ? Double(hours) : Double(days)
             let progress: Double
             let icon: String
@@ -325,24 +332,26 @@ struct DaysSinceEntryView : View {
                 daysCounter = days.description
             }
             
-            if entry.configuration.type == DaysSinceActivityType.masturbation {
-                progress = redactionReasons.contains(.privacy) ? 0 : value
+            if entry.configuration.type.rawValue == 0 {
+                progress = hidden ? 0 : value
                 icon = "hand.raised.fill"
             } else {
-                progress = redactionReasons.contains(.privacy) ? 0 : max - value
+                progress = hidden ? 0 : max - value
                 icon = "heart.slash.fill"
             }
             
             return ZStack {
                 ProgressView(value: progress, total: max)
                     .progressViewStyle(.circular)
-                HStack (spacing: 0) {
-                    Text(daysCounter)
-                        .bold()
-                        .fontDesign(.rounded)
-                        .privacySensitive()
-                        .redacted(reason: redactionReason)
-                    Text(Image(systemName: icon))
+                if !hidden {
+                    HStack (spacing: 0) {
+                        Text(daysCounter)
+                            .bold()
+                            .fontDesign(.rounded)
+                            .privacySensitive()
+                            .redacted(reason: redactionReason)
+                        Text(Image(systemName: icon))
+                    }
                 }
                 
             }
@@ -356,7 +365,7 @@ struct DaysSinceEntryView : View {
             } else {
                 redactionReason = redactionReasons
             }
-            return (Text(days.description) + Text(" ") + Text(daysString) + Text(" ") + Text(withoutSexString))
+            return (Text(days == 0 ? hours.description : days.description) + Text(" ") + Text(days == 0 ? hoursString : daysString) + Text(" ") + Text(withoutSexString))
                 .privacySensitive()
                 .redacted(reason: redactionReason)
         }

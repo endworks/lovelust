@@ -11,7 +11,8 @@
             "value" : "LoveLust"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "CFBundleName" : {
       "comment" : "Bundle name",
@@ -23,7 +24,8 @@
             "value" : "LoveLust"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "GADApplicationIdentifier" : {
       "extractionState" : "manual",
@@ -34,7 +36,8 @@
             "value" : "ca-app-pub-6304064057718478~5474274876"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "NSFaceIDUsageDescription" : {
       "extractionState" : "manual",

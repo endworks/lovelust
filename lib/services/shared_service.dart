@@ -1141,6 +1141,10 @@ class SharedService extends ChangeNotifier {
       return AppIcon.condom;
     } else if (value == 'Fire') {
       return AppIcon.fire;
+    } else if (value == 'Butt') {
+      return AppIcon.butt;
+    } else if (value == 'Abstract') {
+      return AppIcon.abstract;
     }
     return AppIcon.defaultAppIcon;
   }
@@ -1224,6 +1228,10 @@ class SharedService extends ChangeNotifier {
       return 'Condom';
     } else if (value == AppIcon.fire) {
       return 'Fire';
+    } else if (value == AppIcon.butt) {
+      return 'Butt';
+    } else if (value == AppIcon.abstract) {
+      return 'Abstract';
     }
     return null;
   }
@@ -1618,6 +1626,10 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.condom;
     } else if (value == AppIcon.fire) {
       return AppLocalizations.of(context)!.fire;
+    } else if (value == AppIcon.butt) {
+      return AppLocalizations.of(context)!.butt;
+    } else if (value == AppIcon.abstract) {
+      return AppLocalizations.of(context)!.abstractIcon;
     }
     return AppLocalizations.of(context)!.defaultAppIcon;
   }

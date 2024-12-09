@@ -1025,6 +1025,18 @@ abstract class AppLocalizations {
   /// **'Bold'**
   String get bold;
 
+  /// No description provided for @butt.
+  ///
+  /// In en, this message translates to:
+  /// **'Butt'**
+  String get butt;
+
+  /// No description provided for @abstractIcon.
+  ///
+  /// In en, this message translates to:
+  /// **'Abstract'**
+  String get abstractIcon;
+
   /// No description provided for @pastel.
   ///
   /// In en, this message translates to:

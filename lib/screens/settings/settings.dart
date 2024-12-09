@@ -400,6 +400,70 @@ class _SettingsPageState extends State<SettingsPage> {
 
   List<Widget> get items {
     List<Widget> list = [
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.theme),
+        subtitle: themeName,
+        onTap: _askTheme,
+        leading: Icon(
+          Icons.brightness_4,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.colorScheme),
+        subtitle: colorSchemeName,
+        onTap: _askColorScheme,
+        leading: Icon(
+          Icons.palette,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.material),
+        subtitle: Text(
+          AppLocalizations.of(context)!.materialDescription,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
+              ),
+        ),
+        value: _shared.material,
+        onChanged: (bool value) {
+          setState(() {
+            _shared.material = value;
+          });
+          reload();
+        },
+        secondary: Icon(
+          Icons.android,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+      SwitchListTile(
+        title: Text(AppLocalizations.of(context)!.trueBlack),
+        subtitle: Text(
+          AppLocalizations.of(context)!.trueBlackDescription,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurface
+                    .withValues(alpha: 0.6),
+              ),
+        ),
+        value: _shared.trueBlack,
+        onChanged: (bool value) {
+          setState(() {
+            _shared.trueBlack = value;
+          });
+          reload();
+        },
+        secondary: Icon(
+          Icons.dark_mode,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
       SwitchListTile(
         title: Text(AppLocalizations.of(context)!.privacyMode),
         subtitle: Text(
@@ -445,70 +509,6 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       ListTile(
-        title: Text(AppLocalizations.of(context)!.theme),
-        subtitle: themeName,
-        onTap: _askTheme,
-        leading: Icon(
-          Icons.brightness_4,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      ListTile(
-        title: Text(AppLocalizations.of(context)!.colorScheme),
-        subtitle: colorSchemeName,
-        onTap: _askColorScheme,
-        leading: Icon(
-          Icons.palette,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      SwitchListTile(
-        title: Text(AppLocalizations.of(context)!.trueBlack),
-        subtitle: Text(
-          AppLocalizations.of(context)!.trueBlackDescription,
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              ),
-        ),
-        value: _shared.trueBlack,
-        onChanged: (bool value) {
-          setState(() {
-            _shared.trueBlack = value;
-          });
-          reload();
-        },
-        secondary: Icon(
-          Icons.dark_mode,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      SwitchListTile(
-        title: Text(AppLocalizations.of(context)!.material),
-        subtitle: Text(
-          AppLocalizations.of(context)!.materialDescription,
-          style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              ),
-        ),
-        value: _shared.material,
-        onChanged: (bool value) {
-          setState(() {
-            _shared.material = value;
-          });
-          reload();
-        },
-        secondary: Icon(
-          Icons.android,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      ListTile(
         title: Text(AppLocalizations.of(context)!.clearPersonalData),
         subtitle: Text(
           AppLocalizations.of(context)!.clearPersonalDataDescription,
@@ -546,7 +546,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (!kIsWeb) {
       list.insert(
-        0,
+        list.length - 4,
         SwitchListTile(
           title: Text(authMethodName),
           subtitle: Text(
@@ -595,7 +595,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (!kIsWeb && (Platform.isIOS || Platform.isAndroid) && !isiOSAppOnMac) {
       list.insert(
-        list.length - 4,
+        0,
         ListTile(
           title: Text(AppLocalizations.of(context)!.appIcon),
           subtitle: appIconName,

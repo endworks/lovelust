@@ -34,10 +34,22 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
   Icon get icon {
     if (!widget.masturbation) {
       if (partner != null) {
-        return Icon(
-          partner!.gender == Gender.male ? Icons.male : Icons.female,
-          color: Theme.of(context).colorScheme.surface,
-        );
+        if (partner!.gender == Gender.female) {
+          return Icon(
+            Icons.female,
+            color: Theme.of(context).colorScheme.surface,
+          );
+        } else if (partner!.gender == Gender.male) {
+          return Icon(
+            Icons.male,
+            color: Theme.of(context).colorScheme.surface,
+          );
+        } else {
+          return Icon(
+            Icons.transgender,
+            color: Theme.of(context).colorScheme.surface,
+          );
+        }
       }
     } else {
       return Icon(
@@ -48,7 +60,7 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
 
     return Icon(
       Icons.person,
-      color: Theme.of(context).colorScheme.surface,
+      color: Theme.of(context).colorScheme.onSecondary,
     );
   }
 
@@ -61,6 +73,8 @@ class _ActivityAvatarState extends State<ActivityAvatar> {
     if (!widget.masturbation) {
       if (partner != null) {
         return partner!.sex == BiologicalSex.male ? blue : red;
+      } else {
+        return Theme.of(context).colorScheme.secondary;
       }
     }
 

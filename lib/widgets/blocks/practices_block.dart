@@ -29,17 +29,14 @@ class _PracticesBlockState extends State<PracticesBlock> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Wrap(
-          spacing: 4,
-          runSpacing: 4,
+          spacing: 6,
+          runSpacing: 6,
           children: [
             ...widget.practices.map(
-              (e) => FilterChip(
+              (e) => Chip(
                 label: _shared.inappropriateText(
                   SharedService.getPracticeTranslation(e),
                 ),
-                selected: true,
-                showCheckmark: false,
-                onSelected: (value) {},
               ),
             )
           ],

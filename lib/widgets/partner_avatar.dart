@@ -44,7 +44,7 @@ class _PartnerAvatarState extends State<PartnerAvatar> {
             backgroundColor: backgroundColor,
             child: icon,
           ),
-          _shared.sensitiveText(
+          _shared.privacyRedactedText(
             widget.partner.name,
             style: Theme.of(context).textTheme.displayMedium,
           )

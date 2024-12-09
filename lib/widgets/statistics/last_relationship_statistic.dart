@@ -57,7 +57,7 @@ class _LastRelationshipStatisticState extends State<LastRelationshipStatistic> {
         subtitle: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            _shared.sensitiveText(
+            _shared.privacyRedactedText(
               _partner != null
                   ? _partner!.name
                   : AppLocalizations.of(context)!.unknownPartner,

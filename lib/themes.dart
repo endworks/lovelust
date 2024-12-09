@@ -155,7 +155,28 @@ ThemeData generateTheme(
       secondaryLabelStyle: materialTheme.textTheme.labelSmall!.copyWith(
         color: colorScheme.onSurface,
       ),
+      selectedColor: colorScheme.primary,
+      secondarySelectedColor: colorScheme.secondary,
+      backgroundColor: colorScheme.surfaceContainerHigh,
+      showCheckmark: false,
+      side: BorderSide.none,
       shape: StadiumBorder(),
+    ),
+    segmentedButtonTheme: materialTheme.segmentedButtonTheme.copyWith(
+      style: ButtonStyle(
+        side: WidgetStateProperty.resolveWith((states) {
+          return BorderSide.none;
+        }),
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return colorScheme!.primary;
+          }
+          return colorScheme!.surfaceContainerHigh;
+        }),
+        iconColor: WidgetStateProperty.resolveWith((states) {
+          return colorScheme!.onSurface;
+        }),
+      ),
     ),
     inputDecorationTheme: materialTheme.inputDecorationTheme.copyWith(
       border: const UnderlineInputBorder(

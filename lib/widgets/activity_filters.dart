@@ -47,7 +47,7 @@ class _ActivityFiltersState extends State<ActivityFilters> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      spacing: 4,
+      spacing: 6,
       children: filters,
     );
   }

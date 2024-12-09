@@ -94,16 +94,13 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
 
     if (widget.mood != null) {
       list.add(
-        FilterChip(
+        Chip(
           label: Text(
             SharedService.getMoodTranslation(widget.mood),
           ),
-          /* avatar: _shared.sensitiveText(
+          avatar: _shared.inappropriateText(
             SharedService.getMoodEmoji(widget.mood),
-          ),*/
-          selected: true,
-          onSelected: (value) {},
-          showCheckmark: false,
+          ),
         ),
       );
     }

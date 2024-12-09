@@ -142,7 +142,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
         .map(
           (e) => DropdownMenuItem<String?>(
             value: e.id,
-            child: Text(e.name),
+            child: _shared.privacyRedactedText(e.name),
           ),
         )
         .toList();

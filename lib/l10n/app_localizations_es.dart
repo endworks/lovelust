@@ -33,6 +33,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get onlySolo => 'Filtrar solo';
 
   @override
+  String get calendar => 'Calendario';
+
+  @override
+  String get timeline => 'Cronología';
+
+  @override
   String get logActivity => 'Registrar actividad';
 
   @override

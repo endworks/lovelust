@@ -363,9 +363,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
           Icons.calendar_today,
           color: Theme.of(context).colorScheme.secondary,
         ),
-        trailing: _meetingDate != null
-            ? Text(DateFormat.yMMMEd().format(_meetingDate))
-            : null,
+        trailing: Text(DateFormat.yMMMEd().format(_meetingDate)),
         onTap: () => _selectDate(context),
       ),
       ListTile(

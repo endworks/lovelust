@@ -29,85 +29,14 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
         .toList();
   }
 
-  dotsMarkBuilder(BuildContext context, date, List<Activity> events) {
-    if (events.isEmpty) {
-      return SizedBox();
-    }
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: events.length,
-      itemBuilder: (context, index) => Container(
-        margin: const EdgeInsets.only(top: 20),
-        padding: const EdgeInsets.all(0),
-        child: Container(
-          width: 8,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: events[index].type == ActivityType.sexualIntercourse
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-      ),
-    );
-  }
-
   iconsMarkBuilder(BuildContext context, date, List<Activity> events) {
     if (events.isNotEmpty) {
-      if (events.length > 2) {
+      if (events.length > 8) {
         return Stack(
           children: [
             Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondary,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Text(
-                      events.length.toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSecondary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ))
-          ],
-        );
-      } else {
-        return Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: events.length,
-                  itemBuilder: (context, index) => _getIconForEvent(
-                    events[index],
-                  ),
-                ),
-              ),
-            )
-          ],
-        );
-      }
-    }
-  }
-
-  counterMarkBuilder(BuildContext context, date, List<Activity> events) {
-    if (events.isNotEmpty) {
-      return Stack(
-        children: [
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
+              alignment: alignmentFromIndex(0),
+              child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   shape: BoxShape.circle,
@@ -118,14 +47,57 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
                     events.length.toString(),
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSecondary,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                )),
-          ),
-        ],
-      );
+                ),
+              ),
+            )
+          ],
+        );
+      } else {
+        return Stack(
+          children: events
+              .map(
+                (event) => Align(
+                  alignment: alignmentFromIndex(events.indexOf(event)),
+                  child: _getIconForEvent(
+                    event,
+                  ),
+                ),
+              )
+              .toList(),
+        );
+      }
     }
+  }
+
+  Alignment alignmentFromIndexAlt(int index) {
+    List<Alignment> alignments = [
+      Alignment.bottomRight,
+      Alignment.bottomCenter,
+      Alignment.bottomLeft,
+      Alignment.centerLeft,
+      Alignment.topLeft,
+      Alignment.topCenter,
+      Alignment.topRight,
+      Alignment.centerRight,
+    ];
+    return alignments[index];
+  }
+
+  Alignment alignmentFromIndex(int index) {
+    List<Alignment> alignments = [
+      Alignment.bottomCenter,
+      Alignment.bottomRight,
+      Alignment.bottomLeft,
+      Alignment.centerRight,
+      Alignment.centerLeft,
+      Alignment.topRight,
+      Alignment.topCenter,
+      Alignment.topLeft,
+    ];
+    return alignments[index];
   }
 
   Widget _getIconForEvent(Activity activity) {
@@ -138,8 +110,8 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
       textColor = Theme.of(context).colorScheme.onPrimary;
     } else {
       icon = Icons.person;
-      color = Theme.of(context).colorScheme.primary;
-      textColor = Theme.of(context).colorScheme.onPrimary;
+      color = Theme.of(context).colorScheme.secondary;
+      textColor = Theme.of(context).colorScheme.onSecondary;
 
       if (activity.partner != null) {
         Partner partner = _shared.getPartnerById(activity.partner!)!;
@@ -151,31 +123,28 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
           icon = Icons.transgender;
         }
         if (partner.sex == BiologicalSex.female) {
-          color = Colors.red
-            ..harmonizeWith(Theme.of(context).colorScheme.primary);
+          color =
+              Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
           textColor = Theme.of(context).colorScheme.surface;
         } else if (partner.gender == Gender.male) {
-          color = Colors.blue
-            ..harmonizeWith(Theme.of(context).colorScheme.primary);
+          color =
+              Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
           textColor = Theme.of(context).colorScheme.surface;
         }
       }
     }
+
     return Container(
-      margin: const EdgeInsets.only(top: 30),
-      padding: const EdgeInsets.all(2),
-      child: Container(
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Icon(
-            icon,
-            color: textColor,
-            size: 10,
-          ),
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        child: Icon(
+          icon,
+          color: textColor,
+          size: 16,
         ),
       ),
     );
@@ -189,91 +158,103 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
         vertical: 8,
       ),
       clipBehavior: Clip.antiAlias,
-      child: TableCalendar(
-        firstDay: DateTime.utc(2000, 1, 1),
-        lastDay: DateTime.now(),
-        focusedDay: _shared.calendarDate,
-        headerVisible: true,
-        headerStyle: HeaderStyle(
-          formatButtonVisible: false,
-          titleCentered: true,
-          headerPadding: EdgeInsets.all(0),
-          titleTextStyle: Theme.of(context).textTheme.titleMedium!,
-        ),
-        daysOfWeekVisible: true,
-        daysOfWeekHeight: 20,
-        daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              ),
-          weekendStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              ),
-        ),
-        startingDayOfWeek: StartingDayOfWeek.monday,
-        calendarFormat: CalendarFormat.month,
-        rangeSelectionMode: RangeSelectionMode.toggledOff,
-        calendarStyle: CalendarStyle(
-          isTodayHighlighted: true,
-          outsideDaysVisible: false,
-          canMarkersOverflow: true,
-          defaultTextStyle: Theme.of(context).textTheme.bodyLarge!,
-          defaultDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 2),
+        child: TableCalendar(
+          firstDay: DateTime.utc(2000, 1, 1),
+          lastDay: DateTime.now(),
+          focusedDay: _shared.calendarDate,
+          headerVisible: true,
+          availableGestures: AvailableGestures.horizontalSwipe,
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+            headerPadding: EdgeInsets.all(4),
+            titleTextStyle: Theme.of(context).textTheme.titleMedium!,
           ),
-          selectedTextStyle: Theme.of(context).textTheme.bodyLarge!,
-          selectedDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
+          daysOfWeekVisible: true,
+          daysOfWeekHeight: 20,
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
+            weekendStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
           ),
-          todayTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-          todayDecoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHigh,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
+          startingDayOfWeek: StartingDayOfWeek.monday,
+          calendarFormat: CalendarFormat.month,
+          rangeSelectionMode: RangeSelectionMode.toggledOff,
+          calendarStyle: CalendarStyle(
+            isTodayHighlighted: true,
+            outsideDaysVisible: false,
+            canMarkersOverflow: true,
+            defaultTextStyle: Theme.of(context).textTheme.bodyLarge!,
+            defaultDecoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
+            ),
+            selectedTextStyle: Theme.of(context).textTheme.bodyLarge!,
+            selectedDecoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
+            ),
+            todayTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
+            todayDecoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerHigh,
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
+            ),
+            cellMargin: EdgeInsets.all(4),
+            weekendTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
+                ),
+            weekendDecoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(radius)),
+            ),
+            disabledTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.3),
+                ),
           ),
-          cellMargin: EdgeInsets.all(2),
-          weekendTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              ),
-          weekendDecoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.all(Radius.circular(radius)),
+          selectedDayPredicate: (day) {
+            return isSameDay(_shared.calendarDate, day);
+          },
+          onDaySelected: (selectedDay, focusedDay) {
+            setState(() {
+              _shared.calendarDate = selectedDay;
+            });
+          },
+          eventLoader: (day) {
+            return _getActivityForDay(day);
+          },
+          calendarBuilders: CalendarBuilders(
+            markerBuilder: (
+              BuildContext context,
+              date,
+              List<Activity> events,
+            ) =>
+                iconsMarkBuilder(
+              context,
+              date,
+              events,
+            ),
           ),
-          disabledTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.3),
-              ),
-        ),
-        selectedDayPredicate: (day) {
-          return isSameDay(_shared.calendarDate, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          setState(() {
-            _shared.calendarDate = selectedDay;
-          });
-        },
-        eventLoader: (day) {
-          return _getActivityForDay(day);
-        },
-        calendarBuilders: CalendarBuilders(
-          markerBuilder: (BuildContext context, date, List<Activity> events) =>
-              iconsMarkBuilder(context, date, events),
         ),
       ),
     );

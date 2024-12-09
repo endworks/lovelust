@@ -33,6 +33,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onlySolo => 'Only solo';
 
   @override
+  String get calendar => 'Calendar';
+
+  @override
+  String get timeline => 'Timeline';
+
+  @override
   String get logActivity => 'Log activity';
 
   @override

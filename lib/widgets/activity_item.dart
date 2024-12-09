@@ -50,7 +50,7 @@ class _ActivityItemState extends State<ActivityItem> {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.activity.type != ActivityType.masturbation) {
       if (partner != null) {
-        return _shared.sensitiveText(partner!.name, style: style);
+        return _shared.privacyRedactedText(partner!.name, style: style);
       } else {
         return Text(
           AppLocalizations.of(context)!.unknownPartner,

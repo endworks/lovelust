@@ -166,7 +166,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
                   color: color,
                 ),
               )
-            : _shared.sensitiveText(
+            : _shared.privacyRedactedText(
                 count.toString(),
                 style: style.copyWith(
                   color: color,
@@ -302,7 +302,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
           GenericHeader(
             title: _solo || _partner == null
                 ? Text(title)
-                : _shared.sensitiveText(title),
+                : _shared.privacyRedactedText(title),
             actions: [
               IconButton(onPressed: editActivity, icon: const Icon(Icons.edit)),
               PopupMenuButton(

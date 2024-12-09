@@ -487,7 +487,7 @@ class SharedService extends ChangeNotifier {
     await _storage.clear();
   }
 
-  Widget sensitiveText(String text, {TextStyle? style}) {
+  Widget privacyRedactedText(String text, {TextStyle? style}) {
     return privacyMode
         ? semiObscureText(text, style: style)
         : Text(text, style: style);
@@ -521,7 +521,7 @@ class SharedService extends ChangeNotifier {
   Widget semiObscureText(String text, {TextStyle? style}) {
     String semiObscureText = "";
     semiObscureText += text[0];
-    semiObscureText += "*" * (text.length - 2);
+    semiObscureText += "#" * (text.length - 2);
     semiObscureText += text[text.length - 1];
     return Text(semiObscureText, style: style);
   }
@@ -1761,6 +1761,13 @@ class SharedService extends ChangeNotifier {
   set calendarDate(DateTime value) {
     _calendarSelectedDate = value;
     notifyListeners();
+  }
+
+  bool get isToday {
+    DateTime now = DateTime.now();
+    return _calendarSelectedDate.year == now.year &&
+        _calendarSelectedDate.month == now.month &&
+        _calendarSelectedDate.day == now.day;
   }
 
   String? get activityFilter {

@@ -36,7 +36,7 @@ class _SocialsBlockState extends State<SocialsBlock> {
               "${AppLocalizations.of(context)!.phone}: ",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            _shared.sensitiveText(
+            _shared.privacyRedactedText(
               widget.phone!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -52,7 +52,7 @@ class _SocialsBlockState extends State<SocialsBlock> {
               "${AppLocalizations.of(context)!.instagram}: ",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            _shared.sensitiveText(
+            _shared.privacyRedactedText(
               widget.instagram!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -68,7 +68,7 @@ class _SocialsBlockState extends State<SocialsBlock> {
               "${AppLocalizations.of(context)!.x}: ",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            _shared.sensitiveText(
+            _shared.privacyRedactedText(
               widget.x!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -84,7 +84,7 @@ class _SocialsBlockState extends State<SocialsBlock> {
               "${AppLocalizations.of(context)!.snapchat}: ",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            _shared.sensitiveText(
+            _shared.privacyRedactedText(
               widget.snapchat!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
@@ -100,7 +100,7 @@ class _SocialsBlockState extends State<SocialsBlock> {
               "${AppLocalizations.of(context)!.onlyfans}: ",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            _shared.sensitiveText(
+            _shared.privacyRedactedText(
               widget.onlyfans!,
               style: Theme.of(context).textTheme.bodyMedium,
             ),

@@ -1,7 +1,7 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_details.dart';
@@ -34,7 +34,7 @@ class _PartnerItemState extends State<PartnerItem> {
   }
 
   Widget get title {
-    return _shared.sensitiveText(
+    return _shared.privacyRedactedText(
       widget.partner.name,
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -77,7 +77,7 @@ class _PartnerItemState extends State<PartnerItem> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Icon(Icons.favorite, color: color),
-        _shared.sensitiveText(
+        _shared.privacyRedactedText(
           _shared.getActivityByPartner(widget.partner.id).length.toString(),
           style: TextStyle(
             color: color,

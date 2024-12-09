@@ -147,7 +147,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.activity.type != ActivityType.masturbation) {
       if (_partner != null) {
-        return _shared.sensitiveText(_partner!.name, style: style);
+        return _shared.privacyRedactedText(_partner!.name, style: style);
       } else {
         return Text(
           AppLocalizations.of(context)!.unknownPartner,

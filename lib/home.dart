@@ -89,9 +89,11 @@ class _HomeState extends State<Home>
       ),*/
       Destination(
         AppLocalizations.of(context)!.journal,
-        const Icon(Icons.assignment_outlined),
-        const Icon(
-          Icons.assignment,
+        Icon(_shared.calendarView
+            ? Icons.calendar_today_outlined
+            : Icons.view_day_outlined),
+        Icon(
+          _shared.calendarView ? Icons.calendar_today : Icons.view_day,
         ),
       ),
       Destination(

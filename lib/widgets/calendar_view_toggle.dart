@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
@@ -15,14 +16,15 @@ class _CalendarViewToggleState extends State<CalendarViewToggle> {
   @override
   Widget build(BuildContext context) {
     return SegmentedButton<bool>(
-      segments: const <ButtonSegment<bool>>[
+      showSelectedIcon: false,
+      segments: <ButtonSegment<bool>>[
         ButtonSegment<bool>(
             value: true,
-            label: Text('Calendar'),
+            label: Text(AppLocalizations.of(context)!.calendar),
             icon: Icon(Icons.calendar_today)),
         ButtonSegment<bool>(
             value: false,
-            label: Text('Timeline'),
+            label: Text(AppLocalizations.of(context)!.timeline),
             icon: Icon(Icons.calendar_view_day)),
       ],
       selected: {_shared.calendarView},

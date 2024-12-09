@@ -5,9 +5,11 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 
 class GenericHeader extends StatefulWidget {
-  const GenericHeader({super.key, this.title, this.actions, this.scrolled});
+  const GenericHeader(
+      {super.key, this.title, this.bottom, this.actions, this.scrolled});
 
   final Widget? title;
+  final PreferredSize? bottom;
   final List<Widget>? actions;
   final bool? scrolled;
 
@@ -49,11 +51,12 @@ class _GenericHeaderState extends State<GenericHeader> {
   Widget build(BuildContext context) {
     return SliverAppBar(
       primary: true,
-      floating: true,
-      snap: true,
+      floating: false,
+      snap: false,
       pinned: true,
       actions: widget.actions,
       title: widget.title,
+      bottom: widget.bottom,
       centerTitle: false,
       forceMaterialTransparency: !_shared.material,
       elevation: 1,

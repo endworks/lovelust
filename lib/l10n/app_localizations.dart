@@ -143,6 +143,18 @@ abstract class AppLocalizations {
   /// **'Only solo'**
   String get onlySolo;
 
+  /// No description provided for @calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendar;
+
+  /// No description provided for @timeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get timeline;
+
   /// No description provided for @logActivity.
   ///
   /// In en, this message translates to:

@@ -28,7 +28,7 @@ class _DateBlockState extends State<DateBlock> {
           widget.label,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        subtitle: _shared.sensitiveText(
+        subtitle: _shared.privacyRedactedText(
           DateFormat.yMMMEd().format(widget.date),
           style: Theme.of(context).textTheme.bodyMedium,
         ),

@@ -33,7 +33,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   }
 
   Widget get name {
-    return _shared.sensitiveText(
+    return _shared.privacyRedactedText(
       widget.partner.name,
       style: Theme.of(context).textTheme.titleMedium,
     );
@@ -55,7 +55,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
           color: color,
           size: style.fontSize,
         ),
-        _shared.sensitiveText(
+        _shared.privacyRedactedText(
           count.toString(),
           style: style.copyWith(
             color: color,
@@ -71,7 +71,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     if (count == 0) {
       return null;
     }
-    return _shared.sensitiveText(
+    return _shared.privacyRedactedText(
       count.toString(),
       style: style.copyWith(
         color: Theme.of(context).colorScheme.secondary,

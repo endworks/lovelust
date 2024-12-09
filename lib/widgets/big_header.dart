@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class BigHeader extends StatefulWidget implements PreferredSizeWidget {
-  const BigHeader({super.key, required this.title, this.actions});
+  const BigHeader({super.key, required this.title, this.bottom, this.actions});
 
   final Widget title;
+  final PreferredSize? bottom;
   final List<Widget>? actions;
 
   @override
@@ -28,6 +29,7 @@ class _BigHeaderState extends State<BigHeader> {
       flexibleSpace: FlexibleSpaceBar(
         title: widget.title,
       ),
+      bottom: widget.bottom,
       actions: widget.actions,
     );
   }

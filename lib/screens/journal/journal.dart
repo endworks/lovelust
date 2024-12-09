@@ -53,17 +53,6 @@ class _JournalPageState extends State<JournalPage> {
 
   List<Widget> get slivers {
     List<Widget> slivers = [];
-    /*slivers.add(
-      SliverPadding(
-        padding: const EdgeInsetsDirectional.symmetric(
-          horizontal: 16,
-          vertical: 8,
-        ),
-        sliver: SliverToBoxAdapter(
-          child: CalendarViewToggle(),
-        ),
-      ),
-    );*/
     if (_shared.calendarView) {
       slivers.add(
         SliverToBoxAdapter(
@@ -89,20 +78,22 @@ class _JournalPageState extends State<JournalPage> {
         slivers.add(
           SliverFillRemaining(
             child: NoContent(
-              icon: Icons.assignment,
+              icon:
+                  _shared.calendarView ? Icons.calendar_today : Icons.view_day,
               message: AppLocalizations.of(context)!.noActivity,
             ),
           ),
         );
       } else {
-        /*slivers.add(
+        slivers.add(
           SliverToBoxAdapter(
             child: NoContent(
-              icon: Icons.assignment,
+              icon:
+                  _shared.calendarView ? Icons.calendar_today : Icons.view_day,
               message: AppLocalizations.of(context)!.noActivityToday,
             ),
           ),
-        );*/
+        );
       }
     } else {
       slivers.add(
@@ -144,13 +135,6 @@ class _JournalPageState extends State<JournalPage> {
     } else {
       _shared.activity = await _storage.getActivity();
     }
-  }
-
-  void menuEntryItemSelected(FilterEntryItem item) {
-    setState(() {
-      _shared.activityFilter = item.name;
-    });
-    _scrollController.jumpTo(0);
   }
 
   List<Activity> get filteredActivity {
@@ -220,12 +204,39 @@ class _JournalPageState extends State<JournalPage> {
           slivers: <Widget>[
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.journal),
+              /*bottom: PreferredSize(
+                preferredSize: Size.fromHeight(50),
+                child: SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 16,
+                      vertical: 0,
+                    ),
+                    child: CalendarViewToggle(),
+                  ),
+                ),
+              ),*/
               actions: [
+                _shared.calendarView
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.today,
+                        ),
+                        onPressed: !_shared.isToday
+                            ? () {
+                                _shared.calendarDate = DateTime.now();
+                                _scrollController.jumpTo(0);
+                              }
+                            : null,
+                      )
+                    : SizedBox.shrink(),
                 IconButton(
                   icon: Icon(
                     _shared.calendarView
                         ? Icons.view_day
-                        : Icons.calendar_month,
+                        : Icons.calendar_today,
                   ),
                   onPressed: () {
                     _shared.calendarView = !_shared.calendarView;

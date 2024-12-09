@@ -129,7 +129,7 @@ ThemeData generateTheme(
       elevation: 0,
       highlightElevation: 0,
       backgroundColor: colorScheme.primary,
-      foregroundColor: colorScheme.primaryFixed,
+      foregroundColor: colorScheme.onPrimary,
       extendedPadding: const EdgeInsets.symmetric(horizontal: 21, vertical: 0),
       shape: const StadiumBorder(
         side: BorderSide.none,
@@ -150,14 +150,14 @@ ThemeData generateTheme(
     ),
     chipTheme: ChipThemeData(
       labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
-        color: colorScheme.onSurface,
+        color: colorScheme.onPrimary,
       ),
-      secondaryLabelStyle: materialTheme.textTheme.labelSmall!.copyWith(
-        color: colorScheme.onSurface,
-      ),
-      selectedColor: colorScheme.primary,
-      secondarySelectedColor: colorScheme.secondary,
-      backgroundColor: colorScheme.surfaceContainerHigh,
+      color: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return colorScheme!.primary;
+        }
+        return colorScheme!.secondary;
+      }),
       showCheckmark: false,
       side: BorderSide.none,
       shape: StadiumBorder(),

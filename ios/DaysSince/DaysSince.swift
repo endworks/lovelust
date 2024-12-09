@@ -279,11 +279,7 @@ struct DaysSinceEntryView : View {
             let progress: Double
             let value: Double = days == 0 ? Double(hours) : Double(days)
             
-            if entry.configuration.type.rawValue == 0 {
-                progress = hidden ? 0 : value
-            } else {
-                progress = hidden ? 0 : max - value
-            }
+            progress = hidden ? 0 : value
             
             return ZStack {
                 ProgressView(value: progress, total: max)
@@ -341,11 +337,10 @@ struct DaysSinceEntryView : View {
                 daysCounter = days.description
             }
             
-            if entry.configuration.type.rawValue == 0 {
-                progress = hidden ? 0 : value
+            progress = hidden ? 0 : value
+            if entry.configuration.type.rawValue == 2 {
                 icon = "hand.raised.fill"
             } else {
-                progress = hidden ? 0 : max - value
                 icon = "heart.slash.fill"
             }
             

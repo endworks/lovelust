@@ -31,23 +31,30 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
 
   iconsMarkBuilder(BuildContext context, date, List<Activity> events) {
     if (events.isNotEmpty) {
-      if (events.length > 8) {
+      if (events.length > alignments.length) {
         return Stack(
           children: [
             Align(
               alignment: alignmentFromIndex(0),
               child: Container(
+                width: 16,
+                height: 16,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
                   shape: BoxShape.circle,
                 ),
+                alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: Text(
                     events.length.toString(),
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.visible,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onSecondary,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w900,
                     ),
                   ),
                 ),
@@ -72,8 +79,8 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
     }
   }
 
-  Alignment alignmentFromIndexAlt(int index) {
-    List<Alignment> alignments = [
+  List<Alignment> get alignments {
+    /*return [
       Alignment.bottomRight,
       Alignment.bottomCenter,
       Alignment.bottomLeft,
@@ -82,21 +89,23 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
       Alignment.topCenter,
       Alignment.topRight,
       Alignment.centerRight,
+    ];*/
+    return [
+      Alignment.bottomCenter,
+      Alignment.bottomRight,
+      Alignment.bottomLeft,
+      Alignment.centerRight,
+      Alignment.centerLeft,
+      Alignment.topRight,
+      Alignment.topCenter,
+      Alignment.topLeft,
     ];
-    return alignments[index];
   }
 
   Alignment alignmentFromIndex(int index) {
-    List<Alignment> alignments = [
-      Alignment.bottomCenter,
-      Alignment.bottomRight,
-      Alignment.bottomLeft,
-      Alignment.centerRight,
-      Alignment.centerLeft,
-      Alignment.topRight,
-      Alignment.topCenter,
-      Alignment.topLeft,
-    ];
+    if (index > alignments.length) {
+      return alignments[0];
+    }
     return alignments[index];
   }
 
@@ -135,16 +144,19 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
     }
 
     return Container(
+      width: 16,
+      height: 16,
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.circle,
       ),
+      alignment: Alignment.center,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0),
         child: Icon(
           icon,
           color: textColor,
-          size: 16,
+          size: 12,
         ),
       ),
     );
@@ -197,23 +209,24 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
             canMarkersOverflow: true,
             defaultTextStyle: Theme.of(context).textTheme.bodyLarge!,
             defaultDecoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(radius)),
+              shape: BoxShape.circle,
             ),
-            selectedTextStyle: Theme.of(context).textTheme.bodyLarge!,
+            selectedTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
             selectedDecoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(radius)),
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
             ),
             todayTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
             todayDecoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHigh,
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(radius)),
-            ),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: 1,
+                )),
             cellMargin: EdgeInsets.all(4),
             weekendTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context)
@@ -222,8 +235,7 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
                       .withValues(alpha: 0.6),
                 ),
             weekendDecoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              borderRadius: BorderRadius.all(Radius.circular(radius)),
+              shape: BoxShape.circle,
             ),
             disabledTextStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context)

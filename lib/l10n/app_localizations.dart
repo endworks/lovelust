@@ -119,6 +119,12 @@ abstract class AppLocalizations {
   /// **'Learn'**
   String get learn;
 
+  /// No description provided for @all.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get all;
+
   /// No description provided for @allEntries.
   ///
   /// In en, this message translates to:
@@ -664,6 +670,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your journal is empty'**
   String get noActivity;
+
+  /// No description provided for @noActivityToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity today'**
+  String get noActivityToday;
 
   /// No description provided for @noPartners.
   ///

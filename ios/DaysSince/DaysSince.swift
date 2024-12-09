@@ -142,9 +142,11 @@ struct DaysSinceEntryView : View {
         private var activity: Activity?
         private var days: Int
         private var hours: Int
+        private var time: String
         private var max: Double
         private var daysString: LocalizedStringKey
         private var hoursString: LocalizedStringKey
+        private var timeString: LocalizedStringKey
         private var withoutSexString: LocalizedStringKey
         private var fontDays: Font
         private var fontTitle: Font
@@ -194,6 +196,13 @@ struct DaysSinceEntryView : View {
             hoursString = "hours"
             if (hours == 1) {
                 hoursString = "hour"
+            }
+            if days == 0 {
+                time = hours.description
+                timeString = hoursString
+            } else {
+                time = days.description
+                timeString = daysString
             }
             
             widgetColor = Color(UIColor.label)
@@ -363,10 +372,13 @@ struct DaysSinceEntryView : View {
             if (activity == nil) {
                 redactionReason = [.placeholder]
             } else {
-                redactionReason = redactionReasons
+                redactionReason = []
             }
-            return (Text(days == 0 ? hours.description : days.description) + Text(" ") + Text(days == 0 ? hoursString : daysString) + Text(" ") + Text(withoutSexString))
-                .privacySensitive()
+            var visibleTime: Text = Text(time)
+            if redactionReasons.contains(.privacy) {
+                visibleTime = Text(Image(systemName: "square.fill"))
+            }
+            return (visibleTime + Text(" ") + Text(timeString) + Text(" ") + Text(withoutSexString))
                 .redacted(reason: redactionReason)
         }
         

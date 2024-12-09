@@ -7,7 +7,9 @@ import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
+import 'package:lovelust/widgets/activity_calendar.dart';
 import 'package:lovelust/widgets/activity_card.dart';
+import 'package:lovelust/widgets/activity_filters.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/no_content.dart';
 
@@ -23,22 +25,106 @@ class _JournalPageState extends State<JournalPage> {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<State<StatefulWidget>> fabKey = GlobalKey();
+  Size? fabSize;
   bool _isExtended = true;
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        final box = fabKey.currentContext?.findRenderObject();
+        fabSize = (box as RenderBox).size;
+      });
+    });
     _scrollController.addListener(() {
       setState(() {
         _isExtended = _scrollController.offset <= 0.0;
       });
     });
-
     _shared.addListener(() {
       if (mounted) {
         setState(() {});
       }
     });
+  }
+
+  List<Widget> get slivers {
+    List<Widget> slivers = [];
+    /*slivers.add(
+      SliverPadding(
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        sliver: SliverToBoxAdapter(
+          child: CalendarViewToggle(),
+        ),
+      ),
+    );*/
+    if (_shared.calendarView) {
+      slivers.add(
+        SliverToBoxAdapter(
+          child: ActivityCalendar(),
+        ),
+      );
+    } else {
+      slivers.add(
+        SliverPadding(
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          sliver: SliverToBoxAdapter(
+            child: ActivityFilters(),
+          ),
+        ),
+      );
+    }
+
+    if (filteredActivity.isEmpty) {
+      if (!_shared.calendarView) {
+        slivers.add(
+          SliverFillRemaining(
+            child: NoContent(
+              icon: Icons.assignment,
+              message: AppLocalizations.of(context)!.noActivity,
+            ),
+          ),
+        );
+      } else {
+        /*slivers.add(
+          SliverToBoxAdapter(
+            child: NoContent(
+              icon: Icons.assignment,
+              message: AppLocalizations.of(context)!.noActivityToday,
+            ),
+          ),
+        );*/
+      }
+    } else {
+      slivers.add(
+        SliverPadding(
+          padding: EdgeInsets.fromLTRB(
+            MediaQuery.of(context).padding.left,
+            0,
+            MediaQuery.of(context).padding.right,
+            MediaQuery.of(context).padding.bottom,
+          ),
+          sliver: SliverList.builder(
+            itemCount: filteredActivity.length,
+            itemBuilder: (context, index) => ActivityCard(
+              key: ObjectKey(filteredActivity[index].id!),
+              activity: filteredActivity[index],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return slivers;
   }
 
   void addActivity() {
@@ -68,20 +154,31 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   List<Activity> get filteredActivity {
-    if (_shared.activityFilter == 'activity') {
-      return _shared.activity
-          .where(
-            (i) => i.type == ActivityType.sexualIntercourse,
-          )
-          .toList();
-    } else if (_shared.activityFilter == 'solo') {
-      return _shared.activity
-          .where(
-            (i) => i.type == ActivityType.masturbation,
-          )
-          .toList();
+    if (!_shared.calendarView) {
+      if (_shared.activityFilter == 'activity') {
+        return _shared.activity
+            .where(
+              (i) => i.type == ActivityType.sexualIntercourse,
+            )
+            .toList();
+      } else if (_shared.activityFilter == 'solo') {
+        return _shared.activity
+            .where(
+              (i) => i.type == ActivityType.masturbation,
+            )
+            .toList();
+      } else {
+        return _shared.activity;
+      }
     } else {
-      return _shared.activity;
+      return _shared.activity
+          .where(
+            (i) =>
+                i.date.year == _shared.calendarDate.year &&
+                i.date.month == _shared.calendarDate.month &&
+                i.date.day == _shared.calendarDate.day,
+          )
+          .toList();
     }
   }
 
@@ -117,57 +214,27 @@ class _JournalPageState extends State<JournalPage> {
         edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
-          physics: filteredActivity.isNotEmpty
+          physics: filteredActivity.isNotEmpty || _shared.calendarView
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.journal),
               actions: [
-                PopupMenuButton(
-                  // icon: const Icon(Icons.filter),
-                  onSelected: menuEntryItemSelected,
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<FilterEntryItem>>[
-                    PopupMenuItem(
-                      value: FilterEntryItem.all,
-                      child: Text(AppLocalizations.of(context)!.allEntries),
-                    ),
-                    PopupMenuItem(
-                      value: FilterEntryItem.activity,
-                      child: Text(AppLocalizations.of(context)!.onlySex),
-                    ),
-                    PopupMenuItem(
-                      value: FilterEntryItem.solo,
-                      child: Text(AppLocalizations.of(context)!.onlySolo),
-                    ),
-                  ],
+                IconButton(
+                  icon: Icon(
+                    _shared.calendarView
+                        ? Icons.view_day
+                        : Icons.calendar_month,
+                  ),
+                  onPressed: () {
+                    _shared.calendarView = !_shared.calendarView;
+                  },
                 ),
               ],
               scrolled: !_isExtended,
             ),
-            filteredActivity.isEmpty
-                ? SliverFillRemaining(
-                    child: NoContent(
-                      icon: Icons.assignment,
-                      message: AppLocalizations.of(context)!.noActivity,
-                    ),
-                  )
-                : SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).padding.left,
-                      0,
-                      MediaQuery.of(context).padding.right,
-                      MediaQuery.of(context).padding.bottom,
-                    ),
-                    sliver: SliverList.builder(
-                      itemCount: filteredActivity.length,
-                      itemBuilder: (context, index) => ActivityCard(
-                        key: Key(filteredActivity[index].id!),
-                        activity: filteredActivity[index],
-                      ),
-                    ),
-                  ),
+            ...slivers,
           ],
         ),
       ),
@@ -177,19 +244,25 @@ class _JournalPageState extends State<JournalPage> {
               ? MediaQuery.of(context).padding.bottom
               : 0,
         ),
-        child: _isExtended
-            ? FloatingActionButton.extended(
-                onPressed: addActivity,
-                label: Text(AppLocalizations.of(context)!.logActivity),
-                heroTag: "journalAddExtended",
-                icon: const Icon(Icons.post_add_outlined),
-              )
-            : FloatingActionButton(
-                onPressed: addActivity,
-                tooltip: AppLocalizations.of(context)!.logActivity,
-                heroTag: "journalAdd",
-                child: const Icon(Icons.post_add_outlined),
-              ),
+        child: AnimatedContainer(
+          width: _isExtended ? fabSize?.width : fabSize?.height,
+          // width: fabSize?.width,
+          height: fabSize?.height,
+          duration: Duration(milliseconds: 100),
+          child: FloatingActionButton.extended(
+            onPressed: addActivity,
+            key: fabKey,
+            heroTag: "journalAdd",
+            label: _isExtended
+                ? Text(
+                    AppLocalizations.of(context)!.logActivity,
+                  )
+                : Icon(
+                    Icons.post_add_outlined,
+                  ),
+            icon: _isExtended ? Icon(Icons.post_add_outlined) : null,
+          ),
+        ),
       ),
     );
   }

@@ -21,11 +21,19 @@ class _PartnersPageState extends State<PartnersPage> {
   final StorageService _storage = getIt<StorageService>();
   final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<State<StatefulWidget>> fabKey = GlobalKey();
+  Size? fabSize;
   bool _isExtended = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        final box = fabKey.currentContext?.findRenderObject();
+        fabSize = (box as RenderBox).size;
+      });
+    });
     _scrollController.addListener(() {
       setState(() {
         _isExtended = _scrollController.offset <= 0.0;
@@ -91,7 +99,7 @@ class _PartnersPageState extends State<PartnersPage> {
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) => PartnerItemAlt(
-                          key: Key(_shared.partners[index].id!),
+                          key: ObjectKey(_shared.partners[index].id!),
                           partner: _shared.partners[index],
                         ),
                         childCount: _shared.partners.length,
@@ -107,19 +115,24 @@ class _PartnersPageState extends State<PartnersPage> {
               ? MediaQuery.of(context).padding.bottom
               : 0,
         ),
-        child: _isExtended
-            ? FloatingActionButton.extended(
-                onPressed: _addPartner,
-                label: Text(AppLocalizations.of(context)!.addPartner),
-                heroTag: "partnersAddExtended",
-                icon: const Icon(Icons.person_add_alt_outlined),
-              )
-            : FloatingActionButton(
-                onPressed: _addPartner,
-                tooltip: AppLocalizations.of(context)!.addPartner,
-                heroTag: "partnersAdd",
-                child: const Icon(Icons.person_add_alt_outlined),
-              ),
+        child: AnimatedContainer(
+          width: _isExtended ? fabSize?.width : fabSize?.height,
+          // width: fabSize?.width,
+          height: fabSize?.height,
+          duration: Duration(milliseconds: 100),
+          child: FloatingActionButton.extended(
+            onPressed: _addPartner,
+            key: fabKey,
+            label: _isExtended
+                ? Text(
+                    AppLocalizations.of(context)!.addPartner,
+                  )
+                : Icon(
+                    Icons.person_add_alt_outlined,
+                  ),
+            icon: _isExtended ? Icon(Icons.person_add_alt_outlined) : null,
+          ),
+        ),
       ),
     );
   }

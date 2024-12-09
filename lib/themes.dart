@@ -9,7 +9,7 @@ ThemeData generateTheme(
   ColorScheme? colorScheme,
   bool trueBlack = false,
 }) {
-  Color seedColor = lovelustColor;
+  Color seedColor = redColor;
   if (colorSchemeName == "love") {
     seedColor = loveColor;
   } else if (colorSchemeName == "lust") {

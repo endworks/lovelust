@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get learn => 'Learn';
 
   @override
+  String get all => 'All';
+
+  @override
   String get allEntries => 'All entries';
 
   @override
@@ -328,6 +331,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noActivity => 'Your journal is empty';
+
+  @override
+  String get noActivityToday => 'No activity today';
 
   @override
   String get noPartners => 'No partners yet';

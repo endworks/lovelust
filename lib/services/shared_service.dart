@@ -38,6 +38,7 @@ class SharedService extends ChangeNotifier {
   List<Partner> _partners = [];
   List<Widget> _statistics = [];
   bool _protected = false;
+  DateTime _calendarSelectedDate = DateTime.now();
   PackageInfo? packageInfo;
   AppLifecycleState appLifecycleState = AppLifecycleState.inactive;
 
@@ -488,7 +489,7 @@ class SharedService extends ChangeNotifier {
 
   Widget sensitiveText(String text, {TextStyle? style}) {
     return privacyMode
-        ? blurText(text, style: style)
+        ? semiObscureText(text, style: style)
         : Text(text, style: style);
   }
 
@@ -499,7 +500,7 @@ class SharedService extends ChangeNotifier {
     TextOverflow? overflow,
   }) {
     return sensitiveMode
-        ? blurText(text, style: style)
+        ? semiObscureText(text, style: style)
         : Text(
             text,
             style: style,
@@ -515,6 +516,14 @@ class SharedService extends ChangeNotifier {
       imageFilter: ImageFilter.blur(sigmaX: blurRadius, sigmaY: blurRadius),
       child: Container(child: widget),
     );
+  }
+
+  Widget semiObscureText(String text, {TextStyle? style}) {
+    String semiObscureText = "";
+    semiObscureText += text[0];
+    semiObscureText += "*" * (text.length - 2);
+    semiObscureText += text[text.length - 1];
+    return Text(semiObscureText, style: style);
   }
 
   Widget obscureText(String text, {TextStyle? style}) {
@@ -1739,7 +1748,18 @@ class SharedService extends ChangeNotifier {
 
   set calendarView(bool value) {
     _settings.calendarView = value;
+    _settings.activityFilter = FilterEntryItem.all.name;
+    _calendarSelectedDate = DateTime.now();
     _storage.setSettings(_settings);
+    notifyListeners();
+  }
+
+  DateTime get calendarDate {
+    return _calendarSelectedDate;
+  }
+
+  set calendarDate(DateTime value) {
+    _calendarSelectedDate = value;
     notifyListeners();
   }
 

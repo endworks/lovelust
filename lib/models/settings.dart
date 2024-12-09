@@ -71,7 +71,7 @@ Settings defaultSettings = Settings(
   privacyMode: false,
   sensitiveMode: false,
   requireAuth: false,
-  calendarView: false,
+  calendarView: true,
   appIcon: null,
   activityFilter: null,
 );

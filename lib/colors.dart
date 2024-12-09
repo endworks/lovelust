@@ -9,7 +9,7 @@ const redColor = Color.fromARGB(255, 235, 0, 77);
 const blueColor = Color.fromARGB(255, 0, 122, 255);
 const shimapanColor = Color.fromARGB(255, 0, 216, 184);
 
-double mixVariation = 0.7;
+double mixVariation = 0.6;
 
 get lovelustColor {
   int red = (loveColor.red * mixVariation + lustColor.red * (1 - mixVariation))

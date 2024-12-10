@@ -18,7 +18,7 @@ class _WeeklyChartStatisticState extends State<WeeklyChartStatistic> {
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
-        vertical: 4,
+        vertical: 8,
       ),
       child: ListTile(
         title: Text(

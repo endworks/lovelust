@@ -10,6 +10,7 @@ enum StatisticType {
   orgasmRatio,
   totalSexByGender,
   weeklyChart,
+  overview,
 }
 
 class DynamicStatisticData {

@@ -46,7 +46,7 @@ class _LastRelationshipStatisticState extends State<LastRelationshipStatistic> {
     return Card(
       margin: const EdgeInsetsDirectional.symmetric(
         horizontal: 16,
-        vertical: 4,
+        vertical: 8,
       ),
       child: ListTile(
         onTap: openActivity,

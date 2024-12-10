@@ -3,6 +3,7 @@ import 'package:lovelust/models/statistics.dart';
 import 'package:lovelust/widgets/statistics/days_without_sex_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_masturbation_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_relationship_statistic.dart';
+import 'package:lovelust/widgets/statistics/overview.dart';
 import 'package:lovelust/widgets/statistics/unsupported_statistic.dart';
 import 'package:lovelust/widgets/statistics/weekly_chart_statistic.dart';
 
@@ -32,6 +33,8 @@ class _DynamicStatisticState extends State<DynamicStatistic> {
       return DaysWithoutSexStatistic(data: widget.data);
     } else if (widget.type == StatisticType.weeklyChart) {
       return WeeklyChartStatistic(series: widget.data);
+    } else if (widget.type == StatisticType.overview) {
+      return OverviewStatistic();
     }
     return const UnsupportedStatistic();
   }

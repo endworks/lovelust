@@ -142,7 +142,7 @@ struct DaysSinceEntryView : View {
         private var activity: Activity?
         private var days: Int
         private var hours: Int
-        private var time: String
+        private var time: Int
         private var max: Double
         private var daysString: LocalizedStringKey
         private var hoursString: LocalizedStringKey
@@ -160,7 +160,7 @@ struct DaysSinceEntryView : View {
             self.entry = entry
             
             if (entry.widgetData != nil) {
-                if entry.configuration.type == DaysSinceActivityType.masturbation {
+                if entry.configuration.type.rawValue == 2 {
                     activity = entry.widgetData?.soloActivity
                 } else {
                     activity = entry.widgetData?.sexualActivity
@@ -198,10 +198,10 @@ struct DaysSinceEntryView : View {
                 hoursString = "hour"
             }
             if days == 0 {
-                time = hours.description
+                time = hours
                 timeString = hoursString
             } else {
-                time = days.description
+                time = days
                 timeString = daysString
             }
             
@@ -210,7 +210,7 @@ struct DaysSinceEntryView : View {
             widgetForegroundSubtitle = Color(UIColor.secondaryLabel)
             widgetBackground = Color(UIColor.systemBackground)
 
-            if entry.configuration.type == DaysSinceActivityType.masturbation {
+            if entry.configuration.type.rawValue == 2 {
                 withoutSexString = "without fap"
                 if (days == 0) {
                     widgetColor = Color(UIColor.systemPink)
@@ -271,13 +271,15 @@ struct DaysSinceEntryView : View {
         private var WidgetView: some View {
             var redactionReason: RedactionReasons
             if (activity == nil) {
-                redactionReason = [.placeholder]
+                redactionReason = .placeholder
+            } else if (redactionReasons.contains(.privacy)) {
+                redactionReason = .privacy
             } else {
-                redactionReason = redactionReasons
+                redactionReason = []
             }
-            let hidden: Bool = redactionReasons.contains(.privacy) || redactionReasons.contains(.placeholder)
+            let hidden: Bool = redactionReason.contains(.privacy) || activity == nil
             let progress: Double
-            let value: Double = days == 0 ? Double(hours) : Double(days)
+            let value: Double = Double(time)
             
             progress = hidden ? 0 : value
             
@@ -285,31 +287,31 @@ struct DaysSinceEntryView : View {
                 ProgressView(value: progress, total: max)
                     .progressViewStyle(.circular)
                     .tint(!hidden ? widgetColor : nil)
-                if !hidden {
-                    VStack(spacing: 0) {
-                        Text(days == 0 ? hours.description : days.description)
-                            .font(fontDays)
-                            .fontWeight(.heavy)
-                            .fontDesign(.rounded)
-                            .foregroundColor(widgetForegroundTitle)
-                            .redacted(reason: redactionReason)
-                            .padding(.bottom, -4)
-                        Text(days == 0 ? hoursString : daysString)
-                            .font(fontTitle)
+                    .widgetAccentable(true)
+                VStack(spacing: 0) {
+                    Text(time.description)
+                        .font(fontDays)
+                        .fontWeight(.heavy)
+                        .fontDesign(.rounded)
+                        .foregroundColor(widgetForegroundTitle)
+                        .redacted(reason: redactionReason)
+                        .padding(.bottom, -4)
+                    Text(timeString)
+                        .font(fontTitle)
+                        .fontDesign(.rounded)
+                        .fontWeight(.semibold)
+                        .textCase(.uppercase)
+                        .foregroundColor(widgetForegroundTitle)
+                        .redacted(reason: redactionReason)
+                    if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
+                        Text(withoutSexString)
+                            .font(fontSubtitle)
                             .fontDesign(.rounded)
                             .fontWeight(.semibold)
                             .textCase(.uppercase)
-                            .foregroundColor(widgetForegroundTitle)
+                            .foregroundColor(widgetForegroundSubtitle)
                             .redacted(reason: redactionReason)
-                        if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
-                            Text(withoutSexString)
-                                .font(fontSubtitle)
-                                .fontDesign(.rounded)
-                                .fontWeight(.semibold)
-                                .textCase(.uppercase)
-                                .foregroundColor(widgetForegroundSubtitle)
-                                .redacted(reason: redactionReason)
-                        }
+                            .widgetAccentable(true)
                     }
                 }
             }
@@ -321,11 +323,13 @@ struct DaysSinceEntryView : View {
         private var AccessoryView: some View {
             var redactionReason: RedactionReasons
             if (activity == nil) {
-                redactionReason = [.placeholder]
+                redactionReason = .placeholder
+            } else if (redactionReasons.contains(.privacy)) {
+                redactionReason = .privacy
             } else {
-                redactionReason = redactionReasons
+                redactionReason = []
             }
-            let hidden: Bool = redactionReasons.contains(.privacy) || redactionReasons.contains(.placeholder)
+            let hidden: Bool = redactionReason.contains(.privacy)
             let value: Double = days == 0 ? Double(hours) : Double(days)
             let progress: Double
             let icon: String
@@ -365,12 +369,14 @@ struct DaysSinceEntryView : View {
         private var InlineView: some View {
             var redactionReason: RedactionReasons
             if (activity == nil) {
-                redactionReason = [.placeholder]
+                redactionReason = .placeholder
+            } else if (redactionReasons.contains(.privacy)) {
+                redactionReason = .privacy
             } else {
                 redactionReason = []
             }
-            var visibleTime: Text = Text(time)
-            if redactionReasons.contains(.privacy) {
+            var visibleTime: Text = Text(time.description)
+            if redactionReason.contains(.privacy) {
                 visibleTime = Text(Image(systemName: "square.fill"))
             }
             return (visibleTime + Text(" ") + Text(timeString) + Text(" ") + Text(withoutSexString))
@@ -410,7 +416,10 @@ struct DaysSince: Widget {
             sex: "F",
             gender: "F",
             name: "Flavia",
-            meetingDate: Date(),
+            meetingDate: Calendar.current.date(
+                byAdding: .hour,
+                value: -7,
+                to: Date())!,
             birthDay: Date(),
             notes: nil,
             phone: nil,
@@ -425,7 +434,10 @@ struct DaysSince: Widget {
             partner: "11545aaf-0b8f-41a5-8b53-7464f2e931aa",
             birthControl: "CONDOM",
             partnerBirthControl: nil,
-            date: Date(),
+            date: Calendar.current.date(
+                byAdding: .day,
+                value: -6,
+                to: Date())!,
             location: "",
             notes: "",
             duration: 10,
@@ -446,7 +458,10 @@ struct DaysSince: Widget {
             partner: nil,
             birthControl: nil,
             partnerBirthControl: nil,
-            date: Date(),
+            date: Calendar.current.date(
+                byAdding: .day,
+                value: -3,
+                to: Date())!,
             location: "",
             notes: "",
             duration: 20,
@@ -463,7 +478,7 @@ struct DaysSince: Widget {
         )
         
         static var widgetData = ActivityWidgetData(
-            soloActivity: lastSexualActivity,
+            soloActivity: lastSoloActivity,
             sexualActivity: lastSexualActivity,
             partner: partner,
             safety: "SAFE",

@@ -1,8 +1,5 @@
 {
-  "home": "Home",
-  "@home": {
-    "description": "The conventional newborn programmer greeting"
-  },
+  "start": "Home",
   "journal": "Journal",
   "partners": "Partners",
   "learn": "Learn",

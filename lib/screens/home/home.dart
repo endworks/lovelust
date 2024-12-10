@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/colors.dart';
+import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
@@ -41,14 +41,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget get title {
-    Color colorLove =
-        _shared.generateAltColor(Theme.of(context).colorScheme.primary);
-    Color colorLust = Theme.of(context).colorScheme.primary;
+    Color colorLove;
+    Color colorLust;
 
-    if (_shared.colorScheme == null) {
-      colorLove = loveColor;
-      colorLust = lustColor;
-    }
+    //if (_shared.colorScheme == null) {
+    colorLove = loveColor;
+    colorLust = lustColor;
+    /*} else {
+      colorLove =
+          _shared.generateAltColor(Theme.of(context).colorScheme.primary);
+      colorLust = Theme.of(context).colorScheme.primary;
+    }*/
 
     return Text.rich(
       TextSpan(
@@ -61,7 +64,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> refresh() async {
-    _shared.statistics = _shared.generateStatistics();
+    _shared.statistics = _shared.generateStatsWidgets();
   }
 
   @override

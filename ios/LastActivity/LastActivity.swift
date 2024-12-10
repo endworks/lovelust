@@ -240,6 +240,7 @@ struct LastActivityEntryView : View {
                         .lineLimit(1)
                         .truncationMode(.tail)
                         .redacted(reason: redactionReason)
+                        .widgetAccentable(true)
                     Text(dayString)
                         .font(.largeTitle)
                         .fontWeight(.light)
@@ -268,6 +269,7 @@ struct LastActivityEntryView : View {
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .redacted(reason: redactionReason)
+                            .widgetAccentable(true)
                     }
                     
                 }
@@ -282,6 +284,7 @@ struct LastActivityEntryView : View {
                         .textCase(.uppercase)
                         .foregroundColor(.purple)
                         .redacted(reason: redactionReason)
+                        .widgetAccentable(true)
                 }
                 Text(dateString)
                     .lineLimit(1)
@@ -291,6 +294,7 @@ struct LastActivityEntryView : View {
                     .textCase(.uppercase)
                     .foregroundColor(.gray)
                     .redacted(reason: redactionReason)
+                    .widgetAccentable(true)
                 Spacer()
             }
             HStack(alignment: .bottom, spacing: 0) {
@@ -321,6 +325,7 @@ struct LastActivityEntryView : View {
                                 .textCase(.uppercase)
                                 .foregroundColor(.cyan)
                                 .redacted(reason: redactionReason)
+                                .widgetAccentable(true)
                         }
                         if activity!.partnerBirthControl != nil && activity!.partnerBirthControl != activity!.birthControl {
                             Text(partnerContraceptiveString)
@@ -332,6 +337,7 @@ struct LastActivityEntryView : View {
                                 .textCase(.uppercase)
                                 .foregroundColor(.cyan)
                                 .redacted(reason: redactionReason)
+                                .widgetAccentable(true)
                         }
                         Spacer()
                     }
@@ -522,7 +528,10 @@ struct LastActivity_Previews: PreviewProvider {
         sex: "F",
         gender: "F",
         name: "Flavia",
-        meetingDate: Date(),
+        meetingDate: Calendar.current.date(
+            byAdding: .hour,
+            value: -7,
+            to: Date())!,
         birthDay: Date(),
         notes: nil,
         phone: nil,
@@ -537,7 +546,10 @@ struct LastActivity_Previews: PreviewProvider {
         partner: "11545aaf-0b8f-41a5-8b53-7464f2e931aa",
         birthControl: "CONDOM",
         partnerBirthControl: nil,
-        date: Date(),
+        date: Calendar.current.date(
+            byAdding: .day,
+            value: -6,
+            to: Date())!,
         location: "",
         notes: "",
         duration: 10,
@@ -552,14 +564,38 @@ struct LastActivity_Previews: PreviewProvider {
         practices: [],
         watchedPorn: false
     )
+
+    static var lastSoloActivity = Activity(
+        id: "e29341fa-e09b-444b-a42a-69f9d7c21682",
+        partner: nil,
+        birthControl: nil,
+        partnerBirthControl: nil,
+        date: Calendar.current.date(
+            byAdding: .day,
+            value: -3,
+            to: Date())!,
+        location: "",
+        notes: "",
+        duration: 20,
+        orgasms: 1,
+        partnerOrgasms: 0,
+        place: "BEDROOM",
+        initiator: "ME",
+        rating: 4,
+        type: "MASTURBATION",
+        mood: "HORNY",
+        ejaculation: nil,
+        practices: [],
+        watchedPorn: false
+    )
     
     static var widgetData = ActivityWidgetData(
-        soloActivity: lastSexualActivity,
+        soloActivity: lastSoloActivity,
         sexualActivity: lastSexualActivity,
         partner: partner,
         safety: "SAFE",
         moodEmoji: "🥵",
-        privacyMode: true
+        privacyMode: false
     )
     
     static var previews: some View {

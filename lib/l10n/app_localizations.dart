@@ -95,11 +95,11 @@ abstract class AppLocalizations {
     Locale('es')
   ];
 
-  /// The conventional newborn programmer greeting
+  /// No description provided for @start.
   ///
   /// In en, this message translates to:
   /// **'Home'**
-  String get home;
+  String get start;
 
   /// No description provided for @journal.
   ///
@@ -1540,6 +1540,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Garage'**
   String get garage;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
 
   /// No description provided for @hotel.
   ///

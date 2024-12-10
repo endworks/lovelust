@@ -48,9 +48,9 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
           child: Card(
             margin: const EdgeInsetsDirectional.only(
               start: 16,
-              top: 4,
-              bottom: 4,
-              end: 4,
+              top: 8,
+              bottom: 8,
+              end: 8,
             ),
             child: ListTile(
               title: Column(

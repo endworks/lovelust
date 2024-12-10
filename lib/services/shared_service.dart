@@ -17,6 +17,7 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/models/settings.dart';
 import 'package:lovelust/models/statistics.dart';
+import 'package:lovelust/models/stats.dart';
 import 'package:lovelust/service_locator.dart';
 import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/local_auth_service.dart';
@@ -37,6 +38,34 @@ class SharedService extends ChangeNotifier {
   List<Activity> _activity = [];
   List<Partner> _partners = [];
   List<Widget> _statistics = [];
+  Stats stats = Stats(
+    date: DateTime.now(),
+    lastSexualActivity: null,
+    daysSinceLastSexualActivity: 0,
+    lastMasturbation: null,
+    daysSinceLastMasturbation: 0,
+    daysSinceLastSexualStimulation: 0,
+    totalSexualActivity: 0,
+    totalSexualActivityWithMale: 0,
+    totalSexualActivityWithFemale: 0,
+    totalSexualActivityWithUnknown: 0,
+    totalMasturbation: 0,
+    mostPopularPartner: null,
+    mostPopularPractice: null,
+    mostPopularMood: null,
+    mostPopularEjaculationPlace: null,
+    mostPopularPlace: null,
+    safetyPercentSafe: 0,
+    safetyPercentUnsafe: 0,
+    safetyPercentPartlyUnsafe: 0,
+    mostActiveYear: null,
+    mostActiveMonth: null,
+    mostActiveDay: null,
+    mostActiveWeekday: null,
+    mostActiveHour: null,
+    orgasmRatio: 0,
+    averageDuration: 0,
+  );
   bool _protected = false;
   DateTime _calendarSelectedDate = DateTime.now();
   PackageInfo? packageInfo;
@@ -61,7 +90,7 @@ class SharedService extends ChangeNotifier {
       _protected = true;
     }
 
-    //statistics = generateStatistics();
+    statistics = generateStatsWidgets();
     updateWidgets();
 
     await getPackageInfo();
@@ -91,71 +120,49 @@ class SharedService extends ChangeNotifier {
     return hslColor.withHue(hue).toColor();
   }
 
-  List<Widget> generateStatistics() {
-    debugPrint('generateStatistics');
+  List<Widget> generateStatsWidgets() {
+    debugPrint('generateStatsWidgets');
+    stats = generateStats();
     BuildContext context = _navigator.navigatorKey.currentContext!;
     Color primary = Theme.of(context).colorScheme.primary;
     Color secondary = Theme.of(context).colorScheme.secondary;
 
     List<DynamicStatisticData> list = [];
-    Activity? lastRelationship = activity.firstWhereOrNull(
-        (element) => element.type == ActivityType.sexualIntercourse);
-    if (lastRelationship != null) {
+    if (stats.lastSexualActivity != null) {
       list.add(
         DynamicStatisticData(
           type: StatisticType.lastRelationship,
-          date: lastRelationship.date,
-          data: lastRelationship,
+          date: stats.lastSexualActivity!.date,
+          data: stats.lastSexualActivity,
         ),
       );
     }
 
-    Activity? lastMasturbation = activity.firstWhereOrNull(
-        (element) => element.type == ActivityType.masturbation);
-    if (lastMasturbation != null) {
+    if (stats.lastMasturbation != null) {
       list.add(
         DynamicStatisticData(
           type: StatisticType.lastMasturbation,
-          date: lastMasturbation.date,
-          data: lastMasturbation,
+          date: stats.lastMasturbation!.date,
+          data: stats.lastMasturbation,
         ),
       );
     }
 
-    DateTime daysWithoutSexDate = DateTime.now();
-    int lastRelationshipDays = -1;
-    if (lastRelationship != null) {
-      lastRelationshipDays =
-          (DateTime.now().difference(lastRelationship.date).inHours / 24)
-              .floor();
-    }
-    int lastMasturbationDays = -1;
-    if (lastMasturbation != null) {
-      lastMasturbationDays =
-          (DateTime.now().difference(lastMasturbation.date).inHours / 24)
-              .floor();
-    }
-    if (lastRelationship != null && lastMasturbation != null) {
-      daysWithoutSexDate =
-          lastRelationship.date.difference(lastMasturbation.date).inSeconds > 0
-              ? lastRelationship.date
-              : lastMasturbation.date;
-    } else if (lastRelationship != null) {
-      daysWithoutSexDate = lastRelationship.date;
-    } else if (lastMasturbation != null) {
-      daysWithoutSexDate = lastMasturbation.date;
-    }
-    daysWithoutSexDate = daysWithoutSexDate.add(const Duration(seconds: 1));
-    if (lastRelationshipDays > 0 || lastMasturbationDays > 0) {
+    if (stats.daysSinceLastSexualActivity > 0 ||
+        stats.daysSinceLastMasturbation > 0) {
       list.add(
         DynamicStatisticData(
           type: StatisticType.daysWithoutSex,
-          date: daysWithoutSexDate,
-          data: DaysWithoutSexData(lastRelationshipDays, lastMasturbationDays),
+          date: stats.daysSinceLastSexualStimulation ==
+                  stats.daysSinceLastSexualActivity
+              ? stats.lastSexualActivity!.date
+              : stats.lastMasturbation!.date,
+          data: DaysWithoutSexData(stats.daysSinceLastSexualActivity,
+              stats.daysSinceLastMasturbation),
         ),
       );
     }
-    if (lastRelationship != null || lastMasturbation != null) {
+    if (stats.lastSexualActivity != null || stats.lastMasturbation != null) {
       List<WeeklyChartData> sexChartData = [];
       List<WeeklyChartData> masturbationChartData = [];
 
@@ -320,6 +327,14 @@ class SharedService extends ChangeNotifier {
       }
     }
 
+    list.add(
+      DynamicStatisticData(
+        type: StatisticType.overview,
+        date: stats.date,
+        data: null,
+      ),
+    );
+
     list.sort((a, b) => b.date.compareTo(a.date));
 
     return list
@@ -331,6 +346,327 @@ class SharedService extends ChangeNotifier {
           ),
         )
         .toList();
+  }
+
+  Stats generateStats() {
+    debugPrint('generateStats');
+    DateTime date = DateTime.now();
+    Activity? lastSexualActivity;
+    int daysSinceLastSexualActivity = 0;
+    Activity? lastMasturbation;
+    int daysSinceLastMasturbation = 0;
+    int daysSinceLastSexualStimulation = 0;
+    int totalSexualActivity = 0;
+    int totalSexualActivityWithMale = 0;
+    int totalSexualActivityWithFemale = 0;
+    int totalSexualActivityWithUnknown = 0;
+    int totalMasturbation = 0;
+    StatsCountPartner? mostPopularPartner;
+    StatsCount? mostPopularPractice;
+    StatsCount? mostPopularMood;
+    StatsCount? mostPopularEjaculationPlace;
+    StatsCount? mostPopularPlace;
+    num safetyPercentSafe = 0;
+    num safetyPercentUnsafe = 0;
+    num safetyPercentPartlyUnsafe = 0;
+    StatsCount? mostActiveYear;
+    StatsCount? mostActiveMonth;
+    StatsCount? mostActiveDay;
+    StatsCount? mostActiveWeekday;
+    StatsCount? mostActiveHour;
+    num orgasmRatio = 0;
+    num averageDuration = 0;
+    num activityWithDuration = 0;
+    num totalDuration = 0;
+
+    Map<String, int> partners = {};
+    Map<String, int> practices = {};
+    Map<String, int> moods = {};
+    Map<String, int> ejaculationPlaces = {};
+    Map<String, int> places = {};
+    Map<String, int> years = {};
+    Map<String, int> months = {};
+    Map<String, int> days = {};
+    Map<String, int> weekdays = {};
+    Map<String, int> hours = {};
+    int orgasmsReceived = 0;
+    int orgasmsGiven = 0;
+    num safetySafe = 0;
+    num safetyUnsafe = 0;
+    num safetyPartlyUnsafe = 0;
+
+    for (Activity activity in _activity) {
+      if (activity.type == ActivityType.sexualIntercourse) {
+        totalSexualActivity += 1;
+        Partner? partner;
+        if (activity.partner != null) {
+          if (partners[activity.partner] == null) {
+            partners[activity.partner!] = 1;
+          } else {
+            partners[activity.partner!] = partners[activity.partner!]! + 1;
+          }
+          partner = getPartnerById(activity.partner!);
+          if (partner != null) {
+            if (partner.sex == BiologicalSex.male) {
+              totalSexualActivityWithMale += 1;
+            } else {
+              totalSexualActivityWithFemale += 1;
+            }
+          } else {
+            totalSexualActivityWithUnknown += 1;
+          }
+        } else {
+          totalSexualActivityWithUnknown += 1;
+        }
+        if (lastSexualActivity == null ||
+            lastSexualActivity.date.compareTo(activity.date) == -1) {
+          lastSexualActivity = activity;
+        }
+        if (activity.ejaculation != null) {
+          if (ejaculationPlaces[activity.ejaculation!.name] == null) {
+            ejaculationPlaces[activity.ejaculation!.name] = 1;
+          } else {
+            ejaculationPlaces[activity.ejaculation!.name] =
+                ejaculationPlaces[activity.ejaculation!.name]! + 1;
+          }
+        }
+        if (years[activity.date.year.toString()] == null) {
+          years[activity.date.year.toString()] = 1;
+        } else {
+          years[activity.date.year.toString()] =
+              years[activity.date.year.toString()]! + 1;
+        }
+        if (months[activity.date.month.toString()] == null) {
+          months[activity.date.month.toString()] = 1;
+        } else {
+          months[activity.date.month.toString()] =
+              months[activity.date.month.toString()]! + 1;
+        }
+        if (days[activity.date.day.toString()] == null) {
+          days[activity.date.day.toString()] = 1;
+        } else {
+          days[activity.date.day.toString()] =
+              days[activity.date.day.toString()]! + 1;
+        }
+        if (weekdays[activity.date.weekday.toString()] == null) {
+          weekdays[activity.date.weekday.toString()] = 1;
+        } else {
+          weekdays[activity.date.weekday.toString()] =
+              weekdays[activity.date.weekday.toString()]! + 1;
+        }
+        if (hours[activity.date.hour.toString()] == null) {
+          hours[activity.date.hour.toString()] = 1;
+        } else {
+          hours[activity.date.hour.toString()] =
+              hours[activity.date.hour.toString()]! + 1;
+        }
+        if (activity.practices != null) {
+          for (Practice practice in activity.practices!) {
+            if (practices[practice.name] == null) {
+              practices[practice.name] = 1;
+            } else {
+              practices[practice.name] = practices[practice.name]! + 1;
+            }
+          }
+        }
+
+        if (activity.duration > 0) {
+          totalDuration += activity.duration;
+          activityWithDuration += 1;
+        }
+        orgasmsReceived += activity.orgasms;
+        orgasmsGiven += activity.partnerOrgasms;
+
+        ActivitySafety safety = calculateSafety(activity);
+        if (safety == ActivitySafety.safe) {
+          safetySafe += 1;
+        } else if (safety == ActivitySafety.unsafe) {
+          safetyUnsafe += 1;
+        } else {
+          safetyPartlyUnsafe += 1;
+        }
+      } else {
+        totalMasturbation += 1;
+        if (lastMasturbation == null ||
+            lastMasturbation.date.compareTo(activity.date) == -1) {
+          lastMasturbation = activity;
+        }
+      }
+
+      if (activity.mood != null) {
+        if (moods[activity.mood!.name] == null) {
+          moods[activity.mood!.name] = 1;
+        } else {
+          moods[activity.mood!.name] = moods[activity.mood!.name]! + 1;
+        }
+      }
+      if (activity.place != null) {
+        if (places[activity.place!.name] == null) {
+          places[activity.place!.name] = 1;
+        } else {
+          places[activity.place!.name] = places[activity.place!.name]! + 1;
+        }
+      }
+    }
+
+    if (lastSexualActivity != null) {
+      daysSinceLastSexualActivity =
+          (date.difference(lastSexualActivity.date).inHours / 24)
+              .floor()
+              .toInt();
+    }
+    if (lastMasturbation != null) {
+      daysSinceLastMasturbation =
+          (date.difference(lastMasturbation.date).inHours / 24).floor().toInt();
+    }
+
+    if (lastSexualActivity != null && lastMasturbation != null) {
+      daysSinceLastSexualStimulation =
+          lastSexualActivity.date.difference(lastMasturbation.date).inSeconds >
+                  0
+              ? daysSinceLastSexualActivity
+              : daysSinceLastMasturbation;
+    } else if (lastSexualActivity != null) {
+      daysSinceLastSexualStimulation = daysSinceLastSexualActivity;
+    } else if (lastMasturbation != null) {
+      daysSinceLastSexualStimulation = daysSinceLastMasturbation;
+    }
+
+    if (orgasmsGiven > 0 || orgasmsReceived > 0) {
+      orgasmRatio = orgasmsGiven / orgasmsReceived;
+    }
+    if (totalDuration > 0 && activityWithDuration > 0) {
+      averageDuration = totalDuration / activityWithDuration;
+    }
+
+    safetyPercentSafe = (safetySafe * 100 / totalSexualActivity).round();
+    safetyPercentUnsafe = (safetyUnsafe * 100 / totalSexualActivity).round();
+    safetyPercentPartlyUnsafe =
+        (safetyPartlyUnsafe * 100 / totalSexualActivity).round();
+
+    biggestCountReducer(MapEntry<String, int> a, MapEntry<String, int> b) {
+      final aValue = a.value;
+      final bValue = b.value;
+      return aValue > bValue ? a : b;
+    }
+
+    if (partners.isNotEmpty) {
+      String? mostPopularPartnerKey =
+          partners.entries.reduce(biggestCountReducer).key as String?;
+      if (mostPopularPartnerKey != null) {
+        Partner? partner = getPartnerById(mostPopularPartnerKey);
+        if (partner != null) {
+          mostPopularPartner = StatsCountPartner(
+              partner: partner, count: partners[mostPopularPartnerKey] as num);
+        }
+      }
+    }
+    if (places.isNotEmpty) {
+      String? mostPopularPlaceKey =
+          places.entries.reduce(biggestCountReducer).key as String?;
+      if (mostPopularPlaceKey != null) {
+        mostPopularPlace = StatsCount(
+            id: mostPopularPlaceKey, count: places[mostPopularPlaceKey] as num);
+      }
+    }
+    if (practices.isNotEmpty) {
+      String? mostPopularPracticeKey =
+          practices.entries.reduce(biggestCountReducer).key as String?;
+      if (mostPopularPracticeKey != null) {
+        mostPopularPractice = StatsCount(
+            id: mostPopularPracticeKey,
+            count: practices[mostPopularPracticeKey] as num);
+      }
+    }
+    if (moods.isNotEmpty) {
+      String? mostPopularMoodKey =
+          moods.entries.reduce(biggestCountReducer).key as String?;
+      if (mostPopularMoodKey != null) {
+        mostPopularMood = StatsCount(
+            id: mostPopularMoodKey, count: moods[mostPopularMoodKey] as num);
+      }
+    }
+    if (ejaculationPlaces.isNotEmpty) {
+      String? mostPopularEjaculationPlaceKey =
+          ejaculationPlaces.entries.reduce(biggestCountReducer).key as String?;
+      if (mostPopularEjaculationPlaceKey != null) {
+        mostPopularEjaculationPlace = StatsCount(
+            id: mostPopularEjaculationPlaceKey,
+            count: ejaculationPlaces[mostPopularEjaculationPlaceKey] as num);
+      }
+    }
+    if (years.isNotEmpty) {
+      String? mostActiveYearKey =
+          years.entries.reduce(biggestCountReducer).key as String?;
+      if (mostActiveYearKey != null) {
+        mostActiveYear = StatsCount(
+            id: mostActiveYearKey, count: years[mostActiveYearKey] as num);
+      }
+    }
+    if (months.isNotEmpty) {
+      String? mostActiveMonthKey =
+          months.entries.reduce(biggestCountReducer).key as String?;
+      if (mostActiveMonthKey != null) {
+        mostActiveMonth = StatsCount(
+            id: mostActiveMonthKey, count: months[mostActiveMonthKey] as num);
+      }
+    }
+    if (days.isNotEmpty) {
+      String? mostActiveDayKey =
+          days.entries.reduce(biggestCountReducer).key as String?;
+      if (mostActiveDayKey != null) {
+        mostActiveDay = StatsCount(
+            id: mostActiveDayKey, count: days[mostActiveDayKey] as num);
+      }
+    }
+    if (weekdays.isNotEmpty) {
+      String? mostActiveWeekdayKey =
+          weekdays.entries.reduce(biggestCountReducer).key as String?;
+      if (mostActiveWeekdayKey != null) {
+        mostActiveWeekday = StatsCount(
+            id: mostActiveWeekdayKey,
+            count: weekdays[mostActiveWeekdayKey] as num);
+      }
+    }
+    if (hours.isNotEmpty) {
+      String? mostActiveHourKey =
+          hours.entries.reduce(biggestCountReducer).key as String?;
+      if (mostActiveHourKey != null) {
+        mostActiveHour = StatsCount(
+            id: mostActiveHourKey, count: hours[mostActiveHourKey] as num);
+      }
+    }
+
+    stats = Stats(
+      date: DateTime.now(),
+      lastSexualActivity: lastSexualActivity,
+      daysSinceLastSexualActivity: daysSinceLastSexualActivity,
+      lastMasturbation: lastMasturbation,
+      daysSinceLastMasturbation: daysSinceLastMasturbation,
+      daysSinceLastSexualStimulation: daysSinceLastSexualStimulation,
+      totalSexualActivity: totalSexualActivity,
+      totalSexualActivityWithMale: totalSexualActivityWithMale,
+      totalSexualActivityWithFemale: totalSexualActivityWithFemale,
+      totalSexualActivityWithUnknown: totalSexualActivityWithUnknown,
+      totalMasturbation: totalMasturbation,
+      mostPopularPartner: mostPopularPartner,
+      mostPopularPractice: mostPopularPractice,
+      mostPopularMood: mostPopularMood,
+      mostPopularEjaculationPlace: mostPopularEjaculationPlace,
+      mostPopularPlace: mostPopularPlace,
+      safetyPercentSafe: safetyPercentSafe,
+      safetyPercentUnsafe: safetyPercentUnsafe,
+      safetyPercentPartlyUnsafe: safetyPercentPartlyUnsafe,
+      mostActiveYear: mostActiveYear,
+      mostActiveMonth: mostActiveMonth,
+      mostActiveDay: mostActiveDay,
+      mostActiveWeekday: mostActiveWeekday,
+      mostActiveHour: mostActiveHour,
+      orgasmRatio: orgasmRatio,
+      averageDuration: averageDuration,
+    );
+    debugPrint(jsonEncode(stats));
+    return stats;
   }
 
   void updateWidgets() {

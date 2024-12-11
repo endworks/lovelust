@@ -70,7 +70,7 @@ ThemeData generateTheme(
     );
   }
 
-  TextTheme defaultTextTheme = GoogleFonts.nunitoTextTheme(ThemeData(
+  TextTheme defaultTextTheme = GoogleFonts.poppinsTextTheme(ThemeData(
     brightness: darkMode ? Brightness.dark : Brightness.light,
   ).textTheme);
 

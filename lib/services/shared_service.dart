@@ -133,6 +133,9 @@ class SharedService extends ChangeNotifier {
     Color blue =
         Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
     Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color legend = Color.fromARGB(255, 128, 128, 128);
+    Color disabled = Color.fromARGB(32, 128, 128, 128);
+    Color lines = Colors.transparent;
 
     List<DynamicStatisticData> list = [];
     if (stats.lastSexualActivity != null) {
@@ -191,11 +194,14 @@ class SharedService extends ChangeNotifier {
 
         double barsSpace = barsSpaceRatio * maxWidth / timeData.length;
         double barsWidth = (1 - barsSpaceRatio) * maxWidth / timeData.length;
-        double maxBarsWidth = 16;
+        double minBarsWidth = 4;
+        double maxBarsWidth = 8;
+        if (barsWidth < minBarsWidth) {
+          barsWidth = minBarsWidth;
+        }
         if (barsWidth > maxBarsWidth) {
           barsWidth = maxBarsWidth;
         }
-        //double barsWidth = 5;
 
         List<BarChartGroupData> chartData = [];
 
@@ -209,47 +215,88 @@ class SharedService extends ChangeNotifier {
               data.masturbation.toDouble();
           if (currentMax > 0) {
             double current = 0;
+            if (data.male > 0) {
+              barRods.add(
+                BarChartRodData(
+                  fromY: current,
+                  toY: current + data.male.toDouble(),
+                  width: barsWidth,
+                  borderSide: BorderSide(
+                    width: 0,
+                    color: blue,
+                  ),
+                  gradient: LinearGradient(
+                    colors: [blue, generateAltColor(blue)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              );
+              current += data.male;
+            }
+            if (data.female > 0) {
+              barRods.add(
+                BarChartRodData(
+                  fromY: current,
+                  toY: current + data.female.toDouble(),
+                  width: barsWidth,
+                  borderSide: BorderSide(
+                    width: 0,
+                    color: red,
+                  ),
+                  gradient: LinearGradient(
+                    colors: [red, generateAltColor(red)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              );
+              current += data.female;
+            }
+            if (data.unknown > 0) {
+              barRods.add(
+                BarChartRodData(
+                  fromY: current,
+                  toY: current + data.unknown.toDouble(),
+                  width: barsWidth,
+                  borderSide: BorderSide(
+                    width: 0,
+                    color: secondary,
+                  ),
+                  gradient: LinearGradient(
+                    colors: [secondary, generateAltColor(secondary)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              );
+              current += data.unknown;
+            }
+            if (data.masturbation > 0) {
+              barRods.add(
+                BarChartRodData(
+                  fromY: current,
+                  toY: current + data.masturbation.toDouble(),
+                  width: barsWidth,
+                  borderSide: BorderSide(
+                    width: 0,
+                    color: primary,
+                  ),
+                  gradient: LinearGradient(
+                    colors: [primary, generateAltColor(primary)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              );
+            }
+          } else {
             barRods.add(
               BarChartRodData(
-                fromY: current + 0.1,
-                toY: data.masturbation > 0
-                    ? current + data.masturbation.toDouble() - 0.1
-                    : current + 0.1,
-                color: primary,
+                fromY: 0,
+                toY: 0.1,
                 width: barsWidth,
-              ),
-            );
-            current += data.masturbation;
-            barRods.add(
-              BarChartRodData(
-                fromY: current + 0.1,
-                toY: data.unknown > 0
-                    ? current + data.unknown.toDouble() - 0.1
-                    : current + 0.1,
-                color: secondary,
-                width: barsWidth,
-              ),
-            );
-            current += data.unknown;
-            barRods.add(
-              BarChartRodData(
-                fromY: current + 0.1,
-                toY: data.male > 0
-                    ? current + data.male.toDouble() - 0.1
-                    : current + 0.1,
-                color: blue,
-                width: barsWidth,
-              ),
-            );
-            current += data.male;
-            barRods.add(
-              BarChartRodData(
-                fromY: current + 0.1,
-                toY: data.female > 0
-                    ? current + data.female.toDouble() - 0.1
-                    : current + 0.1,
-                color: red,
-                width: barsWidth,
+                color: disabled,
               ),
             );
           }
@@ -263,6 +310,7 @@ class SharedService extends ChangeNotifier {
               x: index,
               groupVertically: true,
               barRods: barRods,
+              barsSpace: barsSpace,
             ),
           );
           index += 1;
@@ -284,7 +332,10 @@ class SharedService extends ChangeNotifier {
                   bool showLabel = true;
                   String timeDataValue = timeData[value.toInt().toString()]!.id;
                   if (chartType == 'monthly') {
-                    showLabel = int.parse(timeDataValue) % 5 == 0;
+                    showLabel = (30 - value) % 7 == 0;
+                    if (value == 1) {
+                      //showLabel = true;
+                    }
                   } else if (chartType == 'montly') {
                     showLabel = value.toInt() % 4 == 0;
                   }
@@ -302,18 +353,34 @@ class SharedService extends ChangeNotifier {
                       text += ' ${monthNames[monthIndex].capitalize()}';
                     }
                   }
-                  return SideTitleWidget(
-                    axisSide: meta.axisSide,
-                    child: Text(
-                      text,
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  );
+                  if (chartType == 'monthly') {
+                    return SideTitleWidget(
+                      axisSide: meta.axisSide,
+                      angle: 45,
+                      child: Text(
+                        text,
+                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                              color: legend,
+                              fontSize: 9,
+                            ),
+                      ),
+                    );
+                  } else {
+                    return SideTitleWidget(
+                      axisSide: meta.axisSide,
+                      angle: 0,
+                      child: Text(
+                        text,
+                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                              color: legend,
+                            ),
+                      ),
+                    );
+                  }
                 },
               ),
             ),
             leftTitles: AxisTitles(
-              drawBelowEverything: true,
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 18,
@@ -321,7 +388,9 @@ class SharedService extends ChangeNotifier {
                   return Text(
                     value.toInt().toString(),
                     textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                          color: legend,
+                        ),
                   );
                 },
               ),
@@ -336,19 +405,34 @@ class SharedService extends ChangeNotifier {
           gridData: FlGridData(
             show: true,
             drawHorizontalLine: true,
-            // checkToShowHorizontalLine: (value) => value % 1 == 0,
             getDrawingHorizontalLine: (value) => FlLine(
-              color: Theme.of(context).colorScheme.surfaceBright,
-              strokeWidth: 1,
+              color: lines,
+              strokeWidth: 0,
             ),
+            verticalInterval: 1 / (timeData.length - 1),
             drawVerticalLine: false,
+            getDrawingVerticalLine: (value) => FlLine(
+              color: lines,
+              strokeWidth: 0,
+            ),
           ),
           borderData: FlBorderData(
-              show: false,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary,
-                width: 1,
-              )),
+            show: true,
+            border: Border.merge(
+              Border(
+                bottom: BorderSide(
+                  color: lines,
+                  width: 2,
+                ),
+              ),
+              Border(
+                left: BorderSide(
+                  color: lines,
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
           groupsSpace: barsSpace,
           barGroups: chartData,
         );
@@ -360,33 +444,33 @@ class SharedService extends ChangeNotifier {
           date = stats.date;
         } else if (chartType == 'monthly') {
           type = StatisticType.monthlyChart;
-          date = DateTime(stats.date.year, stats.date.month, stats.date.day);
+          date = DateTime(stats.date.year, stats.date.month);
         } else if (chartType == 'yearly') {
           type = StatisticType.yearlyChart;
-          date = DateTime(stats.date.year, stats.date.month);
+          date = DateTime(stats.date.year);
         } else {
           type = StatisticType.globalChart;
           date = DateTime(stats.date.year);
         }
-        list.add(
-          DynamicStatisticData(
-            type: type,
-            date: date,
-            data: barChartData,
-          ),
-        );
+        if (barChartData.barGroups.length > 1) {
+          list.add(
+            DynamicStatisticData(
+              type: type,
+              date: date,
+              data: barChartData,
+            ),
+          );
+        }
       }
     }
 
-    if (Platform.isIOS && material) {
-      list.add(
-        DynamicStatisticData(
-          type: StatisticType.overview,
-          date: stats.date,
-          data: null,
-        ),
-      );
-    }
+    list.add(
+      DynamicStatisticData(
+        type: StatisticType.overview,
+        date: stats.date,
+        data: null,
+      ),
+    );
 
     list.sort((a, b) => b.date.compareTo(a.date));
 
@@ -454,7 +538,8 @@ class SharedService extends ChangeNotifier {
     num safetyUnsafe = 0;
     num safetyPartlyUnsafe = 0;
     List<String> weekdayNames = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
-    List<String> monthNames = DateFormat.EEEE().dateSymbols.NARROWMONTHS;
+    List<String> monthNames = DateFormat.EEEE().dateSymbols.MONTHS;
+    List<String> monthInitialNames = DateFormat.EEEE().dateSymbols.NARROWMONTHS;
 
     for (Activity activity in _activity) {
       if (activity.type == ActivityType.sexualIntercourse) {
@@ -488,11 +573,16 @@ class SharedService extends ChangeNotifier {
           firstSexualActivity = activity;
         }
         if (activity.ejaculation != null) {
-          if (ejaculationPlaces[activity.ejaculation!.name] == null) {
-            ejaculationPlaces[activity.ejaculation!.name] = 1;
+          if (ejaculationPlaces[
+                  getEjaculationTranslation(activity.ejaculation)] ==
+              null) {
+            ejaculationPlaces[getEjaculationTranslation(activity.ejaculation)] =
+                1;
           } else {
-            ejaculationPlaces[activity.ejaculation!.name] =
-                ejaculationPlaces[activity.ejaculation!.name]! + 1;
+            ejaculationPlaces[getEjaculationTranslation(activity.ejaculation)] =
+                ejaculationPlaces[
+                        getEjaculationTranslation(activity.ejaculation)]! +
+                    1;
           }
         }
         if (years[activity.date.year.toString()] == null) {
@@ -501,11 +591,11 @@ class SharedService extends ChangeNotifier {
           years[activity.date.year.toString()] =
               years[activity.date.year.toString()]! + 1;
         }
-        if (months[activity.date.month.toString()] == null) {
-          months[activity.date.month.toString()] = 1;
+        String monthName = monthNames[activity.date.month - 1].capitalize();
+        if (months[monthName] == null) {
+          months[monthName] = 1;
         } else {
-          months[activity.date.month.toString()] =
-              months[activity.date.month.toString()]! + 1;
+          months[monthName] = months[monthName]! + 1;
         }
         if (days[activity.date.day.toString()] == null) {
           days[activity.date.day.toString()] = 1;
@@ -513,8 +603,9 @@ class SharedService extends ChangeNotifier {
           days[activity.date.day.toString()] =
               days[activity.date.day.toString()]! + 1;
         }
-        String weekdayName = weekdayNames[
-            activity.date.weekday == 7 ? 0 : activity.date.weekday];
+        String weekdayName =
+            weekdayNames[activity.date.weekday == 7 ? 0 : activity.date.weekday]
+                .capitalize();
         if (weekdays[weekdayName] == null) {
           weekdays[weekdayName] = 1;
         } else {
@@ -528,10 +619,11 @@ class SharedService extends ChangeNotifier {
         }
         if (activity.practices != null) {
           for (Practice practice in activity.practices!) {
-            if (practices[practice.name] == null) {
-              practices[practice.name] = 1;
+            if (practices[getPracticeTranslation(practice)] == null) {
+              practices[getPracticeTranslation(practice)] = 1;
             } else {
-              practices[practice.name] = practices[practice.name]! + 1;
+              practices[getPracticeTranslation(practice)] =
+                  practices[getPracticeTranslation(practice)]! + 1;
             }
           }
         }
@@ -564,17 +656,19 @@ class SharedService extends ChangeNotifier {
       }
 
       if (activity.mood != null) {
-        if (moods[activity.mood!.name] == null) {
-          moods[activity.mood!.name] = 1;
+        if (moods[getMoodTranslation(activity.mood)] == null) {
+          moods[getMoodTranslation(activity.mood)] = 1;
         } else {
-          moods[activity.mood!.name] = moods[activity.mood!.name]! + 1;
+          moods[getMoodTranslation(activity.mood)] =
+              moods[getMoodTranslation(activity.mood)]! + 1;
         }
       }
       if (activity.place != null) {
-        if (places[activity.place!.name] == null) {
-          places[activity.place!.name] = 1;
+        if (places[getPlaceTranslation(activity.place)] == null) {
+          places[getPlaceTranslation(activity.place)] = 1;
         } else {
-          places[activity.place!.name] = places[activity.place!.name]! + 1;
+          places[getPlaceTranslation(activity.place)] =
+              places[getPlaceTranslation(activity.place)]! + 1;
         }
       }
     }
@@ -835,7 +929,7 @@ class SharedService extends ChangeNotifier {
           );
         } else if (countType == 'month') {
           yearlyStats[(length - i).toString()] = StatsCountTimeData(
-            id: monthNames[currentDate.month - 1],
+            id: monthInitialNames[currentDate.month - 1],
             count: currentTimeData.length,
             male: maleCount,
             female: femaleCount,

@@ -1847,6 +1847,12 @@ abstract class AppLocalizations {
   /// **'No mood'**
   String get noMood;
 
+  /// No description provided for @statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
   /// No description provided for @unsupportedStatistic.
   ///
   /// In en, this message translates to:
@@ -1868,14 +1874,14 @@ abstract class AppLocalizations {
   /// No description provided for @daysWithoutMasturbation.
   ///
   /// In en, this message translates to:
-  /// **'Days without masturbation'**
+  /// **'Days without fap'**
   String get daysWithoutMasturbation;
 
-  /// No description provided for @lastRelationship.
+  /// No description provided for @lastSexualActivity.
   ///
   /// In en, this message translates to:
-  /// **'Last relationship'**
-  String get lastRelationship;
+  /// **'Last sexual activity'**
+  String get lastSexualActivity;
 
   /// No description provided for @lastMasturbation.
   ///
@@ -1922,7 +1928,7 @@ abstract class AppLocalizations {
   /// No description provided for @withoutMasturbation.
   ///
   /// In en, this message translates to:
-  /// **'without solo'**
+  /// **'without fap'**
   String get withoutMasturbation;
 
   /// No description provided for @ok.
@@ -1954,6 +1960,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help'**
   String get help;
+
+  /// No description provided for @mostPopularPartner.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular partner'**
+  String get mostPopularPartner;
+
+  /// No description provided for @mostPopularPractice.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular practice'**
+  String get mostPopularPractice;
+
+  /// No description provided for @mostPopularMood.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular mood'**
+  String get mostPopularMood;
+
+  /// No description provided for @mostPopularEjaculationPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular ejaculation place'**
+  String get mostPopularEjaculationPlace;
+
+  /// No description provided for @mostPopularPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Most popular place'**
+  String get mostPopularPlace;
+
+  /// No description provided for @mostActiveYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active year'**
+  String get mostActiveYear;
+
+  /// No description provided for @mostActiveMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active month'**
+  String get mostActiveMonth;
+
+  /// No description provided for @mostActiveHour.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active hour'**
+  String get mostActiveHour;
+
+  /// No description provided for @mostActiveWeekday.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active weekday'**
+  String get mostActiveWeekday;
+
+  /// No description provided for @orgasmRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Orgasm ratio'**
+  String get orgasmRatio;
+
+  /// No description provided for @averageDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Average duration'**
+  String get averageDuration;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

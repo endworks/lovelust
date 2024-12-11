@@ -51,7 +51,7 @@ class _LastRelationshipStatisticState extends State<LastRelationshipStatistic> {
       child: ListTile(
         onTap: openActivity,
         title: _shared.inappropriateText(
-          AppLocalizations.of(context)!.lastRelationship,
+          AppLocalizations.of(context)!.lastSexualActivity,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         subtitle: Row(

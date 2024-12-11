@@ -921,6 +921,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noMood => 'No mood';
 
   @override
+  String get statistics => 'Statistics';
+
+  @override
   String get unsupportedStatistic => 'Unsupported statistic';
 
   @override
@@ -930,10 +933,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get daysWithoutSex => 'Days without sex';
 
   @override
-  String get daysWithoutMasturbation => 'Days without masturbation';
+  String get daysWithoutMasturbation => 'Days without fap';
 
   @override
-  String get lastRelationship => 'Last relationship';
+  String get lastSexualActivity => 'Last sexual activity';
 
   @override
   String get lastMasturbation => 'Last masturbation';
@@ -957,7 +960,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get withoutSex => 'without sex';
 
   @override
-  String get withoutMasturbation => 'without solo';
+  String get withoutMasturbation => 'without fap';
 
   @override
   String get ok => 'OK';
@@ -973,4 +976,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help => 'Help';
+
+  @override
+  String get mostPopularPartner => 'Most popular partner';
+
+  @override
+  String get mostPopularPractice => 'Most popular practice';
+
+  @override
+  String get mostPopularMood => 'Most popular mood';
+
+  @override
+  String get mostPopularEjaculationPlace => 'Most popular ejaculation place';
+
+  @override
+  String get mostPopularPlace => 'Most popular place';
+
+  @override
+  String get mostActiveYear => 'Most active year';
+
+  @override
+  String get mostActiveMonth => 'Most active month';
+
+  @override
+  String get mostActiveHour => 'Most active hour';
+
+  @override
+  String get mostActiveWeekday => 'Most active weekday';
+
+  @override
+  String get orgasmRatio => 'Orgasm ratio';
+
+  @override
+  String get averageDuration => 'Average duration';
 }

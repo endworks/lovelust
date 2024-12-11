@@ -923,6 +923,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noMood => 'Sin ánimo';
 
   @override
+  String get statistics => 'Estadísticas';
+
+  @override
   String get unsupportedStatistic => 'Estadística no soportada';
 
   @override
@@ -932,10 +935,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get daysWithoutSex => 'Días sin sexo';
 
   @override
-  String get daysWithoutMasturbation => 'Días sin masturbación';
+  String get daysWithoutMasturbation => 'Días sin pajas';
 
   @override
-  String get lastRelationship => 'Última relacion sexual';
+  String get lastSexualActivity => 'Última actividad sexual';
 
   @override
   String get lastMasturbation => 'Última masturbación';
@@ -959,7 +962,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get withoutSex => 'sin sexo';
 
   @override
-  String get withoutMasturbation => 'sin masturbación';
+  String get withoutMasturbation => 'sin pajas';
 
   @override
   String get ok => 'OK';
@@ -975,4 +978,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get help => 'Ayuda';
+
+  @override
+  String get mostPopularPartner => 'Pareja más popular';
+
+  @override
+  String get mostPopularPractice => 'Práctica más popular';
+
+  @override
+  String get mostPopularMood => 'Ánimo más popular';
+
+  @override
+  String get mostPopularEjaculationPlace => 'Lugar de eyaculación más popular';
+
+  @override
+  String get mostPopularPlace => 'Lugar más popular';
+
+  @override
+  String get mostActiveYear => 'Año más activo';
+
+  @override
+  String get mostActiveMonth => 'Mes más activo';
+
+  @override
+  String get mostActiveHour => 'Hora más activa';
+
+  @override
+  String get mostActiveWeekday => 'Dia de la semana más activo';
+
+  @override
+  String get orgasmRatio => 'Ratio de orgasmos';
+
+  @override
+  String get averageDuration => 'Duración promedio';
 }

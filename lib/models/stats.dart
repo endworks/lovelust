@@ -186,3 +186,41 @@ class StatsCountPartner {
         'count': count,
       };
 }
+
+class StatsCountTimeData {
+  final String id;
+  final num count;
+  final num male;
+  final num female;
+  final num unknown;
+  final num masturbation;
+
+  const StatsCountTimeData({
+    required this.id,
+    required this.count,
+    required this.male,
+    required this.female,
+    required this.unknown,
+    required this.masturbation,
+  });
+
+  factory StatsCountTimeData.fromJson(Map<String, dynamic> json) {
+    return StatsCountTimeData(
+      id: json['id'],
+      count: json['count'],
+      male: json['male'],
+      female: json['female'],
+      unknown: json['unknown'],
+      masturbation: json['masturbation'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'count': count,
+        'male': male,
+        'female': female,
+        'unknown': unknown,
+        'masturbation': masturbation,
+      };
+}

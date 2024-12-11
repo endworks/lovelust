@@ -389,11 +389,57 @@ class SharedService extends ChangeNotifier {
     Map<String, int> days = {};
     Map<String, int> weekdays = {};
     Map<String, int> hours = {};
+    Map<String, StatsCountTimeData> weeklyStats = {};
+    Map<String, StatsCountTimeData> dailyStats = {};
+    Map<String, StatsCountTimeData> monthlyStats = {};
+    Map<String, StatsCountTimeData> yearlyStats = {};
     int orgasmsReceived = 0;
     int orgasmsGiven = 0;
     num safetySafe = 0;
     num safetyUnsafe = 0;
     num safetyPartlyUnsafe = 0;
+
+    for (var i = 0; i < 7; i += 1) {
+      weeklyStats[i.toString()] = StatsCountTimeData(
+        id: i.toString(),
+        count: 0,
+        male: 0,
+        female: 0,
+        unknown: 0,
+        masturbation: 0,
+      );
+    }
+
+    for (var i = 1; i <= 30; i += 1) {
+      dailyStats[i.toString()] = StatsCountTimeData(
+        id: i.toString(),
+        count: 0,
+        male: 0,
+        female: 0,
+        unknown: 0,
+        masturbation: 0,
+      );
+    }
+
+    for (var i = 0; i < 12; i += 1) {
+      monthlyStats[i.toString()] = StatsCountTimeData(
+        id: i.toString(),
+        count: 0,
+        male: 0,
+        female: 0,
+        unknown: 0,
+        masturbation: 0,
+      );
+    }
+
+    yearlyStats[date.year.toString()] = StatsCountTimeData(
+      id: date.year.toString(),
+      count: 0,
+      male: 0,
+      female: 0,
+      unknown: 0,
+      masturbation: 0,
+    );
 
     for (Activity activity in _activity) {
       if (activity.type == ActivityType.sexualIntercourse) {
@@ -533,16 +579,25 @@ class SharedService extends ChangeNotifier {
     }
 
     if (orgasmsGiven > 0 || orgasmsReceived > 0) {
-      orgasmRatio = orgasmsGiven / orgasmsReceived;
+      orgasmRatio = num.parse(
+        (orgasmsGiven / orgasmsReceived).toStringAsFixed(2),
+      );
     }
     if (totalDuration > 0 && activityWithDuration > 0) {
-      averageDuration = totalDuration / activityWithDuration;
+      averageDuration = num.parse(
+        (totalDuration / activityWithDuration).toStringAsFixed(2),
+      );
     }
 
-    safetyPercentSafe = (safetySafe * 100 / totalSexualActivity).round();
-    safetyPercentUnsafe = (safetyUnsafe * 100 / totalSexualActivity).round();
-    safetyPercentPartlyUnsafe =
-        (safetyPartlyUnsafe * 100 / totalSexualActivity).round();
+    safetyPercentSafe = num.parse(
+      (safetySafe * 100 / totalSexualActivity).toStringAsFixed(2),
+    );
+    safetyPercentUnsafe = num.parse(
+      (safetyUnsafe * 100 / totalSexualActivity).toStringAsFixed(2),
+    );
+    safetyPercentPartlyUnsafe = num.parse(
+      (safetyPartlyUnsafe * 100 / totalSexualActivity).toStringAsFixed(2),
+    );
 
     biggestCountReducer(MapEntry<String, int> a, MapEntry<String, int> b) {
       final aValue = a.value;
@@ -637,6 +692,8 @@ class SharedService extends ChangeNotifier {
       }
     }
 
+    debugPrint('weeklyData: ${jsonEncode(weeklyStats)}');
+
     stats = Stats(
       date: DateTime.now(),
       lastSexualActivity: lastSexualActivity,
@@ -676,21 +733,16 @@ class SharedService extends ChangeNotifier {
       }
 
       try {
-        Activity? lastSexualActivity = activity.firstWhereOrNull(
-          (element) => element.type == ActivityType.sexualIntercourse,
-        );
-        Activity? lastSoloActivity = activity.firstWhereOrNull(
-          (element) => element.type == ActivityType.masturbation,
-        );
-        if (lastSexualActivity != null || lastSoloActivity != null) {
+        if (stats.lastSexualActivity != null ||
+            stats.lastMasturbation != null) {
           Partner? partner;
           String safety = "PARTIALLY_UNSAFE";
-          if (lastSexualActivity != null) {
-            if (lastSexualActivity.partner != null) {
-              partner = getPartnerById(lastSexualActivity.partner!);
+          if (stats.lastSexualActivity != null) {
+            if (stats.lastSexualActivity!.partner != null) {
+              partner = getPartnerById(stats.lastSexualActivity!.partner!);
             }
 
-            switch (calculateSafety(lastSexualActivity)) {
+            switch (calculateSafety(stats.lastSexualActivity!)) {
               case ActivitySafety.safe:
                 safety = "SAFE";
                 break;
@@ -703,12 +755,12 @@ class SharedService extends ChangeNotifier {
           }
 
           ActivityWidgetData widgetData = ActivityWidgetData(
-            soloActivity: lastSoloActivity,
-            sexualActivity: lastSexualActivity,
+            soloActivity: stats.lastSexualActivity,
+            sexualActivity: stats.lastMasturbation,
             partner: partner,
             safety: safety,
-            moodEmoji: lastSexualActivity != null
-                ? getMoodEmoji(lastSexualActivity.mood)
+            moodEmoji: stats.lastSexualActivity != null
+                ? getMoodEmoji(stats.lastSexualActivity!.mood)
                 : null,
             privacyMode: privacyMode,
           );

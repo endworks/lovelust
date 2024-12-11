@@ -28,6 +28,10 @@ class Stats {
   final StatsCount? mostActiveHour;
   final num orgasmRatio;
   final num averageDuration;
+  final Map<String, StatsCountTimeData> weeklyStats;
+  final Map<String, StatsCountTimeData> monthlyStats;
+  final Map<String, StatsCountTimeData> yearlyStats;
+  final Map<String, StatsCountTimeData> globalStats;
 
   const Stats({
     required this.date,
@@ -56,6 +60,10 @@ class Stats {
     required this.mostActiveHour,
     required this.orgasmRatio,
     required this.averageDuration,
+    required this.weeklyStats,
+    required this.globalStats,
+    required this.monthlyStats,
+    required this.yearlyStats,
   });
 
   factory Stats.fromJson(Map<String, dynamic> json) {
@@ -110,6 +118,10 @@ class Stats {
           : null,
       orgasmRatio: json['orgasmRatio'],
       averageDuration: json['averageDuration'],
+      weeklyStats: json['weeklyStats'],
+      monthlyStats: json['monthlyStats'],
+      yearlyStats: json['yearlyStats'],
+      globalStats: json['globalStats'],
     );
   }
 
@@ -140,6 +152,10 @@ class Stats {
         'mostActiveHour': mostActiveHour?.toJson(),
         'orgasmRatio': orgasmRatio,
         'averageDuration': averageDuration,
+        'weeklyStats': weeklyStats,
+        'monthlyStats': monthlyStats,
+        'yearlyStats': yearlyStats,
+        'globalStats': globalStats,
       };
 }
 

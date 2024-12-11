@@ -1883,11 +1883,29 @@ abstract class AppLocalizations {
   /// **'Last masturbation'**
   String get lastMasturbation;
 
-  /// No description provided for @weeklyReport.
+  /// No description provided for @weeklyChart.
   ///
   /// In en, this message translates to:
-  /// **'Weekly report'**
-  String get weeklyReport;
+  /// **'Weekly chart'**
+  String get weeklyChart;
+
+  /// No description provided for @monthlyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly chart'**
+  String get monthlyChart;
+
+  /// No description provided for @yearlyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly chart'**
+  String get yearlyChart;
+
+  /// No description provided for @globalChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Global chart'**
+  String get globalChart;
 
   /// No description provided for @days.
   ///

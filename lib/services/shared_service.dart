@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:collection/collection.dart';
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -25,7 +26,6 @@ import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/statistics/dynamic_statistic.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class SharedService extends ChangeNotifier {
   final StorageService _storage = getIt<StorageService>();
@@ -65,6 +65,10 @@ class SharedService extends ChangeNotifier {
     mostActiveHour: null,
     orgasmRatio: 0,
     averageDuration: 0,
+    weeklyStats: {},
+    globalStats: {},
+    monthlyStats: {},
+    yearlyStats: {},
   );
   bool _protected = false;
   DateTime _calendarSelectedDate = DateTime.now();
@@ -126,6 +130,9 @@ class SharedService extends ChangeNotifier {
     BuildContext context = _navigator.navigatorKey.currentContext!;
     Color primary = Theme.of(context).colorScheme.primary;
     Color secondary = Theme.of(context).colorScheme.secondary;
+    Color blue =
+        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
 
     List<DynamicStatisticData> list = [];
     if (stats.lastSexualActivity != null) {
@@ -163,177 +170,223 @@ class SharedService extends ChangeNotifier {
       );
     }
     if (stats.lastSexualActivity != null || stats.lastMasturbation != null) {
-      List<WeeklyChartData> sexChartData = [];
-      List<WeeklyChartData> masturbationChartData = [];
+      List<String> chartTypes = ['weekly', 'monthly', 'yearly', 'global'];
 
-      final now = DateTime.now();
-      List<Activity> data = activity
-          .where(
-            (element) =>
-                element.date.compareTo(
-                  DateTime(
-                    now.year,
-                    now.month,
-                    now.day - 7,
-                  ),
-                ) >
-                0,
-          )
-          .toList();
+      BarChartData barChartData;
+      double maxWidth = MediaQuery.of(context).size.width;
+      double barsSpaceRatio = 0.8;
+      List<String> monthNames = DateFormat.EEEE().dateSymbols.SHORTMONTHS;
 
-      List<String> weekdays = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
+      for (String chartType in chartTypes) {
+        Map<String, StatsCountTimeData> timeData = {};
+        if (chartType == 'weekly') {
+          timeData = stats.weeklyStats;
+        } else if (chartType == 'monthly') {
+          timeData = stats.monthlyStats;
+        } else if (chartType == 'yearly') {
+          timeData = stats.yearlyStats;
+        } else {
+          timeData = stats.globalStats;
+        }
 
-      for (var i = 6; i >= 0; i--) {
-        DateTime currentDate = DateTime(
-          now.year,
-          now.month,
-          now.day - i,
-        );
-        List<Activity> currentDayData = data
-            .where((element) => element.date.day == currentDate.day)
-            .toList();
-        int countSex = currentDayData
-            .where((element) => element.type == ActivityType.sexualIntercourse)
-            .length;
-        int countMasturbation = currentDayData
-            .where((element) => element.type == ActivityType.masturbation)
-            .length;
-        String weekday = weekdays
-            .elementAt(currentDate.weekday == 7 ? 0 : currentDate.weekday);
-        WeeklyChartData sexChartItem = WeeklyChartData(
-          day: weekday.capitalize(),
-          activityCount: countSex.toDouble(),
-        );
-        sexChartData.add(sexChartItem);
-        WeeklyChartData masturbationChartItem = WeeklyChartData(
-          day: weekday.capitalize(),
-          activityCount: countMasturbation.toDouble(),
-        );
-        masturbationChartData.add(masturbationChartItem);
-      }
+        double barsSpace = barsSpaceRatio * maxWidth / timeData.length;
+        double barsWidth = (1 - barsSpaceRatio) * maxWidth / timeData.length;
+        double maxBarsWidth = 16;
+        if (barsWidth > maxBarsWidth) {
+          barsWidth = maxBarsWidth;
+        }
+        //double barsWidth = 5;
 
-      List<XyDataSeries<WeeklyChartData, String>> series = [];
-      bool hasSexData = sexChartData.firstWhereOrNull(
-            (element) => element.activityCount > 0,
-          ) !=
-          null;
-      bool hasMasturbationData = masturbationChartData.firstWhereOrNull(
-            (element) => element.activityCount > 0,
-          ) !=
-          null;
+        List<BarChartGroupData> chartData = [];
 
-      if (hasMasturbationData) {
-        series.add(
-          SplineAreaSeries<WeeklyChartData, String>(
-            dataSource: masturbationChartData,
-            isVisibleInLegend: masturbationChartData.isNotEmpty,
-            name: AppLocalizations.of(context)!.masturbation,
-            color: secondary,
-            xValueMapper: (WeeklyChartData data, _) => data.day,
-            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-            markerSettings: MarkerSettings(
-              isVisible: false,
-              color: secondary,
-              borderColor: secondary,
-              borderWidth: 2,
-              height: 4,
-              width: 4,
+        double max = 0;
+        int index = 0;
+        timeData.forEach((String key, StatsCountTimeData data) {
+          List<BarChartRodData> barRods = [];
+          double currentMax = data.male.toDouble() +
+              data.female.toDouble() +
+              data.unknown.toDouble() +
+              data.masturbation.toDouble();
+          if (currentMax > 0) {
+            double current = 0;
+            barRods.add(
+              BarChartRodData(
+                fromY: current + 0.1,
+                toY: data.masturbation > 0
+                    ? current + data.masturbation.toDouble() - 0.1
+                    : current + 0.1,
+                color: primary,
+                width: barsWidth,
+              ),
+            );
+            current += data.masturbation;
+            barRods.add(
+              BarChartRodData(
+                fromY: current + 0.1,
+                toY: data.unknown > 0
+                    ? current + data.unknown.toDouble() - 0.1
+                    : current + 0.1,
+                color: secondary,
+                width: barsWidth,
+              ),
+            );
+            current += data.unknown;
+            barRods.add(
+              BarChartRodData(
+                fromY: current + 0.1,
+                toY: data.male > 0
+                    ? current + data.male.toDouble() - 0.1
+                    : current + 0.1,
+                color: blue,
+                width: barsWidth,
+              ),
+            );
+            current += data.male;
+            barRods.add(
+              BarChartRodData(
+                fromY: current + 0.1,
+                toY: data.female > 0
+                    ? current + data.female.toDouble() - 0.1
+                    : current + 0.1,
+                color: red,
+                width: barsWidth,
+              ),
+            );
+          }
+
+          if (currentMax > max) {
+            max = currentMax;
+          }
+
+          chartData.add(
+            BarChartGroupData(
+              x: index,
+              groupVertically: true,
+              barRods: barRods,
             ),
-            splineType: SplineType.monotonic,
-            legendIconType: LegendIconType.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                secondary.withAlpha(128),
-                secondary.withAlpha(64),
-                secondary.withAlpha(0),
-              ],
-              stops: const [
-                0.0,
-                0.3,
-                0.9,
-              ],
+          );
+          index += 1;
+        });
+
+        barChartData = BarChartData(
+          alignment: BarChartAlignment.center,
+          barTouchData: BarTouchData(
+            enabled: false,
+          ),
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 30,
+                getTitlesWidget: (value, meta) {
+                  String text;
+                  bool showLabel = true;
+                  String timeDataValue = timeData[value.toInt().toString()]!.id;
+                  if (chartType == 'monthly') {
+                    showLabel = int.parse(timeDataValue) % 5 == 0;
+                  } else if (chartType == 'montly') {
+                    showLabel = value.toInt() % 4 == 0;
+                  }
+                  text = '';
+                  if (showLabel) {
+                    text = timeDataValue.capitalize();
+                    if (chartType == 'monthly') {
+                      int monthIndex = stats.date.month - 1;
+                      if (int.parse(timeDataValue) > stats.date.day) {
+                        monthIndex = stats.date.month - 2;
+                      }
+                      if (monthIndex < 0) {
+                        monthIndex + 12;
+                      }
+                      text += ' ${monthNames[monthIndex].capitalize()}';
+                    }
+                  }
+                  return SideTitleWidget(
+                    axisSide: meta.axisSide,
+                    child: Text(
+                      text,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    ),
+                  );
+                },
+              ),
             ),
-            borderWidth: 3,
-            borderColor: secondary,
-            borderGradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                secondary,
-                generateAltColor(secondary),
-              ],
+            leftTitles: AxisTitles(
+              drawBelowEverything: true,
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 18,
+                getTitlesWidget: (value, meta) {
+                  return Text(
+                    value.toInt().toString(),
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  );
+                },
+              ),
+            ),
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
             ),
           ),
-        );
-      }
-
-      if (hasSexData) {
-        series.add(
-          SplineAreaSeries<WeeklyChartData, String>(
-            dataSource: sexChartData,
-            isVisibleInLegend: sexChartData.isNotEmpty,
-            name: AppLocalizations.of(context)!.sexualIntercourse,
-            color: primary,
-            xValueMapper: (WeeklyChartData data, _) => data.day,
-            yValueMapper: (WeeklyChartData data, _) => data.activityCount,
-            markerSettings: MarkerSettings(
-              isVisible: false,
-              color: primary,
-              borderColor: primary,
-              borderWidth: 2,
-              height: 4,
-              width: 4,
+          gridData: FlGridData(
+            show: true,
+            drawHorizontalLine: true,
+            // checkToShowHorizontalLine: (value) => value % 1 == 0,
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: Theme.of(context).colorScheme.surfaceBright,
+              strokeWidth: 1,
             ),
-            splineType: SplineType.monotonic,
-            legendIconType: LegendIconType.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                primary.withAlpha(128),
-                primary.withAlpha(64),
-                primary.withAlpha(0),
-              ],
-              stops: const [
-                0.0,
-                0.3,
-                0.9,
-              ],
-            ),
-            borderWidth: 3,
-            borderColor: primary,
-            borderGradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                primary,
-                generateAltColor(primary),
-              ],
-            ),
+            drawVerticalLine: false,
           ),
+          borderData: FlBorderData(
+              show: false,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+                width: 1,
+              )),
+          groupsSpace: barsSpace,
+          barGroups: chartData,
         );
-      }
 
-      if (hasSexData || hasMasturbationData) {
+        StatisticType type;
+        DateTime date;
+        if (chartType == 'weekly') {
+          type = StatisticType.weeklyChart;
+          date = stats.date;
+        } else if (chartType == 'monthly') {
+          type = StatisticType.monthlyChart;
+          date = DateTime(stats.date.year, stats.date.month, stats.date.day);
+        } else if (chartType == 'yearly') {
+          type = StatisticType.yearlyChart;
+          date = DateTime(stats.date.year, stats.date.month);
+        } else {
+          type = StatisticType.globalChart;
+          date = DateTime(stats.date.year);
+        }
         list.add(
           DynamicStatisticData(
-            type: StatisticType.weeklyChart,
-            date: DateTime.now(),
-            data: series,
+            type: type,
+            date: date,
+            data: barChartData,
           ),
         );
       }
     }
 
-    list.add(
-      DynamicStatisticData(
-        type: StatisticType.overview,
-        date: stats.date,
-        data: null,
-      ),
-    );
+    if (Platform.isIOS && material) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.overview,
+          date: stats.date,
+          data: null,
+        ),
+      );
+    }
 
     list.sort((a, b) => b.date.compareTo(a.date));
 
@@ -352,8 +405,10 @@ class SharedService extends ChangeNotifier {
     debugPrint('generateStats');
     DateTime date = DateTime.now();
     Activity? lastSexualActivity;
+    Activity? firstSexualActivity;
     int daysSinceLastSexualActivity = 0;
     Activity? lastMasturbation;
+    Activity? firstMasturbation;
     int daysSinceLastMasturbation = 0;
     int daysSinceLastSexualStimulation = 0;
     int totalSexualActivity = 0;
@@ -390,56 +445,16 @@ class SharedService extends ChangeNotifier {
     Map<String, int> weekdays = {};
     Map<String, int> hours = {};
     Map<String, StatsCountTimeData> weeklyStats = {};
-    Map<String, StatsCountTimeData> dailyStats = {};
     Map<String, StatsCountTimeData> monthlyStats = {};
     Map<String, StatsCountTimeData> yearlyStats = {};
+    Map<String, StatsCountTimeData> globalStats = {};
     int orgasmsReceived = 0;
     int orgasmsGiven = 0;
     num safetySafe = 0;
     num safetyUnsafe = 0;
     num safetyPartlyUnsafe = 0;
-
-    for (var i = 0; i < 7; i += 1) {
-      weeklyStats[i.toString()] = StatsCountTimeData(
-        id: i.toString(),
-        count: 0,
-        male: 0,
-        female: 0,
-        unknown: 0,
-        masturbation: 0,
-      );
-    }
-
-    for (var i = 1; i <= 30; i += 1) {
-      dailyStats[i.toString()] = StatsCountTimeData(
-        id: i.toString(),
-        count: 0,
-        male: 0,
-        female: 0,
-        unknown: 0,
-        masturbation: 0,
-      );
-    }
-
-    for (var i = 0; i < 12; i += 1) {
-      monthlyStats[i.toString()] = StatsCountTimeData(
-        id: i.toString(),
-        count: 0,
-        male: 0,
-        female: 0,
-        unknown: 0,
-        masturbation: 0,
-      );
-    }
-
-    yearlyStats[date.year.toString()] = StatsCountTimeData(
-      id: date.year.toString(),
-      count: 0,
-      male: 0,
-      female: 0,
-      unknown: 0,
-      masturbation: 0,
-    );
+    List<String> weekdayNames = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
+    List<String> monthNames = DateFormat.EEEE().dateSymbols.NARROWMONTHS;
 
     for (Activity activity in _activity) {
       if (activity.type == ActivityType.sexualIntercourse) {
@@ -468,6 +483,10 @@ class SharedService extends ChangeNotifier {
             lastSexualActivity.date.compareTo(activity.date) == -1) {
           lastSexualActivity = activity;
         }
+        if (firstSexualActivity == null ||
+            firstSexualActivity.date.compareTo(activity.date) == 1) {
+          firstSexualActivity = activity;
+        }
         if (activity.ejaculation != null) {
           if (ejaculationPlaces[activity.ejaculation!.name] == null) {
             ejaculationPlaces[activity.ejaculation!.name] = 1;
@@ -494,11 +513,12 @@ class SharedService extends ChangeNotifier {
           days[activity.date.day.toString()] =
               days[activity.date.day.toString()]! + 1;
         }
-        if (weekdays[activity.date.weekday.toString()] == null) {
-          weekdays[activity.date.weekday.toString()] = 1;
+        String weekdayName = weekdayNames[
+            activity.date.weekday == 7 ? 0 : activity.date.weekday];
+        if (weekdays[weekdayName] == null) {
+          weekdays[weekdayName] = 1;
         } else {
-          weekdays[activity.date.weekday.toString()] =
-              weekdays[activity.date.weekday.toString()]! + 1;
+          weekdays[weekdayName] = weekdays[weekdayName]! + 1;
         }
         if (hours[activity.date.hour.toString()] == null) {
           hours[activity.date.hour.toString()] = 1;
@@ -536,6 +556,10 @@ class SharedService extends ChangeNotifier {
         if (lastMasturbation == null ||
             lastMasturbation.date.compareTo(activity.date) == -1) {
           lastMasturbation = activity;
+        }
+        if (firstMasturbation == null ||
+            firstMasturbation.date.compareTo(activity.date) == 1) {
+          firstMasturbation = activity;
         }
       }
 
@@ -585,18 +609,18 @@ class SharedService extends ChangeNotifier {
     }
     if (totalDuration > 0 && activityWithDuration > 0) {
       averageDuration = num.parse(
-        (totalDuration / activityWithDuration).toStringAsFixed(2),
+        (totalDuration / activityWithDuration).toStringAsFixed(1),
       );
     }
 
     safetyPercentSafe = num.parse(
-      (safetySafe * 100 / totalSexualActivity).toStringAsFixed(2),
+      (safetySafe * 100 / totalSexualActivity).toStringAsFixed(1),
     );
     safetyPercentUnsafe = num.parse(
-      (safetyUnsafe * 100 / totalSexualActivity).toStringAsFixed(2),
+      (safetyUnsafe * 100 / totalSexualActivity).toStringAsFixed(1),
     );
     safetyPercentPartlyUnsafe = num.parse(
-      (safetyPartlyUnsafe * 100 / totalSexualActivity).toStringAsFixed(2),
+      (safetyPartlyUnsafe * 100 / totalSexualActivity).toStringAsFixed(1),
     );
 
     biggestCountReducer(MapEntry<String, int> a, MapEntry<String, int> b) {
@@ -692,7 +716,144 @@ class SharedService extends ChangeNotifier {
       }
     }
 
-    debugPrint('weeklyData: ${jsonEncode(weeklyStats)}');
+    List<String> countTypes = ['week', 'day', 'month', 'year'];
+    int length = 0;
+    for (String countType in countTypes) {
+      if (countType == 'week') {
+        length = 6;
+      } else if (countType == 'day') {
+        length = 30;
+      } else if (countType == 'month') {
+        length = 11;
+      } else if (countType == 'year') {
+        length = 0;
+        int firstYear = date.year;
+        if (firstSexualActivity != null) {
+          if (firstYear > firstSexualActivity.date.year) {
+            firstYear = firstSexualActivity.date.year;
+          }
+        }
+        if (firstMasturbation != null) {
+          if (firstYear > firstMasturbation.date.year) {
+            firstYear = firstMasturbation.date.year;
+          }
+        }
+        length += (date.year - firstYear);
+      }
+      for (var i = length; i >= 0; i--) {
+        DateTime currentDate = date;
+        List<Activity> currentTimeData = [];
+        if (countType == 'week') {
+          currentDate = DateTime(
+            date.year,
+            date.month,
+            date.day,
+          ).add(Duration(days: -i));
+          currentTimeData = _activity
+              .where((element) =>
+                  element.date.day == currentDate.day &&
+                  element.date.month == currentDate.month &&
+                  element.date.year == currentDate.year)
+              .toList();
+        } else if (countType == 'day') {
+          currentDate = DateTime(
+            date.year,
+            date.month,
+            date.day,
+          ).add(Duration(days: -i));
+          currentTimeData = _activity
+              .where((element) =>
+                  element.date.day == currentDate.day &&
+                  element.date.month == currentDate.month &&
+                  element.date.year == currentDate.year)
+              .toList();
+        } else if (countType == 'month') {
+          currentDate = DateTime(
+            date.year,
+            date.month,
+          ).add(Duration(days: -i * 30));
+          currentTimeData = _activity
+              .where((element) =>
+                  element.date.month == currentDate.month &&
+                  element.date.year == currentDate.year)
+              .toList();
+        } else if (countType == 'year') {
+          currentDate = DateTime(
+            date.year,
+          ).add(Duration(days: -i * 365));
+          currentTimeData = _activity
+              .where((element) => element.date.year == currentDate.year)
+              .toList();
+        }
+
+        List<Activity> filterKnown = currentTimeData
+            .where((element) =>
+                element.type == ActivityType.sexualIntercourse &&
+                element.partner != null)
+            .toList();
+        int maleCount = 0;
+        int femaleCount = 0;
+        for (Activity activity in filterKnown) {
+          Partner? partner = getPartnerById(activity.partner!);
+          if (partner != null) {
+            if (partner.sex == BiologicalSex.male) {
+              maleCount += 1;
+            } else {
+              femaleCount += 1;
+            }
+          }
+        }
+
+        List<Activity> filterUnknown = currentTimeData
+            .where((element) =>
+                element.type == ActivityType.sexualIntercourse &&
+                element.partner == null)
+            .toList();
+
+        List<Activity> filterMasturbation = currentTimeData
+            .where((element) => element.type == ActivityType.masturbation)
+            .toList();
+        if (countType == 'week') {
+          weeklyStats[(length - i).toString()] = StatsCountTimeData(
+            id: weekdayNames.elementAt(
+              currentDate.weekday == 7 ? 0 : currentDate.weekday,
+            ),
+            count: currentTimeData.length,
+            male: maleCount,
+            female: femaleCount,
+            unknown: filterUnknown.length,
+            masturbation: filterMasturbation.length,
+          );
+        } else if (countType == 'day') {
+          monthlyStats[(length - i).toString()] = StatsCountTimeData(
+            id: currentDate.day.toString(),
+            count: currentTimeData.length,
+            male: maleCount,
+            female: femaleCount,
+            unknown: filterUnknown.length,
+            masturbation: filterMasturbation.length,
+          );
+        } else if (countType == 'month') {
+          yearlyStats[(length - i).toString()] = StatsCountTimeData(
+            id: monthNames[currentDate.month - 1],
+            count: currentTimeData.length,
+            male: maleCount,
+            female: femaleCount,
+            unknown: filterUnknown.length,
+            masturbation: filterMasturbation.length,
+          );
+        } else if (countType == 'year') {
+          globalStats[(length - i).toString()] = StatsCountTimeData(
+            id: currentDate.year.toString(),
+            count: currentTimeData.length,
+            male: maleCount,
+            female: femaleCount,
+            unknown: filterUnknown.length,
+            masturbation: filterMasturbation.length,
+          );
+        }
+      }
+    }
 
     stats = Stats(
       date: DateTime.now(),
@@ -721,6 +882,10 @@ class SharedService extends ChangeNotifier {
       mostActiveHour: mostActiveHour,
       orgasmRatio: orgasmRatio,
       averageDuration: averageDuration,
+      weeklyStats: weeklyStats,
+      monthlyStats: monthlyStats,
+      yearlyStats: yearlyStats,
+      globalStats: globalStats,
     );
     debugPrint(jsonEncode(stats));
     return stats;
@@ -755,8 +920,8 @@ class SharedService extends ChangeNotifier {
           }
 
           ActivityWidgetData widgetData = ActivityWidgetData(
-            soloActivity: stats.lastSexualActivity,
-            sexualActivity: stats.lastMasturbation,
+            soloActivity: stats.lastMasturbation,
+            sexualActivity: stats.lastSexualActivity,
             partner: partner,
             safety: safety,
             moodEmoji: stats.lastSexualActivity != null

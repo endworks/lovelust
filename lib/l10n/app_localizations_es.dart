@@ -941,7 +941,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get lastMasturbation => 'Última masturbación';
 
   @override
-  String get weeklyReport => 'Informe semanal';
+  String get weeklyChart => 'Gráfico semanal';
+
+  @override
+  String get monthlyChart => 'Gráfico mensual';
+
+  @override
+  String get yearlyChart => 'Gráfico anual';
+
+  @override
+  String get globalChart => 'Gráfico global';
 
   @override
   String get days => 'Días';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:lovelust/models/statistics.dart';
+import 'package:lovelust/widgets/statistics/bar_chart_statistic.dart';
 import 'package:lovelust/widgets/statistics/days_without_sex_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_masturbation_statistic.dart';
 import 'package:lovelust/widgets/statistics/last_relationship_statistic.dart';
 import 'package:lovelust/widgets/statistics/overview.dart';
 import 'package:lovelust/widgets/statistics/unsupported_statistic.dart';
-import 'package:lovelust/widgets/statistics/weekly_chart_statistic.dart';
 
 class DynamicStatistic<DataType> extends StatefulWidget {
   const DynamicStatistic({
@@ -32,7 +32,13 @@ class _DynamicStatisticState extends State<DynamicStatistic> {
     } else if (widget.type == StatisticType.daysWithoutSex) {
       return DaysWithoutSexStatistic(data: widget.data);
     } else if (widget.type == StatisticType.weeklyChart) {
-      return WeeklyChartStatistic(series: widget.data);
+      return BarChartStatistic(chartData: widget.data, type: widget.type);
+    } else if (widget.type == StatisticType.monthlyChart) {
+      return BarChartStatistic(chartData: widget.data, type: widget.type);
+    } else if (widget.type == StatisticType.yearlyChart) {
+      return BarChartStatistic(chartData: widget.data, type: widget.type);
+    } else if (widget.type == StatisticType.globalChart) {
+      return BarChartStatistic(chartData: widget.data, type: widget.type);
     } else if (widget.type == StatisticType.overview) {
       return OverviewStatistic();
     }

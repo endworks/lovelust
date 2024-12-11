@@ -28,7 +28,6 @@ dependencies:
   flutter_dynamic_icon_plus: ^1.2.1
   home_widget: ^0.7.0
   collection: ^1.17.1
-  syncfusion_flutter_charts: ^27.2.4
   google_fonts: ^6.2.1
   flutter_health_connect:
     git:
@@ -36,6 +35,7 @@ dependencies:
       ref: alpha6-updates
   health_kit_reporter: ^2.1.1
   table_calendar: ^3.1.2
+  fl_chart: ^0.69.2
 
 dev_dependencies:
   flutter_test:

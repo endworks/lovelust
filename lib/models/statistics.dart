@@ -10,6 +10,9 @@ enum StatisticType {
   orgasmRatio,
   totalSexByGender,
   weeklyChart,
+  monthlyChart,
+  yearlyChart,
+  globalChart,
   overview,
 }
 

@@ -375,6 +375,32 @@
 
         <activity-alias
             android:enabled="false"
+            android:name=".Paper"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_paper"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".Overflow"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_overflow"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
             android:label="@string/app_name_health"
             android:name=".Health"
             android:targetActivity=".MainActivity"

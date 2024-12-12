@@ -189,6 +189,8 @@
   "pills2": "Pills II",
   "pills3": "Pills III",
   "fire": "Fire",
+  "paper": "Paper",
+  "overflow": "Overflow",
   "renamesApp": "Changes the name of the app",
   "requireFingerprint": "Require fingerprint",
   "requireFingerprintDescription": "Require fingerprint to access the app",

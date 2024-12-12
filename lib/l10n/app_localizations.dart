@@ -1067,6 +1067,18 @@ abstract class AppLocalizations {
   /// **'Fire'**
   String get fire;
 
+  /// No description provided for @paper.
+  ///
+  /// In en, this message translates to:
+  /// **'Paper'**
+  String get paper;
+
+  /// No description provided for @overflow.
+  ///
+  /// In en, this message translates to:
+  /// **'Overflow'**
+  String get overflow;
+
   /// No description provided for @renamesApp.
   ///
   /// In en, this message translates to:

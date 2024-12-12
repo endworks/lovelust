@@ -173,6 +173,8 @@
   "pills2": "Píldoras II",
   "pills3": "Píldoras III",
   "fire": "Fuego",
+  "paper": "Papel",
+  "overflow": "Desbordado",
   "renamesApp": "Cambia el nombre de la app",
   "requireFingerprint": "Requerir huella",
   "requireFingerprintDescription": "Requerir huella para acceder a la app",

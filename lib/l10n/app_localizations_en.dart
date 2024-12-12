@@ -531,6 +531,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fire => 'Fire';
 
   @override
+  String get paper => 'Paper';
+
+  @override
+  String get overflow => 'Overflow';
+
+  @override
   String get renamesApp => 'Changes the name of the app';
 
   @override

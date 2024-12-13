@@ -78,7 +78,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       TextSpan(
         children: [
           TextSpan(
-            text: _shared.getActivityByPartner(_partner.id).length.toString(),
+            text: _shared.getActivityByPartner(_partner.id!).length.toString(),
             style: TextStyle(
               color: color,
               fontSize: 21,
@@ -152,7 +152,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
       );
     }
     List<Widget> activity = _shared
-        .getActivityByPartner(_partner.id)
+        .getActivityByPartner(_partner.id!)
         .map((e) => ActivityBlock(activity: e))
         .toList();
     list = [...list, ...activity];

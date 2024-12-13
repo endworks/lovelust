@@ -258,9 +258,35 @@
 
         <activity-alias
             android:enabled="false"
+            android:name=".Filled2"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_filled2"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
             android:name=".FilledWhite"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_filled_white"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".FilledWhite2"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_filled_white2"
             android:exported="true">
 
             <intent-filter>
@@ -352,6 +378,19 @@
             android:name=".Butt"
             android:targetActivity=".MainActivity"
             android:icon="@mipmap/ic_launcher_butt"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:enabled="false"
+            android:name=".Genital"
+            android:targetActivity=".MainActivity"
+            android:icon="@mipmap/ic_launcher_genital"
             android:exported="true">
 
             <intent-filter>

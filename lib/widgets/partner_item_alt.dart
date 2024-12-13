@@ -41,10 +41,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
 
   Widget? get encounters {
     TextStyle style = Theme.of(context).textTheme.titleLarge!;
-    // int count = _shared.getActivityByPartner(widget.partner.id).length;
-    int count = _shared.activity
-        .where((element) => element.partner == widget.partner.id)
-        .length;
+    int count = _shared.getActivityByPartner(widget.partner.id!).length;
     if (count == 0) {
       return null;
     }
@@ -70,7 +67,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
 
   Widget? get encountersCount {
     TextStyle style = Theme.of(context).textTheme.titleLarge!;
-    int count = _shared.getActivityByPartner(widget.partner.id).length;
+    int count = _shared.getActivityByPartner(widget.partner.id!).length;
     if (count == 0) {
       return null;
     }
@@ -84,7 +81,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
 
   Widget? get lastEncounterDate {
     Activity? lastEncounter =
-        _shared.getActivityByPartner(widget.partner.id).firstOrNull;
+        _shared.getActivityByPartner(widget.partner.id!).firstOrNull;
     String text = AppLocalizations.of(context)!.noSexualActivity;
     if (lastEncounter != null) {
       text = RelativeTime(context).format(lastEncounter.date);

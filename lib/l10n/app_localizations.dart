@@ -893,11 +893,23 @@ abstract class AppLocalizations {
   /// **'Filled'**
   String get filled;
 
+  /// No description provided for @filled2.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled II'**
+  String get filled2;
+
   /// No description provided for @filledWhite.
   ///
   /// In en, this message translates to:
   /// **'Filled White'**
   String get filledWhite;
+
+  /// No description provided for @filledWhite2.
+  ///
+  /// In en, this message translates to:
+  /// **'Filled White II'**
+  String get filledWhite2;
 
   /// No description provided for @pink.
   ///
@@ -1030,6 +1042,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Butt'**
   String get butt;
+
+  /// No description provided for @genital.
+  ///
+  /// In en, this message translates to:
+  /// **'Genital'**
+  String get genital;
 
   /// No description provided for @abstractIcon.
   ///

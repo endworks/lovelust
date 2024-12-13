@@ -76,7 +76,8 @@ class _SelectAppIconPageState extends State<SelectAppIconPage> {
 
   Widget? iconRenamesApp(AppIcon icon) {
     if (Platform.isAndroid &&
-        (icon == AppIcon.health ||
+        (icon == AppIcon.beta ||
+            icon == AppIcon.health ||
             icon == AppIcon.health2 ||
             icon == AppIcon.health3 ||
             icon == AppIcon.health4 ||

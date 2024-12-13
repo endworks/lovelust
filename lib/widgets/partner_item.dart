@@ -78,7 +78,7 @@ class _PartnerItemState extends State<PartnerItem> {
       children: [
         Icon(Icons.favorite, color: color),
         _shared.privacyRedactedText(
-          _shared.getActivityByPartner(widget.partner.id).length.toString(),
+          _shared.getActivityByPartner(widget.partner.id!).length.toString(),
           style: TextStyle(
             color: color,
             fontSize: 19,

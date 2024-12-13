@@ -80,7 +80,7 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
             shrinkResources true
-            // proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
@@ -93,11 +93,6 @@ android {
 
 composeCompiler {
     reportsDestination = layout.buildDirectory.dir("compose_compiler")
-    /*featureFlags = setOf(
-            ComposeFeatureFlag.StrongSkippingg.disabled(),
-            ComposeFeatureFlag.OptimizeNonSkippingGroups,
-            ComposeFeatureFlag.IntrinsicRemember
-    )*/
 }
 
 flutter {

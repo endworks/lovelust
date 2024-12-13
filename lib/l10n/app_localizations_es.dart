@@ -446,7 +446,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get filled => 'Relleno';
 
   @override
+  String get filled2 => 'Relleno II';
+
+  @override
   String get filledWhite => 'Relleno Blanco';
+
+  @override
+  String get filledWhite2 => 'Relleno Blanco II';
 
   @override
   String get pink => 'Rosa';
@@ -513,6 +519,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get butt => 'Culo';
+
+  @override
+  String get genital => 'Genital';
 
   @override
   String get abstractIcon => 'Abstracto';

@@ -1215,18 +1215,18 @@ class SharedService extends ChangeNotifier {
     if (id.isEmpty) {
       return null;
     }
-    return activity.firstWhere((element) => element.id == id);
+    return _activity.firstWhere((element) => element.id == id);
   }
 
-  List<Activity> getActivityByPartner(String? id) {
-    return activity.where((element) => element.partner == id).toList();
+  List<Activity> getActivityByPartner(String id) {
+    return _activity.where((element) => element.partner == id).toList();
   }
 
   Partner? getPartnerById(String id) {
     if (id.isEmpty) {
       return null;
     }
-    return partners.firstWhere((element) => element.id == id);
+    return _partners.firstWhere((element) => element.id == id);
   }
 
   static Contraceptive? getContraceptiveByValue(String? value) {
@@ -1724,8 +1724,12 @@ class SharedService extends ChangeNotifier {
       return AppIcon.blue;
     } else if (value == 'Filled') {
       return AppIcon.filled;
+    } else if (value == 'Filled2') {
+      return AppIcon.filled2;
     } else if (value == 'FilledWhite') {
       return AppIcon.filledWhite;
+    } else if (value == 'FilledWhite2') {
+      return AppIcon.filledWhite2;
     } else if (value == 'Bold') {
       return AppIcon.bold;
     } else if (value == 'Glow') {
@@ -1792,6 +1796,8 @@ class SharedService extends ChangeNotifier {
       return AppIcon.fire;
     } else if (value == 'Butt') {
       return AppIcon.butt;
+    } else if (value == 'Genital') {
+      return AppIcon.genital;
     } else if (value == 'Abstract') {
       return AppIcon.abstract;
     } else if (value == 'Paper') {
@@ -1815,8 +1821,12 @@ class SharedService extends ChangeNotifier {
       return 'Blue';
     } else if (value == AppIcon.filled) {
       return 'Filled';
+    } else if (value == AppIcon.filled2) {
+      return 'Filled2';
     } else if (value == AppIcon.filledWhite) {
       return 'FilledWhite';
+    } else if (value == AppIcon.filledWhite2) {
+      return 'FilledWhite2';
     } else if (value == AppIcon.bold) {
       return 'Bold';
     } else if (value == AppIcon.glow) {
@@ -1883,6 +1893,8 @@ class SharedService extends ChangeNotifier {
       return 'Fire';
     } else if (value == AppIcon.butt) {
       return 'Butt';
+    } else if (value == AppIcon.genital) {
+      return 'Genital';
     } else if (value == AppIcon.abstract) {
       return 'Abstract';
     } else if (value == AppIcon.paper) {
@@ -2217,8 +2229,12 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.blue;
     } else if (value == AppIcon.filled) {
       return AppLocalizations.of(context)!.filled;
+    } else if (value == AppIcon.filled2) {
+      return AppLocalizations.of(context)!.filled2;
     } else if (value == AppIcon.filledWhite) {
       return AppLocalizations.of(context)!.filledWhite;
+    } else if (value == AppIcon.filledWhite2) {
+      return AppLocalizations.of(context)!.filledWhite2;
     } else if (value == AppIcon.bold) {
       return AppLocalizations.of(context)!.bold;
     } else if (value == AppIcon.glow) {
@@ -2285,6 +2301,8 @@ class SharedService extends ChangeNotifier {
       return AppLocalizations.of(context)!.fire;
     } else if (value == AppIcon.butt) {
       return AppLocalizations.of(context)!.butt;
+    } else if (value == AppIcon.genital) {
+      return AppLocalizations.of(context)!.genital;
     } else if (value == AppIcon.abstract) {
       return AppLocalizations.of(context)!.abstractIcon;
     } else if (value == AppIcon.paper) {

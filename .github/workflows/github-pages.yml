@@ -19,7 +19,7 @@ jobs:
       - name: Flutter setup
         uses: subosito/flutter-action@main
         with:
-          channel: main
+          channel: stable
           cache: true
 
       - name: Disable telemetry

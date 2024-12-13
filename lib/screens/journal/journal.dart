@@ -78,8 +78,7 @@ class _JournalPageState extends State<JournalPage> {
         slivers.add(
           SliverFillRemaining(
             child: NoContent(
-              icon:
-                  _shared.calendarView ? Icons.calendar_today : Icons.view_day,
+              icon: Icons.calendar_today,
               message: AppLocalizations.of(context)!.noActivity,
             ),
           ),
@@ -88,8 +87,7 @@ class _JournalPageState extends State<JournalPage> {
         slivers.add(
           SliverToBoxAdapter(
             child: NoContent(
-              icon:
-                  _shared.calendarView ? Icons.calendar_today : Icons.view_day,
+              icon: Icons.calendar_today,
               message: AppLocalizations.of(context)!.noActivityToday,
             ),
           ),
@@ -235,7 +233,7 @@ class _JournalPageState extends State<JournalPage> {
                 IconButton(
                   icon: Icon(
                     _shared.calendarView
-                        ? Icons.view_day
+                        ? Icons.assignment
                         : Icons.calendar_today,
                   ),
                   onPressed: () {

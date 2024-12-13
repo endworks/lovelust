@@ -160,7 +160,6 @@ enum AppColorScheme {
 
 enum AppIcon {
   defaultAppIcon,
-  white,
   pink,
   purple,
   red,
@@ -171,11 +170,12 @@ enum AppIcon {
   glow,
   neon,
   abstract,
-  monoWhite,
   monoBlack,
-  beta,
+  monoWhite,
+  white,
   filled,
   filledWhite,
+  beta,
   bold,
   pastel,
   overflow,

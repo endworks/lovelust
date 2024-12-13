@@ -207,6 +207,7 @@ class SharedService extends ChangeNotifier {
 
         double max = 0;
         int index = 0;
+        List<String> keysWithData = [];
         timeData.forEach((String key, StatsCountTimeData data) {
           List<BarChartRodData> barRods = [];
           double currentMax = data.male.toDouble() +
@@ -214,6 +215,7 @@ class SharedService extends ChangeNotifier {
               data.unknown.toDouble() +
               data.masturbation.toDouble();
           if (currentMax > 0) {
+            keysWithData.add(key);
             double current = 0;
             if (data.male > 0) {
               barRods.add(
@@ -452,7 +454,7 @@ class SharedService extends ChangeNotifier {
           type = StatisticType.globalChart;
           date = DateTime(stats.date.year);
         }
-        if (barChartData.barGroups.length > 1) {
+        if (keysWithData.length > 1) {
           list.add(
             DynamicStatisticData(
               type: type,
@@ -981,7 +983,7 @@ class SharedService extends ChangeNotifier {
       yearlyStats: yearlyStats,
       globalStats: globalStats,
     );
-    debugPrint(jsonEncode(stats));
+    // debugPrint(jsonEncode(stats));
     return stats;
   }
 

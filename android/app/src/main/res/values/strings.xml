@@ -10,4 +10,11 @@
     <string name="app_widget_last_activity_description">Data about last sexual activity</string>
     <string name="app_widget_days_since_title">Days without sex</string>
     <string name="app_widget_days_since_description">Number of days without last sexual activity</string>
+    <string name="day">day</string>
+    <string name="days">days</string>
+    <string name="without_sex">without sex</string>
+    <string name="safe">Protected</string>
+    <string name="unsafe">Very unsafe</string>
+    <string name="partly_unsafe">Partially unsafe</string>
+    <string name="unknown">Unknown</string>
 </resources>

@@ -1,24 +1,24 @@
 package works.end.LoveLust.glance
 
+import works.end.LoveLust.R
+
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
-import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.widget.RemoteViews
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
-import androidx.glance.Button
 import androidx.glance.currentState
 import androidx.glance.background
 import androidx.glance.state.GlanceStateDefinition
@@ -26,13 +26,15 @@ import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Box
 import androidx.glance.layout.Column
-import androidx.glance.layout.padding
+import androidx.glance.layout.Alignment
+import androidx.glance.layout.fillMaxSize
 import androidx.glance.text.Text
+import androidx.glance.text.TextStyle
+import androidx.glance.text.FontWeight
+import androidx.glance.unit.ColorProvider
 
 import HomeWidgetGlanceState
 import HomeWidgetGlanceStateDefinition
-
-import ActivityWidgetData
 
 class DaysSinceWidget : GlanceAppWidget() {
 
@@ -46,54 +48,55 @@ class DaysSinceWidget : GlanceAppWidget() {
   }
 
   @Composable
-  private fun ContentView(days: Int) {
-    Box(modifier = GlanceModifier.background(Color.White).padding(16.dp)) {
-      Column {
-        Text("$days")
-        Text("Days")
-        Text("Without sex")
-      }
-    }
-  }
-
-  @Composable
-  private fun ErrorView(error: String) {
-    Box(modifier = GlanceModifier.background(Color.White).padding(16.dp)) {
-      Column {
-        Text("$error")
-      }
-    }
-  }
-
-
-  @ExperimentalSerializationApi
-  @Composable
   private fun GlanceContent(context: Context, currentState: HomeWidgetGlanceState) {
     val prefs = currentState.preferences
     val jsonString = prefs.getString("lastActivity", "{}")
+    val withoutSexText = context.getString(R.string.without_sex)
+    var daysText = context.getString(R.string.days)
     var days: Int = 0
-    var isError = false;
-    var error = ""
 
-    try {
-      if (jsonString != null) {
-        val json = Json { ignoreUnknownKeys = true }
-        val widgetData = json.decodeFromString<ActivityWidgetData>(jsonString)
-        if (widgetData.sexualActivity != null) {
-          val formatter = DateTimeFormatter.ISO_DATE_TIME
-          val sexualActivityDate = LocalDateTime.parse(widgetData.sexualActivity.date, formatter)
-          val today = LocalDateTime.now(ZoneId.of("UTC"))
-          days = ChronoUnit.DAYS.between(sexualActivityDate, today).toInt()
-        }
+    if (jsonString != null) {
+      val json = Json { ignoreUnknownKeys = true }
+      val widgetData = json.decodeFromString<ActivityWidgetData>(jsonString.toString())
+      if (widgetData.sexualActivity != null) {
+        val formatter = DateTimeFormatter.ISO_DATE_TIME
+        val sexualActivityDate = LocalDateTime.parse(widgetData.sexualActivity.date, formatter)
+        val today = LocalDateTime.now(ZoneId.of("UTC"))
+        days = ChronoUnit.DAYS.between(sexualActivityDate, today).toInt()
+        daysText = if (days == 1) context.getString(R.string.day) else context.getString(R.string.days)
       }
-    } catch (e: Exception) {
-      error = "${e.message}"
     }
 
-    if (error != "") {
-        ErrorView(error)
-    } else {
-        ContentView(days)
+    Box(
+      modifier = GlanceModifier.fillMaxSize().background(Color.White),
+      contentAlignment = Alignment.Center
+    ) {
+
+      // Add text in the center
+      Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+          text = days.toString().uppercase(),
+          style = TextStyle(
+            fontSize = 64.sp,
+            fontWeight = FontWeight.Bold,
+            color = ColorProvider(Color.Black)
+          )
+        )
+        Text(
+          text = daysText.uppercase(),
+          style = TextStyle(
+            fontSize = 32.sp,
+            color = ColorProvider(Color.Black)
+          )
+        )
+        Text(
+          text = withoutSexText.uppercase(),
+          style = TextStyle(
+            fontSize = 16.sp,
+            color = ColorProvider(Color.Gray)
+          )
+        )
+      }
     }
   }
 }

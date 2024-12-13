@@ -92,9 +92,9 @@ class _HomeState extends State<Home>
         AppLocalizations.of(context)!.journal,
         Icon(_shared.calendarView
             ? Icons.calendar_today_outlined
-            : Icons.view_day_outlined),
+            : Icons.assignment_outlined),
         Icon(
-          _shared.calendarView ? Icons.calendar_today : Icons.view_day,
+          _shared.calendarView ? Icons.calendar_today : Icons.assignment,
         ),
       ),
       Destination(

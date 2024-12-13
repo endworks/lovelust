@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_health_connect/flutter_health_connect.dart';
-import 'package:health_kit_reporter/health_kit_reporter.dart' as HKR;
-import 'package:health_kit_reporter/model/payload/category.dart' as HKRCategory;
+import 'package:health_kit_reporter/health_kit_reporter.dart' as hkr;
+import 'package:health_kit_reporter/model/payload/category.dart' as hkr_category;
 import 'package:health_kit_reporter/model/payload/source.dart';
 import 'package:health_kit_reporter/model/payload/source_revision.dart';
 import 'package:health_kit_reporter/model/predicate.dart';
@@ -103,7 +103,7 @@ class HealthService {
           readOnlyTypes: null,
         );
       } else if (Platform.isIOS) {
-        return await HKR.HealthKitReporter.isAuthorizedToWrite(
+        return await hkr.HealthKitReporter.isAuthorizedToWrite(
           CategoryType.sexualActivity.identifier,
         ).then((result) {
           return result;
@@ -121,7 +121,7 @@ class HealthService {
           readOnlyTypes: null,
         );
       } else if (Platform.isIOS) {
-        return HKR.HealthKitReporter.requestAuthorization(
+        return hkr.HealthKitReporter.requestAuthorization(
           [CategoryType.sexualActivity.identifier],
           [CategoryType.sexualActivity.identifier],
         );
@@ -377,7 +377,7 @@ class HealthService {
           );
         } else if (Platform.isIOS) {
           Predicate predicate = Predicate(startTime, endTime);
-          HKR.HealthKitReporter.deleteObjects(
+          hkr.HealthKitReporter.deleteObjects(
             CategoryType.sexualActivity.identifier,
             predicate,
           ).then((value) {
@@ -404,7 +404,7 @@ class HealthService {
           ).then((value) => sexualActivity = value);
         } else if (Platform.isIOS) {
           Predicate predicate = Predicate(startTime, endTime);
-          return HKR.HealthKitReporter.categoryQuery(
+          return hkr.HealthKitReporter.categoryQuery(
             CategoryType.sexualActivity,
             predicate,
           ).then((value) => sexualActivity = value.toList());
@@ -430,7 +430,7 @@ class HealthService {
             (record) => record.metadata.clientRecordId == activity.id,
           );
         } else if (Platform.isIOS) {
-          final records = sexualActivity as List<HKRCategory.Category>;
+          final records = sexualActivity as List<hkr_category.Category>;
           return records.firstWhereOrNull(
             (record) {
               String recordDate = DateTime.fromMillisecondsSinceEpoch(
@@ -495,7 +495,7 @@ class HealthService {
           }
         } else if (Platform.isIOS) {
           Predicate predicate = Predicate(startDate, endDate);
-          return HKR.HealthKitReporter.deleteObjects(
+          return hkr.HealthKitReporter.deleteObjects(
             CategoryType.sexualActivity.identifier,
             predicate,
           ).then((value) {
@@ -548,14 +548,14 @@ class HealthService {
           );
         } else if (Platform.isIOS) {
           try {
-            final canWrite = await HKR.HealthKitReporter.isAuthorizedToWrite(
+            final canWrite = await hkr.HealthKitReporter.isAuthorizedToWrite(
                 CategoryType.sexualActivity.identifier);
             if (canWrite) {
               if (activity.type == ActivityType.sexualIntercourse) {
                 final startDate = activity.date.subtract(
                   Duration(minutes: activity.duration),
                 );
-                final harmonized = HKRCategory.CategoryHarmonized(
+                final harmonized = hkr_category.CategoryHarmonized(
                   0,
                   'HKCategoryValue',
                   'Not Applicable',
@@ -564,7 +564,7 @@ class HealthService {
                     'HKSexualActivityProtectionUsed': protection ? 1 : 0,
                   },
                 );
-                final sexualActivity = HKRCategory.Category(
+                final sexualActivity = hkr_category.Category(
                   activity.id!,
                   CategoryType.sexualActivity.identifier,
                   startDate.millisecondsSinceEpoch,
@@ -573,7 +573,7 @@ class HealthService {
                   sourceRevision,
                   harmonized,
                 );
-                return HKR.HealthKitReporter.save(sexualActivity).then((value) {
+                return hkr.HealthKitReporter.save(sexualActivity).then((value) {
                   debugPrint(
                     "${HealthConnectDataType.SexualActivity.name}: ${jsonEncode(sexualActivity.map)}",
                   );

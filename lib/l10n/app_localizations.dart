@@ -857,6 +857,12 @@ abstract class AppLocalizations {
   /// **'Default'**
   String get defaultAppIcon;
 
+  /// No description provided for @classic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get classic;
+
   /// No description provided for @beta.
   ///
   /// In en, this message translates to:

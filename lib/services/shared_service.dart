@@ -1714,6 +1714,8 @@ class SharedService extends ChangeNotifier {
   static AppIcon? getAppIconByValue(String? value) {
     if (value == 'Beta') {
       return AppIcon.beta;
+    } else if (value == 'Classic') {
+      return AppIcon.classic;
     } else if (value == 'MonoBlack') {
       return AppIcon.monoBlack;
     } else if (value == 'MonoWhite') {
@@ -1811,6 +1813,8 @@ class SharedService extends ChangeNotifier {
   static String? setValueByAppIcon(AppIcon? value) {
     if (value == AppIcon.beta) {
       return 'Beta';
+    } else if (value == AppIcon.classic) {
+      return 'Classic';
     } else if (value == AppIcon.monoBlack) {
       return 'MonoBlack';
     } else if (value == AppIcon.monoWhite) {
@@ -2219,6 +2223,8 @@ class SharedService extends ChangeNotifier {
 
     if (value == AppIcon.beta) {
       return AppLocalizations.of(context)!.beta;
+    } else if (value == AppIcon.classic) {
+      return AppLocalizations.of(context)!.classic;
     } else if (value == AppIcon.monoBlack) {
       return AppLocalizations.of(context)!.monoBlack;
     } else if (value == AppIcon.monoWhite) {

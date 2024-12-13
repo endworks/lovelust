@@ -160,6 +160,7 @@ enum AppColorScheme {
 
 enum AppIcon {
   defaultAppIcon,
+  classic,
   pink,
   purple,
   red,

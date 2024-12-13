@@ -152,6 +152,7 @@
   "light": "Light",
   "dark": "Dark",
   "defaultAppIcon": "Default",
+  "classic": "Classic",
   "beta": "Beta",
   "white": "White",
   "black": "Black",

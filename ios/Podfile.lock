@@ -11,7 +11,7 @@ PODS:
     - Flutter
   - health_kit_reporter (2.1.0):
     - Flutter
-    - HealthKitReporter
+    - HealthKitReporter (= 3.1.0)
   - HealthKitReporter (3.1.0)
   - home_widget (0.0.1):
     - Flutter
@@ -75,7 +75,7 @@ SPEC CHECKSUMS:
   flutter_health_connect: ac5623c081166629c5c2fa1f4bebb24dd4575d4d
   flutter_native_splash: e8a1e01082d97a8099d973f919f57904c925008a
   flutter_secure_storage: d33dac7ae2ea08509be337e775f6b59f1ff45f12
-  health_kit_reporter: c42352ae9e6ba3035618f27aec723833487ceab3
+  health_kit_reporter: f6e13538b33edf31bd01a98bcedcfbb38ed8cac6
   HealthKitReporter: 4fae728be1afa52c4833d4cfb9835b368bfc89e6
   home_widget: 0434835a4c9a75704264feff6be17ea40e0f0d57
   local_auth_darwin: 66e40372f1c29f383a314c738c7446e2f7fdadc3

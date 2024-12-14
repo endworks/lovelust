@@ -72,7 +72,9 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
                 backgroundColor:
                     getBackground(widget.data.daysWithoutRelationship),
                 child: Text(
-                  widget.data.daysWithoutRelationship.toString(),
+                  widget.data.daysWithoutRelationship >= 0
+                      ? widget.data.daysWithoutRelationship.toString()
+                      : '?',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color:
                             getForeground(widget.data.daysWithoutRelationship),
@@ -111,7 +113,9 @@ class _DaysWithoutSexStatisticState extends State<DaysWithoutSexStatistic> {
                 backgroundColor:
                     getBackground(widget.data.daysWithoutMasturbation),
                 child: Text(
-                  widget.data.daysWithoutMasturbation.toString(),
+                  widget.data.daysWithoutMasturbation >= 0
+                      ? widget.data.daysWithoutMasturbation.toString()
+                      : '?',
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color:
                             getForeground(widget.data.daysWithoutMasturbation),

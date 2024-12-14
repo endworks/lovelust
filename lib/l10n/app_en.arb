@@ -239,6 +239,7 @@
   "healthExport": "Export data",
   "healthInstall": "Install Health Connect",
   "healthOpen": "Open Health",
+  "clearUnknownRecords": "Clear unknown records",
   "fetch": "Fetch",
   "version": "App version",
   "buildNumber": "Build number",

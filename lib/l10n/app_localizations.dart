@@ -1367,6 +1367,12 @@ abstract class AppLocalizations {
   /// **'Open Health'**
   String get healthOpen;
 
+  /// No description provided for @clearUnknownRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear unknown records'**
+  String get clearUnknownRecords;
+
   /// No description provided for @fetch.
   ///
   /// In en, this message translates to:

@@ -681,6 +681,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthOpen => 'Open Health';
 
   @override
+  String get clearUnknownRecords => 'Clear unknown records';
+
+  @override
   String get fetch => 'Fetch';
 
   @override

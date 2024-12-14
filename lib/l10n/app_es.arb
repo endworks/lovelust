@@ -223,6 +223,7 @@
   "healthExport": "Exportar datos",
   "healthInstall": "Instalar Health Connect",
   "healthOpen": "Abrir Health",
+  "clearUnknownRecords": "Eliminar registros de desconocidos",
   "fetch": "Cargar",
   "version": "Versión de app",
   "buildNumber": "Número de compilación",

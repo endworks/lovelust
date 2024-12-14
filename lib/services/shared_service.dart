@@ -41,9 +41,9 @@ class SharedService extends ChangeNotifier {
   Stats stats = Stats(
     date: DateTime.now(),
     lastSexualActivity: null,
-    daysSinceLastSexualActivity: 0,
+    daysSinceLastSexualActivity: -1,
     lastMasturbation: null,
-    daysSinceLastMasturbation: 0,
+    daysSinceLastMasturbation: -1,
     daysSinceLastSexualStimulation: 0,
     totalSexualActivity: 0,
     totalSexualActivityWithMale: 0,

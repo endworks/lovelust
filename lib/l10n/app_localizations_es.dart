@@ -683,6 +683,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get healthOpen => 'Abrir Health';
 
   @override
+  String get clearUnknownRecords => 'Eliminar registros de desconocidos';
+
+  @override
   String get fetch => 'Cargar';
 
   @override

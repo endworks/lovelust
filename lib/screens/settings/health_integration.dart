@@ -59,6 +59,16 @@ class _HealthIntegrationPageState extends State<HealthIntegrationPage> {
         ),
       ),
     ];
+    list.add(
+      ListTile(
+        title: Text(AppLocalizations.of(context)!.clearUnknownRecords),
+        onTap: _health.clearUnknownRecords,
+        leading: Icon(
+          Icons.device_unknown,
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+      ),
+    );
     if (Platform.isAndroid) {
       list.add(
         ListTile(

@@ -208,8 +208,8 @@ struct LastActivityEntryView : View {
                     partnerString = entry.widgetData!.partner!.name
                 }
             }
-            
-            redactionReason = redactionReasons
+            redactionReason = []
+
         } else {
             moodString = LocalizedStringKey("NO_MOOD")
             placeString = LocalizedStringKey("NO_PLACE")
@@ -424,12 +424,16 @@ struct LastActivityEntryView : View {
             contraceptiveString = LocalizedStringKey( activity!.birthControl ?? "NO_CONTRACEPTIVE")
             partnerContraceptiveString = LocalizedStringKey( activity!.partnerBirthControl ?? "NO_CONTRACEPTIVE")
             safetyString = LocalizedStringKey(safety)
-            if safety == "SAFE" {
-                safetyIcon = "checkmark.shield"
-            } else if safety == "UNSAFE" {
-                safetyIcon = "shield.slash"
+            if redactionReasons.contains(.privacy) {
+                safetyIcon = "shield"
             } else {
-                safetyIcon = "exclamationmark.shield"
+                if safety == "SAFE" {
+                    safetyIcon = "checkmark.shield"
+                } else if safety == "UNSAFE" {
+                    safetyIcon = "shield.slash"
+                } else {
+                    safetyIcon = "exclamationmark.shield"
+                }
             }
         } else {
             dateString = dateFormatter.string(from: Date())
@@ -451,6 +455,7 @@ struct LastActivityEntryView : View {
                         .textCase(.uppercase)
                         .foregroundColor(.gray)
                         .redacted(reason: redactionReason)
+                        .privacySensitive()
                     Spacer()
                 }
                 HStack{
@@ -460,6 +465,7 @@ struct LastActivityEntryView : View {
                         .font(.headline)
                         .foregroundColor(.primary)
                         .redacted(reason: redactionReason)
+                        .privacySensitive()
                     Spacer()
                 }
                 if activity != nil && entry.configuration.type.rawValue == 2 {
@@ -474,6 +480,7 @@ struct LastActivityEntryView : View {
                                     .fontWeight(.semibold)
                                     .textCase(.uppercase)
                                     .redacted(reason: redactionReason)
+                                    .privacySensitive()
                             }
                             if activity!.partnerBirthControl != nil && activity!.partnerBirthControl != activity!.birthControl{
                                 Text(partnerContraceptiveString)
@@ -484,6 +491,7 @@ struct LastActivityEntryView : View {
                                     .fontWeight(.semibold)
                                     .textCase(.uppercase)
                                     .redacted(reason: redactionReason)
+                                    .privacySensitive()
                             }
                             Spacer()
                         }
@@ -491,7 +499,9 @@ struct LastActivityEntryView : View {
                 }
             }
             Spacer()
-            Text("\(Image(systemName: safetyIcon))").font(.title3)
+            Text("\(Image(systemName: safetyIcon))")
+                .font(.title3)
+                .privacySensitive(false)
         }
         .containerBackground(for: .widget) {}
     }

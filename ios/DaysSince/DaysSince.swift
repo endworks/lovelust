@@ -295,6 +295,7 @@ struct DaysSinceEntryView : View {
                         .fontDesign(.rounded)
                         .foregroundColor(widgetForegroundTitle)
                         .redacted(reason: redactionReason)
+                        .privacySensitive(true)
                         .padding(.bottom, -4)
                     Text(timeString)
                         .font(fontTitle)
@@ -303,6 +304,7 @@ struct DaysSinceEntryView : View {
                         .textCase(.uppercase)
                         .foregroundColor(widgetForegroundTitle)
                         .redacted(reason: redactionReason)
+                        .privacySensitive(false)
                     if (widgetFamily == .systemSmall || widgetFamily == .systemMedium || widgetFamily == .systemLarge) {
                         Text(withoutSexString)
                             .font(fontSubtitle)
@@ -311,6 +313,7 @@ struct DaysSinceEntryView : View {
                             .textCase(.uppercase)
                             .foregroundColor(widgetForegroundSubtitle)
                             .redacted(reason: redactionReason)
+                            .privacySensitive(false)
                             .widgetAccentable(true)
                     }
                 }
@@ -351,17 +354,15 @@ struct DaysSinceEntryView : View {
             return ZStack {
                 ProgressView(value: progress, total: max)
                     .progressViewStyle(.circular)
-                if !hidden {
-                    HStack (spacing: 0) {
-                        Text(daysCounter)
-                            .bold()
-                            .fontDesign(.rounded)
-                            .privacySensitive()
-                            .redacted(reason: redactionReason)
-                        Text(Image(systemName: icon))
-                    }
+                HStack (spacing: 0) {
+                    Text(daysCounter)
+                        .bold()
+                        .fontDesign(.rounded)
+                        .privacySensitive(true)
+                        .redacted(reason: redactionReason)
+                    Text(Image(systemName: icon))
+                        .privacySensitive(false)
                 }
-                
             }
             .containerBackground(for: .widget) {}
         }
@@ -381,6 +382,8 @@ struct DaysSinceEntryView : View {
             }
             return (visibleTime + Text(" ") + Text(timeString) + Text(" ") + Text(withoutSexString))
                 .redacted(reason: redactionReason)
+                .privacySensitive(false)
+                
         }
         
         var body: some View {

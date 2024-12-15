@@ -255,20 +255,25 @@ class _JournalPageState extends State<JournalPage> {
         ),
         child: AnimatedContainer(
           width: _isExtended ? fabSize?.width : fabSize?.height,
-          // width: fabSize?.width,
           height: fabSize?.height,
           duration: Duration(milliseconds: 100),
           child: FloatingActionButton.extended(
             onPressed: addActivity,
             key: fabKey,
             heroTag: "journalAdd",
-            label: _isExtended
-                ? Text(
-                    AppLocalizations.of(context)!.logActivity,
-                  )
-                : Icon(
-                    Icons.post_add_outlined,
-                  ),
+            label: AnimatedSize(
+              duration: Duration(milliseconds: 100),
+              curve: Curves.linear,
+              child: Container(
+                child: _isExtended
+                    ? Text(
+                        AppLocalizations.of(context)!.logActivity,
+                      )
+                    : Icon(
+                        Icons.post_add_outlined,
+                      ),
+              ),
+            ),
             icon: _isExtended ? Icon(Icons.post_add_outlined) : null,
           ),
         ),

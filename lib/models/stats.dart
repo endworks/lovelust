@@ -32,6 +32,7 @@ class Stats {
   final Map<String, StatsCountTimeData> monthlyStats;
   final Map<String, StatsCountTimeData> yearlyStats;
   final Map<String, StatsCountTimeData> globalStats;
+  final Map<String, StatsCount> timeDistributionStats;
 
   const Stats({
     required this.date,
@@ -64,6 +65,7 @@ class Stats {
     required this.globalStats,
     required this.monthlyStats,
     required this.yearlyStats,
+    required this.timeDistributionStats,
   });
 
   factory Stats.fromJson(Map<String, dynamic> json) {
@@ -122,6 +124,7 @@ class Stats {
       monthlyStats: json['monthlyStats'],
       yearlyStats: json['yearlyStats'],
       globalStats: json['globalStats'],
+      timeDistributionStats: json['timeDistributionStats'],
     );
   }
 
@@ -156,6 +159,7 @@ class Stats {
         'monthlyStats': monthlyStats,
         'yearlyStats': yearlyStats,
         'globalStats': globalStats,
+        'timeDistributionStats': timeDistributionStats,
       };
 }
 

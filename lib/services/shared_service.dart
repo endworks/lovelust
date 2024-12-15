@@ -6,6 +6,7 @@ import 'package:dynamic_color/dynamic_color.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:get_it/get_it.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:intl/intl.dart';
@@ -69,6 +70,7 @@ class SharedService extends ChangeNotifier {
     globalStats: {},
     monthlyStats: {},
     yearlyStats: {},
+    timeDistributionStats: {},
   );
   bool _protected = false;
   DateTime _calendarSelectedDate = DateTime.now();
@@ -76,28 +78,38 @@ class SharedService extends ChangeNotifier {
   AppLifecycleState appLifecycleState = AppLifecycleState.inactive;
 
   Future<void> initialLoad() async {
-    debugPrint('initialLoad');
-    List<Future> futures = <Future>[
-      _storage.getSettings(),
-      _storage.getActivity(),
-      _storage.getPartners(),
-      findSystemLocale(),
-    ];
+    if (_activity.isEmpty ||
+        _partners.isEmpty ||
+        _settings == defaultSettings) {
+      debugPrint('initialLoad');
+      List<Future> futures = <Future>[
+        _storage.getSettings(),
+        _storage.getActivity(),
+        _storage.getPartners(),
+        findSystemLocale(),
+      ];
+      List result = await Future.wait(futures);
+      _settings = result[0];
+      _activity = result[1];
+      _partners = result[2];
+      Intl.systemLocale = result[3];
 
-    List result = await Future.wait(futures);
-    _settings = result[0];
-    _activity = result[1];
-    _partners = result[2];
-    Intl.systemLocale = result[3];
+      if (_settings.requireAuth && !authorized) {
+        _protected = true;
+      }
 
-    if (_settings.requireAuth && !authorized) {
-      _protected = true;
+      statistics = generateStatsWidgets();
+      updateWidgets();
+
+      await getPackageInfo();
+    } else {
+      debugPrint('skip initialLoad');
     }
+  }
 
-    statistics = generateStatsWidgets();
-    updateWidgets();
-
-    await getPackageInfo();
+  reload() {
+    BuildContext context = _navigator.navigatorKey.currentContext!;
+    Phoenix.rebirth(context);
   }
 
   Future<void> initialFetch() async {
@@ -112,7 +124,7 @@ class SharedService extends ChangeNotifier {
     }
   }
 
-  Color generateAltColor(Color color, {double variation = 30.0}) {
+  static Color generateAltColor(Color color, {double variation = 30.0}) {
     HSLColor hslColor = HSLColor.fromColor(color);
     double hue = hslColor.hue - variation;
     if (hue > 360) {
@@ -122,6 +134,11 @@ class SharedService extends ChangeNotifier {
       hue = hue + 360;
     }
     return hslColor.withHue(hue).toColor();
+  }
+
+  static Color generateSecondaryColor(Color color, {double saturation = 0.1}) {
+    HSLColor hslColor = HSLColor.fromColor(color);
+    return hslColor.withSaturation(saturation).toColor();
   }
 
   List<Widget> generateStatsWidgets() {
@@ -530,10 +547,12 @@ class SharedService extends ChangeNotifier {
     Map<String, int> days = {};
     Map<String, int> weekdays = {};
     Map<String, int> hours = {};
+    Map<String, int> timeDistribution = {};
     Map<String, StatsCountTimeData> weeklyStats = {};
     Map<String, StatsCountTimeData> monthlyStats = {};
     Map<String, StatsCountTimeData> yearlyStats = {};
     Map<String, StatsCountTimeData> globalStats = {};
+    Map<String, StatsCount> timeDistributionStats = {};
     int orgasmsReceived = 0;
     int orgasmsGiven = 0;
     num safetySafe = 0;
@@ -619,6 +638,22 @@ class SharedService extends ChangeNotifier {
           hours[activity.date.hour.toString()] =
               hours[activity.date.hour.toString()]! + 1;
         }
+        if (timeDistribution.isEmpty) {
+          timeDistribution['0'] = 0;
+          timeDistribution['6'] = 0;
+          timeDistribution['12'] = 0;
+          timeDistribution['18'] = 0;
+        }
+        if (activity.date.hour >= 0 && activity.date.hour < 6) {
+          timeDistribution['0'] = timeDistribution['0']! + 1;
+        } else if (activity.date.hour >= 6 && activity.date.hour < 12) {
+          timeDistribution['6'] = timeDistribution['6']! + 1;
+        } else if (activity.date.hour >= 12 && activity.date.hour < 18) {
+          timeDistribution['12'] = timeDistribution['12']! + 1;
+        } else {
+          timeDistribution['18'] = timeDistribution['18']! + 1;
+        }
+
         if (activity.practices != null) {
           for (Practice practice in activity.practices!) {
             if (practices[getPracticeTranslation(practice)] == null) {
@@ -951,6 +986,13 @@ class SharedService extends ChangeNotifier {
       }
     }
 
+    for (String key in timeDistribution.keys) {
+      timeDistributionStats[key] = StatsCount(
+        id: key,
+        count: timeDistribution[key]!,
+      );
+    }
+
     stats = Stats(
       date: DateTime.now(),
       lastSexualActivity: lastSexualActivity,
@@ -982,6 +1024,7 @@ class SharedService extends ChangeNotifier {
       monthlyStats: monthlyStats,
       yearlyStats: yearlyStats,
       globalStats: globalStats,
+      timeDistributionStats: timeDistributionStats,
     );
     // debugPrint(jsonEncode(stats));
     return stats;
@@ -1129,11 +1172,13 @@ class SharedService extends ChangeNotifier {
     refreshToken = null;
     activity = [];
     partners = [];
+    reload();
   }
 
   void clearData() async {
     debugPrint('clearData');
     await _storage.clear();
+    reload();
   }
 
   Widget privacyRedactedText(String text, {TextStyle? style}) {
@@ -1169,9 +1214,13 @@ class SharedService extends ChangeNotifier {
 
   Widget semiObscureText(String text, {TextStyle? style}) {
     String semiObscureText = "";
-    semiObscureText += text[0];
-    semiObscureText += "#" * (text.length - 2);
-    semiObscureText += text[text.length - 1];
+    if (text.length >= 3) {
+      semiObscureText += text[0];
+      semiObscureText += "#" * (text.length - 2);
+      semiObscureText += text[text.length - 1];
+    } else {
+      semiObscureText += "#" * (text.length);
+    }
     return Text(semiObscureText, style: style);
   }
 
@@ -2357,6 +2406,7 @@ class SharedService extends ChangeNotifier {
     _settings.theme = value;
     _storage.setSettings(_settings);
     notifyListeners();
+    reload();
   }
 
   AppColorScheme? get colorScheme {
@@ -2367,6 +2417,7 @@ class SharedService extends ChangeNotifier {
     _settings.colorScheme = value;
     _storage.setSettings(_settings);
     notifyListeners();
+    reload();
   }
 
   String? get accessToken {
@@ -2531,6 +2582,7 @@ class SharedService extends ChangeNotifier {
     _settings.material = value;
     _storage.setSettings(_settings);
     notifyListeners();
+    reload();
   }
 
   bool get trueBlack {
@@ -2541,5 +2593,6 @@ class SharedService extends ChangeNotifier {
     _settings.trueBlack = value;
     _storage.setSettings(_settings);
     notifyListeners();
+    reload();
   }
 }

@@ -74,6 +74,9 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   }
 
   String get date {
+    if (_shared.calendarView) {
+      return DateFormat('dd MMMM yyyy').format(widget.activity.date);
+    }
     return RelativeTime(context, numeric: true).format(widget.activity.date);
   }
 

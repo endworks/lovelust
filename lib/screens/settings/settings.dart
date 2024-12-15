@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dynamic_icon_plus/flutter_dynamic_icon_plus.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
@@ -70,10 +69,6 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
-  reload() {
-    Phoenix.rebirth(context);
-  }
-
   Future<void> checkIfiOSAppOnMac() async {
     const platform = MethodChannel('works.end.Lovelust/isiOSAppOnMac');
     try {
@@ -89,7 +84,6 @@ class _SettingsPageState extends State<SettingsPage> {
       setState(() {
         _shared.theme = value ?? 'system';
       });
-      reload();
     }
   }
 
@@ -98,7 +92,6 @@ class _SettingsPageState extends State<SettingsPage> {
       setState(() {
         _shared.colorScheme = value;
       });
-      reload();
     }
   }
 
@@ -269,7 +262,6 @@ class _SettingsPageState extends State<SettingsPage> {
       setState(() {
         _shared.theme = value;
       });
-      reload();
     }
   }
 
@@ -302,7 +294,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
     if (result != null && result) {
       _shared.clearPersonalData();
-      reload();
     }
   }
 
@@ -313,7 +304,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
     if (result != null && result) {
       _shared.clearData();
-      reload();
     }
   }
 
@@ -342,7 +332,6 @@ class _SettingsPageState extends State<SettingsPage> {
         setState(() {
           _shared.colorScheme = value;
         });
-        reload();
       }
     }
   }
@@ -434,7 +423,6 @@ class _SettingsPageState extends State<SettingsPage> {
           setState(() {
             _shared.material = value;
           });
-          reload();
         },
         secondary: Icon(
           Icons.android,
@@ -457,7 +445,6 @@ class _SettingsPageState extends State<SettingsPage> {
           setState(() {
             _shared.trueBlack = value;
           });
-          reload();
         },
         secondary: Icon(
           Icons.dark_mode,

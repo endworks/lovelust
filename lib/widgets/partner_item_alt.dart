@@ -55,27 +55,13 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
           color: color,
           size: style.fontSize,
         ),
-        _shared.privacyRedactedText(
+        Text(
           count.toString(),
           style: style.copyWith(
             color: color,
           ),
         ),
       ],
-    );
-  }
-
-  Widget? get encountersCount {
-    TextStyle style = Theme.of(context).textTheme.titleLarge!;
-    int count = _shared.getActivityByPartner(widget.partner.id!).length;
-    if (count == 0) {
-      return null;
-    }
-    return _shared.privacyRedactedText(
-      count.toString(),
-      style: style.copyWith(
-        color: Theme.of(context).colorScheme.secondary,
-      ),
     );
   }
 
@@ -98,6 +84,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key: ObjectKey(widget.partner.id),
       leading: ActivityAvatar(partnerId: widget.partner.id),
       title: name,
       subtitle: lastEncounterDate,

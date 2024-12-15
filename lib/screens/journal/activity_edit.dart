@@ -337,8 +337,10 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
           setState(() {
             if (value) {
               _type = ActivityType.masturbation;
+              _solo = true;
             } else {
               _type = ActivityType.sexualIntercourse;
+              _solo = false;
             }
           });
         },
@@ -511,6 +513,28 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
+            ListTile(
+              title: Text(AppLocalizations.of(context)!.practices),
+              leading: Icon(
+                Icons.task_alt,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              subtitle: Wrap(
+                spacing: 4,
+                runSpacing: 4,
+                children: [
+                  ...Practice.values.map(
+                    (e) => FilterChip(
+                      label: Text(SharedService.getPracticeTranslation(e)),
+                      selected: isPracticeSelected(e),
+                      onSelected: (value) => togglePractice(e, value),
+                      showCheckmark: false,
+                    ),
+                  )
+                ],
+              ),
+              titleAlignment: ListTileTitleAlignment.top,
+            ),
           ],
         );
       }
@@ -535,28 +559,6 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       ),*/
                     selected: isMoodSelected(e),
                     onSelected: (value) => selectMood(e, value),
-                    showCheckmark: false,
-                  ),
-                )
-              ],
-            ),
-            titleAlignment: ListTileTitleAlignment.top,
-          ),
-          ListTile(
-            title: Text(AppLocalizations.of(context)!.practices),
-            leading: Icon(
-              Icons.task_alt,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-            subtitle: Wrap(
-              spacing: 4,
-              runSpacing: 4,
-              children: [
-                ...Practice.values.map(
-                  (e) => FilterChip(
-                    label: Text(SharedService.getPracticeTranslation(e)),
-                    selected: isPracticeSelected(e),
-                    onSelected: (value) => togglePractice(e, value),
                     showCheckmark: false,
                   ),
                 )

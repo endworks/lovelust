@@ -791,7 +791,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get garage => 'Garaje';
 
   @override
-  String get home => 'Inicio';
+  String get home => 'Casa';
 
   @override
   String get hotel => 'Hotel';

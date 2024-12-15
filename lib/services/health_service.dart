@@ -546,7 +546,8 @@ class HealthService {
     );
     List<Activity> journal = [..._shared.activity];
     for (Activity activity in _shared.activity) {
-      if (activity.partner == null) {
+      if (activity.type == ActivityType.sexualIntercourse &&
+          activity.partner == null) {
         journal.remove(activity);
       }
     }

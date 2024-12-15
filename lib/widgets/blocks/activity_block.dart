@@ -116,7 +116,8 @@ class _ActivityBlockState extends State<ActivityBlock> {
         ]),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [safety, duration],
+          children:
+              widget.activity.duration > 0 ? [safety, duration] : [safety],
         ),
       ),
     );

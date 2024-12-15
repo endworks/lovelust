@@ -123,13 +123,20 @@ class _PartnersPageState extends State<PartnersPage> {
           child: FloatingActionButton.extended(
             onPressed: _addPartner,
             key: fabKey,
-            label: _isExtended
-                ? Text(
-                    AppLocalizations.of(context)!.addPartner,
-                  )
-                : Icon(
-                    Icons.person_add_alt_outlined,
-                  ),
+            heroTag: "partnerAdd",
+            label: AnimatedSize(
+              duration: Duration(milliseconds: 100),
+              curve: Curves.linear,
+              child: Container(
+                child: _isExtended
+                    ? Text(
+                        AppLocalizations.of(context)!.addPartner,
+                      )
+                    : Icon(
+                        Icons.person_add_alt_outlined,
+                      ),
+              ),
+            ),
             icon: _isExtended ? Icon(Icons.person_add_alt_outlined) : null,
           ),
         ),

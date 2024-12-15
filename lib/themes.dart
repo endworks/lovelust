@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lovelust/colors.dart';
+import 'package:lovelust/services/shared_service.dart';
 
 ThemeData generateTheme(
   String? colorSchemeName, {
@@ -65,6 +66,7 @@ ThemeData generateTheme(
       brightness: darkMode ? Brightness.dark : Brightness.light,
       seedColor: seedColor,
       primary: seedColor,
+      secondary: SharedService.generateSecondaryColor(seedColor),
       surface: background,
       onPrimary: onPrimary,
     );
@@ -103,7 +105,6 @@ ThemeData generateTheme(
       labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
       surfaceTintColor: colorScheme.surfaceDim,
       elevation: 0,
-      // indicatorColor: colorScheme.primary,
       indicatorColor: Colors.transparent,
       iconTheme: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
@@ -112,6 +113,9 @@ ThemeData generateTheme(
           );
         }
         return null;
+      }),
+      overlayColor: WidgetStateProperty.resolveWith((states) {
+        return Colors.transparent;
       }),
       backgroundColor: colorScheme.surface,
       height: 56,
@@ -129,7 +133,8 @@ ThemeData generateTheme(
       elevation: 0,
       highlightElevation: 0,
       backgroundColor: colorScheme.primary,
-      foregroundColor: colorScheme.onPrimary,
+      foregroundColor:
+          darkMode ? colorScheme.onPrimaryContainer : colorScheme.onPrimary,
       extendedPadding: const EdgeInsets.symmetric(horizontal: 21, vertical: 0),
       shape: const StadiumBorder(
         side: BorderSide.none,
@@ -150,18 +155,41 @@ ThemeData generateTheme(
     ),
     chipTheme: ChipThemeData(
       labelStyle: materialTheme.textTheme.labelSmall!.copyWith(
-        color: colorScheme.onPrimary,
+        color: WidgetStateColor.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return darkMode
+                ? colorScheme!.onPrimaryContainer
+                : colorScheme!.onPrimary;
+          }
+          return colorScheme!.secondary;
+        }),
       ),
       color: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {
           return colorScheme!.primary;
         }
-        return colorScheme!.secondary;
+        return Colors.transparent;
       }),
       showCheckmark: false,
-      side: BorderSide.none,
+      side: WidgetStateBorderSide.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return BorderSide(
+            color: Colors.transparent,
+          );
+        }
+        return BorderSide(
+          color: colorScheme!.secondary,
+        );
+      }),
       shape: StadiumBorder(),
     ),
+    filledButtonTheme: FilledButtonThemeData(style: ButtonStyle(
+      foregroundColor: WidgetStateProperty.resolveWith((states) {
+        return darkMode
+            ? colorScheme!.onPrimaryContainer
+            : colorScheme!.onPrimary;
+      }),
+    )),
     segmentedButtonTheme: materialTheme.segmentedButtonTheme.copyWith(
       style: ButtonStyle(
         side: WidgetStateProperty.resolveWith((states) {

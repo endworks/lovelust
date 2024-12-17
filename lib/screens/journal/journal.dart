@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
@@ -233,11 +234,12 @@ class _JournalPageState extends State<JournalPage> {
                 IconButton(
                   icon: Icon(
                     _shared.calendarView
-                        ? Icons.assignment
+                        ? Icons.view_timeline
                         : Icons.calendar_today,
                   ),
                   onPressed: () {
                     _shared.calendarView = !_shared.calendarView;
+                    HapticFeedback.selectionClick();
                   },
                 ),
               ],

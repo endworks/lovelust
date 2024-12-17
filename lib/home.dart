@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:home_widget/home_widget.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
@@ -83,25 +84,25 @@ class _HomeState extends State<Home>
     return [
       Destination(
         AppLocalizations.of(context)!.start,
-        const Icon(Icons.insert_chart_outlined),
+        const Icon(Icons.bar_chart_outlined),
         const Icon(
-          Icons.insert_chart,
+          Icons.bar_chart,
         ),
       ),
       Destination(
         AppLocalizations.of(context)!.journal,
         Icon(_shared.calendarView
             ? Icons.calendar_today_outlined
-            : Icons.assignment_outlined),
+            : Icons.view_timeline_outlined),
         Icon(
-          _shared.calendarView ? Icons.calendar_today : Icons.assignment,
+          _shared.calendarView ? Icons.calendar_today : Icons.view_timeline,
         ),
       ),
       Destination(
         AppLocalizations.of(context)!.partners,
-        const Icon(Icons.person_outlined),
+        const Icon(Icons.people_outlined),
         const Icon(
-          Icons.person,
+          Icons.people,
         ),
       ),
       /*Destination(
@@ -204,6 +205,7 @@ class _HomeState extends State<Home>
                           onDestinationSelected: (int index) {
                             setState(() {
                               _selectedIndex.value = index;
+                              HapticFeedback.selectionClick();
                             });
                           },
                           destinations: _navigationDestinations,

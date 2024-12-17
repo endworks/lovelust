@@ -21,21 +21,16 @@ class ActivityItemAlt extends StatefulWidget {
 
 class _ActivityItemAltState extends State<ActivityItemAlt> {
   final SharedService _shared = getIt<SharedService>();
-  Partner? partner;
-  bool solo = false;
 
-  @override
-  void initState() {
-    super.initState();
+  Partner? get partner {
     if (widget.activity.partner != null) {
-      partner = _shared.getPartnerById(widget.activity.partner!);
-      setState(() {
-        partner = partner;
-      });
+      return _shared.getPartnerById(widget.activity.partner!);
     }
-    setState(() {
-      solo = widget.activity.type == ActivityType.masturbation;
-    });
+    return null;
+  }
+
+  bool get solo {
+    return widget.activity.type == ActivityType.masturbation;
   }
 
   void openActivity() {

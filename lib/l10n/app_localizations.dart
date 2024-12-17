@@ -1955,6 +1955,24 @@ abstract class AppLocalizations {
   /// **'Global chart'**
   String get globalChart;
 
+  /// No description provided for @safetyChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety'**
+  String get safetyChart;
+
+  /// No description provided for @timeDistributionChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Hour distribution'**
+  String get timeDistributionChart;
+
+  /// No description provided for @sexDistributionChart.
+  ///
+  /// In en, this message translates to:
+  /// **'Sex distribution'**
+  String get sexDistributionChart;
+
   /// No description provided for @days.
   ///
   /// In en, this message translates to:
@@ -2068,6 +2086,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Average duration'**
   String get averageDuration;
+
+  /// Count number
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{time} other{times}}'**
+  String countNumber(num count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -18,16 +18,18 @@ class Stats {
   final StatsCount? mostPopularMood;
   final StatsCount? mostPopularEjaculationPlace;
   final StatsCount? mostPopularPlace;
-  final num safetyPercentSafe;
-  final num safetyPercentUnsafe;
-  final num safetyPercentPartlyUnsafe;
+  final double safetyPercentSafe;
+  final double safetyPercentUnsafe;
+  final double safetyPercentPartlyUnsafe;
   final StatsCount? mostActiveYear;
   final StatsCount? mostActiveMonth;
   final StatsCount? mostActiveDay;
   final StatsCount? mostActiveWeekday;
   final StatsCount? mostActiveHour;
-  final num orgasmRatio;
-  final num averageDuration;
+  final double orgasmRatio;
+  final int orgasmsGiven;
+  final int orgasmsReceived;
+  final double averageDuration;
   final Map<String, StatsCountTimeData> weeklyStats;
   final Map<String, StatsCountTimeData> monthlyStats;
   final Map<String, StatsCountTimeData> yearlyStats;
@@ -60,6 +62,8 @@ class Stats {
     required this.mostActiveWeekday,
     required this.mostActiveHour,
     required this.orgasmRatio,
+    required this.orgasmsGiven,
+    required this.orgasmsReceived,
     required this.averageDuration,
     required this.weeklyStats,
     required this.globalStats,
@@ -119,6 +123,8 @@ class Stats {
           ? StatsCount.fromJson(json['mostActiveHour'])
           : null,
       orgasmRatio: json['orgasmRatio'],
+      orgasmsGiven: json['orgasmsGiven'],
+      orgasmsReceived: json['orgasmsReceived'],
       averageDuration: json['averageDuration'],
       weeklyStats: json['weeklyStats'],
       monthlyStats: json['monthlyStats'],
@@ -154,6 +160,8 @@ class Stats {
         'mostActiveWeekday': mostActiveWeekday?.toJson(),
         'mostActiveHour': mostActiveHour?.toJson(),
         'orgasmRatio': orgasmRatio,
+        'orgasmsGiven': orgasmsGiven,
+        'orgasmsReceived': orgasmsReceived,
         'averageDuration': averageDuration,
         'weeklyStats': weeklyStats,
         'monthlyStats': monthlyStats,
@@ -165,7 +173,7 @@ class Stats {
 
 class StatsCount {
   final String id;
-  final num count;
+  final double count;
 
   const StatsCount({
     required this.id,

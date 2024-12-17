@@ -65,6 +65,8 @@ class SharedService extends ChangeNotifier {
     mostActiveWeekday: null,
     mostActiveHour: null,
     orgasmRatio: 0,
+    orgasmsGiven: 0,
+    orgasmsReceived: 0,
     averageDuration: 0,
     weeklyStats: {},
     globalStats: {},
@@ -98,13 +100,12 @@ class SharedService extends ChangeNotifier {
         _protected = true;
       }
 
-      statistics = generateStatsWidgets();
-      updateWidgets();
-
       await getPackageInfo();
     } else {
       debugPrint('skip initialLoad');
     }
+    statistics = generateStatsWidgets();
+    updateWidgets();
   }
 
   reload() {
@@ -150,6 +151,10 @@ class SharedService extends ChangeNotifier {
     Color blue =
         Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
     Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color green =
+        Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
+    Color orange =
+        Colors.orange.harmonizeWith(Theme.of(context).colorScheme.primary);
     Color legend = Color.fromARGB(255, 128, 128, 128);
     Color disabled = Color.fromARGB(32, 128, 128, 128);
     Color lines = Colors.transparent;
@@ -190,14 +195,20 @@ class SharedService extends ChangeNotifier {
       );
     }
     if (stats.lastSexualActivity != null || stats.lastMasturbation != null) {
-      List<String> chartTypes = ['weekly', 'monthly', 'yearly', 'global'];
+      List<String> barChartTypes = ['weekly', 'monthly', 'yearly', 'global'];
+      List<String> pieChartTypes = [
+        'safety',
+        'timeDistribution',
+        'sexDistribution'
+      ];
 
       BarChartData barChartData;
+      PieChartData pieChartData;
       double maxWidth = MediaQuery.of(context).size.width;
       double barsSpaceRatio = 0.8;
       List<String> monthNames = DateFormat.EEEE().dateSymbols.SHORTMONTHS;
 
-      for (String chartType in chartTypes) {
+      for (String chartType in barChartTypes) {
         Map<String, StatsCountTimeData> timeData = {};
         if (chartType == 'weekly') {
           timeData = stats.weeklyStats;
@@ -471,7 +482,7 @@ class SharedService extends ChangeNotifier {
           type = StatisticType.globalChart;
           date = DateTime(stats.date.year);
         }
-        if (keysWithData.length > 1) {
+        if (keysWithData.isNotEmpty) {
           list.add(
             DynamicStatisticData(
               type: type,
@@ -480,14 +491,298 @@ class SharedService extends ChangeNotifier {
             ),
           );
         }
+
+        if (chartType == 'yearly' && stats.mostActiveMonth != null) {
+          list.add(
+            DynamicStatisticData(
+              type: StatisticType.simple,
+              date: DateTime(stats.date.year),
+              data: SimpleStatisticData(
+                title: AppLocalizations.of(context)!.mostActiveMonth,
+                description: stats.mostActiveMonth!.id,
+                count: stats.mostActiveMonth!.count.toInt(),
+                icon: Icons.calendar_today,
+              ),
+            ),
+          );
+        }
+
+        if (chartType == 'global' && stats.mostActiveYear != null) {
+          list.add(
+            DynamicStatisticData(
+              type: StatisticType.simple,
+              date: DateTime(stats.date.year),
+              data: SimpleStatisticData(
+                title: AppLocalizations.of(context)!.mostActiveYear,
+                description: stats.mostActiveYear!.id,
+                count: stats.mostActiveYear!.count.toInt(),
+                icon: Icons.calendar_today,
+              ),
+            ),
+          );
+        }
+      }
+      if (stats.lastSexualActivity != null) {
+        for (String chartType in pieChartTypes) {
+          List<PieChartSectionData> pieSections = [];
+          if (chartType == 'safety') {
+            pieSections.addAll([
+              PieChartSectionData(
+                color: green,
+                value: stats.safetyPercentSafe.toDouble(),
+                title: '${stats.safetyPercentSafe}%',
+                titleStyle: Theme.of(context).textTheme.labelMedium,
+                titlePositionPercentageOffset: 1.2,
+                radius: stats.safetyPercentSafe.toDouble() * 30 / 100 + 70,
+                borderSide: BorderSide.none,
+              ),
+              PieChartSectionData(
+                color: red,
+                value: stats.safetyPercentUnsafe.toDouble(),
+                title: '${stats.safetyPercentUnsafe}%',
+                titleStyle: Theme.of(context).textTheme.labelMedium,
+                titlePositionPercentageOffset: 1.2,
+                radius: stats.safetyPercentUnsafe.toDouble() * 30 / 100 + 70,
+                borderSide: BorderSide.none,
+              ),
+              PieChartSectionData(
+                color: orange,
+                value: stats.safetyPercentPartlyUnsafe.toDouble(),
+                title: '${stats.safetyPercentPartlyUnsafe}%',
+                titleStyle: Theme.of(context).textTheme.labelMedium,
+                titlePositionPercentageOffset: 1.2,
+                radius:
+                    stats.safetyPercentPartlyUnsafe.toDouble() * 30 / 100 + 70,
+                borderSide: BorderSide.none,
+              )
+            ]);
+          } else if (chartType == 'timeDistribution') {
+            pieSections.addAll(
+              stats.timeDistributionStats.entries.map(
+                (timeDistribution) {
+                  Color color = primary;
+                  Color textColor =
+                      Theme.of(context).colorScheme.onInverseSurface;
+                  String title;
+                  if (timeDistribution.value.id == '0') {
+                    title = "0-6";
+                    color = primary.withValues(alpha: 0.4);
+                    color = Colors.deepPurple
+                        .harmonizeWith(Theme.of(context).primaryColor);
+                  } else if (timeDistribution.value.id == '6') {
+                    title = "6-12";
+                    color = primary;
+                    color = Colors.orange
+                        .harmonizeWith(Theme.of(context).primaryColor);
+                  } else if (timeDistribution.value.id == '12') {
+                    title = "12-18";
+                    color = primary.withValues(alpha: 0.8);
+                    color = Colors.lightBlue
+                        .harmonizeWith(Theme.of(context).primaryColor);
+                  } else {
+                    title = "18-0";
+                    color = primary.withValues(alpha: 0.6);
+                    color = Colors.deepOrange
+                        .harmonizeWith(Theme.of(context).primaryColor);
+                  }
+
+                  return PieChartSectionData(
+                    color: color,
+                    value: timeDistribution.value.count,
+                    title: title,
+                    titleStyle: Theme.of(context).textTheme.labelMedium,
+                    titlePositionPercentageOffset: 1.2,
+                    badgeWidget: Text(
+                      timeDistribution.value.count.toInt().toString(),
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                            color: textColor,
+                          ),
+                    ),
+                    radius: timeDistribution.value.count * 30 / 100 + 70,
+                    borderSide: BorderSide.none,
+                  );
+                },
+              ),
+            );
+          } else if (chartType == 'sexDistribution') {
+            if (stats.totalSexualActivityWithMale > 0) {
+              pieSections.add(
+                PieChartSectionData(
+                  color: blue,
+                  value: stats.totalSexualActivityWithMale.toDouble(),
+                  title: AppLocalizations.of(context)!.male,
+                  titleStyle: Theme.of(context).textTheme.labelMedium,
+                  titlePositionPercentageOffset: 1.2,
+                  radius: stats.totalSexualActivityWithMale /
+                          stats.totalSexualActivity *
+                          30 +
+                      70,
+                  borderSide: BorderSide.none,
+                ),
+              );
+            }
+            if (stats.totalSexualActivityWithFemale > 0) {
+              pieSections.add(
+                PieChartSectionData(
+                  color: red,
+                  value: stats.totalSexualActivityWithFemale.toDouble(),
+                  title: AppLocalizations.of(context)!.female,
+                  titleStyle: Theme.of(context).textTheme.labelMedium,
+                  titlePositionPercentageOffset: 1.2,
+                  radius: stats.totalSexualActivityWithFemale /
+                          stats.totalSexualActivity *
+                          30 +
+                      70,
+                  borderSide: BorderSide.none,
+                ),
+              );
+            }
+            if (stats.totalSexualActivityWithUnknown > 0) {
+              pieSections.add(
+                PieChartSectionData(
+                  color: secondary,
+                  value: stats.totalSexualActivityWithUnknown.toDouble(),
+                  title: AppLocalizations.of(context)!.unknown,
+                  titleStyle: Theme.of(context).textTheme.labelMedium,
+                  titlePositionPercentageOffset: 1.2,
+                  radius: stats.totalSexualActivityWithUnknown /
+                          stats.totalSexualActivity *
+                          30 +
+                      70,
+                  borderSide: BorderSide.none,
+                ),
+              );
+            }
+          }
+
+          if (pieSections.length > 1) {
+            pieChartData = PieChartData(
+              startDegreeOffset: 180,
+              borderData: FlBorderData(
+                show: false,
+              ),
+              sectionsSpace: 1,
+              centerSpaceRadius: 0,
+              sections: pieSections,
+            );
+
+            StatisticType type;
+            DateTime date = stats.lastSexualActivity!.date;
+            if (chartType == 'safety') {
+              type = StatisticType.safetyChart;
+            } else if (chartType == 'sexDistribution') {
+              type = StatisticType.sexDistributionChart;
+            } else {
+              type = StatisticType.timeDistributionChart;
+            }
+
+            list.add(
+              DynamicStatisticData(
+                type: type,
+                date: date,
+                data: pieChartData,
+              ),
+            );
+          }
+        }
       }
     }
 
+    if (stats.mostPopularPartner != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.mostPopularPartner,
+          date: stats.date,
+          data: PartnerStatisticData(
+            title: AppLocalizations.of(context)!.mostPopularPartner,
+            partner: stats.mostPopularPartner!.partner,
+            count: stats.mostPopularPartner!.count.toInt(),
+          ),
+        ),
+      );
+    }
+
+    if (stats.mostPopularPlace != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.simple,
+          date: stats.lastSexualActivity!.date,
+          data: SimpleStatisticData(
+            title: AppLocalizations.of(context)!.mostPopularPlace,
+            description: stats.mostPopularPlace!.id,
+            count: stats.mostPopularPlace!.count.toInt(),
+            icon: Icons.place,
+          ),
+        ),
+      );
+    }
+    if (stats.mostPopularEjaculationPlace != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.simple,
+          date: stats.lastSexualActivity!.date,
+          data: SimpleStatisticData(
+            title: AppLocalizations.of(context)!.mostPopularEjaculationPlace,
+            description: stats.mostPopularEjaculationPlace!.id,
+            count: stats.mostPopularEjaculationPlace!.count.toInt(),
+            icon: Icons.water_drop,
+          ),
+        ),
+      );
+    }
+    if (stats.mostPopularPractice != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.simple,
+          date: stats.lastSexualActivity!.date,
+          data: SimpleStatisticData(
+            title: AppLocalizations.of(context)!.mostPopularPractice,
+            description: stats.mostPopularPractice!.id,
+            count: stats.mostPopularPractice!.count.toInt(),
+            icon: Icons.check_circle,
+          ),
+        ),
+      );
+    }
+    if (stats.mostPopularMood != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.simple,
+          date: stats.lastSexualActivity!.date,
+          data: SimpleStatisticData(
+            title: AppLocalizations.of(context)!.mostPopularMood,
+            description: stats.mostPopularMood!.id,
+            count: stats.mostPopularMood!.count.toInt(),
+            icon: Icons.emoji_emotions,
+          ),
+        ),
+      );
+    }
+
+    if (stats.mostActiveWeekday != null) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.simple,
+          date: DateTime(stats.date.year, stats.date.month, stats.date.day),
+          data: SimpleStatisticData(
+            title: AppLocalizations.of(context)!.mostActiveWeekday,
+            description: stats.mostActiveWeekday!.id,
+            count: stats.mostActiveWeekday!.count.toInt(),
+            icon: Icons.calendar_today,
+          ),
+        ),
+      );
+    }
     list.add(
       DynamicStatisticData(
-        type: StatisticType.overview,
-        date: stats.date,
-        data: null,
+        type: StatisticType.simple,
+        date: DateTime(stats.date.year, stats.date.month, stats.date.day),
+        data: SimpleStatisticData(
+          title: AppLocalizations.of(context)!.orgasmRatio,
+          description:
+              "${stats.orgasmRatio} (${stats.orgasmsGiven} / ${stats.orgasmsReceived})",
+          icon: Icons.whatshot,
+        ),
       ),
     );
 
@@ -524,18 +819,18 @@ class SharedService extends ChangeNotifier {
     StatsCount? mostPopularMood;
     StatsCount? mostPopularEjaculationPlace;
     StatsCount? mostPopularPlace;
-    num safetyPercentSafe = 0;
-    num safetyPercentUnsafe = 0;
-    num safetyPercentPartlyUnsafe = 0;
+    double safetyPercentSafe = 0;
+    double safetyPercentUnsafe = 0;
+    double safetyPercentPartlyUnsafe = 0;
     StatsCount? mostActiveYear;
     StatsCount? mostActiveMonth;
     StatsCount? mostActiveDay;
     StatsCount? mostActiveWeekday;
     StatsCount? mostActiveHour;
-    num orgasmRatio = 0;
-    num averageDuration = 0;
-    num activityWithDuration = 0;
-    num totalDuration = 0;
+    double orgasmRatio = 0;
+    double averageDuration = 0;
+    int activityWithDuration = 0;
+    int totalDuration = 0;
 
     Map<String, int> partners = {};
     Map<String, int> practices = {};
@@ -734,23 +1029,23 @@ class SharedService extends ChangeNotifier {
     }
 
     if (orgasmsGiven > 0 || orgasmsReceived > 0) {
-      orgasmRatio = num.parse(
+      orgasmRatio = double.parse(
         (orgasmsGiven / orgasmsReceived).toStringAsFixed(2),
       );
     }
     if (totalDuration > 0 && activityWithDuration > 0) {
-      averageDuration = num.parse(
+      averageDuration = double.parse(
         (totalDuration / activityWithDuration).toStringAsFixed(1),
       );
     }
 
-    safetyPercentSafe = num.parse(
+    safetyPercentSafe = double.parse(
       (safetySafe * 100 / totalSexualActivity).toStringAsFixed(1),
     );
-    safetyPercentUnsafe = num.parse(
+    safetyPercentUnsafe = double.parse(
       (safetyUnsafe * 100 / totalSexualActivity).toStringAsFixed(1),
     );
-    safetyPercentPartlyUnsafe = num.parse(
+    safetyPercentPartlyUnsafe = double.parse(
       (safetyPartlyUnsafe * 100 / totalSexualActivity).toStringAsFixed(1),
     );
 
@@ -776,7 +1071,8 @@ class SharedService extends ChangeNotifier {
           places.entries.reduce(biggestCountReducer).key as String?;
       if (mostPopularPlaceKey != null) {
         mostPopularPlace = StatsCount(
-            id: mostPopularPlaceKey, count: places[mostPopularPlaceKey] as num);
+            id: mostPopularPlaceKey,
+            count: places[mostPopularPlaceKey]!.toDouble());
       }
     }
     if (practices.isNotEmpty) {
@@ -785,7 +1081,7 @@ class SharedService extends ChangeNotifier {
       if (mostPopularPracticeKey != null) {
         mostPopularPractice = StatsCount(
             id: mostPopularPracticeKey,
-            count: practices[mostPopularPracticeKey] as num);
+            count: practices[mostPopularPracticeKey]!.toDouble());
       }
     }
     if (moods.isNotEmpty) {
@@ -793,7 +1089,8 @@ class SharedService extends ChangeNotifier {
           moods.entries.reduce(biggestCountReducer).key as String?;
       if (mostPopularMoodKey != null) {
         mostPopularMood = StatsCount(
-            id: mostPopularMoodKey, count: moods[mostPopularMoodKey] as num);
+            id: mostPopularMoodKey,
+            count: moods[mostPopularMoodKey]!.toDouble());
       }
     }
     if (ejaculationPlaces.isNotEmpty) {
@@ -802,7 +1099,8 @@ class SharedService extends ChangeNotifier {
       if (mostPopularEjaculationPlaceKey != null) {
         mostPopularEjaculationPlace = StatsCount(
             id: mostPopularEjaculationPlaceKey,
-            count: ejaculationPlaces[mostPopularEjaculationPlaceKey] as num);
+            count:
+                ejaculationPlaces[mostPopularEjaculationPlaceKey]!.toDouble());
       }
     }
     if (years.isNotEmpty) {
@@ -810,7 +1108,7 @@ class SharedService extends ChangeNotifier {
           years.entries.reduce(biggestCountReducer).key as String?;
       if (mostActiveYearKey != null) {
         mostActiveYear = StatsCount(
-            id: mostActiveYearKey, count: years[mostActiveYearKey] as num);
+            id: mostActiveYearKey, count: years[mostActiveYearKey]!.toDouble());
       }
     }
     if (months.isNotEmpty) {
@@ -818,7 +1116,8 @@ class SharedService extends ChangeNotifier {
           months.entries.reduce(biggestCountReducer).key as String?;
       if (mostActiveMonthKey != null) {
         mostActiveMonth = StatsCount(
-            id: mostActiveMonthKey, count: months[mostActiveMonthKey] as num);
+            id: mostActiveMonthKey,
+            count: months[mostActiveMonthKey]!.toDouble());
       }
     }
     if (days.isNotEmpty) {
@@ -826,7 +1125,7 @@ class SharedService extends ChangeNotifier {
           days.entries.reduce(biggestCountReducer).key as String?;
       if (mostActiveDayKey != null) {
         mostActiveDay = StatsCount(
-            id: mostActiveDayKey, count: days[mostActiveDayKey] as num);
+            id: mostActiveDayKey, count: days[mostActiveDayKey]!.toDouble());
       }
     }
     if (weekdays.isNotEmpty) {
@@ -835,7 +1134,7 @@ class SharedService extends ChangeNotifier {
       if (mostActiveWeekdayKey != null) {
         mostActiveWeekday = StatsCount(
             id: mostActiveWeekdayKey,
-            count: weekdays[mostActiveWeekdayKey] as num);
+            count: weekdays[mostActiveWeekdayKey]!.toDouble());
       }
     }
     if (hours.isNotEmpty) {
@@ -843,7 +1142,7 @@ class SharedService extends ChangeNotifier {
           hours.entries.reduce(biggestCountReducer).key as String?;
       if (mostActiveHourKey != null) {
         mostActiveHour = StatsCount(
-            id: mostActiveHourKey, count: hours[mostActiveHourKey] as num);
+            id: mostActiveHourKey, count: hours[mostActiveHourKey]!.toDouble());
       }
     }
 
@@ -989,7 +1288,7 @@ class SharedService extends ChangeNotifier {
     for (String key in timeDistribution.keys) {
       timeDistributionStats[key] = StatsCount(
         id: key,
-        count: timeDistribution[key]!,
+        count: timeDistribution[key]!.toDouble(),
       );
     }
 
@@ -1019,6 +1318,8 @@ class SharedService extends ChangeNotifier {
       mostActiveWeekday: mostActiveWeekday,
       mostActiveHour: mostActiveHour,
       orgasmRatio: orgasmRatio,
+      orgasmsGiven: orgasmsGiven,
+      orgasmsReceived: orgasmsReceived,
       averageDuration: averageDuration,
       weeklyStats: weeklyStats,
       monthlyStats: monthlyStats,
@@ -1183,7 +1484,7 @@ class SharedService extends ChangeNotifier {
 
   Widget privacyRedactedText(String text, {TextStyle? style}) {
     return privacyMode
-        ? semiObscureText(text, style: style)
+        ? Text(semiObscureText(text), style: style)
         : Text(text, style: style);
   }
 
@@ -1194,7 +1495,7 @@ class SharedService extends ChangeNotifier {
     TextOverflow? overflow,
   }) {
     return sensitiveMode
-        ? semiObscureText(text, style: style)
+        ? Text(semiObscureText(text), style: style)
         : Text(
             text,
             style: style,
@@ -1212,7 +1513,7 @@ class SharedService extends ChangeNotifier {
     );
   }
 
-  Widget semiObscureText(String text, {TextStyle? style}) {
+  String semiObscureText(String text) {
     String semiObscureText = "";
     if (text.length >= 3) {
       semiObscureText += text[0];
@@ -1221,11 +1522,11 @@ class SharedService extends ChangeNotifier {
     } else {
       semiObscureText += "#" * (text.length);
     }
-    return Text(semiObscureText, style: style);
+    return semiObscureText;
   }
 
-  Widget obscureText(String text, {TextStyle? style}) {
-    return Text(text.replaceAll(RegExp(r"."), "*"), style: style);
+  String obscureText(String text) {
+    return text.replaceAll(RegExp(r"."), "#");
   }
 
   ActivitySafety calculateSafety(Activity activity) {
@@ -1267,7 +1568,7 @@ class SharedService extends ChangeNotifier {
     return _activity.firstWhere((element) => element.id == id);
   }
 
-  List<Activity> getActivityByPartner(String id) {
+  List<Activity> getActivityByPartner(String? id) {
     return _activity.where((element) => element.partner == id).toList();
   }
 

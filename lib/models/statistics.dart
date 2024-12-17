@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:lovelust/models/partner.dart';
+
 enum StatisticType {
+  simple,
   lastRelationship,
   lastMasturbation,
   daysWithoutSex,
@@ -13,6 +17,9 @@ enum StatisticType {
   monthlyChart,
   yearlyChart,
   globalChart,
+  safetyChart,
+  timeDistributionChart,
+  sexDistributionChart,
   overview,
 }
 
@@ -41,8 +48,27 @@ class DaysWithoutSexData {
   int daysWithoutMasturbation;
 }
 
+class PartnerStatisticData {
+  PartnerStatisticData(
+      {required this.title, required this.partner, required this.count});
+
+  final String title;
+  final Partner partner;
+  final int count;
+}
+
 class WeeklyChartData {
   WeeklyChartData({required this.day, required this.activityCount});
   final String day;
   final double activityCount;
+}
+
+class SimpleStatisticData {
+  SimpleStatisticData(
+      {required this.title, required this.description, this.icon, this.count});
+
+  final String title;
+  final String description;
+  IconData? icon;
+  int? count;
 }

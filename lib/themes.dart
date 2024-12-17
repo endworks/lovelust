@@ -49,9 +49,9 @@ ThemeData generateTheme(
   Color? background;
   Color? onPrimary;
 
-  if (trueBlack) {
-    background = darkMode ? blackColor[900] : whiteColor[900];
-    onPrimary = darkMode ? blackColor[900] : whiteColor[900];
+  if (trueBlack && darkMode) {
+    background = blackColor[900];
+    onPrimary = blackColor[900];
   }
 
   if (material) {

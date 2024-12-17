@@ -22,16 +22,16 @@ class ActivityItemInfo extends StatefulWidget {
 
 class _ActivityItemInfoState extends State<ActivityItemInfo> {
   final SharedService _shared = getIt<SharedService>();
-  Partner? _partner;
-  bool _solo = false;
 
-  @override
-  void initState() {
+  Partner? get partner {
     if (widget.activity.partner != null) {
-      _partner = _shared.getPartnerById(widget.activity.partner!);
+      return _shared.getPartnerById(widget.activity.partner!);
     }
-    _solo = widget.activity.type == ActivityType.masturbation;
-    super.initState();
+    return null;
+  }
+
+  bool get solo {
+    return widget.activity.type == ActivityType.masturbation;
   }
 
   void openActivity() {
@@ -149,8 +149,8 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   Widget get partnerName {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
     if (widget.activity.type != ActivityType.masturbation) {
-      if (_partner != null) {
-        return _shared.privacyRedactedText(_partner!.name, style: style);
+      if (partner != null) {
+        return _shared.privacyRedactedText(partner!.name, style: style);
       } else {
         return Text(
           AppLocalizations.of(context)!.unknownPartner,
@@ -168,7 +168,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   String get activityTitle {
     String title;
 
-    if (_solo) {
+    if (solo) {
       title = AppLocalizations.of(context)!.masturbation;
     } else {
       ActivitySafety safety = _shared.calculateSafety(widget.activity);
@@ -207,7 +207,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
         children: [
           ActivityAvatar(
             partnerId: widget.activity.partner,
-            masturbation: _solo,
+            masturbation: solo,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

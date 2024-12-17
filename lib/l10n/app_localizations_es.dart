@@ -977,6 +977,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get globalChart => 'Gráfico global';
 
   @override
+  String get safetyChart => 'Seguridad';
+
+  @override
+  String get timeDistributionChart => 'Distribución por hora';
+
+  @override
+  String get sexDistributionChart => 'Distribución por sexo';
+
+  @override
   String get days => 'Días';
 
   @override
@@ -1032,4 +1041,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get averageDuration => 'Duración promedio';
+
+  @override
+  String countNumber(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+      
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'veces',
+      one: 'vez',
+    );
+    return '$_temp0';
+  }
 }

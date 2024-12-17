@@ -154,24 +154,17 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        Text(
+          count.toString(),
+          style: style.copyWith(
+            color: color,
+          ),
+        ),
         Icon(
           Icons.favorite,
           color: color,
           size: style.fontSize,
         ),
-        _solo
-            ? Text(
-                count.toString(),
-                style: style.copyWith(
-                  color: color,
-                ),
-              )
-            : _shared.privacyRedactedText(
-                count.toString(),
-                style: style.copyWith(
-                  color: color,
-                ),
-              ),
       ],
     );
   }

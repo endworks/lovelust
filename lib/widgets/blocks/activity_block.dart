@@ -71,14 +71,18 @@ class _ActivityBlockState extends State<ActivityBlock> {
   Widget get duration {
     TextStyle style = Theme.of(context).textTheme.titleMedium!;
 
+    List<Widget> items = [];
+    if (widget.activity.duration > 0) {
+      items.add(Text(widget.activity.duration.toString(), style: style));
+      items.add(Text(' ${AppLocalizations.of(context)!.min} '));
+    }
+    if (place.isNotEmpty) {
+      items.add(Text(place, style: style));
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.baseline,
       textBaseline: TextBaseline.alphabetic,
-      children: [
-        Text(widget.activity.duration.toString(), style: style),
-        Text(' ${AppLocalizations.of(context)!.min} '),
-        Text(place, style: style),
-      ],
+      children: items,
     );
   }
 
@@ -116,8 +120,7 @@ class _ActivityBlockState extends State<ActivityBlock> {
         ]),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-              widget.activity.duration > 0 ? [safety, duration] : [safety],
+          children: [safety, duration],
         ),
       ),
     );

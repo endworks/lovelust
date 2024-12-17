@@ -50,16 +50,16 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(
-          Icons.favorite,
-          color: color,
-          size: style.fontSize,
-        ),
         Text(
           count.toString(),
           style: style.copyWith(
             color: color,
           ),
+        ),
+        Icon(
+          Icons.favorite,
+          color: color,
+          size: style.fontSize,
         ),
       ],
     );

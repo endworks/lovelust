@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/service_locator.dart';
@@ -17,6 +18,7 @@ class _ActivityFiltersState extends State<ActivityFilters> {
   void filterSelected(FilterEntryItem item) {
     setState(() {
       _shared.activityFilter = item.name;
+      HapticFeedback.selectionClick();
     });
   }
 

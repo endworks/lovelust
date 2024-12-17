@@ -338,6 +338,9 @@
   "monthlyChart": "Monthly chart",
   "yearlyChart": "Yearly chart",
   "globalChart": "Global chart",
+  "safetyChart": "Safety",
+  "timeDistributionChart": "Hour distribution",
+  "sexDistributionChart": "Sex distribution",
   "days": "Days",
   "withoutSex": "without sex",
   "withoutMasturbation": "without fap",
@@ -356,5 +359,15 @@
   "mostActiveHour": "Most active hour",
   "mostActiveWeekday": "Most active weekday",
   "orgasmRatio": "Orgasm ratio",
-  "averageDuration": "Average duration"
+  "averageDuration": "Average duration",
+  "countNumber": "{count, plural, =1{time} other{times}}",
+  "@countNumber": {
+    "description": "Count number",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  }
 }

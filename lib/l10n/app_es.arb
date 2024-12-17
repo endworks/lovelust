@@ -322,6 +322,9 @@
   "monthlyChart": "Gráfico mensual",
   "yearlyChart": "Gráfico anual",
   "globalChart": "Gráfico global",
+  "safetyChart": "Seguridad",
+  "timeDistributionChart": "Distribución por hora",
+  "sexDistributionChart": "Distribución por sexo",
   "days": "Días",
   "withoutSex": "sin sexo",
   "withoutMasturbation": "sin pajas",
@@ -340,5 +343,6 @@
   "mostActiveHour": "Hora más activa",
   "mostActiveWeekday": "Dia de la semana más activo",
   "orgasmRatio": "Ratio de orgasmos",
-  "averageDuration": "Duración promedio"
+  "averageDuration": "Duración promedio",
+  "countNumber": "{count, plural, =1{vez} other{veces}}"
 }

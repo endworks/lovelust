@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
@@ -28,12 +29,6 @@ class _PartnersPageState extends State<PartnersPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        final box = fabKey.currentContext?.findRenderObject();
-        fabSize = (box as RenderBox).size;
-      });
-    });
     _scrollController.addListener(() {
       setState(() {
         _isExtended = _scrollController.offset <= 0.0;
@@ -42,12 +37,18 @@ class _PartnersPageState extends State<PartnersPage> {
 
     _shared.addListener(() {
       if (mounted) {
-        setState(() {});
+        setState(() {
+          if (_shared.material) {
+            final box = fabKey.currentContext?.findRenderObject();
+            fabSize = (box as RenderBox).size;
+          }
+        });
       }
     });
   }
 
-  void _addPartner() {
+  void addPartner() {
+    HapticFeedback.selectionClick();
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(
@@ -80,6 +81,14 @@ class _PartnersPageState extends State<PartnersPage> {
           slivers: <Widget>[
             GenericHeader(
               title: Text(AppLocalizations.of(context)!.partners),
+              actions: [
+                !_shared.material
+                    ? IconButton(
+                        icon: Icon(Icons.person_add_alt),
+                        onPressed: addPartner,
+                      )
+                    : SizedBox.shrink(),
+              ],
               scrolled: !_isExtended,
             ),
             _shared.partners.isEmpty
@@ -109,38 +118,42 @@ class _PartnersPageState extends State<PartnersPage> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).orientation == Orientation.portrait
-              ? MediaQuery.of(context).padding.bottom
-              : 0,
-        ),
-        child: AnimatedContainer(
-          width: _isExtended ? fabSize?.width : fabSize?.height,
-          // width: fabSize?.width,
-          height: fabSize?.height,
-          duration: Duration(milliseconds: 100),
-          child: FloatingActionButton.extended(
-            onPressed: _addPartner,
-            key: fabKey,
-            heroTag: "partnerAdd",
-            label: AnimatedSize(
-              duration: Duration(milliseconds: 100),
-              curve: Curves.linear,
-              child: Container(
-                child: _isExtended
-                    ? Text(
-                        AppLocalizations.of(context)!.addPartner,
-                      )
-                    : Icon(
-                        Icons.person_add_alt_outlined,
-                      ),
+      floatingActionButton: _shared.material
+          ? Padding(
+              padding: EdgeInsets.only(
+                bottom:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? MediaQuery.of(context).padding.bottom
+                        : 0,
               ),
-            ),
-            icon: _isExtended ? Icon(Icons.person_add_alt_outlined) : null,
-          ),
-        ),
-      ),
+              child: AnimatedContainer(
+                width: _isExtended ? fabSize?.width : fabSize?.height,
+                // width: fabSize?.width,
+                height: fabSize?.height,
+                duration: Duration(milliseconds: 100),
+                child: FloatingActionButton.extended(
+                  onPressed: addPartner,
+                  key: fabKey,
+                  heroTag: "partnerAdd",
+                  label: AnimatedSize(
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.linear,
+                    child: Container(
+                      child: _isExtended
+                          ? Text(
+                              AppLocalizations.of(context)!.addPartner,
+                            )
+                          : Icon(
+                              Icons.person_add_alt_outlined,
+                            ),
+                    ),
+                  ),
+                  icon:
+                      _isExtended ? Icon(Icons.person_add_alt_outlined) : null,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

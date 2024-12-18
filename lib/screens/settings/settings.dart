@@ -260,6 +260,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     if (value != null && _shared.theme != value) {
       setState(() {
+        HapticFeedback.selectionClick();
         _shared.theme = value;
       });
     }
@@ -293,6 +294,7 @@ class _SettingsPageState extends State<SettingsPage> {
       AppLocalizations.of(context)!.confirmClearDataDescription,
     );
     if (result != null && result) {
+      HapticFeedback.selectionClick();
       _shared.clearPersonalData();
     }
   }
@@ -303,6 +305,7 @@ class _SettingsPageState extends State<SettingsPage> {
       AppLocalizations.of(context)!.confirmClearDataDescription,
     );
     if (result != null && result) {
+      HapticFeedback.selectionClick();
       _shared.clearData();
     }
   }
@@ -330,6 +333,7 @@ class _SettingsPageState extends State<SettingsPage> {
     if (value != null) {
       if (_shared.colorScheme != value) {
         setState(() {
+          HapticFeedback.selectionClick();
           _shared.colorScheme = value;
         });
       }
@@ -380,6 +384,7 @@ class _SettingsPageState extends State<SettingsPage> {
       (_) {
         if (_localAuth.authorized) {
           setState(() {
+            HapticFeedback.selectionClick();
             _shared.requireAuth = value;
           });
         }
@@ -421,6 +426,7 @@ class _SettingsPageState extends State<SettingsPage> {
         value: _shared.material,
         onChanged: (bool value) {
           setState(() {
+            HapticFeedback.selectionClick();
             _shared.material = value;
           });
         },
@@ -443,6 +449,7 @@ class _SettingsPageState extends State<SettingsPage> {
         value: _shared.trueBlack,
         onChanged: (bool value) {
           setState(() {
+            HapticFeedback.selectionClick();
             _shared.trueBlack = value;
           });
         },
@@ -465,6 +472,7 @@ class _SettingsPageState extends State<SettingsPage> {
         value: _shared.privacyMode,
         onChanged: (bool value) {
           setState(() {
+            HapticFeedback.selectionClick();
             _shared.privacyMode = value;
           });
         },
@@ -487,6 +495,7 @@ class _SettingsPageState extends State<SettingsPage> {
         value: _shared.sensitiveMode,
         onChanged: (bool value) {
           setState(() {
+            HapticFeedback.selectionClick();
             _shared.sensitiveMode = value;
           });
         },

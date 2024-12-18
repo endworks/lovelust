@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
@@ -105,6 +106,7 @@ class SharedService extends ChangeNotifier {
       debugPrint('skip initialLoad');
     }
     statistics = generateStatsWidgets();
+    notifyListeners();
     updateWidgets();
   }
 
@@ -1431,6 +1433,11 @@ class SharedService extends ChangeNotifier {
     }
   }
 
+  @pragma("vm:entry-point")
+  FutureOr<void> backgroundCallback(Uri? data) async {
+    debugPrint("backgroundCallback $data");
+  }
+
   void appLifecycleStateChanged(AppLifecycleState state) {
     debugPrint(state.name);
     appLifecycleState = state;
@@ -2748,6 +2755,7 @@ class SharedService extends ChangeNotifier {
   set activity(List<Activity> value) {
     _activity = value;
     _storage.setActivity(value);
+    generateStats();
     notifyListeners();
   }
 
@@ -2758,6 +2766,7 @@ class SharedService extends ChangeNotifier {
   set partners(List<Partner> value) {
     _partners = value;
     _storage.setPartners(value);
+    generateStats();
     notifyListeners();
   }
 

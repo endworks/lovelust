@@ -34,12 +34,6 @@ class _JournalPageState extends State<JournalPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        final box = fabKey.currentContext?.findRenderObject();
-        fabSize = (box as RenderBox).size;
-      });
-    });
     _scrollController.addListener(() {
       setState(() {
         _isExtended = _scrollController.offset <= 0.0;
@@ -47,7 +41,12 @@ class _JournalPageState extends State<JournalPage> {
     });
     _shared.addListener(() {
       if (mounted) {
-        setState(() {});
+        setState(() {
+          if (_shared.material) {
+            final box = fabKey.currentContext?.findRenderObject();
+            fabSize = (box as RenderBox).size;
+          }
+        });
       }
     });
   }
@@ -61,17 +60,20 @@ class _JournalPageState extends State<JournalPage> {
         ),
       );
     } else {
-      slivers.add(
-        SliverPadding(
-          padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: 16,
-            vertical: 8,
+      if (_shared.stats.lastSexualActivity != null &&
+          _shared.stats.lastMasturbation != null) {
+        slivers.add(
+          SliverPadding(
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            sliver: SliverToBoxAdapter(
+              child: ActivityFilters(),
+            ),
           ),
-          sliver: SliverToBoxAdapter(
-            child: ActivityFilters(),
-          ),
-        ),
-      );
+        );
+      }
     }
 
     if (filteredActivity.isEmpty) {
@@ -118,6 +120,7 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   void addActivity() {
+    HapticFeedback.selectionClick();
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(
@@ -242,6 +245,12 @@ class _JournalPageState extends State<JournalPage> {
                     HapticFeedback.selectionClick();
                   },
                 ),
+                !_shared.material
+                    ? IconButton(
+                        icon: Icon(Icons.post_add),
+                        onPressed: addActivity,
+                      )
+                    : SizedBox.shrink(),
               ],
               scrolled: !_isExtended,
             ),
@@ -249,37 +258,40 @@ class _JournalPageState extends State<JournalPage> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).orientation == Orientation.portrait
-              ? MediaQuery.of(context).padding.bottom
-              : 0,
-        ),
-        child: AnimatedContainer(
-          width: _isExtended ? fabSize?.width : fabSize?.height,
-          height: fabSize?.height,
-          duration: Duration(milliseconds: 100),
-          child: FloatingActionButton.extended(
-            onPressed: addActivity,
-            key: fabKey,
-            heroTag: "journalAdd",
-            label: AnimatedSize(
-              duration: Duration(milliseconds: 100),
-              curve: Curves.linear,
-              child: Container(
-                child: _isExtended
-                    ? Text(
-                        AppLocalizations.of(context)!.logActivity,
-                      )
-                    : Icon(
-                        Icons.post_add_outlined,
-                      ),
+      floatingActionButton: _shared.material
+          ? Padding(
+              padding: EdgeInsets.only(
+                bottom:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? MediaQuery.of(context).padding.bottom
+                        : 0,
               ),
-            ),
-            icon: _isExtended ? Icon(Icons.post_add_outlined) : null,
-          ),
-        ),
-      ),
+              child: AnimatedContainer(
+                width: _isExtended ? fabSize?.width : fabSize?.height,
+                height: fabSize?.height,
+                duration: Duration(milliseconds: 100),
+                child: FloatingActionButton.extended(
+                  onPressed: addActivity,
+                  key: fabKey,
+                  heroTag: "journalAdd",
+                  label: AnimatedSize(
+                    duration: Duration(milliseconds: 100),
+                    curve: Curves.linear,
+                    child: Container(
+                      child: _isExtended
+                          ? Text(
+                              AppLocalizations.of(context)!.logActivity,
+                            )
+                          : Icon(
+                              Icons.post_add_outlined,
+                            ),
+                    ),
+                  ),
+                  icon: _isExtended ? Icon(Icons.post_add_outlined) : null,
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

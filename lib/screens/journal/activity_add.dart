@@ -19,11 +19,21 @@ class _ActivityAddPageState extends State<ActivityAddPage> {
   @override
   void initState() {
     super.initState();
+    String? partner;
+    Contraceptive? birthControl;
+    Contraceptive? partnerBirthControl;
+
+    if (_shared.stats.lastSexualActivity != null) {
+      partner = _shared.stats.lastSexualActivity!.partner;
+      birthControl = _shared.stats.lastSexualActivity!.birthControl;
+      partnerBirthControl =
+          _shared.stats.lastSexualActivity!.partnerBirthControl;
+    }
     activity = Activity(
       id: '',
-      partner: null,
-      birthControl: null,
-      partnerBirthControl: null,
+      partner: partner,
+      birthControl: birthControl,
+      partnerBirthControl: partnerBirthControl,
       date: _shared.calendarDate,
       location: null,
       notes: null,

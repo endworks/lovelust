@@ -38,6 +38,7 @@ class _HomeState extends State<Home>
     WidgetsBinding.instance.addObserver(this);
     _shared.addListener(updateSharedState);
     HomeWidget.widgetClicked.listen(_shared.launchedFromWidget);
+    HomeWidget.registerInteractivityCallback(_shared.backgroundCallback);
   }
 
   @override

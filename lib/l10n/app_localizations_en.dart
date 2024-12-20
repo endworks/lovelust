@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get journal => 'Journal';
 
   @override
+  String get activity => 'Activity';
+
+  @override
   String get partners => 'Partners';
 
   @override
@@ -1018,6 +1021,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help => 'Help';
+
+  @override
+  String get today => 'Today';
 
   @override
   String get mostPopularPartner => 'Most popular partner';

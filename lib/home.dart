@@ -91,13 +91,9 @@ class _HomeState extends State<Home>
         ),
       ),
       Destination(
-        AppLocalizations.of(context)!.journal,
-        Icon(_shared.calendarView
-            ? Icons.calendar_today_outlined
-            : Icons.view_timeline_outlined),
-        Icon(
-          _shared.calendarView ? Icons.calendar_today : Icons.view_timeline,
-        ),
+        AppLocalizations.of(context)!.activity,
+        Icon(Icons.favorite_outlined),
+        Icon(Icons.favorite),
       ),
       Destination(
         AppLocalizations.of(context)!.partners,

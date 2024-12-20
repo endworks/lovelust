@@ -107,6 +107,12 @@ abstract class AppLocalizations {
   /// **'Journal'**
   String get journal;
 
+  /// No description provided for @activity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get activity;
+
   /// No description provided for @partners.
   ///
   /// In en, this message translates to:
@@ -2044,6 +2050,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help'**
   String get help;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
 
   /// No description provided for @mostPopularPartner.
   ///

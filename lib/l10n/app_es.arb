@@ -1,6 +1,7 @@
 {
   "start": "Inicio",
   "journal": "Diario",
+  "activity": "Actividad",
   "partners": "Parejas",
   "learn": "Aprende",
   "all": "Todo",
@@ -337,6 +338,7 @@
   "delete": "Eliminar",
   "save": "Guardar",
   "help": "Ayuda",
+  "today": "Hoy",
   "mostPopularPartner": "Pareja más popular",
   "mostPopularPractice": "Práctica más popular",
   "mostPopularMood": "Estado de ánimo más popular",

@@ -194,12 +194,10 @@ class _JournalPageState extends State<JournalPage> {
         edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
-          physics: filteredActivity.isNotEmpty || _shared.calendarView
-              ? const AlwaysScrollableScrollPhysics()
-              : const NeverScrollableScrollPhysics(),
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
             GenericHeader(
-              title: Text(AppLocalizations.of(context)!.journal),
+              title: Text(AppLocalizations.of(context)!.activity),
               /*bottom: PreferredSize(
                 preferredSize: Size.fromHeight(50),
                 child: SizedBox(
@@ -215,32 +213,26 @@ class _JournalPageState extends State<JournalPage> {
                 ),
               ),*/
               actions: [
-                _shared.calendarView
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.today,
-                        ),
-                        onPressed: !_shared.isToday
-                            ? () {
-                                _shared.calendarDate = DateTime.now();
-                                _scrollController.jumpTo(0);
-                              }
-                            : null,
+                _shared.calendarView && !_shared.isToday
+                    ? FilledButton.tonal(
+                        onPressed: () {
+                          _shared.calendarDate = DateTime.now();
+                          _scrollController.jumpTo(0);
+                        },
+                        child: Text(AppLocalizations.of(context)!.today),
                       )
                     : SizedBox.shrink(),
-                FilledButton.tonalIcon(
-                    onPressed: () {
-                      _shared.calendarView = !_shared.calendarView;
-                      HapticFeedback.selectionClick();
-                    },
-                    icon: Icon(
-                      _shared.calendarView
-                          ? Icons.view_timeline_outlined
-                          : Icons.calendar_today_outlined,
-                    ),
-                    label: _shared.calendarView
-                        ? Text(AppLocalizations.of(context)!.timeline)
-                        : Text(AppLocalizations.of(context)!.calendar)),
+                IconButton(
+                  onPressed: () {
+                    _shared.calendarView = !_shared.calendarView;
+                    HapticFeedback.selectionClick();
+                  },
+                  icon: Icon(
+                    _shared.calendarView
+                        ? Icons.view_timeline_outlined
+                        : Icons.calendar_today_outlined,
+                  ),
+                ),
                 !_shared.material
                     ? IconButton(
                         icon: Icon(Icons.post_add),

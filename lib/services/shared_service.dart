@@ -756,20 +756,24 @@ class SharedService extends ChangeNotifier {
         ),
       );
     }
-    list.add(
-      DynamicStatisticData(
-        type: StatisticType.simple,
-        date: DateTime(stats.date.year, stats.date.month, stats.date.day),
-        data: SimpleStatisticData(
-          title: AppLocalizations.of(context)!.orgasmRatio,
-          description:
-              "${stats.orgasmRatio} (${stats.orgasmsGiven} / ${stats.orgasmsReceived})",
-          icon: Icons.whatshot,
+    if (stats.orgasmRatio > 0) {
+      list.add(
+        DynamicStatisticData(
+          type: StatisticType.simple,
+          date: DateTime(stats.date.year, stats.date.month, stats.date.day),
+          data: SimpleStatisticData(
+            title: AppLocalizations.of(context)!.orgasmRatio,
+            description:
+                "${stats.orgasmRatio} (${stats.orgasmsGiven} / ${stats.orgasmsReceived})",
+            icon: Icons.whatshot,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
-    list.sort((a, b) => b.date.compareTo(a.date));
+    if (list.isNotEmpty) {
+      list.sort((a, b) => b.date.compareTo(a.date));
+    }
 
     return list
         .map(
@@ -787,11 +791,11 @@ class SharedService extends ChangeNotifier {
     DateTime date = DateTime.now();
     Activity? lastSexualActivity;
     Activity? firstSexualActivity;
-    int daysSinceLastSexualActivity = 0;
+    int daysSinceLastSexualActivity = -1;
     Activity? lastMasturbation;
     Activity? firstMasturbation;
-    int daysSinceLastMasturbation = 0;
-    int daysSinceLastSexualStimulation = 0;
+    int daysSinceLastMasturbation = -1;
+    int daysSinceLastSexualStimulation = -1;
     int totalSexualActivity = 0;
     int totalSexualActivityWithMale = 0;
     int totalSexualActivityWithFemale = 0;

@@ -75,7 +75,8 @@ class _HomePageState extends State<HomePage> {
         edgeOffset: 112.0,
         child: CustomScrollView(
           controller: _scrollController,
-          physics: _shared.statistics.isNotEmpty
+          physics: _shared.stats.lastSexualActivity != null ||
+                  _shared.stats.lastMasturbation != null
               ? const AlwaysScrollableScrollPhysics()
               : const NeverScrollableScrollPhysics(),
           slivers: [

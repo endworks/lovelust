@@ -15,6 +15,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get journal => 'Diario';
 
   @override
+  String get activity => 'Actividad';
+
+  @override
   String get partners => 'Parejas';
 
   @override
@@ -1020,6 +1023,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get help => 'Ayuda';
+
+  @override
+  String get today => 'Hoy';
 
   @override
   String get mostPopularPartner => 'Pareja más popular';

@@ -1,6 +1,7 @@
 {
   "start": "Home",
   "journal": "Journal",
+  "activity": "Activity",
   "partners": "Partners",
   "learn": "Learn",
   "all": "All",
@@ -353,6 +354,7 @@
   "delete": "Delete",
   "save": "Save",
   "help": "Help",
+  "today": "Today",
   "mostPopularPartner": "Most popular partner",
   "mostPopularPractice": "Most popular practice",
   "mostPopularMood": "Most popular mood",

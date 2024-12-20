@@ -339,7 +339,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noActivity => 'Your journal is empty';
 
   @override
-  String get noActivityToday => 'No activity today';
+  String get noActivityToday => 'No activity';
 
   @override
   String get noPartners => 'No partners yet';
@@ -700,6 +700,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmClearDataDescription => 'Are you sure you want to clear the data?';
+
+  @override
+  String get confirmDeletePartnerTitle => 'Delete partner';
+
+  @override
+  String get confirmDeletePartnerDescription => 'Are you sure you want to delete this partner?';
+
+  @override
+  String get confirmDeleteActivityTitle => 'Delete activity';
+
+  @override
+  String get confirmDeleteActivityDescription => 'Are you sure you want to delete this activity?';
 
   @override
   String get appIcon => 'App icon';

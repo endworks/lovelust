@@ -98,9 +98,9 @@ class _HighlightsBlockState extends State<HighlightsBlock> {
           label: Text(
             SharedService.getMoodTranslation(widget.mood),
           ),
-          avatar: _shared.inappropriateText(
+          /* avatar: _shared.inappropriateText(
             SharedService.getMoodEmoji(widget.mood),
-          ),
+          ),*/
         ),
       );
     }

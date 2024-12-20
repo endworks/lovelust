@@ -242,8 +242,8 @@ ThemeData generateTheme(
             ? Typography.material2021().white
             : Typography.material2021().black)
         .merge(defaultTextTheme),
-    useMaterial3: true,
-    visualDensity: VisualDensity.adaptivePlatformDensity,
+    useMaterial3: materialTheme.useMaterial3,
+    visualDensity: materialTheme.visualDensity,
   );
   return material ? materialTheme : defaultTheme;
 }

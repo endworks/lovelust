@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:uuid/uuid.dart';
@@ -22,7 +20,6 @@ class PartnerEditPage extends StatefulWidget {
 
 class _PartnerEditPageState extends State<PartnerEditPage> {
   final SharedService _shared = getIt<SharedService>();
-  final ApiService _api = getIt<ApiService>();
   final _nameController = TextEditingController();
   late Gender _gender;
   late BiologicalSex _sex;
@@ -111,6 +108,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
 
   void save() {
     if (valid) {
+      HapticFeedback.selectionClick();
       Partner partner = Partner(
         id: _new ? const Uuid().v4() : widget.partner.id,
         sex: _sex,
@@ -135,59 +133,20 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
             ? _onlyfansController.value.text
             : null,
       );
-      if (!_shared.isLoggedIn) {
-        List<Partner> partners = [..._shared.partners];
-        if (!_new) {
-          Partner? element = partners.firstWhere((e) => e.id == partner.id);
-          int index = partners.indexOf(element);
-          partners[index] = partner;
-        } else {
-          partners.add(partner);
-        }
-        partners.sort((a, b) => a.meetingDate.isAfter(b.meetingDate) ? -1 : 1);
-        if (mounted) {
-          setState(() => _shared.partners = partners);
-        }
 
-        Navigator.pop(context);
+      List<Partner> partners = [..._shared.partners];
+      if (!_new) {
+        Partner? element = partners.firstWhere((e) => e.id == partner.id);
+        int index = partners.indexOf(element);
+        partners[index] = partner;
       } else {
-        try {
-          Future request =
-              _new ? _api.postPartner(partner) : _api.patchPartner(partner);
-          request.then((value) {
-            _api.getPartners().then((value) {
-              if (mounted) {
-                setState(() => _shared.partners = value);
-              }
-              Navigator.pop(context);
-            });
-          });
-        } on SocketException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No Internet connection!'),
-            ),
-          );
-        } on HttpException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Couldn't sign in!"),
-            ),
-          );
-        } on FormatException {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bad response format!'),
-            ),
-          );
-        } on Exception {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to sign in!'),
-            ),
-          );
-        }
+        partners.add(partner);
       }
+      partners.sort((a, b) => a.meetingDate.isAfter(b.meetingDate) ? -1 : 1);
+      if (mounted) {
+        setState(() => _shared.partners = partners);
+      }
+      Navigator.pop(context);
     }
   }
 
@@ -272,6 +231,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     if (picked != null && picked != _meetingDate) {
       setState(() {
         _meetingDate = picked;
+        HapticFeedback.selectionClick();
       });
     }
   }
@@ -288,6 +248,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
     if (picked != null && picked != _birthDay) {
       setState(() {
         _birthDay = picked;
+        HapticFeedback.selectionClick();
       });
     }
   }
@@ -327,6 +288,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 onChanged: (value) {
                   setState(() {
                     _gender = value;
+                    HapticFeedback.selectionClick();
                   });
                 },
               ),
@@ -349,6 +311,7 @@ class _PartnerEditPageState extends State<PartnerEditPage> {
                 onChanged: (value) {
                   setState(() {
                     _sex = value;
+                    HapticFeedback.selectionClick();
                   });
                 },
               ),

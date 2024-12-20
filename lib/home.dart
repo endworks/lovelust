@@ -108,18 +108,18 @@ class _HomeState extends State<Home>
       ),
       /*Destination(
         AppLocalizations.of(context)!.learn,
-        const Icon(Icons.book_outlined),
+        const Icon(Icons.menu_book_outlined),
         const Icon(
-          Icons.book,
+          Icons.menu_book,
         ),
       ),*/
       Destination(
         AppLocalizations.of(context)!.settings,
         Icon(
-          _shared.material ? Icons.settings_outlined : Icons.settings_outlined,
+          _shared.material ? Icons.settings_outlined : Icons.menu_outlined,
         ),
         Icon(
-          _shared.material ? Icons.settings : Icons.settings,
+          _shared.material ? Icons.settings : Icons.menu,
         ),
       ),
     ];

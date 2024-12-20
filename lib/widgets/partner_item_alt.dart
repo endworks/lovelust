@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/partner.dart';
@@ -21,6 +22,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
   final SharedService _shared = getIt<SharedService>();
 
   void _openPartner() {
+    HapticFeedback.selectionClick();
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(
@@ -45,7 +47,7 @@ class _PartnerItemAltState extends State<PartnerItemAlt> {
     if (count == 0) {
       return null;
     }
-    Color color = Theme.of(context).colorScheme.secondary;
+    Color color = Theme.of(context).colorScheme.primary;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,

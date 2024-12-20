@@ -5,7 +5,6 @@ import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/screens/journal/activity_add.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/activity_calendar.dart';
@@ -24,7 +23,6 @@ class JournalPage extends StatefulWidget {
 class _JournalPageState extends State<JournalPage> {
   final SharedService _shared = getIt<SharedService>();
   final StorageService _storage = getIt<StorageService>();
-  final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<State<StatefulWidget>> fabKey = GlobalKey();
   Size? fabSize;
@@ -132,11 +130,7 @@ class _JournalPageState extends State<JournalPage> {
   }
 
   Future<void> refresh() async {
-    if (_shared.isLoggedIn) {
-      _shared.activity = await _api.getActivity();
-    } else {
-      _shared.activity = await _storage.getActivity();
-    }
+    _shared.activity = await _storage.getActivity();
   }
 
   List<Activity> get filteredActivity {
@@ -234,17 +228,19 @@ class _JournalPageState extends State<JournalPage> {
                             : null,
                       )
                     : SizedBox.shrink(),
-                IconButton(
-                  icon: Icon(
-                    _shared.calendarView
-                        ? Icons.view_timeline
-                        : Icons.calendar_today,
-                  ),
-                  onPressed: () {
-                    _shared.calendarView = !_shared.calendarView;
-                    HapticFeedback.selectionClick();
-                  },
-                ),
+                FilledButton.tonalIcon(
+                    onPressed: () {
+                      _shared.calendarView = !_shared.calendarView;
+                      HapticFeedback.selectionClick();
+                    },
+                    icon: Icon(
+                      _shared.calendarView
+                          ? Icons.view_timeline_outlined
+                          : Icons.calendar_today_outlined,
+                    ),
+                    label: _shared.calendarView
+                        ? Text(AppLocalizations.of(context)!.timeline)
+                        : Text(AppLocalizations.of(context)!.calendar)),
                 !_shared.material
                     ? IconButton(
                         icon: Icon(Icons.post_add),

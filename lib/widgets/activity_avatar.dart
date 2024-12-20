@@ -18,17 +18,12 @@ class ActivityAvatar extends StatefulWidget {
 
 class _ActivityAvatarState extends State<ActivityAvatar> {
   final SharedService _shared = getIt<SharedService>();
-  Partner? partner;
 
-  @override
-  void initState() {
-    super.initState();
+  Partner? get partner {
     if (widget.partnerId != null) {
-      partner = _shared.getPartnerById(widget.partnerId!);
-      setState(() {
-        partner = partner;
-      });
+      return _shared.getPartnerById(widget.partnerId!);
     }
+    return null;
   }
 
   Icon get icon {

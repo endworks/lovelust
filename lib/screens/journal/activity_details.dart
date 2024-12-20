@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
@@ -6,7 +7,6 @@ import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/journal/activity_edit.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/health_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/activity_avatar.dart';
@@ -30,12 +30,12 @@ class ActivityDetailsPage extends StatefulWidget {
 class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
   final HealthService _health = getIt<HealthService>();
-  final ApiService _api = getIt<ApiService>();
   late Activity _activity;
   Partner? _partner;
   bool _solo = false;
 
   void editActivity() {
+    HapticFeedback.selectionClick();
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(
@@ -99,28 +99,26 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
 
   void menuEntryItemSelected(MenuEntryItem item) {
     if (item.name == 'delete') {
-      if (_shared.isLoggedIn) {
-        _api.deleteActivity(_activity).then(
-          (value) {
-            _api.getActivity().then((value) {
-              setState(() {
-                _shared.activity = value;
-              });
-              Navigator.pop(context);
-            });
-          },
-        );
-      } else {
-        List<Activity> activity = [..._shared.activity];
-        activity.removeWhere((element) => element.id == _activity.id);
-        _health.hasPermissions.then((value) {
-          if (value) _health.deleteSexualActivity(_activity);
-        });
-        setState(() {
-          _shared.activity = activity;
-        });
-        Navigator.pop(context);
-      }
+      askConfirmDelete();
+    }
+  }
+
+  Future<void> askConfirmDelete() async {
+    bool? result = await _shared.askConfirmation(
+      AppLocalizations.of(context)!.confirmDeleteActivityTitle,
+      AppLocalizations.of(context)!.confirmDeleteActivityDescription,
+    );
+    if (result != null && result) {
+      HapticFeedback.selectionClick();
+      List<Activity> activity = [..._shared.activity];
+      activity.removeWhere((element) => element.id == _activity.id);
+      _health.hasPermissions.then((value) {
+        if (value) _health.deleteSexualActivity(_activity);
+      });
+      setState(() {
+        _shared.activity = activity;
+      });
+      Navigator.pop(context);
     }
   }
 
@@ -149,7 +147,7 @@ class _ActivityDetailsPageState extends State<ActivityDetailsPage> {
     if (count == 0) {
       return null;
     }
-    Color color = Theme.of(context).colorScheme.secondary;
+    Color color = Theme.of(context).colorScheme.primary;
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,

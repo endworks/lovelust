@@ -686,7 +686,7 @@ abstract class AppLocalizations {
   /// No description provided for @noActivityToday.
   ///
   /// In en, this message translates to:
-  /// **'No activity today'**
+  /// **'No activity'**
   String get noActivityToday;
 
   /// No description provided for @noPartners.
@@ -1408,6 +1408,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to clear the data?'**
   String get confirmClearDataDescription;
+
+  /// No description provided for @confirmDeletePartnerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete partner'**
+  String get confirmDeletePartnerTitle;
+
+  /// No description provided for @confirmDeletePartnerDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this partner?'**
+  String get confirmDeletePartnerDescription;
+
+  /// No description provided for @confirmDeleteActivityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete activity'**
+  String get confirmDeleteActivityTitle;
+
+  /// No description provided for @confirmDeleteActivityDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this activity?'**
+  String get confirmDeleteActivityDescription;
 
   /// No description provided for @appIcon.
   ///

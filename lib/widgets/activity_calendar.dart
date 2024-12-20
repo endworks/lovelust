@@ -1,5 +1,8 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:lovelust/extensions/string_extension.dart';
 import 'package:lovelust/models/activity.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
@@ -183,6 +186,8 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
             titleCentered: true,
             headerPadding: EdgeInsets.all(4),
             titleTextStyle: Theme.of(context).textTheme.titleMedium!,
+            titleTextFormatter: (date, locale) =>
+                DateFormat.yMMMM(locale).format(date).capitalize(),
           ),
           daysOfWeekVisible: true,
           daysOfWeekHeight: 20,
@@ -199,6 +204,8 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
                       .onSurface
                       .withValues(alpha: 0.6),
                 ),
+            dowTextFormatter: (date, locale) =>
+                DateFormat.EEEEE(locale).format(date),
           ),
           startingDayOfWeek: StartingDayOfWeek.monday,
           calendarFormat: CalendarFormat.month,
@@ -250,6 +257,7 @@ class _ActivityCalendarState extends State<ActivityCalendar> {
           onDaySelected: (selectedDay, focusedDay) {
             setState(() {
               _shared.calendarDate = selectedDay;
+              HapticFeedback.selectionClick();
             });
           },
           eventLoader: (day) {

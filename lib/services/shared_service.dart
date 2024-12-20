@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:dynamic_color/dynamic_color.dart';
+import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +22,6 @@ import 'package:lovelust/models/settings.dart';
 import 'package:lovelust/models/statistics.dart';
 import 'package:lovelust/models/stats.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/local_auth_service.dart';
 import 'package:lovelust/services/navigation_service.dart';
 import 'package:lovelust/services/storage_service.dart';
@@ -31,7 +30,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 class SharedService extends ChangeNotifier {
   final StorageService _storage = getIt<StorageService>();
-  final ApiService _api = getIt<ApiService>();
   final LocalAuthService _localAuth = getIt<LocalAuthService>();
   final NavigationService _navigator = getIt<NavigationService>();
 
@@ -115,12 +113,6 @@ class SharedService extends ChangeNotifier {
     Phoenix.rebirth(context);
   }
 
-  Future<void> initialFetch() async {
-    debugPrint('initialFetch');
-    activity = await _api.getActivity();
-    partners = await _api.getPartners();
-  }
-
   Future<void> getPackageInfo() async {
     if (!kDebugMode) {
       packageInfo = await PackageInfo.fromPlatform();
@@ -148,15 +140,6 @@ class SharedService extends ChangeNotifier {
     debugPrint('generateStatsWidgets');
     stats = generateStats();
     BuildContext context = _navigator.navigatorKey.currentContext!;
-    Color primary = Theme.of(context).colorScheme.primary;
-    Color secondary = Theme.of(context).colorScheme.secondary;
-    Color blue =
-        Colors.blue.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color red = Colors.red.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color green =
-        Colors.green.harmonizeWith(Theme.of(context).colorScheme.primary);
-    Color orange =
-        Colors.orange.harmonizeWith(Theme.of(context).colorScheme.primary);
     Color legend = Color.fromARGB(255, 128, 128, 128);
     Color disabled = Color.fromARGB(32, 128, 128, 128);
     Color lines = Colors.transparent;
@@ -255,13 +238,9 @@ class SharedService extends ChangeNotifier {
                   width: barsWidth,
                   borderSide: BorderSide(
                     width: 0,
-                    color: blue,
+                    color: Colors.blue,
                   ),
-                  gradient: LinearGradient(
-                    colors: [blue, generateAltColor(blue)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Colors.blue,
                 ),
               );
               current += data.male;
@@ -274,13 +253,9 @@ class SharedService extends ChangeNotifier {
                   width: barsWidth,
                   borderSide: BorderSide(
                     width: 0,
-                    color: red,
+                    color: Colors.red,
                   ),
-                  gradient: LinearGradient(
-                    colors: [red, generateAltColor(red)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Colors.red,
                 ),
               );
               current += data.female;
@@ -293,13 +268,9 @@ class SharedService extends ChangeNotifier {
                   width: barsWidth,
                   borderSide: BorderSide(
                     width: 0,
-                    color: secondary,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
-                  gradient: LinearGradient(
-                    colors: [secondary, generateAltColor(secondary)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               );
               current += data.unknown;
@@ -312,13 +283,9 @@ class SharedService extends ChangeNotifier {
                   width: barsWidth,
                   borderSide: BorderSide(
                     width: 0,
-                    color: primary,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  gradient: LinearGradient(
-                    colors: [primary, generateAltColor(primary)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               );
             }
@@ -326,7 +293,7 @@ class SharedService extends ChangeNotifier {
             barRods.add(
               BarChartRodData(
                 fromY: 0,
-                toY: 0.1,
+                toY: 0.001,
                 width: barsWidth,
                 color: disabled,
               ),
@@ -415,11 +382,10 @@ class SharedService extends ChangeNotifier {
             leftTitles: AxisTitles(
               sideTitles: SideTitles(
                 showTitles: true,
-                reservedSize: 18,
                 getTitlesWidget: (value, meta) {
                   return Text(
                     value.toInt().toString(),
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.right,
                     style: Theme.of(context).textTheme.labelMedium!.copyWith(
                           color: legend,
                         ),
@@ -530,29 +496,35 @@ class SharedService extends ChangeNotifier {
           if (chartType == 'safety') {
             pieSections.addAll([
               PieChartSectionData(
-                color: green,
+                color: Colors.green,
                 value: stats.safetyPercentSafe.toDouble(),
-                title: '${stats.safetyPercentSafe}%',
-                titleStyle: Theme.of(context).textTheme.labelMedium,
-                titlePositionPercentageOffset: 1.2,
+                title: '',
+                badgeWidget: Chip(
+                  label: Text('${stats.safetyPercentSafe}%'),
+                ),
+                badgePositionPercentageOffset: 1.2,
                 radius: stats.safetyPercentSafe.toDouble() * 30 / 100 + 70,
                 borderSide: BorderSide.none,
               ),
               PieChartSectionData(
-                color: red,
+                color: Colors.red,
                 value: stats.safetyPercentUnsafe.toDouble(),
-                title: '${stats.safetyPercentUnsafe}%',
-                titleStyle: Theme.of(context).textTheme.labelMedium,
-                titlePositionPercentageOffset: 1.2,
+                title: '',
+                badgeWidget: Chip(
+                  label: Text('${stats.safetyPercentUnsafe}%'),
+                ),
+                badgePositionPercentageOffset: 1.2,
                 radius: stats.safetyPercentUnsafe.toDouble() * 30 / 100 + 70,
                 borderSide: BorderSide.none,
               ),
               PieChartSectionData(
-                color: orange,
+                color: Colors.orange,
                 value: stats.safetyPercentPartlyUnsafe.toDouble(),
-                title: '${stats.safetyPercentPartlyUnsafe}%',
-                titleStyle: Theme.of(context).textTheme.labelMedium,
-                titlePositionPercentageOffset: 1.2,
+                title: '',
+                badgeWidget: Chip(
+                  label: Text('${stats.safetyPercentPartlyUnsafe}%'),
+                ),
+                badgePositionPercentageOffset: 1.2,
                 radius:
                     stats.safetyPercentPartlyUnsafe.toDouble() * 30 / 100 + 70,
                 borderSide: BorderSide.none,
@@ -562,44 +534,44 @@ class SharedService extends ChangeNotifier {
             pieSections.addAll(
               stats.timeDistributionStats.entries.map(
                 (timeDistribution) {
-                  Color color = primary;
-                  Color textColor =
-                      Theme.of(context).colorScheme.onInverseSurface;
+                  Color color = Theme.of(context).colorScheme.primary;
                   String title;
                   if (timeDistribution.value.id == '0') {
-                    title = "0-6";
-                    color = primary.withValues(alpha: 0.4);
-                    color = Colors.deepPurple
-                        .harmonizeWith(Theme.of(context).primaryColor);
+                    title = "0:00 - 5:59";
+                    color = Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.4);
+                    color = Colors.indigo;
                   } else if (timeDistribution.value.id == '6') {
-                    title = "6-12";
-                    color = primary;
-                    color = Colors.orange
-                        .harmonizeWith(Theme.of(context).primaryColor);
+                    title = "6:00 - 11:59";
+                    color = Theme.of(context).colorScheme.primary;
+                    color = Colors.lightBlue;
                   } else if (timeDistribution.value.id == '12') {
-                    title = "12-18";
-                    color = primary.withValues(alpha: 0.8);
-                    color = Colors.lightBlue
-                        .harmonizeWith(Theme.of(context).primaryColor);
+                    title = "12:00 - 17:59";
+                    color = Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.8);
+                    color = Colors.deepOrange;
                   } else {
-                    title = "18-0";
-                    color = primary.withValues(alpha: 0.6);
-                    color = Colors.deepOrange
-                        .harmonizeWith(Theme.of(context).primaryColor);
+                    title = "18:00 - 23:59";
+                    color = Theme.of(context)
+                        .colorScheme
+                        .primary
+                        .withValues(alpha: 0.6);
+                    color = Colors.deepPurple;
                   }
 
                   return PieChartSectionData(
                     color: color,
                     value: timeDistribution.value.count,
-                    title: title,
-                    titleStyle: Theme.of(context).textTheme.labelMedium,
-                    titlePositionPercentageOffset: 1.2,
-                    badgeWidget: Text(
-                      timeDistribution.value.count.toInt().toString(),
-                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: textColor,
-                          ),
+                    // title: timeDistribution.value.count.toInt().toString(),
+                    title: '',
+                    badgeWidget: Chip(
+                      label: Text(title),
                     ),
+                    badgePositionPercentageOffset: 1.2,
                     radius: timeDistribution.value.count * 30 / 100 + 70,
                     borderSide: BorderSide.none,
                   );
@@ -610,11 +582,14 @@ class SharedService extends ChangeNotifier {
             if (stats.totalSexualActivityWithMale > 0) {
               pieSections.add(
                 PieChartSectionData(
-                  color: blue,
+                  color: Colors.blue,
                   value: stats.totalSexualActivityWithMale.toDouble(),
-                  title: AppLocalizations.of(context)!.male,
-                  titleStyle: Theme.of(context).textTheme.labelMedium,
-                  titlePositionPercentageOffset: 1.2,
+                  // title: stats.totalSexualActivityWithMale.toInt().toString(),
+                  title: '',
+                  badgeWidget: Chip(
+                    label: Text(AppLocalizations.of(context)!.male),
+                  ),
+                  badgePositionPercentageOffset: 1.2,
                   radius: stats.totalSexualActivityWithMale /
                           stats.totalSexualActivity *
                           30 +
@@ -626,11 +601,14 @@ class SharedService extends ChangeNotifier {
             if (stats.totalSexualActivityWithFemale > 0) {
               pieSections.add(
                 PieChartSectionData(
-                  color: red,
+                  color: Colors.red,
                   value: stats.totalSexualActivityWithFemale.toDouble(),
-                  title: AppLocalizations.of(context)!.female,
-                  titleStyle: Theme.of(context).textTheme.labelMedium,
-                  titlePositionPercentageOffset: 1.2,
+                  // title: stats.totalSexualActivityWithFemale.toInt().toString(),
+                  title: '',
+                  badgeWidget: Chip(
+                    label: Text(AppLocalizations.of(context)!.female),
+                  ),
+                  badgePositionPercentageOffset: 1.2,
                   radius: stats.totalSexualActivityWithFemale /
                           stats.totalSexualActivity *
                           30 +
@@ -642,11 +620,14 @@ class SharedService extends ChangeNotifier {
             if (stats.totalSexualActivityWithUnknown > 0) {
               pieSections.add(
                 PieChartSectionData(
-                  color: secondary,
+                  color: Theme.of(context).colorScheme.secondary,
                   value: stats.totalSexualActivityWithUnknown.toDouble(),
-                  title: AppLocalizations.of(context)!.unknown,
-                  titleStyle: Theme.of(context).textTheme.labelMedium,
-                  titlePositionPercentageOffset: 1.2,
+                  // title: stats.totalSexualActivityWithUnknown.toInt().toString(),
+                  title: '',
+                  badgeWidget: Chip(
+                    label: Text(AppLocalizations.of(context)!.unknown),
+                  ),
+                  badgePositionPercentageOffset: 1.2,
                   radius: stats.totalSexualActivityWithUnknown /
                           stats.totalSexualActivity *
                           30 +
@@ -855,7 +836,9 @@ class SharedService extends ChangeNotifier {
     num safetySafe = 0;
     num safetyUnsafe = 0;
     num safetyPartlyUnsafe = 0;
-    List<String> weekdayNames = DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
+    List<String> weekdayNames = DateFormat.EEEE().dateSymbols.WEEKDAYS;
+    List<String> weekdayNamesShort =
+        DateFormat.EEEE().dateSymbols.SHORTWEEKDAYS;
     List<String> monthNames = DateFormat.EEEE().dateSymbols.MONTHS;
     List<String> monthInitialNames = DateFormat.EEEE().dateSymbols.NARROWMONTHS;
 
@@ -1247,7 +1230,7 @@ class SharedService extends ChangeNotifier {
             .toList();
         if (countType == 'week') {
           weeklyStats[(length - i).toString()] = StatsCountTimeData(
-            id: weekdayNames.elementAt(
+            id: weekdayNamesShort.elementAt(
               currentDate.weekday == 7 ? 0 : currentDate.weekday,
             ),
             count: currentTimeData.length,
@@ -1462,22 +1445,10 @@ class SharedService extends ChangeNotifier {
     updateWidgets();
   }
 
-  bool get isLoggedIn {
-    return accessToken != null;
-  }
-
-  void signOut() {
-    debugPrint('signOut');
-    accessToken = null;
-    refreshToken = null;
-  }
-
   void clearPersonalData() {
     debugPrint('clearPersonalData');
     theme = 'system';
     colorScheme = null;
-    accessToken = null;
-    refreshToken = null;
     activity = [];
     partners = [];
     reload();
@@ -1583,7 +1554,7 @@ class SharedService extends ChangeNotifier {
     if (id.isEmpty) {
       return null;
     }
-    return _partners.firstWhere((element) => element.id == id);
+    return _partners.firstWhereOrNull((element) => element.id == id);
   }
 
   static Contraceptive? getContraceptiveByValue(String? value) {
@@ -2728,26 +2699,6 @@ class SharedService extends ChangeNotifier {
     reload();
   }
 
-  String? get accessToken {
-    return _settings.accessToken;
-  }
-
-  set accessToken(String? value) {
-    _settings.accessToken = value;
-    _storage.setSettings(_settings);
-    notifyListeners();
-  }
-
-  String? get refreshToken {
-    return _settings.refreshToken;
-  }
-
-  set refreshToken(String? value) {
-    _settings.refreshToken = value;
-    _storage.setSettings(_settings);
-    notifyListeners();
-  }
-
   List<Activity> get activity {
     return _activity;
   }
@@ -2904,5 +2855,28 @@ class SharedService extends ChangeNotifier {
     _storage.setSettings(_settings);
     notifyListeners();
     reload();
+  }
+
+  Future<bool?> askConfirmation(String title, String description) async {
+    BuildContext context = _navigator.navigatorKey.currentContext!;
+    return await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(description),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(AppLocalizations.of(context)!.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text(AppLocalizations.of(context)!.ok),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

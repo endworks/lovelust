@@ -3,12 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/screens/partners/partner_add.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/services/storage_service.dart';
 import 'package:lovelust/widgets/generic_header.dart';
 import 'package:lovelust/widgets/no_content.dart';
-import 'package:lovelust/widgets/partner_item_alt.dart';
+import 'package:lovelust/widgets/partner_card.dart';
 
 class PartnersPage extends StatefulWidget {
   const PartnersPage({super.key});
@@ -20,7 +19,6 @@ class PartnersPage extends StatefulWidget {
 class _PartnersPageState extends State<PartnersPage> {
   final SharedService _shared = getIt<SharedService>();
   final StorageService _storage = getIt<StorageService>();
-  final ApiService _api = getIt<ApiService>();
   final ScrollController _scrollController = ScrollController();
   final GlobalKey<State<StatefulWidget>> fabKey = GlobalKey();
   Size? fabSize;
@@ -60,11 +58,7 @@ class _PartnersPageState extends State<PartnersPage> {
   }
 
   Future<void> refresh() async {
-    if (_shared.isLoggedIn) {
-      _shared.partners = await _api.getPartners();
-    } else {
-      _shared.partners = await _storage.getPartners();
-    }
+    _shared.partners = await _storage.getPartners();
   }
 
   @override
@@ -107,7 +101,7 @@ class _PartnersPageState extends State<PartnersPage> {
                     ),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) => PartnerItemAlt(
+                        (BuildContext context, int index) => PartnerCard(
                           key: ObjectKey(_shared.partners[index].id!),
                           partner: _shared.partners[index],
                         ),

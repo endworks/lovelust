@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/activity.dart';
@@ -35,6 +36,7 @@ class _ActivityItemInfoState extends State<ActivityItemInfo> {
   }
 
   void openActivity() {
+    HapticFeedback.selectionClick();
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(

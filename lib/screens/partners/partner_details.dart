@@ -1,11 +1,11 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lovelust/l10n/app_localizations.dart';
 import 'package:lovelust/models/enum.dart';
 import 'package:lovelust/models/partner.dart';
 import 'package:lovelust/screens/partners/partner_edit.dart';
 import 'package:lovelust/service_locator.dart';
-import 'package:lovelust/services/api_service.dart';
 import 'package:lovelust/services/shared_service.dart';
 import 'package:lovelust/widgets/blocks/activity_block.dart';
 import 'package:lovelust/widgets/blocks/date_block.dart';
@@ -25,7 +25,6 @@ class PartnerDetailsPage extends StatefulWidget {
 
 class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   final SharedService _shared = getIt<SharedService>();
-  final ApiService _api = getIt<ApiService>();
   late Partner _partner;
 
   @override
@@ -42,6 +41,7 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
   }
 
   void editPartner() {
+    HapticFeedback.selectionClick();
     Navigator.push(
       context,
       MaterialPageRoute<Widget>(
@@ -95,25 +95,23 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
 
   void menuEntryItemSelected(MenuEntryItem item) {
     if (item.name == 'delete') {
-      if (_shared.isLoggedIn) {
-        _api.deletePartner(_partner).then(
-          (value) {
-            _api.getPartners().then((value) {
-              setState(() {
-                _shared.partners = value;
-              });
-              Navigator.pop(context);
-            });
-          },
-        );
-      } else {
-        List<Partner> partners = [..._shared.partners];
-        partners.removeWhere((element) => element.id == _partner.id);
-        setState(() {
-          _shared.partners = partners;
-        });
-        Navigator.pop(context);
-      }
+      askConfirmDelete();
+    }
+  }
+
+  Future<void> askConfirmDelete() async {
+    bool? result = await _shared.askConfirmation(
+      AppLocalizations.of(context)!.confirmDeletePartnerTitle,
+      AppLocalizations.of(context)!.confirmDeletePartnerDescription,
+    );
+    if (result != null && result) {
+      HapticFeedback.selectionClick();
+      List<Partner> partners = [..._shared.partners];
+      partners.removeWhere((element) => element.id == _partner.id);
+      setState(() {
+        _shared.partners = partners;
+      });
+      Navigator.pop(context);
     }
   }
 

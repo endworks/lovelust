@@ -48,6 +48,8 @@ class _SimpleStatisticState extends State<SimpleStatistic> {
         title: Text(
           widget.data.title,
           style: Theme.of(context).textTheme.titleMedium,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
         subtitle: description,
         trailing: icon,

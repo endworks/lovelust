@@ -224,7 +224,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get gender => 'Género';
 
   @override
-  String get sex => 'Sexo';
+  String get sex => 'Sexo biológico';
 
   @override
   String get unknown => 'Desconocido';
@@ -341,7 +341,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noActivity => 'Tu diario esta vacío';
 
   @override
-  String get noActivityToday => 'No hay actividad hoy';
+  String get noActivityToday => 'No hay actividad';
 
   @override
   String get noPartners => 'No hay parejas aún';
@@ -704,6 +704,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get confirmClearDataDescription => '¿Estas seguro de que quieres borrar los datos?';
 
   @override
+  String get confirmDeletePartnerTitle => 'Borrar pareja';
+
+  @override
+  String get confirmDeletePartnerDescription => '¿Estas seguro de que quieres borrar esta pareja?';
+
+  @override
+  String get confirmDeleteActivityTitle => 'Borrar actividad';
+
+  @override
+  String get confirmDeleteActivityDescription => '¿Estas seguro de que quieres borrar esta actividad?';
+
+  @override
   String get appIcon => 'Icono de app';
 
   @override
@@ -941,7 +953,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unsafeMood => 'Inseguro';
 
   @override
-  String get noMood => 'Sin ánimo';
+  String get noMood => 'Sin estado de ánimo';
 
   @override
   String get statistics => 'Estadísticas';
@@ -1016,7 +1028,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get mostPopularPractice => 'Práctica más popular';
 
   @override
-  String get mostPopularMood => 'Ánimo más popular';
+  String get mostPopularMood => 'Estado de ánimo más popular';
 
   @override
   String get mostPopularEjaculationPlace => 'Lugar de eyaculación más popular';

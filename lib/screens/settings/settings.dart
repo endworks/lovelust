@@ -266,30 +266,8 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  Future<bool?> _askConfirmation(String title, String description) async {
-    return await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(description),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: Text(AppLocalizations.of(context)!.cancel),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: Text(AppLocalizations.of(context)!.ok),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> _askClearPersonalData() async {
-    bool? result = await _askConfirmation(
+    bool? result = await _shared.askConfirmation(
       AppLocalizations.of(context)!.confirmClearDataTitle,
       AppLocalizations.of(context)!.confirmClearDataDescription,
     );
@@ -300,7 +278,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _askClearData() async {
-    bool? result = await _askConfirmation(
+    bool? result = await _shared.askConfirmation(
       AppLocalizations.of(context)!.confirmClearDataTitle,
       AppLocalizations.of(context)!.confirmClearDataDescription,
     );
@@ -562,29 +540,6 @@ class _SettingsPageState extends State<SettingsPage> {
             authMethodIcon,
             color: Theme.of(context).colorScheme.secondary,
           ),
-        ),
-      );
-    }
-
-    if (_shared.isLoggedIn) {
-      list.insert(
-        list.length - 2,
-        ListTile(
-          title: Text(AppLocalizations.of(context)!.initialFetch),
-          subtitle: Text(
-            AppLocalizations.of(context)!.initialFetchDescription,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.6),
-                ),
-          ),
-          leading: Icon(
-            Icons.download,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          onTap: _shared.initialFetch,
         ),
       );
     }

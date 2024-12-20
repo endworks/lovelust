@@ -234,6 +234,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
 
   void save() {
     if (valid) {
+      HapticFeedback.selectionClick();
       Activity activity = Activity(
         id: _new ? const Uuid().v4() : widget.activity.id,
         birthControl: _birthControl,
@@ -288,6 +289,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
       } else {
         _practices.remove(practice);
       }
+      HapticFeedback.selectionClick();
     });
   }
 
@@ -298,6 +300,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   void selectMood(Mood? mood, bool value) {
     setState(() {
       _mood = mood;
+      HapticFeedback.selectionClick();
     });
   }
 
@@ -342,6 +345,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               _type = ActivityType.sexualIntercourse;
               _solo = false;
             }
+            HapticFeedback.selectionClick();
           });
         },
       ),
@@ -364,6 +368,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     onChanged: (value) {
                       setState(() {
                         _partner = value;
+                        HapticFeedback.selectionClick();
                       });
                     },
                   ),
@@ -389,6 +394,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     onChanged: (value) {
                       setState(() {
                         _birthControl = value;
+                        HapticFeedback.selectionClick();
                       });
                     },
                   ),
@@ -415,6 +421,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                     onChanged: (value) {
                       setState(() {
                         _partnerBirthControl = value;
+                        HapticFeedback.selectionClick();
                       });
                     },
                   ),
@@ -437,6 +444,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             onChanged: (bool value) {
               setState(() {
                 _watchedPorn = value;
+                HapticFeedback.selectionClick();
               });
             },
             secondary: Icon(
@@ -477,6 +485,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       onChanged: (value) {
                         setState(() {
                           _ejaculation = value;
+                          HapticFeedback.selectionClick();
                         });
                       },
                     ),
@@ -502,6 +511,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                       onChanged: (value) {
                         setState(() {
                           _initiator = value;
+                          HapticFeedback.selectionClick();
                         });
                       },
                     ),
@@ -520,8 +530,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               subtitle: Wrap(
-                spacing: 4,
-                runSpacing: 4,
+                spacing: 8,
+                runSpacing: -4,
                 children: [
                   ...Practice.values.map(
                     (e) => FilterChip(
@@ -548,8 +558,8 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
               color: Theme.of(context).colorScheme.secondary,
             ),
             subtitle: Wrap(
-              spacing: 4,
-              runSpacing: 4,
+              spacing: 8,
+              runSpacing: -4,
               children: [
                 ...[...Mood.values, null].map(
                   (e) => FilterChip(
@@ -574,11 +584,12 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
             ),
             trailing: RatingSelect(
               rating: int.parse(_ratingController.value.text),
-              onRatingUpdate: (value) => setState(
-                () => _ratingController.value = TextEditingValue(
+              onRatingUpdate: (value) => setState(() {
+                _ratingController.value = TextEditingValue(
                   text: value.toString(),
-                ),
-              ),
+                );
+                HapticFeedback.selectionClick();
+              }),
             ),
           ),
           ListTile(
@@ -671,6 +682,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
                   onChanged: (value) {
                     setState(() {
                       _place = value;
+                      HapticFeedback.selectionClick();
                     });
                   },
                 ),
@@ -728,6 +740,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    HapticFeedback.selectionClick();
     final DateTime? picked = await showDatePicker(
         context: context,
         initialEntryMode: DatePickerEntryMode.calendar,
@@ -751,6 +764,7 @@ class _ActivityEditPageState extends State<ActivityEditPage> {
   }
 
   Future<void> _selectTime(BuildContext context) async {
+    HapticFeedback.selectionClick();
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialEntryMode: TimePickerEntryMode.dial,

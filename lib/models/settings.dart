@@ -12,8 +12,6 @@ class Settings {
   bool calendarView;
   String? appIcon;
   String? activityFilter;
-  String? accessToken;
-  String? refreshToken;
 
   Settings({
     required this.theme,
@@ -26,8 +24,6 @@ class Settings {
     required this.calendarView,
     required this.appIcon,
     required this.activityFilter,
-    this.accessToken,
-    this.refreshToken,
   });
 
   factory Settings.fromJson(Map<String, dynamic> json) {
@@ -42,8 +38,6 @@ class Settings {
       calendarView: json['calendarView'],
       appIcon: json['appIcon'],
       activityFilter: json['activityFilter'],
-      accessToken: json['accessToken'],
-      refreshToken: json['refreshToken'],
     );
   }
 
@@ -58,8 +52,6 @@ class Settings {
         'calendarView': calendarView,
         'appIcon': appIcon,
         'activityFilter': activityFilter,
-        'accessToken': accessToken,
-        'refreshToken': refreshToken,
       };
 }
 

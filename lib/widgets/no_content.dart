@@ -15,12 +15,11 @@ class NoContent extends StatefulWidget {
 }
 
 class _NoContentState extends State<NoContent> {
-  double alpha = 0.4;
   Color color = Colors.black;
 
   @override
   Widget build(BuildContext context) {
-    color = Theme.of(context).colorScheme.onSurface.withValues(alpha: alpha);
+    color = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.2);
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -35,12 +34,15 @@ class _NoContentState extends State<NoContent> {
               size: 64,
               color: color,
             ),
-            Text(
-              widget.message ?? AppLocalizations.of(context)!.noContent,
-              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    color: color,
-                  ),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                widget.message ?? AppLocalizations.of(context)!.noContent,
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      color: color,
+                    ),
+                textAlign: TextAlign.center,
+              ),
             ),
             widget.action != null
                 ? Padding(

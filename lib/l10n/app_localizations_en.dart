@@ -339,7 +339,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noSummary => 'No summary yet';
 
   @override
-  String get noActivity => 'Your journal is empty';
+  String get noActivity => 'No activity yet';
 
   @override
   String get noActivityToday => 'No activity';

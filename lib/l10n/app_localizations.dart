@@ -686,7 +686,7 @@ abstract class AppLocalizations {
   /// No description provided for @noActivity.
   ///
   /// In en, this message translates to:
-  /// **'Your journal is empty'**
+  /// **'No activity yet'**
   String get noActivity;
 
   /// No description provided for @noActivityToday.

@@ -32,6 +32,12 @@ class _JournalPageState extends State<JournalPage> {
   void initState() {
     super.initState();
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        final box = fabKey.currentContext?.findRenderObject();
+        fabSize = (box as RenderBox).size;
+      });
+    });
     _scrollController.addListener(() {
       setState(() {
         _isExtended = _scrollController.offset <= 0.0;
@@ -39,12 +45,7 @@ class _JournalPageState extends State<JournalPage> {
     });
     _shared.addListener(() {
       if (mounted) {
-        setState(() {
-          if (_shared.material) {
-            final box = fabKey.currentContext?.findRenderObject();
-            fabSize = (box as RenderBox).size;
-          }
-        });
+        setState(() {});
       }
     });
   }
@@ -214,7 +215,7 @@ class _JournalPageState extends State<JournalPage> {
               ),*/
               actions: [
                 _shared.calendarView && !_shared.isToday
-                    ? FilledButton.tonal(
+                    ? FilledButton(
                         onPressed: () {
                           _shared.calendarDate = DateTime.now();
                           _scrollController.jumpTo(0);
@@ -229,16 +230,10 @@ class _JournalPageState extends State<JournalPage> {
                   },
                   icon: Icon(
                     _shared.calendarView
-                        ? Icons.view_timeline_outlined
-                        : Icons.calendar_today_outlined,
+                        ? Icons.calendar_view_day
+                        : Icons.calendar_today,
                   ),
                 ),
-                !_shared.material
-                    ? IconButton(
-                        icon: Icon(Icons.post_add),
-                        onPressed: addActivity,
-                      )
-                    : SizedBox.shrink(),
               ],
               scrolled: !_isExtended,
             ),
@@ -246,40 +241,37 @@ class _JournalPageState extends State<JournalPage> {
           ],
         ),
       ),
-      floatingActionButton: _shared.material
-          ? Padding(
-              padding: EdgeInsets.only(
-                bottom:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? MediaQuery.of(context).padding.bottom
-                        : 0,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).orientation == Orientation.portrait
+              ? MediaQuery.of(context).padding.bottom
+              : 0,
+        ),
+        child: AnimatedContainer(
+          width: _isExtended ? fabSize?.width : fabSize?.height,
+          height: fabSize?.height,
+          duration: Duration(milliseconds: 100),
+          child: FloatingActionButton.extended(
+            onPressed: addActivity,
+            key: fabKey,
+            heroTag: "journalAdd",
+            label: AnimatedSize(
+              duration: Duration(milliseconds: 100),
+              curve: Curves.linear,
+              child: Container(
+                child: _isExtended
+                    ? Text(
+                        AppLocalizations.of(context)!.logActivity,
+                      )
+                    : Icon(
+                        Icons.post_add_outlined,
+                      ),
               ),
-              child: AnimatedContainer(
-                width: _isExtended ? fabSize?.width : fabSize?.height,
-                height: fabSize?.height,
-                duration: Duration(milliseconds: 100),
-                child: FloatingActionButton.extended(
-                  onPressed: addActivity,
-                  key: fabKey,
-                  heroTag: "journalAdd",
-                  label: AnimatedSize(
-                    duration: Duration(milliseconds: 100),
-                    curve: Curves.linear,
-                    child: Container(
-                      child: _isExtended
-                          ? Text(
-                              AppLocalizations.of(context)!.logActivity,
-                            )
-                          : Icon(
-                              Icons.post_add_outlined,
-                            ),
-                    ),
-                  ),
-                  icon: _isExtended ? Icon(Icons.post_add_outlined) : null,
-                ),
-              ),
-            )
-          : null,
+            ),
+            icon: _isExtended ? Icon(Icons.post_add_outlined) : null,
+          ),
+        ),
+      ),
     );
   }
 }

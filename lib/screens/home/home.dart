@@ -81,7 +81,8 @@ class _HomePageState extends State<HomePage> {
               : const NeverScrollableScrollPhysics(),
           slivers: [
             GenericHeader(
-              title: title,
+              // title: title,
+              title: Text(AppLocalizations.of(context)!.statistics),
               scrolled: _isScrolled,
             ),
             _shared.statistics.isEmpty

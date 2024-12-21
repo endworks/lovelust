@@ -12,6 +12,7 @@ import 'package:lovelust/widgets/blocks/date_block.dart';
 import 'package:lovelust/widgets/blocks/notes_block.dart';
 import 'package:lovelust/widgets/blocks/socials_block.dart';
 import 'package:lovelust/widgets/generic_header.dart';
+import 'package:lovelust/widgets/no_content.dart';
 import 'package:lovelust/widgets/partner_avatar.dart';
 
 class PartnerDetailsPage extends StatefulWidget {
@@ -153,6 +154,14 @@ class _PartnerDetailsPageState extends State<PartnerDetailsPage> {
         .getActivityByPartner(_partner.id!)
         .map((e) => ActivityBlock(activity: e))
         .toList();
+    if (activity.isEmpty) {
+      list.add(
+        NoContent(
+          icon: Icons.calendar_today,
+          message: AppLocalizations.of(context)!.noActivity,
+        ),
+      );
+    }
     list = [...list, ...activity];
     return list;
   }

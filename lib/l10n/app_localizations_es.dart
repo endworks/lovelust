@@ -341,7 +341,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get noSummary => 'No hay resumen aún';
 
   @override
-  String get noActivity => 'Tu diario esta vacío';
+  String get noActivity => 'No hay actividad aún';
 
   @override
   String get noActivityToday => 'No hay actividad';

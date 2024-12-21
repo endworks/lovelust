@@ -87,7 +87,6 @@ ThemeData generateTheme(
     cardTheme: const CardTheme(
       elevation: 1,
       shadowColor: Colors.transparent,
-      clipBehavior: Clip.antiAlias,
     ),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
